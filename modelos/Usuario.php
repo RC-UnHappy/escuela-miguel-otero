@@ -102,26 +102,64 @@ class Usuario extends Persona
 		return ejecutarConsulta($sql);
 	}
 
+
+
+	/*===========================================================
+	=            Funciones relacionadas con Director            =
+	===========================================================*/
+
 	#Método para comprobar si hay un director asignado
 	function comprobardirector()
 	{
-		$sql = "SELECT * FROM usuario WHERE rol = 'Director'";
+		$sql = "SELECT * FROM usuario WHERE rol = 'Director(a)'";
 		return ejecutarConsulta($sql);
 	}
 
-	#Método para promover a un docente a director
-	function promover($idusuario)
+	#Método para promover a un docente o personal a director
+	function promoverdirector($idusuario)
 	{
-		$sql = "UPDATE usuario SET rol = 'Director' WHERE id = '$idusuario'";
+		$sql = "UPDATE usuario SET rol = 'Director(a)' WHERE id = '$idusuario'";
 		return ejecutarConsulta($sql);
 	}
 
-	#Método para degradar a un director a docente
-	function degradar($idusuario)
+	#Método para degradar a un director a docente o personal
+	function degradardirector($idusuario)
 	{
 		$sql = "UPDATE usuario SET rol = 'Docente' WHERE id = '$idusuario'";
 		return ejecutarConsulta($sql);
 	}
+
+	/*=====  End of Funciones relacionadas con Director  ======*/
+	
+
+
+	/*==============================================================
+	=            Funciones relacionadas con Subdirector            =
+	==============================================================*/
+	
+	#Método para comprobar si hay un director asignado
+	function comprobarsubdirector()
+	{
+		$sql = "SELECT * FROM usuario WHERE rol = 'Subdirector(a)'";
+		return ejecutarConsulta($sql);
+	}
+
+	#Método para promover a un docente o personal a director
+	function promoversubdirector($idusuario)
+	{
+		$sql = "UPDATE usuario SET rol = 'Subdirector(a)' WHERE id = '$idusuario'";
+		return ejecutarConsulta($sql);
+	}
+
+	#Método para degradar a un director a docente o personal
+	function degradarsubdirector($idusuario)
+	{
+		$sql = "UPDATE usuario SET rol = 'Docente' WHERE id = '$idusuario'";
+		return ejecutarConsulta($sql);
+	}
+	
+	/*=====  End of Funciones relacionadas con Subdirector  ======*/
+	
 }
 
 

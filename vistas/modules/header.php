@@ -163,6 +163,11 @@ if (strlen(session_id()) < 1)
 
             <li class="nav-title">Configuración</li>
 
+            <li class="nav-item">
+              <a class="nav-link" href="usuario.php">
+                <i class="nav-icon fas fa-chalkboard-teacher"></i> Personal</a>
+            </li>
+
             <?php  
               if ($_SESSION['usuario'] == 1) {
                 echo '<li class="nav-item nav-dropdown">
@@ -178,6 +183,7 @@ if (strlen(session_id()) < 1)
                       </li>';
               }
             ?>
+
             
             <li class="nav-item nav-dropdown">
               <a class="nav-link nav-dropdown-toggle" href="#">

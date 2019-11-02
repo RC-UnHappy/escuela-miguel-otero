@@ -21,7 +21,7 @@ if ($_SESSION['usuario'] == 1) {
 
               <div class="card-header pt-0 pb-1 bg-white mb-3"> <!-- Botonera del panel -->
               
-                <h1 class="font-weight-normal h5">Usuario
+                <h1 class="font-weight-normal h5">Personal
                   <button class="btn btn-outline-primary btn-pill shadow-sm" onclick="mostrarform(true)" id="btnagregar">
                     <i class="fa fa-plus-circle"></i> Agregar
                   </button>
@@ -257,7 +257,9 @@ if ($_SESSION['usuario'] == 1) {
                           
                         </div>
                       </div>
+
                     </div>
+                    
                   </div> 
                   
                   <div class="container">

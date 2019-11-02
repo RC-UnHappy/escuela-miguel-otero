@@ -130,39 +130,80 @@ switch ($_GET['op']) {
 
 		$rspta = $usuario->listar();
 
-		$comprobar = $usuario->comprobardirector();
 
-		$comprobar = $comprobar->fetch_object();
+		/*=========================================================
+		=            Funciones para comprobar Director            =
+		=========================================================*/
+		
+		$comprobardirector = $usuario->comprobardirector();
+
+		$comprobardirector = $comprobardirector->fetch_object();
 		$data = array();
+		
+		/*=====  End of Funciones para comprobar Director  ======*/
+		
+
+
+		/*============================================================
+		=            Funciones para comprobar subdirector            =
+		============================================================*/
+
+		$comprobarsubdirector = $usuario->comprobarsubdirector();
+
+		$comprobarsubdirector = $comprobarsubdirector->fetch_object();
+			
+		/*=====  End of Funciones para comprobar subdirector  ======*/
+		
 
 		while ($reg = $rspta->fetch_object()) {
 
-			if ($comprobar == '') {
-				if ($reg->rol == 'Docente') {
-					$director = ' <button class="btn btn-outline-warning" title="Promover a director" onclick="promover('.$reg->id.')"><i class="fas fa-chevron-up"></i></button>';
+			if ($comprobardirector == '') {
+				if ($reg->rol == 'Docente' || $reg->rol == 'Personal') {
+					$director = ' <button class="btn bg-teal text-white " title="Promover a director" onclick="promoverdirector('.$reg->id.')"><i class="fas fa-chevron-up"></i></button>';
 				}
 				else {
 					$director = '';
 				}
 			}
 			else {
-				if ($reg->rol == 'Director') {
-					$director = ' <button class="btn btn-outline-warning" title="Docente" onclick="degradar('.$reg->id.')"><i class="fas fa-chevron-down"></i></button>';
+				if ($reg->rol == 'Director(a)') {
+					$director = ' <button class="btn bg-teal text-white" title="Docente" onclick="degradardirector('.$reg->id.')"><i class="fas fa-chevron-down"></i></button>';
 				}
 				else {
 
 					$director = '';
 				}
 			}
+
+
+			if ($comprobarsubdirector == '') {
+				if ($reg->rol == 'Docente' || $reg->rol == 'Personal') {
+					$subdirector = ' <button class="btn bg-indigo text-white" title="Promover a Subdirector" onclick="promoversubdirector('.$reg->id.')"><i class="fas fa-chevron-up"></i></button>';
+				}
+				else {
+					$subdirector = '';
+				}
+			}
+			else {
+				if ($reg->rol == 'Subdirector(a)') {
+					$subdirector = ' <button class="btn bg-indigo text-white" title="Docente" onclick="degradarsubdirector('.$reg->id.')"><i class="fas fa-chevron-down"></i></button>';
+				}
+				else {
+
+					$subdirector = '';
+				}
+			}
+
+
 			$data[] = array('0' => ($reg->estatus) ? '<button class="btn btn-outline-primary " title="Editar" onclick="editar('.$reg->id.')"><i class="fas fa-edit"></i></button>'.
 
-				' <button class="btn btn-outline-danger" title="Desactivar" onclick="desactivar('.$reg->id.')"> <i class="fas fa-times"> </i></button> '.$director 
+				' <button class="btn btn-outline-danger" title="Desactivar" onclick="desactivar('.$reg->id.')"> <i class="fas fa-times"> </i></button> '.$director.' '.$subdirector 
 
 					 :
 
 				 '<button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->id.')"><i class="fa fa-edit"></i></button>'.
 
-				 ' <button class="btn btn-outline-success" title="Activar" onclick="activar('.$reg->id.')"><i class="fa fa-check"></i></button> '.$director,
+				 ' <button class="btn btn-outline-success" title="Activar" onclick="activar('.$reg->id.')"><i class="fa fa-check"></i></button> '.$director.' '.$subdirector,
 
 				 	'1' => $reg->usuario,
 				 	'2' => $reg->p_nombre,
@@ -262,15 +303,27 @@ switch ($_GET['op']) {
 		echo json_encode($rspta->fetch_object());
 		break;
 
-	case 'promover': 
+	case 'promoverdirector': 
 		$idusuario = $_POST['idusuario'];
-		$rspta = $usuario->promover($idusuario);
+		$rspta = $usuario->promoverdirector($idusuario);
 		echo $rspta;
 		break;
 
-	case 'degradar': 
+	case 'degradardirector': 
 		$idusuario = $_POST['idusuario'];
-		$rspta = $usuario->degradar($idusuario);
+		$rspta = $usuario->degradardirector($idusuario);
+		echo $rspta;
+		break;
+
+	case 'promoversubdirector': 
+		$idusuario = $_POST['idusuario'];
+		$rspta = $usuario->promoversubdirector($idusuario);
+		echo $rspta;
+		break;
+
+	case 'degradarsubdirector': 
+		$idusuario = $_POST['idusuario'];
+		$rspta = $usuario->degradarsubdirector($idusuario);
 		echo $rspta;
 		break;
 	

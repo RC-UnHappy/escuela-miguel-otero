@@ -21,6 +21,12 @@ function init() {
 	//Se ejecuta al quitar el foco del input cedula
 	$('#cedula').on('blur', function () {
 		comprobarUsuario();
+	});
+
+
+	//Se ejecuta al quitar el foco del select rol
+	$('#rol').on('change', function () {
+		rol();
 	})
 
 
@@ -62,6 +68,23 @@ function comprobarUsuario() {
 			}
 		}
 	});
+}
+
+// Función para ocultar los permisos en cuestión del cargo
+function rol() {
+
+	var rol = $('#rol')[0].value;
+
+	if (rol == 'Docente') {
+		$('#permisos').hide();
+	}
+	else if (rol == 'Personal') {
+		$('#permisos').show();
+	}
+	else if (rol == '') {
+		$('#permisos').show();
+	}
+
 }
 
 //Función para actualizar el perfil
@@ -163,9 +186,14 @@ function listar() {
 	});
 }
 
+
+/*==========================================================
+=            Funciones para provover a Director            =
+==========================================================*/
+
 //Función para promover a director a un docente
-function promover(idusuario) {
-	$.post('../controladores/usuario.php?op=promover', {idusuario: idusuario}, function (data) {
+function promoverdirector(idusuario) {
+	$.post('../controladores/usuario.php?op=promoverdirector', {idusuario: idusuario}, function (data) {
 		tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
 		if (data) {	
 			const Toast = Swal.mixin({
@@ -184,8 +212,8 @@ function promover(idusuario) {
 }
 
 //Función para promover a director a un docente
-function degradar(idusuario) {
-	$.post('../controladores/usuario.php?op=degradar', {idusuario: idusuario}, function (data) {
+function degradardirector(idusuario) {
+	$.post('../controladores/usuario.php?op=degradardirector', {idusuario: idusuario}, function (data) {
 		tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
 		if (data) {			
 			const Toast = Swal.mixin({
@@ -202,6 +230,59 @@ function degradar(idusuario) {
 		}
 	});
 }
+
+/*=====  End of Funciones para provover a Director  ======*/
+
+
+
+/*=============================================================
+=            Funciones para promover a Subdirector            =
+=============================================================*/
+
+//Función para promover a subdirector a un docente
+function promoversubdirector(idusuario) {
+	$.post('../controladores/usuario.php?op=promoversubdirector', {idusuario: idusuario}, function (data) {
+		tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
+		if (data) {	
+			const Toast = Swal.mixin({
+						  toast: true,
+						  position: 'top-end',
+						  showConfirmButton: false,
+						  timer: 3000
+						});
+
+						Toast.fire({
+						  type: 'success',
+						  title: 'Operación exitosa'
+						});
+		}
+	});
+}
+
+//Función para promover a subdirector a un docente
+function degradarsubdirector(idusuario) {
+	$.post('../controladores/usuario.php?op=degradarsubdirector', {idusuario: idusuario}, function (data) {
+		tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
+		if (data) {			
+			const Toast = Swal.mixin({
+						  toast: true,
+						  position: 'top-end',
+						  showConfirmButton: false,
+						  timer: 3000
+						});
+
+						Toast.fire({
+						  type: 'success',
+						  title: 'Operación exitosa'
+						});
+		}
+	});
+}
+
+/*=====  End of Funciones para promover a Subdirector  ======*/
+
+
+
 
 //Función para mostrar un registro para editar
 function mostrar(idusuario) {
