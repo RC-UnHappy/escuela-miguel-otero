@@ -73,7 +73,6 @@ $('.punto_talla').on('keypress', function (event) {
 //Agrega el punto en el campo de talla
 $('.talla').on('keyup', function (event) {
     numero = this.value;
-    console.log(numero);
     if (numero.substr(0,1) == '0' || numero.substr(0,1) == '1') {
     	this.value = numero;
     }

@@ -275,7 +275,80 @@ if ($_SESSION['usuario'] == 1) {
                                   Campo Obligatorio
                               </div>
                             </div>
-                          </div>    
+                          </div>
+
+                          <div class="form-group col-md-6">
+                            <label for="">¿Todas las vacunas? (*)</label>
+                            <div class="input-group">
+                            
+                              <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="vacunasSi" name="vacunas" class="custom-control-input" required value="si">
+                                <label class="custom-control-label" for="vacunasSi">Si</label>
+                                 <div class="invalid-feedback">
+                                </div>
+                              </div>
+
+
+
+                              <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="vacunasNo" name="vacunas" class="custom-control-input" required value="no">
+                                <label class="custom-control-label" for="vacunasNo">No</label>
+                                 <div class="invalid-feedback">
+                                </div>
+                              </div>
+
+                              
+                            </div>
+                          </div> 
+
+                          <div class="form-group col-md-6">
+                            <label for="">¿Alergico? (*)</label>
+                            <div class="input-group">
+                            
+                              <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="alergicoSi" name="alergia" class="custom-control-input" required value="si">
+                                <label class="custom-control-label" for="alergicoSi">Si</label>
+                                 <div class="invalid-feedback">
+                                </div>
+                              </div>
+
+                              <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="alergicoNo" name="alergia" class="custom-control-input" required value="no">
+                                <label class="custom-control-label" for="alergicoNo">No</label>
+                                 <div class="invalid-feedback">
+                                </div>
+                              </div>
+
+                              
+                            </div>
+                          </div>
+
+                          <div class="form-group col-md-12">
+                            <label for="">¿Diversidad funcional? (*)</label>
+                            <div class="input-group">
+                              
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input" id="motora">
+                                <label class="custom-control-label" for="motora" value="motora">Motora</label>
+                              </div>
+
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input" id="autismo">
+                                <label class="custom-control-label" for="autismo" value="autismo">Autismo</label>
+                              </div>
+
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input" id="asperger">
+                                <label class="custom-control-label" for="asperger" value="asperger">Asperger</label>
+                              </div>
+
+                              
+
+                          
+
+                              
+                            </div>
+                          </div>   
                           
                         </div>
                       </div>
