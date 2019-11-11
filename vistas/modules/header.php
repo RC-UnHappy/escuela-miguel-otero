@@ -152,7 +152,7 @@ if (strlen(session_id()) < 1)
             <li class="nav-title">Institución</li>
 
             <li class="nav-item">
-              <a class="nav-link" href="colors.html">
+              <a class="nav-link" href="estudiante.php">
                 <i class="nav-icon fas fa-user-graduate"></i> Estudiante</a>
             </li>
 

@@ -48,6 +48,41 @@ $('.guion_telefonico').on('keypress', function (event) {
     }
 });
 
+//Agrega el punto en el campo de peso
+$('.punto_peso').on('keypress', function (event) {
+    numero = this.value;
+    if (numero.length == 2) {
+    	this.value = numero+'.';
+    }
+    else if (numero.length == 2 && event.keyCode == 8) {
+    	this.value = numero.substr(0,2);
+    }
+});
+
+//Agrega el punto en el campo de talla
+$('.punto_talla').on('keypress', function (event) {
+    numero = this.value;
+    if (numero.length == 1) {
+    	this.value = numero+'.';
+    }
+    else if (numero.length == 1 && event.keyCode == 8) {
+    	this.value = numero.substr(0,1);
+    }
+});
+
+//Agrega el punto en el campo de talla
+$('.talla').on('keyup', function (event) {
+    numero = this.value;
+    console.log(numero);
+    if (numero.substr(0,1) == '0' || numero.substr(0,1) == '1') {
+    	this.value = numero;
+    }
+    else{
+    	this.value = numero.substr(0,0);
+    }
+
+});
+
 //Cambia el color al ícono de género
 $('.genero').on('change', function () {
 	var genero = $('.genero')[1].value;
