@@ -341,20 +341,90 @@ if ($_SESSION['usuario'] == 1) {
                                 <input type="checkbox" class="custom-control-input" id="asperger">
                                 <label class="custom-control-label" for="asperger" value="asperger">Asperger</label>
                               </div>
+ 
+                            </div>
+                          </div>
 
+                          <div class="form-group col-md-12">
+                            <label for="">¿Enfermedad? (*)</label>
+                            <div class="input-group">
                               
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input" id="repiratoria">
+                                <label class="custom-control-label" for="repiratoria" value="repiratoria">Respiratoria</label>
+                              </div>
 
-                          
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input" id="renal">
+                                <label class="custom-control-label" for="renal" value="renal">Renal</label>
+                              </div>
 
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input" id="visual">
+                                <label class="custom-control-label" for="visual" value="visual">Visual</label>
+                              </div>
+
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input" id="auditiva">
+                                <label class="custom-control-label" for="auditiva" value="auditiva">Auditiva</label>
+                              </div>                        
                               
                             </div>
-                          </div>   
+                          </div>  
                           
                         </div>
                       </div>
                       
                     </div>
-                  </div> 
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="card border-right-0 border-bottom-0 border-left-0  shadow mb-5 bg-white border-top-0 rounded">
+                      <div class="card-header bg-white  shadow border-bottom-0 fondo-degradado">
+                        <h5 class="m-0 p-0 lead font-italic font-weight-bold text-white" ><i class="fas fa-wallet "></i> Aspectos socioeconómicos
+                          <small class="text-dark">(Requerido)</small>
+                        </h5>
+                      </div>
+
+                      <div class="card-body">
+                        <div class="row">
+
+                          <div class="form-group col-md-12">
+                            <label for="">¿Tipo de vivienda? (*)</label>
+                            <div class="input-group">
+                            
+                              <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="casa" name="vivienda" class="custom-control-input" required value="casa">
+                                <label class="custom-control-label" for="casa">Casa</label>
+                                 <div class="invalid-feedback">
+                                </div>
+                              </div>
+
+
+
+                              <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="apartamento" name="vivienda" class="custom-control-input" required value="no">
+                                <label class="custom-control-label" for="apartamento">Apartamento</label>
+                                 <div class="invalid-feedback">
+                                </div>
+                              </div>
+
+                              <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="otro" name="vivienda" class="custom-control-input" required value="otro">
+                                <label class="custom-control-label" for="otro">Otro</label>
+                                 <div class="invalid-feedback">
+                                </div>
+                              </div>
+
+                              
+                            </div>
+                          </div>  
+                          
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>  
                   
                   <div class="container">
                     <div class="row d-flex justify-content-end pr-3">
