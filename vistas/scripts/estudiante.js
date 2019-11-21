@@ -68,6 +68,12 @@ function init() {
 		}
 	});
 
+	//Comprueba si el estudiante tiene canaima o no
+	$('input[name=canaima]').on('click', function () {
+		console.log('hola');
+		
+	});
+
 	tabla.ajax.reload();
 			
 }

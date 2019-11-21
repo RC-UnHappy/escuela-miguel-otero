@@ -328,18 +328,18 @@ if ($_SESSION['usuario'] == 1) {
                             <div class="input-group">
                               
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="motora">
-                                <label class="custom-control-label" for="motora" value="motora">Motora</label>
+                                <input type="checkbox" class="custom-control-input" id="motora" value="motora" name="diversidad[]">
+                                <label class="custom-control-label" for="motora">Motora</label>
                               </div>
 
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="autismo">
-                                <label class="custom-control-label" for="autismo" value="autismo">Autismo</label>
+                                <input type="checkbox" class="custom-control-input" id="autismo" value="autismo" name="diversidad[]">
+                                <label class="custom-control-label" for="autismo">Autismo</label>
                               </div>
 
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="asperger">
-                                <label class="custom-control-label" for="asperger" value="asperger">Asperger</label>
+                                <input type="checkbox" class="custom-control-input" id="asperger"  value="asperger" name="diversidad[]">
+                                <label class="custom-control-label" for="asperger">Asperger</label>
                               </div>
  
                             </div>
@@ -350,23 +350,23 @@ if ($_SESSION['usuario'] == 1) {
                             <div class="input-group">
                               
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="repiratoria">
-                                <label class="custom-control-label" for="repiratoria" value="repiratoria">Respiratoria</label>
+                                <input type="checkbox" class="custom-control-input" id="repiratoria"  value="repiratoria" name="enfermedad[]">
+                                <label class="custom-control-label" for="repiratoria">Respiratoria</label>
                               </div>
 
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="renal">
-                                <label class="custom-control-label" for="renal" value="renal">Renal</label>
+                                <input type="checkbox" class="custom-control-input" id="renal"  value="renal" name="enfermedad[]">
+                                <label class="custom-control-label" for="renal">Renal</label>
                               </div>
 
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="visual">
-                                <label class="custom-control-label" for="visual" value="visual">Visual</label>
+                                <input type="checkbox" class="custom-control-input" id="visual"  value="visual" name="enfermedad[]">
+                                <label class="custom-control-label" for="visual">Visual</label>
                               </div>
 
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="auditiva">
-                                <label class="custom-control-label" for="auditiva" value="auditiva">Auditiva</label>
+                                <input type="checkbox" class="custom-control-input" id="auditiva"  value="auditiva" name="enfermedad[]">
+                                <label class="custom-control-label" for="auditiva">Auditiva</label>
                               </div>                        
                               
                             </div>
@@ -418,7 +418,102 @@ if ($_SESSION['usuario'] == 1) {
 
                               
                             </div>
-                          </div>  
+                          </div>
+
+                          <div class="form-group col-md-12">
+                            <label for="">Personas que mantienen el hogar (*)</label>
+                            <div class="input-group">
+                              
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input" id="papa"  value="papa" name="sosten[]">
+                                <label class="custom-control-label" for="papa">Papá</label>
+                              </div>
+
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input" id="mama"  value="mama" name="sosten[]">
+                                <label class="custom-control-label" for="mama">Mamá</label>
+                              </div>
+
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input" id="abuelos"  value="abuelos" name="sosten[]">
+                                <label class="custom-control-label" for="abuelos">Abuelos</label>
+                              </div>
+
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input" id="otros"  value="otros" name="sosten[]">
+                                <label class="custom-control-label" for="otros">Otros</label>
+                              </div>                        
+                              
+                            </div>
+                          </div> 
+
+                          <div class="form-group col-md-6">
+                            <label for="grupo_familiar">Personas que integran la familia (*)</label>
+                            <div class="input-group">
+                            
+                              <div class="input-group">
+                                <input type="text" class="form-control solo_numeros " name="grupo_familiar" id="grupo_familiar" maxlength="2">
+
+                              </div>
+
+                              <div class="invalid-feedback">
+                                  Campo Obligatorio
+                              </div>
+                            </div>
+                          </div> 
+
+                          <div class="form-group col-md-6">
+                            <label for="ingreso_mensual">Ingreso Mensual (*)</label>
+                            <div class="input-group">
+                            
+                              <div class="input-group">
+                                <input type="text" class="form-control solo_numeros_decimales " name="ingreso_mensual" id="ingreso_mensual">
+
+                              </div>
+
+                              <div class="invalid-feedback">
+                                  Campo Obligatorio
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group col-md-6">
+                            <label for="">¿Posee canaima? (*)</label>
+                            <div class="input-group">
+                            
+                              <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="canaimaSi" name="canaima" class="custom-control-input" required value="si">
+                                <label class="custom-control-label" for="canaimaSi">Si</label>
+                                 <div class="invalid-feedback">
+                                </div>
+                              </div>
+
+
+
+                              <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="canaimaNo" name="canaima" class="custom-control-input" required value="no">
+                                <label class="custom-control-label" for="canaimaNo">No</label>
+                                 <div class="invalid-feedback">
+                                </div>
+                              </div>
+                                  
+                            </div>
+                          </div>
+
+                          <div class="form-group col-md-6">
+                            <label for="condicion_canaima">Condición</label>
+                            <div class="input-group">
+                            
+                              <div class="input-group">
+                                <input type="text" class="form-control" name="condicion_canaima" id="condicion_canaima" disabled>
+
+                              </div>
+
+                              <div class="invalid-feedback">
+                                  Campo Obligatorio
+                              </div>
+                            </div>
+                          </div>
                           
                         </div>
                       </div>

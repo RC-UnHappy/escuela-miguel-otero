@@ -22,6 +22,7 @@ function fecha_actual() {
 teclas_especiales = [8,9]; 
 teclas_letras = "abcdefghijklmnñopqrstuvwxyzáéíóúüÁÉÍÓÚÜABCDEFGHIJKLMNÑOPQRSTUVWXYZ ";
 teclas_numeros = "1234567890";
+teclas_numeros_decimales = "1234567890,";
 
 //Permite escribir sólo letras
 $('.solo_letras').on('keypress', function (event) {
@@ -35,6 +36,13 @@ $('.solo_numeros').on('keypress', function (event) {
     codigo = event.keyCode;
 	caracter = String.fromCharCode(codigo);
 	return teclas_numeros.indexOf(caracter) != -1 || false;
+});
+
+//Permite escribir sólo números y decimales
+$('.solo_numeros_decimales').on('keypress', function (event) {
+    codigo = event.keyCode;
+	caracter = String.fromCharCode(codigo);
+	return teclas_numeros_decimales.indexOf(caracter) != -1 || false;
 });
 
 //Agrega el guión a los números telefónicos
