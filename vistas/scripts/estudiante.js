@@ -70,7 +70,13 @@ function init() {
 
 	//Comprueba si el estudiante tiene canaima o no
 	$('input[name=canaima]').on('click', function () {
-		console.log('hola');
+		if (this.value == 'si') {
+			$('#condicion_canaima').prop('disabled', false);
+		}
+		else {
+			$('#condicion_canaima')[0].value = '';
+			$('#condicion_canaima').prop('disabled', true);
+		}
 		
 	});
 
