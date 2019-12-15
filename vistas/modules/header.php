@@ -184,6 +184,22 @@ if (strlen(session_id()) < 1)
               }
             ?>
 
+            <li class="nav-item nav-dropdown">
+              <a class="nav-link nav-dropdown-toggle" href="#">
+                <i class="fas fa-cogs"></i> Configuración
+              </a>
+
+              <ul class="nav-dropdown-items">
+
+                <li class="nav-item">
+                  <a class="nav-link" href="ambiente.php">
+                    <i class="fas fa-apple-alt"></i> Ambiente
+                  </a>
+                </li>
+
+              </ul>
+            </li>
+
             
             <li class="nav-item nav-dropdown">
               <a class="nav-link nav-dropdown-toggle" href="#">
@@ -211,6 +227,7 @@ if (strlen(session_id()) < 1)
                 </li>
               </ul>
             </li>
+
             <li class="divider"></li>
             <li class="nav-title">Ayuda</li>
             <li class="nav-item mt-auto">
