@@ -12,7 +12,10 @@ if (strlen(session_id()) < 1)
     <meta name="description" content="E.B.B Miguel Otero Silva - Acarigua, Portuguesa">
     <meta name="author" content="Alexis Cáceres">
     <meta name="keyword" content="Escuela,Básica,Bolivariana,Miguel,Otero,Silva,Acarigua,Portuguesa,Venezuela">
+    <link rel="icon" type="image/jpeg" href="../public/img/icono.jpg" />
+    
     <title>Escuela Básica - Miguel Otero Silva</title>
+
 
     <!-- Icons-->
     <link rel="icon" type="image/ico" href="./img/favicon.ico" sizes="any" />
@@ -195,14 +198,32 @@ if (strlen(session_id()) < 1)
 
             <li class="nav-item nav-dropdown">
               <a class="nav-link nav-dropdown-toggle" href="#">
-                <i class="fas fa-cogs"></i> Configuración
+                <i class="nav-icon fas fa-cogs"></i> Configuración
               </a>
 
               <ul class="nav-dropdown-items">
 
                 <li class="nav-item">
                   <a class="nav-link" href="ambiente.php">
-                    <i class="fas fa-apple-alt"></i> Ambiente
+                    <i class="nav-icon fas fa-ruler-vertical"></i> Ambiente
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="seccion.php">
+                    <i class="nav-icon fas fa-apple-alt"></i> Sección
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="grado.php">
+                    <i class="nav-icon fas fa-pencil-ruler"></i> Grado
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="institucion.php">
+                    <i class="nav-icon fas fa-school"></i> Institución
                   </a>
                 </li>
 

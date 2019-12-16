@@ -20,9 +20,9 @@ require_once 'modules/header.php';
 
               <div class="card-header pt-0 pb-1 bg-white mb-3"> <!-- Botonera del panel -->
               
-                <!-- Botón para mostrar modal ambiente -->
-                <h1 class="font-weight-normal h5">Ambiente
-                  <button class="btn btn-outline-primary btn-pill shadow-sm" data-toggle="modal" data-target="#ambienteModal" id="btnAgregar">
+                <!-- Botón para mostrar modal sección -->
+                <h1 class="font-weight-normal h5">Sección
+                  <button class="btn btn-outline-primary btn-pill shadow-sm" data-toggle="modal" data-target="#seccionModal" id="btnAgregar">
                     <i class="fa fa-plus-circle"></i> Agregar
                   </button>
                 </h1>
@@ -33,11 +33,11 @@ require_once 'modules/header.php';
                 <div class="col-sm-12">
                   <div class="table-responsive">
                     <table class="table table-borderless table-striped" id="tblistado">
-                      <caption>Lista de ambientes</caption>
+                      <caption>Lista de secciones</caption>
                       <thead class="fondo-degradado text-white">
                         <tr>
                           <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Opciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                          <th scope="col">Ambiente</th>
+                          <th scope="col">Sección</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -49,14 +49,14 @@ require_once 'modules/header.php';
               </div>
               
               <!-- Modal para crear ambiente -->
-              <div class="modal fade" id="ambienteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal fade" id="seccionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog rounded" role="document">
                   <div class="modal-content">
                     
-                    <form class="needs-validation" novalidate name="formularioAmbiente" id="formularioregistros"> <!-- Formulario de ambiente -->
+                    <form class="needs-validation" novalidate name="formularioSeccion" id="formularioregistros"> <!-- Formulario de ambiente -->
 
                       <div class="modal-header fondo-degradado rounded">
-                        <h5 class="modal-title text-white" id="exampleModalLabel">Crear Ambiente</h5>
+                        <h5 class="modal-title text-white" id="exampleModalLabel">Crear Sección</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -67,13 +67,13 @@ require_once 'modules/header.php';
                         <div class="row"> 
 
                             <div class="form-group col-md-6">
-                              <label for="ambiente">Número de Ambiente (*)</label>
+                              <label for="ambiente">Sección (*)</label>
 
                               <div class="input-group">
 
-                                <input type="text" class="form-control solo_numeros ambiente" placeholder="Ej: 01" name="ambiente"  id="ambiente"  maxlength="2" required>
+                                <input type="text" class="form-control solo_letras seccion text-uppercase" placeholder="Ej: A" name="seccion"  id="seccion"  maxlength="1" required>
 
-                                <input type="hidden" name="idambiente" id="idambiente"> <!-- Input oculto que guardará el id del ambiente cuando sea necesario -->
+                                <input type="hidden" name="idseccion" id="idseccion"> <!-- Input oculto que guardará el id de la sección cuando sea necesario -->
                                 
                                 <div class="invalid-feedback" >
                                     Campo Obligatorio
@@ -121,7 +121,7 @@ require_once 'modules/header.php';
 
 require_once 'modules/footer.php';
 ?>
-<script src="scripts/ambiente.js"></script>
+<script src="scripts/seccion.js"></script>
 
 <?php 
 } //Cierre del else que muestra esta vista

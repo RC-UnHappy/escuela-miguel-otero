@@ -53,7 +53,7 @@ if ($_SESSION['usuario'] == 1) {
                 </div>  
               </div>
 
-              <form class="needs-validation" novalidate name="usuario" id="formularioregistros"> <!-- Formulario de usuario -->
+              <form class="needs-validation" novalidate name="representante" id="formularioregistros"> <!-- Formulario de representante -->
                 <div class="row"> 
                 
                   <div class="col-sm-6">
@@ -86,7 +86,7 @@ if ($_SESSION['usuario'] == 1) {
                             <label for="cedula">Cédula (*)</label>
                             <div class="input-group">
 
-                              <input type="hidden" name="idrepresentante" id="idrepresentante"> <!-- Input oculto que guardará el id del usuario cuando sea necesario -->
+                              <input type="hidden" name="idrepresentante" id="idrepresentante"> <!-- Input oculto que guardará el id del representante cuando sea necesario -->
                               
 
                               <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula"  id="cedula"  maxlength="8" minlength="7" required>
@@ -268,7 +268,7 @@ if ($_SESSION['usuario'] == 1) {
                           <div class="form-group col-md-6">
                             <label for="municipio">Municipio (*)</label>
                             <div class="input-group">
-                              <select id="municipio" name="municipio" class="form-control selectpicker" required >
+                              <select id="municipio" name="municipio" class="form-control selectpicker" required disabled>
                                 <option value="">Seleccione</option>
                                 
                               </select>

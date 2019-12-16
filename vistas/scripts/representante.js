@@ -9,8 +9,8 @@ function init() {
 	listar();
 
 	//Se ejecuta cuando se envia el formulario
-	$([usuario]).on('submit', function (event) {
-		if ($([usuario])[0].checkValidity()) {
+	$([representante]).on('submit', function (event) {
+		if ($([representante])[0].checkValidity()) {
 			guardaryeditar(event);
 		}
 		else {
@@ -66,32 +66,7 @@ function init() {
 			
 }
 
-//Función para mostrar los estados
-function estados() {
-	$.post('../controladores/representante.php?op=listarestados', function (data) {
-		$('#estado').append(data);
-	});
-}
-
-//Función para mostrar los municipios
-function municipios(idestado) {
-	$.post('../controladores/representante.php?op=listarmunicipios&idestado='+idestado, function (data) {
-		$('#municipio').html('<option value="">Seleccione</option>');
-		$('#municipio').append(data);
-		$('#municipio').selectpicker('refresh');
-	});
-}
-
-//Función para mostrar las parroquias
-function parroquias(idmunicipio) {
-	$.post('../controladores/representante.php?op=listarparroquias&idmunicipio='+idmunicipio, function (data) {
-		$('#parroquia').html('<option value="">Seleccione</option>');
-		$('#parroquia').append(data);
-		$('#parroquia').selectpicker('refresh');
-	});
-}
-
-//Comprueba que el usuario no esté registrado
+//Comprueba que el representante no esté registrado
 function comprobarRepresentante() {
 	var documento = $('#documento')[0].value;
 	var cedula = $('#cedula')[0].value;
@@ -122,12 +97,37 @@ function comprobarRepresentante() {
 	});
 }
 
+//Función para mostrar los estados
+function estados() {
+	$.post('../controladores/representante.php?op=listarestados', function (data) {
+		$('#estado').append(data);
+	});
+}
+
+//Función para mostrar los municipios
+function municipios(idestado) {
+	$.post('../controladores/representante.php?op=listarmunicipios&idestado='+idestado, function (data) {
+		$('#municipio').html('<option value="">Seleccione</option>');
+		$('#municipio').append(data);
+		$('#municipio').selectpicker('refresh');
+	});
+}
+
+//Función para mostrar las parroquias
+function parroquias(idmunicipio) {
+	$.post('../controladores/representante.php?op=listarparroquias&idmunicipio='+idmunicipio, function (data) {
+		$('#parroquia').html('<option value="">Seleccione</option>');
+		$('#parroquia').append(data);
+		$('#parroquia').selectpicker('refresh');
+	});
+}
+
 //Función para guardar y editar 
 function guardaryeditar(event) {
 	event.preventDefault(); //Evita que se envíe el formulario automaticamente
 	// 
 	$('#btnGuardar').prop('disabled', true); //Deshabilita el botón submit para evitar que lo presionen dos veces
-	var formData = new FormData($([usuario])[0]); //Se obtienen los datos del formulario
+	var formData = new FormData($([representante])[0]); //Se obtienen los datos del formulario
 	
 	var documento = formData.get('documento'); //Se obtiene el tipo de documento
 	documento = tipo_documento(documento);//Se llama la función que lo transforma Ej: 'Venezolano' = V-
@@ -154,7 +154,7 @@ function guardaryeditar(event) {
 
 				Toast.fire({
 				  type: 'success',
-				  title: 'Usuario registrado exitosamente :)'
+				  title: 'representante registrado exitosamente :)'
 				});
 			}
 			else {
@@ -256,7 +256,7 @@ function mostrar(idrepresentante) {
 	});
 }
 
-//Función para eliminar(desactivar) usuarios
+//Función para eliminar(desactivar) representantes
 function desactivar(idusuario) {
 
 		const swalWithBootstrapButtons = Swal.mixin({

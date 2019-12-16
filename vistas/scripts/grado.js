@@ -2,12 +2,12 @@
 
 function init() {
 
-	//Muestra la lista de ambientes
+	//Muestra la lista de grados
 	listar();
 
 	//Se ejecuta cuando se envia el formulario
-	$([formularioAmbiente]).on('submit', function (event) {
-		if ($([formularioAmbiente])[0].checkValidity()) {
+	$([formularioGrado]).on('submit', function (event) {
+		if ($([formularioGrado])[0].checkValidity()) {
 			guardaryeditar(event);
 		}
 		else {
@@ -15,10 +15,9 @@ function init() {
 		}
 	});
 
-	//Se ejecuta al ingresar un número en el input de ambiente
-	$('#ambiente').on('blur', function () {
-		formatearNumero(this);
-		comprobarAmbiente(this);
+	//Se ejecuta al ingresar un número en el input de grado
+	$('#grado').on('blur', function () {
+		comprobarGrado(this);
 		
 	});
 
@@ -30,20 +29,11 @@ function init() {
 			
 }
 
-//Agrega un cero delante del número 
-function formatearNumero(esto) {
-	var ambiente = esto.value;
+//Comprueba que no exista el grado en el base de datos
 
-	if (ambiente.length == '1') {
-		esto.value = '0'+ambiente;
-	}
-}
-
-//Comprueba que no exista el ambiente en el base de datos
-
-function comprobarAmbiente(esto) {
-	var ambiente = esto.value;
-	$.post('../controladores/ambiente.php?op=comprobarambiente',{ambiente: ambiente}, function (data) {	
+function comprobarGrado(esto) {
+	var grado = esto.value;
+	$.post('../controladores/grado.php?op=comprobargrado',{grado: grado}, function (data) {	
 		if (data != 'null') {
 			esto.value = '';
 			const Toast = Swal.mixin({
@@ -55,7 +45,7 @@ function comprobarAmbiente(esto) {
 
 				Toast.fire({
 				  type: 'error',
-				  title: 'El ambiente ya existe'
+				  title: 'El grado ya existe'
 				});
 		}
 
@@ -72,10 +62,10 @@ function guardaryeditar(event) {
 	event.preventDefault(); //Evita que se envíe el formulario automaticamente
 	// 
 	// $('#btnGuardar').prop('disabled', true); //Deshabilita el botón submit para evitar que lo presionen dos veces
-	var formData = new FormData($([formularioAmbiente])[0]); //Se obtienen los datos del formulario
+	var formData = new FormData($([formularioGrado])[0]); //Se obtienen los datos del formulario
 	
 	$.ajax({
-		url: '../controladores/ambiente.php?op=guardaryeditar', //Dirección a donde se envían los datos
+		url: '../controladores/grado.php?op=guardaryeditar', //Dirección a donde se envían los datos
 		type: 'POST', //Método por el cual se envían los datos
 		data: formData, //Datos
 		contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
@@ -91,7 +81,7 @@ function guardaryeditar(event) {
 
 				Toast.fire({
 				  type: 'success',
-				  title: 'Ambiente registrado exitosamente :)'
+				  title: 'Grado registrado exitosamente :)'
 				});
 			}
 			else if (datos == 'update') {
@@ -104,7 +94,7 @@ function guardaryeditar(event) {
 
 				Toast.fire({
 				  type: 'success',
-				  title: 'Ambiente modificado exitosamente :)'
+				  title: 'Grado modificado exitosamente :)'
 				});
 			}
 			else {
@@ -123,7 +113,7 @@ function guardaryeditar(event) {
 
 			limpiar();
 			tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
-			$('#ambienteModal').modal('hide');
+			$('#gradoModal').modal('hide');
 		}
 
 	});		
@@ -151,7 +141,7 @@ function listar() {
 		dom: 'lfrtip', 
 		"destroy": true, //Elimina cualquier elemente que se encuentre en la tabla
 		"ajax": {
-			url: '../controladores/ambiente.php?op=listar',
+			url: '../controladores/grado.php?op=listar',
 			type: 'GET',
 			dataType: 'json',
 			error: function (data) {
@@ -163,19 +153,19 @@ function listar() {
 }
 
 //Función para mostrar un registro para editar
-function mostrar(idambiente) {
-	$.post('../controladores/ambiente.php?op=mostrar',{idambiente: idambiente}, function (data) {	
+function mostrar(idgrado) {
+	$.post('../controladores/grado.php?op=mostrar',{idgrado: idgrado}, function (data) {	
 		data = JSON.parse(data);
 
-		$('#ambiente').val(data.ambiente);
+		$('#grado').val(data.grado);
 		$('#estatus').val(data.estatus);
 		$('#estatus').selectpicker('refresh');
-		$('#idambiente').val(data.id);
+		$('#idgrado').val(data.id);
 	});
 }
 
-//Función para desactivar ambiente
-function desactivar(idambiente) {
+//Función para desactivar grado
+function desactivar(idgrado) {
 
 		const swalWithBootstrapButtons = Swal.mixin({
 		  customClass: {
@@ -187,7 +177,7 @@ function desactivar(idambiente) {
 
 		swalWithBootstrapButtons.fire({
 		  title: '¿Estas seguro?',
-		  text: "¿Quieres desactivar este ambiente?",
+		  text: "¿Quieres desactivar este grado?",
 		  type: 'warning',
 		  showCancelButton: true,
 		  confirmButtonText: 'Desactivar',
@@ -195,7 +185,7 @@ function desactivar(idambiente) {
 		  reverseButtons: true
 		}).then((result) => {
 		  if (result.value) {
-		  	$.post('../controladores/ambiente.php?op=desactivar', {idambiente: idambiente}, function (e) {
+		  	$.post('../controladores/grado.php?op=desactivar', {idgrado: idgrado}, function (e) {
 				console.log(e);
 				if (e == 'true') {
 					const Toast = Swal.mixin({
@@ -207,7 +197,7 @@ function desactivar(idambiente) {
 
 					Toast.fire({
 					  type: 'success',
-					  title: 'El ambiente ha sido desactivado :)'
+					  title: 'El grado ha sido desactivado :)'
 					});
 				}
 				else {
@@ -220,7 +210,7 @@ function desactivar(idambiente) {
 
 					Toast.fire({
 					  type: 'error',
-					  title: 'Ups! No se pudo desactivar el ambiente'
+					  title: 'Ups! No se pudo desactivar el grado'
 					});
 				}
 				tabla.ajax.reload();
@@ -229,8 +219,8 @@ function desactivar(idambiente) {
 		});
 }
 
-//Función para activar ambiente
-function activar(idambiente) {
+//Función para activar grado
+function activar(idgrado) {
 
 	const swalWithBootstrapButtons = Swal.mixin({
 		  customClass: {
@@ -242,7 +232,7 @@ function activar(idambiente) {
 
 		swalWithBootstrapButtons.fire({
 		  title: '¿Estas seguro?',
-		  text: "¿Quieres activar este ambiente?",
+		  text: "¿Quieres activar este grado?",
 		  type: 'warning',
 		  showCancelButton: true,
 		  confirmButtonText: 'Activar',
@@ -250,7 +240,7 @@ function activar(idambiente) {
 		  reverseButtons: true
 		}).then((result) => {
 		  if (result.value) {
-		  	$.post('../controladores/ambiente.php?op=activar', {idambiente: idambiente}, function (e) {
+		  	$.post('../controladores/grado.php?op=activar', {idgrado: idgrado}, function (e) {
 				if (e == 'true') {
 					const Toast = Swal.mixin({
 					  toast: true,
@@ -261,7 +251,7 @@ function activar(idambiente) {
 
 					Toast.fire({
 					  type: 'success',
-					  title: 'El ambiente ha sido activado :)'
+					  title: 'El grado ha sido activado :)'
 					});
 				}
 				else {
@@ -274,7 +264,7 @@ function activar(idambiente) {
 
 					Toast.fire({
 					  type: 'error',
-					  title: 'Ups! No se pudo activar el ambiente'
+					  title: 'Ups! No se pudo activar el grado'
 					});
 				}
 				tabla.ajax.reload();
@@ -286,12 +276,12 @@ function activar(idambiente) {
 
 //Función para limpiar el formulario
 function limpiar() {
-	$('#ambiente').val('');
-	$('#ambiente').removeClass('is-invalid');
+	$('#grado').val('');
+	$('#grado').removeClass('is-invalid');
 	$('#estatus').val('');
 	$('#estatus').removeClass('is-invalid');
 	$('#estatus').selectpicker('refresh');
-	$('#idambiente').val('');
+	$('#idgrado').val('');
 	$('#formularioregistros').removeClass('was-validated');
 }
 
