@@ -26,13 +26,20 @@ class Telefono
 	#Método para editar registros
 	function editar($idpersona, $telefono, $tipo)
 	{
-		$sql = "UPDATE telefono SET telefono = '$telefono', tipo = '$tipo' WHERE idpersona = '$idpersona'";
+		$sql = "UPDATE telefono SET telefono = '$telefono', tipo = '$tipo' WHERE idpersona = '$idpersona' AND tipo = '$tipo'";
 
 		return ejecutarConsulta($sql);
 		
 	}
 
-	
+	#Método para eliminar registros
+	function eliminar($idpersona, $tipo)
+	{
+		$sql = "DELETE FROM telefono WHERE idpersona = '$idpersona' AND tipo = '$tipo'";
+
+		return ejecutarConsulta($sql);
+		
+	}
 
 }
 

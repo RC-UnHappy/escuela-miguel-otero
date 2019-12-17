@@ -12,6 +12,7 @@ $representante = new Representante();
 #Se reciben los datos por POST y se asignan a variables
 
 $idrepresentante = isset($_POST['idrepresentante']) ? limpiarCadena($_POST['idrepresentante']) : '';
+$personaId = isset($_POST['idpersona']) ? limpiarCadena($_POST['idpersona']) : '';
 $cedula = isset($_POST['cedula']) ? limpiarCadena($_POST['cedula']) : '';
 $p_nombre = isset($_POST['p_nombre']) ? limpiarCadena($_POST['p_nombre']) : '';
 $s_nombre = isset($_POST['s_nombre']) ? limpiarCadena($_POST['s_nombre']) : '';
@@ -51,7 +52,7 @@ switch ($_GET['op']) {
 		autocommit(FALSE);
 
 		#Si la variable esta vacía quiere decir que es un nuevo registro
-		if (empty($idrepresentante)) {
+		if (empty($idrepresentante) && empty($personaId)) {
 			
 			#Variable para comprobar que todo salió bien al final
 			$sw = TRUE;
@@ -84,8 +85,46 @@ switch ($_GET['op']) {
 			}
 
 		}
-		else{
+		elseif (!empty($personaId) && empty($idrepresentante)) {
+			#Variable para comprobar que todo salió bien al final
+			$sw = TRUE;
 
+			#Se editan los datos de la persona
+			$esto = $persona->editar($personaId, $cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email) or $sw = FALSE;
+
+			#Se registra la dirección del representante
+			$Direccion->insertar($personaId, $parroquia, $direccion) or $sw = FALSE;
+
+			#Verifica que las variables de los teléfonos contengan datos y los guarda
+			if (!empty($celular)) {
+				$telefono->eliminar($personaId, 'M') or $sw = FALSE;
+				$telefono->insertar($personaId, $celular, 'M') or $sw = FALSE;
+			}
+			else {
+				$telefono->eliminar($personaId, 'M') or $sw = FALSE;
+			}
+			if (!empty($fijo)) {
+				$telefono->eliminar($personaId, 'F') or $sw = FALSE;
+				$telefono->insertar($personaId, $fijo, 'F') or $sw = FALSE;
+			}
+			else {
+				$telefono->eliminar($personaId, 'F') or $sw = FALSE;
+			}
+
+			#Se registra el representante
+			$rspta = $representante->insertar($personaId, $instruccion, $oficio) or $sw = FALSE;
+
+			#Se verifica que todo salió bien y se guardan los datos o se eliminan todos
+			if ($sw) {
+				commit();
+				echo 'update';
+			}
+			else {
+				rollback();
+				echo 'false';
+			}
+		}
+		else{
 			#Variable para comprobar que todo salió bien al final
 			$sw = TRUE;
 
@@ -96,24 +135,32 @@ switch ($_GET['op']) {
 			#Se editan los datos de la persona
 			$persona->editar($idpersona, $cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email) or $sw = FALSE;
 			
-			#Se registra la dirección del representante
+			#Se edita la dirección del representante
 			$Direccion->editar($idpersona, $parroquia, $direccion) or $sw = FALSE;
 
 			#Verifica que las variables de los teléfonos contengan datos y los guarda
 			if (!empty($celular)) {
-				$telefono->editar($idpersona, $celular, 'M') or $sw = FALSE;
+				$telefono->eliminar($idpersona, 'M') or $sw = FALSE;
+				$telefono->insertar($idpersona, $celular, 'M') or $sw = FALSE;
+			}
+			else {
+				$telefono->eliminar($idpersona, 'M') or $sw = FALSE;
 			}
 			if (!empty($fijo)) {
-				$telefono->editar($idpersona, $fijo, 'F') or $sw = FALSE;
+				$telefono->eliminar($idpersona, 'F') or $sw = FALSE;
+				$telefono->insertar($idpersona, $fijo, 'F') or $sw = FALSE;
+			}
+			else {
+				$telefono->eliminar($idpersona, 'F') or $sw = FALSE;
 			}
 
-			#Se registra el representante
+			#Se edita el representante
 			$rspta = $representante->editar($idrepresentante, $instruccion, $oficio) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
 				commit();
-				echo 'true';
+				echo 'update';
 			}
 			else {
 				rollback();
@@ -123,7 +170,6 @@ switch ($_GET['op']) {
 		break;
 
 	case 'listar':
-
 		$rspta = $representante->listar();
 
 		$data = array();
@@ -162,7 +208,6 @@ switch ($_GET['op']) {
 		break;
 
 	case 'listarestados':
-	
 		$rspta = $representante->listarestados();
 
 		while ($estado = $rspta->fetch_object()) {
@@ -171,8 +216,7 @@ switch ($_GET['op']) {
 
 		break;
 
-	case 'listarmunicipios':
-		
+	case 'listarmunicipios':		
 		$idestado = $_GET['idestado'];
 		$rspta = $representante->listarmunicipios($idestado);
 
@@ -182,8 +226,7 @@ switch ($_GET['op']) {
 
 		break;
 
-	case 'listarparroquias':
-		
+	case 'listarparroquias':		
 		$idmunicipio = $_GET['idmunicipio'];
 		$rspta = $representante->listarparroquias($idmunicipio);
 
@@ -202,67 +245,13 @@ switch ($_GET['op']) {
 
 		break;
 
-	case 'verificar':
-		
-		#Se encripta la contraseña con el algoritmo SHA256
-		$clavehash = hash('SHA256', $pass);
-
-		$rspta = $usuario->verificar($user, $clavehash);
-
-		$fetch = $rspta->fetch_object();
-
-		if (isset($fetch)) {
-			
-			#Declaramos las variables de sesión
-			$_SESSION['idusuario'] = $fetch->id;
-			$_SESSION['usuario'] = $fetch->usuario;
-			$_SESSION['p_nombre'] = $fetch->p_nombre;
-			$_SESSION['p_apellido'] = $fetch->p_apellido;
-			$_SESSION['email'] = $fetch->email;
-			$_SESSION['genero'] = $fetch->genero;
-			$_SESSION['img'] = $fetch->img;
-			$_SESSION['rol'] = $fetch->rol;
-
-			#Obtenemos los permisos del usuario 
-			$marcados = $usuario->listarmarcados($fetch->id);
-
-			#Declaramos el array para almacenar todos los permios marcados
-			$valores = array();
-
-			#Almacenamos los permisos marcados en el array
-			while ($per = $marcados->fetch_object()) {
-				array_push($valores, $per->idpermiso);
-			}
-
-			#Determinamos los accesos del usuario
-			in_array(1, $valores) ? $_SESSION['escritorio'] = 1 : $_SESSION['escritorio'] = 0; 
-			in_array(2, $valores) ? $_SESSION['usuario'] = 1 : $_SESSION['almacen'] = 0;    
-		}
-		echo json_encode($fetch);
-
-		break;
-
-	case 'salir':
-		#Limpiamos las variables de sesión
-		session_unset();
-
-		#Destruimos la sesión
-		session_destroy();
-
-		#Redireccionamos al login
-		header('location: ../index.php');
-		
-		break;
-
 	case 'desactivar': 
-
-		$rspta = $usuario->desactivar($idusuario);
+		$rspta = $representante->desactivar($idrepresentante);
 		echo $rspta ? 'true' : 'false';
 		break;
 
 	case 'activar': 
-
-		$rspta = $usuario->activar($idusuario);
+		$rspta = $representante->activar($idrepresentante);
 		echo $rspta ? 'true' : 'false';
 		break;
 
@@ -271,5 +260,11 @@ switch ($_GET['op']) {
 		$rspta = $representante->comprobarrepresentante($cedula);
 		echo json_encode($rspta->fetch_object());
 		break;
-	
+
+	case 'comprobarpersona': 
+		$cedula = $_POST['cedula'];
+		$rspta = $representante->comprobarpersona($cedula);
+		echo json_encode($rspta->fetch_object());
+		break;
+
 }

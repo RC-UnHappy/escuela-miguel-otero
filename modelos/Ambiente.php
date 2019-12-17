@@ -35,7 +35,7 @@ class Ambiente
 	#Método para listar todos los ambientes
 	function listar()
 	{
-		$sql = "SELECT * FROM ambiente";
+		$sql = "SELECT * FROM ambiente ORDER BY ambiente";
 
 		return ejecutarConsulta($sql);
 	}

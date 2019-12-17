@@ -5,7 +5,7 @@ function init() {
 	//Oculta el formulario al cargar la pagina
 	mostrarform(false);
 
-	//Muestra la lista de usuarios
+	//Muestra la lista de representantes
 	listar();
 
 	//Se ejecuta cuando se envia el formulario
@@ -20,7 +20,18 @@ function init() {
 
 	//Se ejecuta al quitar el foco del input cedula
 	$('#cedula').on('blur', function () {
+
+		if ($('#cedula')[0].value == '') {
+			$('#cedula').removeClass('is-valid');
+		}
 		comprobarRepresentante();
+		comprobarPersona();
+	});
+
+	//Se ejecuta al seleccionar un elemento del select documento
+	$('#documento').on('change', function () {
+		comprobarRepresentante();
+		comprobarPersona();
 	});
 
 	//Carga los estados al select
@@ -71,30 +82,103 @@ function comprobarRepresentante() {
 	var documento = $('#documento')[0].value;
 	var cedula = $('#cedula')[0].value;
 
-	if (documento == 'venezolano') {
-		documento = 'V-';
-	}
-	else if (documento == 'extranjero') {
-		documento = 'E-';
-	}
-	else if (documento == 'pasaporte') {
-		documento = 'P-';
-	}
 
-	cedula = documento+cedula;
+	if (documento != '' && cedula != '') {
 
-	$.ajax({
-		url: '../controladores/representante.php?op=comprobarrepresentante',
-		type: 'POST',
-		data: {cedula: cedula},
-		success: function (datos) {
-			if (datos != 'null') {
-				$('#cedula').removeClass('is-valid');
-				$('#cedula').addClass('is-invalid');
-				$('#mensajeCedula').html('El representante ya se encuentra registrado');
-			}
+		if (documento == 'venezolano') {
+			documento = 'V-';
 		}
-	});
+		else if (documento == 'extranjero') {
+			documento = 'E-';
+		}
+		else if (documento == 'pasaporte') {
+			documento = 'P-';
+		}
+
+		cedula = documento+cedula;
+
+		$.ajax({
+			url: '../controladores/representante.php?op=comprobarrepresentante',
+			type: 'POST',
+			data: {cedula: cedula},
+			success: function (datos) {
+				if (datos != 'null') {
+					$('#cedula').removeClass('is-valid');
+					$('#cedula').addClass('is-invalid');
+					$('#mensajeCedula').html('El representante ya se encuentra registrado');
+				}
+				else {
+					$('#cedula').removeClass('is-invalid');
+					$('#cedula').addClass('is-valid');
+				}
+			}
+		});
+	}
+
+}
+
+//Comprueba que la persona no esté registrada
+function comprobarPersona() {
+	var documento = $('#documento')[0].value;
+	var cedula = $('#cedula')[0].value;
+
+	if (documento != '' && cedula != '') {
+
+		if (documento == 'venezolano') {
+			documento = 'V-';
+		}
+		else if (documento == 'extranjero') {
+			documento = 'E-';
+		}
+		else if (documento == 'pasaporte') {
+			documento = 'P-';
+		}
+
+		cedula = documento+cedula;
+
+		$.ajax({
+			url: '../controladores/representante.php?op=comprobarrepresentante',
+			type: 'POST',
+			data: {cedula: cedula},
+			success: function (datos) {
+				datosRepresentante = datos;
+				$.ajax({
+					url: '../controladores/representante.php?op=comprobarpersona',
+					type: 'POST',
+					data: {cedula: cedula},
+					success: function (datosPersona) {
+						if (datosRepresentante == 'null' && datosPersona != 'null') {
+							data = JSON.parse(datosPersona);
+							$('#p_nombre').val(data.p_nombre);
+							$('#s_nombre').val(data.s_nombre);
+							$('#p_apellido').val(data.p_apellido);
+							$('#s_apellido').val(data.s_apellido);
+							$('#genero').val(data.genero);
+							$('#genero').selectpicker('refresh');
+							$('#f_nac').val(data.f_nac);
+							$('#email').val(data.email);
+							$('#celular').val(data.celular);
+							$('#fijo').val(data.fijo);
+							$('#estado').val(data.idestado);
+							$('#estado').selectpicker('refresh');
+							if (data.idmunicipio != null) {
+								$('#municipio').html('<option value="'+data.idmunicipio+'">'+data.municipio+'</option>');
+								$('#municipio').prop('disabled', false);
+								$('#municipio').selectpicker('refresh');	
+							}
+							if (data.idparroquia != null) {
+								$('#parroquia').html('<option value="'+data.idparroquia+'">'+data.parroquia+'</option>');
+								$('#parroquia').prop('disabled', false);
+								$('#parroquia').selectpicker('refresh');
+							}
+							$('#direccion').val(data.direccion);
+							$('#idpersona').val(data.id);
+						}
+					}
+				});
+			}
+		});
+	}
 }
 
 //Función para mostrar los estados
@@ -143,7 +227,6 @@ function guardaryeditar(event) {
 		contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
 		processData: false, //Evita que jquery transforme la data en un string
 		success: function (datos) {
-			// console.log(datos);
 			if (datos == 'true') {
 				const Toast = Swal.mixin({
 				  toast: true,
@@ -154,7 +237,20 @@ function guardaryeditar(event) {
 
 				Toast.fire({
 				  type: 'success',
-				  title: 'representante registrado exitosamente :)'
+				  title: 'Representante registrado exitosamente :)'
+				});
+			}
+			if (datos == 'update') {
+				const Toast = Swal.mixin({
+				  toast: true,
+				  position: 'top-end',
+				  showConfirmButton: false,
+				  timer: 3000
+				});
+
+				Toast.fire({
+				  type: 'success',
+				  title: 'Representante actualizado exitosamente :)'
 				});
 			}
 			else {
@@ -178,9 +274,7 @@ function guardaryeditar(event) {
 
 		}
 
-	});
-
-		
+	});		
 }
 
 //Función para listar los registros
@@ -234,7 +328,6 @@ function mostrar(idrepresentante) {
 
 		$('#documento').val(documento);
 		$('#documento').selectpicker('refresh');
-		$('#idrepresentante').val(data.idrepresentante);
 		$('#cedula').val(cedula);
 		$('#p_nombre').val(data.p_nombre);
 		$('#s_nombre').val(data.s_nombre);
@@ -247,17 +340,23 @@ function mostrar(idrepresentante) {
 		$('#instruccion').selectpicker('refresh');
 		$('#oficio').val(data.oficio);
 		$('#email').val(data.email);
-		$('#celular').val(data.celular);
+		$('#celular').val(data.movil);
 		$('#fijo').val(data.fijo);
-		$('#imagenmuestra').show();
-		$('#imagenmuestra').attr('src', '../files/usuarios/'+data.imagen);
-		$('#imagenactual').val(data.imagen);
+		$('#estado').val(data.idestado);
+		$('#estado').selectpicker('refresh');
+		$('#municipio').html('<option value="'+data.idmunicipio+'">'+data.municipio+'</option>');
+		$('#municipio').prop('disabled', false);
+		$('#municipio').selectpicker('refresh');
+		$('#parroquia').html('<option value="'+data.idparroquia+'">'+data.parroquia+'</option>');
+		$('#parroquia').prop('disabled', false);
+		$('#parroquia').selectpicker('refresh');
+		$('#direccion').val(data.direccion);
 		$('#idrepresentante').val(data.idrepresentante);
 	});
 }
 
 //Función para eliminar(desactivar) representantes
-function desactivar(idusuario) {
+function desactivar(idrepresentante) {
 
 		const swalWithBootstrapButtons = Swal.mixin({
 		  customClass: {
@@ -269,7 +368,7 @@ function desactivar(idusuario) {
 
 		swalWithBootstrapButtons.fire({
 		  title: '¿Estas seguro?',
-		  text: "¿Quieres desactivar a este usuario?",
+		  text: "¿Quieres desactivar a este representante?",
 		  type: 'warning',
 		  showCancelButton: true,
 		  confirmButtonText: 'Desactivar',
@@ -277,8 +376,7 @@ function desactivar(idusuario) {
 		  reverseButtons: true
 		}).then((result) => {
 		  if (result.value) {
-		  	$.post('../controladores/usuario.php?op=desactivar', {idusuario: idusuario}, function (e) {
-				console.log(e);
+		  	$.post('../controladores/representante.php?op=desactivar', {idrepresentante: idrepresentante}, function (e) {
 				if (e == 'true') {
 					const Toast = Swal.mixin({
 					  toast: true,
@@ -289,7 +387,7 @@ function desactivar(idusuario) {
 
 					Toast.fire({
 					  type: 'success',
-					  title: 'El usuario ha sido desactivado :)'
+					  title: 'El representante ha sido desactivado :)'
 					});
 				}
 				else {
@@ -302,7 +400,7 @@ function desactivar(idusuario) {
 
 					Toast.fire({
 					  type: 'error',
-					  title: 'Ups! No se pudo desactivar el usuario'
+					  title: 'Ups! No se pudo desactivar el representante'
 					});
 				}
 				tabla.ajax.reload();
@@ -312,7 +410,7 @@ function desactivar(idusuario) {
 }
 
 //Función para activar usuarios
-function activar(idusuario) {
+function activar(idrepresentante) {
 
 	const swalWithBootstrapButtons = Swal.mixin({
 		  customClass: {
@@ -332,7 +430,7 @@ function activar(idusuario) {
 		  reverseButtons: true
 		}).then((result) => {
 		  if (result.value) {
-		  	$.post('../controladores/usuario.php?op=activar', {idusuario: idusuario}, function (e) {
+		  	$.post('../controladores/representante.php?op=activar', {idrepresentante: idrepresentante}, function (e) {
 				if (e == 'true') {
 					const Toast = Swal.mixin({
 					  toast: true,
@@ -343,7 +441,7 @@ function activar(idusuario) {
 
 					Toast.fire({
 					  type: 'success',
-					  title: 'El usuario ha sido activado :)'
+					  title: 'El representante ha sido activado :)'
 					});
 				}
 				else {
@@ -356,7 +454,7 @@ function activar(idusuario) {
 
 					Toast.fire({
 					  type: 'error',
-					  title: 'Ups! No se pudo activar el usuario'
+					  title: 'Ups! No se pudo activar el representante'
 					});
 				}
 				tabla.ajax.reload();
@@ -399,6 +497,7 @@ function limpiar() {
 	$('#documento').val('');
 	$('#documento').selectpicker('refresh');
 	$('#cedula').removeClass('is-invalid');
+	$('#cedula').removeClass('is-valid');
 	$('#cedula').val('');
 	$('#p_nombre').val('');
 	$('#s_nombre').val('');
@@ -408,14 +507,25 @@ function limpiar() {
 	$('#genero').selectpicker('refresh');
 	$('#icono_genero').removeClass('bg-primary');
 	$('#icono_genero').removeClass('bg-danger');
+	$('#instruccion').val('');
+	$('#instruccion').selectpicker('refresh');
+	$('#oficio').val('');
 	$('#f_nac').val('');
 	$('#email').val('');
 	$('#celular').val('');
 	$('#fijo').val('');
+	$('#estado').val('');
+	$('#estado').selectpicker('refresh');
+	$('#municipio').html('<option value="">Seleccione</option>');
+	$('#municipio').prop('disabled', true);
+	$('#municipio').selectpicker('refresh');
+	$('#parroquia').html('<option value="">Seleccione</option>');
+	$('#parroquia').prop('disabled', true);
+	$('#parroquia').selectpicker('refresh');
+	$('#direccion').val('');
+	$('#idrepresentante').val('');
+	$('#idpersona').val('');
 	$('#formularioregistros').removeClass('was-validated');
-	$('#rol').val('');
-	$('#rol').selectpicker('refresh');
-	// $('#').attr('src', '');
 }
 
 //Determinar documento 
@@ -430,6 +540,5 @@ function tipo_documento(documento) {
 		return 'P-';
 	}
 }
-
 
 init();

@@ -7,7 +7,7 @@ require_once '../config/conexion.php';
 require_once 'Persona.php';
 
 /**
- * Modelo de Usuario
+ * Modelo de Representante
  */
 class Representante
 {
@@ -36,12 +36,10 @@ class Representante
 
 	}
 
-	#Método para listar todos los usuarios
+	#Método para listar todos los representantes
 	function listar()
 	{
-		// $sql = "SELECT p.cedula, t.telefono, t.tipo, p.p_nombre, p.p_apellido, p.email, r.oficio, r.estatus, r.id FROM persona as p INNER JOIN representante as r ON p.id = r.idpersona INNER JOIN telefono as t ON p.id = t.idpersona WHERE  t.tipo = 'M' as movil AND t.tipo = 'F' as fijo GROUP BY p.cedula";
-
-		$sql = "SELECT p.cedula, (SELECT telefono FROM telefono WHERE tipo = 'M' AND p.id = idpersona) as movil, (SELECT telefono FROM telefono WHERE tipo = 'F' AND p.id = idpersona) as fijo, p.p_nombre, p.p_apellido, p.email, r.oficio, r.estatus, r.id FROM persona as p INNER JOIN representante as r ON p.id = r.idpersona";
+		$sql = "SELECT p.cedula, p.p_nombre, p.p_apellido, p.email, r.oficio, r.estatus, r.id, (SELECT telefono FROM telefono WHERE tipo = 'M' AND p.id = idpersona) as movil, (SELECT telefono FROM telefono WHERE tipo = 'F' AND p.id = idpersona) as fijo FROM persona as p INNER JOIN representante as r ON p.id = r.idpersona";
 
 		return ejecutarConsulta($sql);
 	}
@@ -62,28 +60,19 @@ class Representante
 		return ejecutarConsultaSimpleFila($sql);
 	}
 
-	#Método para vefiricar el acceso al sistema
-	function verificar($usuario, $clave)
+	#Método para desactivar representantes
+	function desactivar($idrepresentante)
 	{
-		$sql = "SELECT u.id, u.usuario, u.rol, u.img, p.p_nombre, p.p_apellido, p.genero, p.email FROM usuario as u INNER JOIN persona as p ON u.idpersona = p.id WHERE u.usuario = '$usuario' AND u.clave = '$clave' AND u.estatus = '1'";
+		$sql = "UPDATE representante SET estatus = '0' WHERE id = '$idrepresentante'";
 
 		return ejecutarConsulta($sql);
 
 	}
 
-	#Método para desactivar usuarios
-	function desactivar($idusuario)
+	#Método para desactivar representantes
+	function activar($idrepresentante)
 	{
-		$sql = "UPDATE usuario SET estatus = '0' WHERE id = '$idusuario'";
-
-		return ejecutarConsulta($sql);
-
-	}
-
-	#Método para desactivar usuarios
-	function activar($idusuario)
-	{
-		$sql = "UPDATE usuario SET estatus = '1' WHERE id = '$idusuario'";
+		$sql = "UPDATE representante SET estatus = '1' WHERE id = '$idrepresentante'";
 
 		return ejecutarConsulta($sql);
 
@@ -118,6 +107,13 @@ class Representante
 	function comprobarrepresentante($cedula)
 	{
 		$sql = "SELECT p.p_nombre, p.p_apellido FROM persona p INNER JOIN representante r ON r.idpersona = p.id WHERE p.cedula = '$cedula'";
+		return ejecutarConsulta($sql);
+	}
+
+	#Método para comprobar si existe la persona
+	function comprobarpersona($cedula)
+	{
+		$sql = "SELECT p.id, p.cedula, p.p_nombre, p.s_nombre, p.p_apellido, p.s_apellido, p.genero, p.f_nac, p.email, d.idparroquia, d.direccion , pa.idmunicipio, pa.parroquia, mu.idestado, mu.municipio, es.estado, GROUP_CONCAT(IF(t.tipo = 'M', t.telefono, null)) celular, GROUP_CONCAT(IF(t.tipo = 'F', t.telefono, null)) fijo FROM persona p  LEFT JOIN direccion d ON d.idpersona = p.id LEFT JOIN parroquia pa ON pa.id = d.idparroquia LEFT JOIN municipio mu ON pa.idmunicipio = mu.id LEFT JOIN estado es ON mu.idestado = es.id LEFT JOIN telefono t ON p.id = t.idpersona WHERE p.cedula = '$cedula'";	
 		return ejecutarConsulta($sql);
 	}
 }

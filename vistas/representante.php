@@ -35,7 +35,7 @@ if ($_SESSION['usuario'] == 1) {
                       <caption>Lista de representantes</caption>
                       <thead class="fondo-degradado text-white">
                         <tr>
-                          <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Opciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                          <th scope="col" style="width: 100px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Opciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                           <th scope="col">Cédula</th>
                           <th scope="col">Nombre</th>
                           <th scope="col">Apellido</th>
@@ -87,7 +87,8 @@ if ($_SESSION['usuario'] == 1) {
                             <div class="input-group">
 
                               <input type="hidden" name="idrepresentante" id="idrepresentante"> <!-- Input oculto que guardará el id del representante cuando sea necesario -->
-                              
+
+                              <input type="hidden" name="idpersona" id="idpersona"> <!-- Input oculto que guardará el id de al persona cuando sea necesario -->
 
                               <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula"  id="cedula"  maxlength="8" minlength="7" required>
                               
@@ -169,7 +170,7 @@ if ($_SESSION['usuario'] == 1) {
                             <label for="instruccion">Nivel de Instrucción (*)</label>
                             <div class="input-group">
                               
-                              <select name="instruccion" id="instruccion" class="form-control selectpicker">
+                              <select name="instruccion" id="instruccion" class="form-control selectpicker" required>
                                 <option value="">Seleccione</option>
                                 <option value="Analfabeta">Analfabeta</option>
                                 <option value="Sin estudios">Sin estudios</option>
@@ -187,7 +188,7 @@ if ($_SESSION['usuario'] == 1) {
                             <label for="oficio">Oficio (*)</label>
                             <div class="input-group">
                               
-                              <input type="text" name="oficio" id="oficio" class="form-control">
+                              <input type="text" name="oficio" id="oficio" class="form-control" required>
                               <div class="invalid-feedback">
                                   Campo Obligatorio
                               </div>
