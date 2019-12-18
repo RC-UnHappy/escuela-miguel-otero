@@ -18,17 +18,6 @@ function init() {
 		}
 	});
 
-	//Se ejecuta al quitar el foco del input cedula
-	$('#documento').on('change', function () {
-		comprobarTipoDocumento();
-	});
-
-	//Se ejecuta al quitar el foco del input cedula
-	// $('#cedula').on('blur', function () {
-	// 	// comprobarRepresentante();
-	// 	console.log('hola');
-	// });
-
 	//Carga los estados al select
 	estados();
 
@@ -68,6 +57,79 @@ function init() {
 		}
 	});
 
+	//Se ejecuta al cambiar en el select documento
+	$('#documento').on('change', function () {
+		comprobarTipoDocumento();
+	});
+
+	//Se ejecuta al quitar el foco del input cedula de la madre
+	$('#cedula_madre').on('blur', function () {
+
+		if ($('#documento_madre')[0].value != '' && $('#cedula_madre')[0].value != '') {
+			var data = 'madre';
+			comprobarPadres(data);
+		}
+		else {
+			$('#alertaMadre').remove();
+		}
+	});
+
+	//Se ejecuta al cambiar en el select documento de la madre
+	$('#documento_madre').on('change', function () {
+		if ($('#documento_madre')[0].value != '' && $('#cedula_madre')[0].value != '') {
+			var data = 'madre';
+			comprobarPadres(data);
+		}
+		else {
+			$('#alertaMadre').remove();
+		}
+	});
+
+	//Se ejecuta al quitar el foco del input cedula del padre
+	$('#cedula_padre').on('blur', function () {
+
+		if ($('#documento_padre')[0].value != '' && $('#cedula_padre')[0].value != '') {
+			var data = 'padre';
+			comprobarPadres(data);
+		}
+		else {
+			$('#alertaPadre').remove();
+		}
+	});
+
+	//Se ejecuta al cambiar en el select documento del padre
+	$('#documento_padre').on('change', function () {
+		if ($('#documento_padre')[0].value != '' && $('#cedula_padre')[0].value != '') {
+			var data = 'padre';
+			comprobarPadres(data);
+		}
+		else {
+			$('#alertaPadre').remove();
+		}
+	});
+
+	//Comprueba si el estudiante fue parto multiple
+	$('input[name=parto]').on('click', function () {
+		if (this.value == 'si') {
+			$('#orden').prop('disabled', false);
+		}
+		else {
+			$('#orden')[0].value = '';
+			$('#orden').prop('disabled', true);
+		}
+		
+	});
+
+	//Se ejecuta al quitar el click del input f_nac
+	$('#f_nac').on('blur', function () {
+		crearCedulaEstudiantil();
+	});
+
+	//Se ejecuta al cambiar en el input orden
+	$('#orden').on('change', function () {
+		crearCedulaEstudiantil();
+	});
+
 	//Comprueba si el estudiante tiene canaima o no
 	$('input[name=canaima]').on('click', function () {
 		if (this.value == 'si') {
@@ -82,6 +144,100 @@ function init() {
 
 	tabla.ajax.reload();
 			
+}
+
+function comprobarTipoDocumento() {
+	var documento = $('#documento')[0].value;
+
+	if (documento == '' || documento == 'venezolano' || documento == 'extranjero') {
+		$('#cedula')[0].value = '';
+		$('#cedula').prop('disabled', false);
+	}
+	else {
+		$('#cedula').prop('disabled', true);
+	}
+}
+
+//Comprueba que la persona no esté registrada
+function comprobarPadres(data) {
+	if (data == 'madre') {
+		var documento = $('#documento_madre')[0].value;
+		var cedula = $('#cedula_madre')[0].value;
+
+		if (documento == 'venezolano') {
+			documento = 'V-';
+		}
+		else if (documento == 'extranjero') {
+			documento = 'E-';
+		}
+		else if (documento == 'pasaporte') {
+			documento = 'P-';
+		}
+
+		cedula_madre = documento+cedula;
+
+		$.ajax({
+			url: '../controladores/estudiante.php?op=comprobarpadres',
+			type: 'POST',
+			data: {comprobarpadres: cedula_madre},
+			success: function (datos) {
+				if (datos != 'null') {
+					datos = JSON.parse(datos);	
+					$('#alertaMadre').remove();
+					$('#cedula_madre').after('<div class="alert alert-success col-md-12" role="alert" id="alertaMadre">'+datos.p_nombre+' '+datos.p_apellido+'</div>');
+
+					crearCedulaEstudiantil();
+				}
+			}
+		});
+	}
+	else {
+		var documento = $('#documento_padre')[0].value;
+		var cedula = $('#cedula_padre')[0].value;
+
+		if (documento == 'venezolano') {
+			documento = 'V-';
+		}
+		else if (documento == 'extranjero') {
+			documento = 'E-';
+		}
+		else if (documento == 'pasaporte') {
+			documento = 'P-';
+		}
+
+		cedula_padre = documento+cedula;
+
+		$.ajax({
+			url: '../controladores/estudiante.php?op=comprobarpadres',
+			type: 'POST',
+			data: {comprobarpadres: cedula_padre},
+			success: function (datos) {
+				if (datos != 'null') {				
+					datos = JSON.parse(datos);
+					$('#alertaPadre').remove();
+					$('#cedula_padre').after('<div class="alert alert-success col-md-12" role="alert" id="alertaPadre">'+datos.p_nombre+' '+datos.p_apellido+'</div>');
+				}
+			}
+		});
+	}
+}
+
+//Función para crear la cédula estudiantil
+function crearCedulaEstudiantil() {
+	if ($('#documento')[0].value == 'cedula_estudiantil' && $('#f_nac')[0].value != '' && $('#documento_madre')[0].value != '' && $('#cedula_madre')[0].value != '') {
+		if ($('input:radio[name=parto]:checked').val() == 'si') {
+			var orden_nacimiento = $('#orden')[0].value;
+		}
+		else {
+			var orden_nacimiento = 1;
+		}
+
+		var ano = $('#f_nac')[0].value.substr(2,2);
+		
+		var cedula_estudiantil = orden_nacimiento+ano+$('#cedula_madre')[0].value;
+		$('#cedula').val('');
+		$('#cedula').val(cedula_estudiantil);
+	}
 }
 
 //Función para mostrar los estados
@@ -109,55 +265,12 @@ function parroquias(idmunicipio) {
 	});
 }
 
-function comprobarTipoDocumento() {
-	var documento = $('#documento')[0].value;
-
-	if (documento == 'cedula') {
-		$('#cedula')[0].value = '';
-		$('#cedula').prop('disabled', false);
-	}
-	else {
-		$('#cedula').prop('disabled', true);
-	}
-}
-
-//Comprueba que el usuario no esté registrado
-function comprobarRepresentante() {
-	var documento = $('#documento')[0].value;
-	var cedula = $('#cedula')[0].value;
-
-	if (documento == 'venezolano') {
-		documento = 'V-';
-	}
-	else if (documento == 'extranjero') {
-		documento = 'E-';
-	}
-	else if (documento == 'pasaporte') {
-		documento = 'P-';
-	}
-
-	cedula = documento+cedula;
-
-	$.ajax({
-		url: '../controladores/representante.php?op=comprobarrepresentante',
-		type: 'POST',
-		data: {cedula: cedula},
-		success: function (datos) {
-			if (datos != 'null') {
-				$('#cedula').removeClass('is-valid');
-				$('#cedula').addClass('is-invalid');
-				$('#mensajeCedula').html('El representante ya se encuentra registrado');
-			}
-		}
-	});
-}
-
 //Función para guardar y editar 
 function guardaryeditar(event) {
 	event.preventDefault(); //Evita que se envíe el formulario automaticamente
 	// 
 	$('#btnGuardar').prop('disabled', true); //Deshabilita el botón submit para evitar que lo presionen dos veces
-	var formData = new FormData($([usuario])[0]); //Se obtienen los datos del formulario
+	var formData = new FormData($([estudiante])[0]); //Se obtienen los datos del formulario
 	
 	var documento = formData.get('documento'); //Se obtiene el tipo de documento
 	documento = tipo_documento(documento);//Se llama la función que lo transforma Ej: 'Venezolano' = V-
@@ -167,13 +280,13 @@ function guardaryeditar(event) {
 	formData.set('cedula', documento+cedula);//Se le asigna a la cédula del formData el tipo de documento
 
 	$.ajax({
-		url: '../controladores/representante.php?op=guardaryeditar', //Dirección a donde se envían los datos
+		url: '../controladores/estudiante.php?op=guardaryeditar', //Dirección a donde se envían los datos
 		type: 'POST', //Método por el cual se envían los datos
 		data: formData, //Datos
 		contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
 		processData: false, //Evita que jquery transforme la data en un string
 		success: function (datos) {
-			// console.log(datos);
+			console.log(datos);
 			if (datos == 'true') {
 				const Toast = Swal.mixin({
 				  toast: true,

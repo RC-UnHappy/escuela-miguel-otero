@@ -73,7 +73,8 @@ if ($_SESSION['usuario'] == 1) {
                               <div class="input-group ">
                                 <select name="documento" id="documento" class="form-control selectpicker" required="true">
                                   <option value="">Seleccione</option>
-                                  <option value="cedula">Cédula Propia</option>
+                                  <option value="venezolano">Venezolano</option>
+                                  <option value="extranjero">Extranjero</option>
                                   <option value="cedula_estudiantil">Cédula Estudiantil</option>
                                 </select>
                                 <div class="invalid-feedback">
@@ -85,10 +86,7 @@ if ($_SESSION['usuario'] == 1) {
                           <div class="form-group col-md-6">
                             <label for="cedula">Cédula (*)</label>
                             <div class="input-group">
-
-                              <input type="hidden" name="idrepresentante" id="idrepresentante"> <!-- Input oculto que guardará el id del usuario cuando sea necesario -->
                               
-
                               <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula"  id="cedula"  maxlength="8" minlength="7" required>
                               
                               <div class="invalid-feedback" id="mensajeCedula">
@@ -165,6 +163,79 @@ if ($_SESSION['usuario'] == 1) {
                             </div>
                           </div>
 
+                          <div class="form-group col-md-6">
+                            <label for="">¿Es parto multiple? (*)</label>
+                            <div class="input-group">
+                            
+                              <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="partoSi" name="parto" class="custom-control-input" required value="si">
+                                <label class="custom-control-label" for="partoSi">Si</label>
+                                 <div class="invalid-feedback">
+                                </div>
+                              </div>
+
+
+
+                              <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="partoNo" name="parto" class="custom-control-input" required value="no">
+                                <label class="custom-control-label" for="partoNo">No</label>
+                                 <div class="invalid-feedback">
+                                </div>
+                              </div>
+                                  
+                            </div>
+                          </div>
+
+                          <div class="form-group col-md-6">
+                            <label for="orden">Orden de nacimiento</label>
+                            <div class="input-group">
+                              
+                              <input type="text" class="form-control solo_numeros" placeholder="Ej: 2" name="orden"  id="orden"  maxlength="1" disabled>
+                              
+                              <div class="invalid-feedback">
+                                  Campo Obligatorio
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group col-md-6">
+                            <label for="documento_madre">Cédula de la madre (*)</label>
+                              <div class="input-group ">
+                                <div class="input-group-prepend">
+                                  <select name="documento_madre" id="documento_madre" class="form-control selectpicker" required="true">
+                                    <option value="">Seleccione</option>
+                                    <option value="venezolano">Venezolano</option>
+                                    <option value="extranjero">Extranjero</option>
+                                    <option value="pasaporte">Pasaporte</option>
+                                  </select>
+                                </div>
+
+                                <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula_madre"  id="cedula_madre"  maxlength="8" minlength="7" required>
+                                <div class="invalid-feedback">
+                                  Campo Obligatorio
+                                </div>
+                              </div>
+                          </div>
+
+                          <div class="form-group col-md-6">
+                            <label for="documento_padre">Cédula del padre</label>
+                              <div class="input-group ">
+                                <div class="input-group-prepend">
+                                  <select name="documento_padre" id="documento_padre" class="form-control selectpicker">
+                                    <option value="">Seleccione</option>
+                                    <option value="venezolano">Venezolano</option>
+                                    <option value="extranjero">Extranjero</option>
+                                    <option value="pasaporte">Pasaporte</option>
+                                  </select>
+                                </div>
+
+                                <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula_padre"  id="cedula_padre"  maxlength="8" minlength="7">
+                                <div class="invalid-feedback">
+                                  Campo Obligatorio
+                                </div>
+                              </div>
+                          </div>
+
                         </div>
                       </div>
                     </div>
@@ -197,7 +268,7 @@ if ($_SESSION['usuario'] == 1) {
                           <div class="form-group col-md-6">
                             <label for="municipio">Municipio (*)</label>
                             <div class="input-group">
-                              <select id="municipio" name="municipio" class="form-control selectpicker" required >
+                              <select id="municipio" name="municipio" class="form-control selectpicker" required disabled>
                                 <option value="">Seleccione</option>
                                 
                               </select>
@@ -403,7 +474,7 @@ if ($_SESSION['usuario'] == 1) {
 
 
                               <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" id="apartamento" name="vivienda" class="custom-control-input" required value="no">
+                                <input type="radio" id="apartamento" name="vivienda" class="custom-control-input" required value="apartamento">
                                 <label class="custom-control-label" for="apartamento">Apartamento</label>
                                  <div class="invalid-feedback">
                                 </div>
