@@ -192,7 +192,8 @@ switch ($_GET['op']) {
 					'4' => $reg->email,
 					'5' => $reg->movil,
 					'6' => $reg->fijo,
-					'7' => $reg->oficio );
+					'7' => $reg->direccion,
+					'8' => $reg->oficio );
 		}
 
 		$results = array(

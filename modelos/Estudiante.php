@@ -19,11 +19,11 @@ class Estudiante
 	}
 
 	#Método para insertar registros
-	function insertar($idpersona, $instruccion, $oficio)
+	function insertar($idpersona, $idmadre, $idpadre, $parto_multiple, $orden_nacimiento, $estatus)
 	{
-		$sql = "INSERT INTO representante (id, idpersona, instruccion, oficio, estatus) VALUES(NULL, '$idpersona', '$instruccion', '$oficio', '1')";
+		$sql = "INSERT INTO estudiante (id, idpersona, idmadre, idpadre, parto_multiple, orden_nacimiento, estatus) VALUES(NULL, '$idpersona', '$idmadre', '$idpadre', '$parto_multiple', '$orden_nacimiento', '$estatus')";
 
-		return ejecutarConsulta($sql);
+		return ejecutarConsulta_retornarID($sql);
 
 	}
 
@@ -36,18 +36,20 @@ class Estudiante
 
 	}
 
-	#Método para listar todos los representantes
+	#Método para listar todos los estudiantes
 	function listar()
 	{
-		$sql = "SELECT p.cedula, p.p_nombre, p.p_apellido, p.email, r.oficio, r.estatus, r.id, (SELECT telefono FROM telefono WHERE tipo = 'M' AND p.id = idpersona) as movil, (SELECT telefono FROM telefono WHERE tipo = 'F' AND p.id = idpersona) as fijo FROM persona as p INNER JOIN representante as r ON p.id = r.idpersona";
+		$sql = "SELECT p.id as idP, e.id as idE, p.cedula as cedulaE, p.p_nombre as nombreE, p.p_apellido as apellidoE, p.f_nac as fechaE, e.idmadre, e.idpadre, e.estatus, pm.cedula as cedulaM, pp.cedula as cedulaP FROM estudiante as e INNER JOIN persona as p ON p.id = e.idpersona INNER JOIN persona as pm ON pm.id = e.idmadre INNER JOIN persona as pp ON pp.id = e.idpadre";
 
 		return ejecutarConsulta($sql);
 	}
 
-	#Método para mostrar un representante
-	function mostrar($idrepresentante)
+	#Método para mostrar un estudiante
+	function mostrar($idestudiante)
 	{
-		$sql = "SELECT p.*, p.id as idpersona,  r.*, r.id as idrepresentante, d.*, (SELECT telefono FROM telefono WHERE tipo = 'M' AND idpersona = p.id) as movil, (SELECT telefono FROM telefono WHERE tipo = 'F' AND idpersona = p.id) as fijo, (SELECT idmunicipio FROM parroquia WHERE id = d.idparroquia ) as idmunicipio, (SELECT idestado FROM municipio WHERE id = idmunicipio) as idestado, (SELECT municipio FROM municipio WHERE id = idmunicipio) as municipio, (SELECT parroquia FROM parroquia WHERE id = d.idparroquia) as parroquia, (SELECT estado FROM estado WHERE id = idestado) as estado FROM representante r INNER JOIN persona p ON p.id = r.idpersona INNER JOIN direccion d ON d.idpersona = p.id WHERE r.id = '$idrepresentante'";
+		$sql = "SELECT pe.cedula, pe.p_nombre, pe.s_nombre, pe.p_apellido, pe.s_apellido, pe.genero, pe.f_nac, e.idmadre, e.idpadre, e.parto_multiple, e.orden_nacimiento, e.estatus, d.idparroquia, d.direccion, p.idmunicipio, p.parroquia, m.idestado, m.municipio, esta.estado, pm.cedula as cedulaM, pp.cedula as cedulaP, af.todas_vacunas, af.peso, af.talla, af.alergico FROM persona pe INNER JOIN estudiante e ON pe.id = e.idpersona INNER JOIN direccion d ON d.idpersona = pe.id INNER JOIN parroquia p ON d.idparroquia = p.id INNER JOIN municipio m ON m.id = p.idmunicipio INNER JOIN estado esta ON esta.id = m.idestado INNER JOIN persona pm ON pm.id = e.idmadre INNER JOIN persona pp ON pp.id = e.idpadre INNER JOIN aspecto_fisiologico af ON af.idestudiante = e.id WHERE e.id = '$idestudiante'";
+
+		// SELECT pe.cedula, pe.p_nombre, pe.s_nombre, pe.p_apellido, pe.s_apellido, pe.genero, pe.f_nac, e.idmadre, e.idpadre, e.parto_multiple, e.orden_nacimiento, e.estatus, d.idparroquia, d.direccion, p.idmunicipio, p.parroquia, m.idestado, m.municipio, esta.estado, pm.cedula as cedulaM, pp.cedula as cedulaP, GROUP_CONCAT(en.enfermedad) FROM persona pe INNER JOIN estudiante e ON pe.id = e.idpersona INNER JOIN direccion d ON d.idpersona = pe.id INNER JOIN parroquia p ON d.idparroquia = p.id INNER JOIN municipio m ON m.id = p.idmunicipio INNER JOIN estado esta ON esta.id = m.idestado INNER JOIN persona pm ON pm.id = e.idmadre INNER JOIN persona pp ON pp.id = e.idpadre INNER JOIN enfermedad en ON en.idestudiante = e.id
 
 		return ejecutarConsulta($sql);
 	}
@@ -111,9 +113,9 @@ class Estudiante
 	}
 
 	#Método para comprobar si existe la persona
-	function comprobarpadres($cedula)
+	function comprobarpadres($cedula, $genero)
 	{
-		$sql = "SELECT id, cedula, p_nombre, p_apellido FROM persona WHERE cedula = '$cedula'";	
+		$sql = "SELECT id, cedula, p_nombre, p_apellido FROM persona WHERE cedula = '$cedula' AND genero = '$genero'";	
 		return ejecutarConsulta($sql);
 	}
 }

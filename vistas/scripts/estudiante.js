@@ -151,10 +151,11 @@ function comprobarTipoDocumento() {
 
 	if (documento == '' || documento == 'venezolano' || documento == 'extranjero') {
 		$('#cedula')[0].value = '';
-		$('#cedula').prop('disabled', false);
+		$('#cedula').prop('readonly', false);
 	}
 	else {
-		$('#cedula').prop('disabled', true);
+		$('#cedula').prop('readonly', true);
+		crearCedulaEstudiantil();
 	}
 }
 
@@ -179,14 +180,20 @@ function comprobarPadres(data) {
 		$.ajax({
 			url: '../controladores/estudiante.php?op=comprobarpadres',
 			type: 'POST',
-			data: {comprobarpadres: cedula_madre},
+			data: {comprobarpadres: cedula_madre, generopadres: 'F'},
 			success: function (datos) {
 				if (datos != 'null') {
 					datos = JSON.parse(datos);	
 					$('#alertaMadre').remove();
+					$('#cedula_madre').removeClass('is-invalid');
 					$('#cedula_madre').after('<div class="alert alert-success col-md-12" role="alert" id="alertaMadre">'+datos.p_nombre+' '+datos.p_apellido+'</div>');
-
+					$('#idmadre').val(datos.id);
 					crearCedulaEstudiantil();
+				}
+				else {
+					$('#alertaMadre').remove();
+					$('#idmadre').val('');
+					$('#cedula_madre').addClass('is-invalid');
 				}
 			}
 		});
@@ -210,12 +217,17 @@ function comprobarPadres(data) {
 		$.ajax({
 			url: '../controladores/estudiante.php?op=comprobarpadres',
 			type: 'POST',
-			data: {comprobarpadres: cedula_padre},
+			data: {comprobarpadres: cedula_padre, generopadres: 'M'},
 			success: function (datos) {
 				if (datos != 'null') {				
 					datos = JSON.parse(datos);
 					$('#alertaPadre').remove();
 					$('#cedula_padre').after('<div class="alert alert-success col-md-12" role="alert" id="alertaPadre">'+datos.p_nombre+' '+datos.p_apellido+'</div>');
+					$('#idpadre').val(datos.id);
+				}
+				else {
+					$('#alertaPadre').remove();
+					$('#idpadre').val('');
 				}
 			}
 		});
@@ -286,7 +298,6 @@ function guardaryeditar(event) {
 		contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
 		processData: false, //Evita que jquery transforme la data en un string
 		success: function (datos) {
-			console.log(datos);
 			if (datos == 'true') {
 				const Toast = Swal.mixin({
 				  toast: true,
@@ -321,16 +332,13 @@ function guardaryeditar(event) {
 
 		}
 
-	});
-
-		
+	});		
 }
 
 //Función para listar los registros
 function listar() {
 	tabla = $('#tblistado').DataTable({
 		"processing": true,
-		// "serverSide": true,
 		pagingType: "first_last_numbers",
 		language: {
 			"info":           "Mostrando desde _START_ hasta _END_ de _TOTAL_ registros",
@@ -348,7 +356,7 @@ function listar() {
 		dom: 'lfrtip', 
 		"destroy": true, //Elimina cualquier elemente que se encuentre en la tabla
 		"ajax": {
-			url: '../controladores/representante.php?op=listar',
+			url: '../controladores/estudiante.php?op=listar',
 			type: 'GET',
 			dataType: 'json'
 		},
@@ -357,8 +365,8 @@ function listar() {
 }
 
 //Función para mostrar un registro para editar
-function mostrar(idrepresentante) {
-	$.post('../controladores/representante.php?op=mostrar',{idrepresentante: idrepresentante}, function (data) {	
+function mostrar(idestudiante) {
+	$.post('../controladores/estudiante.php?op=mostrar',{idestudiante: idestudiante}, function (data) {	
 		data = JSON.parse(data);
 		mostrarform(true);
 
@@ -371,8 +379,12 @@ function mostrar(idrepresentante) {
 		else if (documento == 'E-') {
 			documento = 'extranjero';
 		}
-		else if (documento == 'P-') {
-			documento = 'pasaporte';
+		else {
+			var documento = data.cedula.slice(0,3);
+			if (documento == 'CE-') {
+				documento = 'cedula_estudiantil';
+				var cedula = data.cedula.slice(3);
+			}
 		}
 
 		$('#documento').val(documento);
@@ -386,16 +398,79 @@ function mostrar(idrepresentante) {
 		$('#genero').val(data.genero);
 		$('#genero').selectpicker('refresh');
 		$('#f_nac').val(data.f_nac);
-		$('#instruccion').val(data.instruccion);
-		$('#instruccion').selectpicker('refresh');
-		$('#oficio').val(data.oficio);
-		$('#email').val(data.email);
-		$('#celular').val(data.celular);
-		$('#fijo').val(data.fijo);
-		$('#imagenmuestra').show();
-		$('#imagenmuestra').attr('src', '../files/usuarios/'+data.imagen);
-		$('#imagenactual').val(data.imagen);
-		$('#idrepresentante').val(data.idrepresentante);
+
+		if (data.parto_multiple == 'si') {
+			$('#partoSi').attr('checked', true)
+			$('#orden').prop('disabled', false)
+		}
+		else {
+			$('#partoNo').attr('checked', true)
+		}
+
+		$('#orden').val(data.orden_nacimiento);
+
+		$('#estado').val(data.idestado);
+		$('#estado').selectpicker('refresh');
+		$('#municipio').html('<option value="'+data.idmunicipio+'">'+data.municipio+'</option>');
+		$('#municipio').prop('disabled', false);
+		$('#municipio').selectpicker('refresh');
+		$('#parroquia').html('<option value="'+data.idparroquia+'">'+data.parroquia+'</option>');
+		$('#parroquia').prop('disabled', false);
+		$('#parroquia').selectpicker('refresh');
+		$('#direccion').val(data.direccion);
+
+		var documento_madre = data.cedulaM.slice(0,2);
+		var cedula_madre = data.cedulaM.slice(2);
+
+		if (documento_madre == 'V-') {
+			documento = 'venezolano';
+		}
+		else if (documento_madre == 'E-') {
+			documento = 'extranjero';
+		}
+		else if (documento_madre == 'P-') {
+			documento = 'pasaporte';
+		}
+
+		$('#documento_madre').val(documento);
+		$('#documento_madre').selectpicker('refresh');
+		$('#cedula_madre').val(cedula_madre);
+
+		var documento_padre = data.cedulaP.slice(0,2);
+		var cedula_padre = data.cedulaP.slice(2);
+
+		if (documento_padre == 'V-') {
+			documento = 'venezolano';
+		}
+		else if (documento_padre == 'E-') {
+			documento = 'extranjero';
+		}
+		else if (documento_padre == 'P-') {
+			documento = 'pasaporte';
+		}
+
+		$('#documento_padre').val(documento);
+		$('#documento_padre').selectpicker('refresh');
+		$('#cedula_padre').val(cedula_padre);
+		$('#peso').val(data.peso);
+		$('#talla').val(data.talla);
+		
+		if (data.todas_vacunas == 1) {
+			$('#vacunasSi').attr('checked', true)
+		}
+		else {
+			$('#vacunasNo').attr('checked', true)
+		}
+
+		console.log(data.alergico);
+		if (data.alergico == 1) {
+			$('#alergicoSi').attr('checked', true)
+		}
+		else {
+			$('#alergicoNo').attr('checked', true)
+		}
+
+
 	});
 }
 
@@ -421,7 +496,6 @@ function desactivar(idusuario) {
 		}).then((result) => {
 		  if (result.value) {
 		  	$.post('../controladores/usuario.php?op=desactivar', {idusuario: idusuario}, function (e) {
-				console.log(e);
 				if (e == 'true') {
 					const Toast = Swal.mixin({
 					  toast: true,
@@ -517,12 +591,6 @@ function mostrarform(flag) {
 		$('#formularioregistros').show();
 		$('#btnGuardar').prop('disabled', false);
 		$('#btnagregar').hide();
-
-		//Mostramos los permisos 
-		$.post('../controladores/usuario.php?op=permisos', function (response) {
-			$('#permisos').html(response);
-		});
-
 	}
 	else{
 		$('#listadoregistros').show();
@@ -558,7 +626,6 @@ function limpiar() {
 	$('#formularioregistros').removeClass('was-validated');
 	$('#rol').val('');
 	$('#rol').selectpicker('refresh');
-	// $('#').attr('src', '');
 }
 
 //Determinar documento 
@@ -569,10 +636,9 @@ function tipo_documento(documento) {
 	else if (documento == 'extranjero') {
 		return 'E-';
 	}
-	else if (documento == 'pasaporte') {
-		return 'P-';
+	else if (documento == 'cedula_estudiantil') {
+		return 'CE-';
 	}
 }
-
 
 init();

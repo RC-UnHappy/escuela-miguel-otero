@@ -104,7 +104,7 @@ $('#frmAcceso').on('submit', function (e) {
 
 				Toast.fire({
 				  type: 'error',
-				  title: 'Usuario o contraseña incorrectos ._.?'
+				  title: 'Usuario o contraseña incorrectos ._.'
 				});
 		}
 	});

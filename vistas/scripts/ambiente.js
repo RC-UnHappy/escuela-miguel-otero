@@ -71,7 +71,6 @@ function cancelarform() {
 function guardaryeditar(event) {
 	event.preventDefault(); //Evita que se envíe el formulario automaticamente
 	// 
-	// $('#btnGuardar').prop('disabled', true); //Deshabilita el botón submit para evitar que lo presionen dos veces
 	var formData = new FormData($([formularioAmbiente])[0]); //Se obtienen los datos del formulario
 	
 	$.ajax({
@@ -133,7 +132,6 @@ function guardaryeditar(event) {
 function listar() {
 	tabla = $('#tblistado').DataTable({
 		"processing": true,
-		// "serverSide": true,
 		pagingType: "first_last_numbers",
 		language: {
 			"info":           "Mostrando desde _START_ hasta _END_ de _TOTAL_ registros",
@@ -196,7 +194,6 @@ function desactivar(idambiente) {
 		}).then((result) => {
 		  if (result.value) {
 		  	$.post('../controladores/ambiente.php?op=desactivar', {idambiente: idambiente}, function (e) {
-				console.log(e);
 				if (e == 'true') {
 					const Toast = Swal.mixin({
 					  toast: true,

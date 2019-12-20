@@ -39,7 +39,7 @@ class Representante
 	#Método para listar todos los representantes
 	function listar()
 	{
-		$sql = "SELECT p.cedula, p.p_nombre, p.p_apellido, p.email, r.oficio, r.estatus, r.id, (SELECT telefono FROM telefono WHERE tipo = 'M' AND p.id = idpersona) as movil, (SELECT telefono FROM telefono WHERE tipo = 'F' AND p.id = idpersona) as fijo FROM persona as p INNER JOIN representante as r ON p.id = r.idpersona";
+		$sql = "SELECT p.cedula, p.p_nombre, p.p_apellido, p.email, r.oficio, r.estatus, r.id, (SELECT telefono FROM telefono WHERE tipo = 'M' AND p.id = idpersona) as movil, (SELECT telefono FROM telefono WHERE tipo = 'F' AND p.id = idpersona) as fijo, d.direccion FROM persona as p INNER JOIN representante as r ON p.id = r.idpersona INNER JOIN direccion d ON d.idpersona = p.id";
 
 		return ejecutarConsulta($sql);
 	}

@@ -281,7 +281,6 @@ function guardaryeditar(event) {
 function listar() {
 	tabla = $('#tblistado').DataTable({
 		"processing": true,
-		// "serverSide": true,
 		pagingType: "first_last_numbers",
 		language: {
 			"info":           "Mostrando desde _START_ hasta _END_ de _TOTAL_ registros",
@@ -472,12 +471,6 @@ function mostrarform(flag) {
 		$('#formularioregistros').show();
 		$('#btnGuardar').prop('disabled', false);
 		$('#btnagregar').hide();
-
-		//Mostramos los permisos 
-		$.post('../controladores/usuario.php?op=permisos', function (response) {
-			$('#permisos').html(response);
-		});
-
 	}
 	else{
 		$('#listadoregistros').show();

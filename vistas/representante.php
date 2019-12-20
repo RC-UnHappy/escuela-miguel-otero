@@ -42,6 +42,7 @@ if ($_SESSION['usuario'] == 1) {
                           <th scope="col">Correo</th>
                           <th scope="col">Móvil</th>
                           <th scope="col">Fijo</th>
+                          <th scope="col">Dirección</th>
                           <th scope="col">Oficio</th>
                         </tr>
                       </thead>

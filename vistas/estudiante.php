@@ -35,14 +35,13 @@ if ($_SESSION['usuario'] == 1) {
                       <caption>Lista de estudiantes</caption>
                       <thead class="fondo-degradado text-white">
                         <tr>
-                          <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Opciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                          <th scope="col">Opciones</th>
                           <th scope="col">Cédula</th>
                           <th scope="col">Nombre</th>
                           <th scope="col">Apellido</th>
-                          <th scope="col">Correo</th>
-                          <th scope="col">Móvil</th>
-                          <th scope="col">Fijo</th>
-                          <th scope="col">Oficio</th>
+                          <th scope="col">Edad</th>
+                          <th scope="col">Cédula Madre</th>
+                          <th scope="col">Cédula Padre</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -87,8 +86,10 @@ if ($_SESSION['usuario'] == 1) {
                             <label for="cedula">Cédula (*)</label>
                             <div class="input-group">
                               
-                              <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula"  id="cedula"  maxlength="8" minlength="7" required>
-                              
+                              <input type="hidden" name="idestudiante" id="idestudiante"> <!-- Input oculto que guardará el id del estudiante cuando sea necesario -->
+
+                              <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula"  id="cedula"  maxlength="8" minlength="7" required >
+
                               <div class="invalid-feedback" id="mensajeCedula">
                                   Campo Obligatorio
                               </div>
@@ -211,6 +212,8 @@ if ($_SESSION['usuario'] == 1) {
                                 </div>
 
                                 <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula_madre"  id="cedula_madre"  maxlength="8" minlength="7" required>
+
+                                <input type="hidden" name="idmadre" id="idmadre"> <!-- Input oculto que guardará el id de la madre -->
                                 <div class="invalid-feedback">
                                   Campo Obligatorio
                                 </div>
@@ -230,6 +233,8 @@ if ($_SESSION['usuario'] == 1) {
                                 </div>
 
                                 <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula_padre"  id="cedula_padre"  maxlength="8" minlength="7">
+
+                                <input type="hidden" name="idpadre" id="idpadre"> <!-- Input oculto que guardará el id del padre cuando sea necesario -->
                                 <div class="invalid-feedback">
                                   Campo Obligatorio
                                 </div>
@@ -353,7 +358,7 @@ if ($_SESSION['usuario'] == 1) {
                             <div class="input-group">
                             
                               <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" id="vacunasSi" name="vacunas" class="custom-control-input" required value="si">
+                                <input type="radio" id="vacunasSi" name="vacunas" class="custom-control-input" required value="1">
                                 <label class="custom-control-label" for="vacunasSi">Si</label>
                                  <div class="invalid-feedback">
                                 </div>
@@ -362,7 +367,7 @@ if ($_SESSION['usuario'] == 1) {
 
 
                               <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" id="vacunasNo" name="vacunas" class="custom-control-input" required value="no">
+                                <input type="radio" id="vacunasNo" name="vacunas" class="custom-control-input" required value="0">
                                 <label class="custom-control-label" for="vacunasNo">No</label>
                                  <div class="invalid-feedback">
                                 </div>
@@ -377,14 +382,14 @@ if ($_SESSION['usuario'] == 1) {
                             <div class="input-group">
                             
                               <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" id="alergicoSi" name="alergia" class="custom-control-input" required value="si">
+                                <input type="radio" id="alergicoSi" name="alergia" class="custom-control-input" required value="1">
                                 <label class="custom-control-label" for="alergicoSi">Si</label>
                                  <div class="invalid-feedback">
                                 </div>
                               </div>
 
                               <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" id="alergicoNo" name="alergia" class="custom-control-input" required value="no">
+                                <input type="radio" id="alergicoNo" name="alergia" class="custom-control-input" required value="0">
                                 <label class="custom-control-label" for="alergicoNo">No</label>
                                  <div class="invalid-feedback">
                                 </div>

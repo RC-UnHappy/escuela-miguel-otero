@@ -9,7 +9,7 @@ require_once 'Persona.php';
 /**
  * Modelo de Usuario
  */
-class Usuario extends Persona
+class Usuario //extends Persona
 {
 	
 	#Constructor de la clase

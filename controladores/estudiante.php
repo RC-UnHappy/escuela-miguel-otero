@@ -11,6 +11,7 @@ $estudiante = new Estudiante();
 
 #Se reciben los datos por POST y se asignan a variables
 
+$idestudiante = isset($_POST['idestudiante']) ? $_POST['idestudiante'] : '';
 $cedula = isset($_POST['cedula']) ? limpiarCadena($_POST['cedula']) : '';
 $p_nombre = isset($_POST['p_nombre']) ? limpiarCadena($_POST['p_nombre']) : '';
 $s_nombre = isset($_POST['s_nombre']) ? limpiarCadena($_POST['s_nombre']) : '';
@@ -18,10 +19,13 @@ $p_apellido = isset($_POST['p_apellido']) ? limpiarCadena($_POST['p_apellido']) 
 $s_apellido = isset($_POST['s_apellido']) ? limpiarCadena($_POST['s_apellido']) : '';
 $genero = isset($_POST['genero']) ? limpiarCadena($_POST['genero']) : '';
 $f_nac = isset($_POST['f_nac']) ? limpiarCadena($_POST['f_nac']) : '';
+$email = isset($_POST['email']) ? limpiarCadena($_POST['email']) : '';
 $parto = isset($_POST['parto']) ? limpiarCadena($_POST['parto']) : '';
 $orden = isset($_POST['orden']) ? limpiarCadena($_POST['orden']) : '';
 $cedula_madre = isset($_POST['cedula_madre']) ? limpiarCadena($_POST['cedula_madre']) : '';
+$idmadre = isset($_POST['idmadre']) ? limpiarCadena($_POST['idmadre']) : '';
 $cedula_padre = isset($_POST['cedula_padre']) ? limpiarCadena($_POST['cedula_padre']) : '';
+$idpadre = isset($_POST['idpadre']) ? limpiarCadena($_POST['idpadre']) : '';
 $estado = isset($_POST['estado']) ? limpiarCadena($_POST['estado']) : '';
 $municipio = isset($_POST['municipio']) ? limpiarCadena($_POST['municipio']) : '';
 $parroquia = isset($_POST['parroquia']) ? limpiarCadena($_POST['parroquia']) : '';
@@ -42,56 +46,77 @@ $condicion_canaima = isset($_POST['condicion_canaima']) ? $_POST['condicion_cana
 #Se ejecuta un caso dependiendo del valor del parámetro GET
 switch ($_GET['op']) {
 	case 'guardaryeditar':
-		var_dump($_POST);
-		// #Se incluye el modelo de Persona
-		// require_once '../modelos/Persona.php';
-		// $persona = new Persona();
+		#Se incluye el modelo de Persona
+		require_once '../modelos/Persona.php';
+		$persona = new Persona();
 
-		// #Se incluye el modelo de Teléfono
-		// require_once '../modelos/Telefono.php';
-		// $telefono = new Telefono();
+		#Se incluye el modelo de Dirección
+		require_once '../modelos/Direccion.php';
+		$Direccion = new Direccion();
 
-		// #Se incluye el modelo de Dirección
-		// require_once '../modelos/Direccion.php';
-		// $Direccion = new Direccion();
+		#Se incluye el modelo de Aspecto Fisiológico
+		require_once '../modelos/AspectoFisiologico.php';
+		$AspectoFisiologico = new AspectoFisiologico();
 
-		// #Se deshabilita el guardado automático de la base de datos
-		// autocommit(FALSE);
+		#Se incluye el modelo de Diversidad Funcional
+		require_once '../modelos/DiversidadFuncional.php';
+		$DiversidadFuncional = new DiversidadFuncional();
 
-		// #Si la variable esta vacía quiere decir que es un nuevo registro
-		// if (empty($idrepresentante) && empty($personaId)) {
+		#Se incluye el modelo de Enfermedad
+		require_once '../modelos/Enfermedad.php';
+		$Enfermedad = new Enfermedad();
+
+		#Se incluye el modelo de Aspecto Socioeconómico
+		require_once '../modelos/AspectoSocioeconomico.php';
+		$AspectoSocioeconomico = new AspectoSocioeconomico();
+
+		#Se incluye el modelo de Canaima
+		require_once '../modelos/Canaima.php';
+		$Canaima = new Canaima();
+
+		#Se deshabilita el guardado automático de la base de datos
+		autocommit(FALSE);
+
+		#Si la variable esta vacía quiere decir que es un nuevo registro
+		if (empty($idestudiante)) {
 			
-		// 	#Variable para comprobar que todo salió bien al final
-		// 	$sw = TRUE;
+			#Variable para comprobar que todo salió bien al final
+			$sw = TRUE;
 
-		// 	#Se registra la persona y se devuelve el id del registro
-		// 	$idpersona = $persona->insertar($cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email) or $sw = FALSE;
+			#Se registra la persona y se devuelve el id del registro
+			$idpersona = $persona->insertar($cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email) or $sw = FALSE;
 			
-		// 	#Se registra la dirección del representante
-		// 	$Direccion->insertar($idpersona, $parroquia, $direccion) or $sw = FALSE;
+			#Se registra la dirección del estudiante
+			$Direccion->insertar($idpersona, $parroquia, $direccion) or $sw = FALSE;
 
-		// 	#Verifica que las variables de los teléfonos contengan datos y los guarda
-		// 	if (!empty($celular)) {
-		// 		$telefono->insertar($idpersona, $celular, 'M') or $sw = FALSE;
-		// 	}
-		// 	if (!empty($fijo)) {
-		// 		$telefono->insertar($idpersona, $fijo, 'F') or $sw = FALSE;
-		// 	}
+			#Se registra el estudiante
+			$estudianteId = $estudiante->insertar($idpersona, $idmadre, $idpadre, $parto, $orden, 'REGISTRADO') or $sw = FALSE;
 
-		// 	#Se registra el representante
-		// 	$rspta = $representante->insertar($idpersona, $instruccion, $oficio) or $sw = FALSE;
+			#Se registran los aspectos fisiológicos del estudiante
+			$AspectoFisiologico->insertar($estudianteId, $vacunas, $peso, $talla, $alergia) or $sw = FALSE;
 
-		// 	#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
-		// 	if ($sw) {
-		// 		commit();
-		// 		echo 'true';
-		// 	}
-		// 	else {
-		// 		rollback();
-		// 		echo 'false';
-		// 	}
+			#Se registran las diversidades funcionales del estudiante
+			$DiversidadFuncional->insertar($estudianteId, $diversidad) or $sw = FALSE;
 
-		// }
+			#Se registran las enfermedades del estudiante
+			$Enfermedad->insertar($estudianteId, $enfermedad) or $sw = FALSE;
+
+			#Se registran los aspectos socioeconómicos del estudiante
+			$AspectoSocioeconomico->insertar($estudianteId, $vivienda, $grupo_familiar, $ingreso_mensual) or $sw = FALSE;
+
+			#Se registra si el estudiante posee canaima o no
+			$Canaima->insertar($estudianteId, $canaima, $condicion_canaima) or $sw = FALSE;
+			
+			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
+			if ($sw) {
+				commit();
+				echo 'true';
+			}
+			else {
+				rollback();
+				echo 'false';
+			}
+		}
 		// elseif (!empty($personaId) && empty($idrepresentante)) {
 		// 	#Variable para comprobar que todo salió bien al final
 		// 	$sw = TRUE;
@@ -177,29 +202,52 @@ switch ($_GET['op']) {
 		break;
 
 	case 'listar':
-		$rspta = $representante->listar();
+		$rspta = $estudiante->listar();
 
 		$data = array();
 
+		#Establece la zona horaria
+		date_default_timezone_set('America/Caracas');
+
 		while ($reg = $rspta->fetch_object()) {
 
-			$data[] = array('0' => ($reg->estatus) ? '<button class="btn btn-outline-primary " title="Editar" onclick="mostrar('.$reg->id.')"><i class="fas fa-edit"></i></button>'.
+			list($anoN, $mesN, $diaN) = explode('-', $reg->fechaE);
+			list($anoA, $mesA, $diaA) = explode('-', date('Y-m-d'));
 
-				' <button class="btn btn-outline-danger" title="Desactivar" onclick="desactivar('.$reg->id.')"> <i class="fas fa-times"> </i></button> '
+			if ($mesN == $mesA) {
+				if ($diaN == $diaA) {
+					$edad = $anoA - $anoN;
+					$cumple = ' <span class="pull-right badge badge-light"><i class="fa fa-birthday-cake" style="font-size:18px; color: #F06292;"></i></span><span class="sr-only">Cumpleaños</span>';
+				}
+				elseif ($diaN < $diaA) {
+					$edad = $anoA - $anoN;
+				}
+				else {
+					$edad = ($anoA - $anoN) - 1;
+				}
+			}
+			elseif ($mesN > $mesA ) {
+				$edad = ($anoA - $anoN) - 1;
+			}
+			else {
+				$edad = $anoA - $anoN;
+			}
+			$data[] = array('0' => ($reg->estatus == 'REGISTRADO') ? '<button class="btn btn-outline-primary " title="Editar" onclick="mostrar('.$reg->idE.')"><i class="fas fa-edit"></i></button>'.
 
-					 :
+			' <button class="btn btn-outline-danger" title="Desactivar" onclick="desactivar('.$reg->idE.')"> <i class="fas fa-times"> </i></button> '
 
-				 '<button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->id.')"><i class="fa fa-edit"></i></button>'.
+				 :
 
-				 ' <button class="btn btn-outline-success" title="Activar" onclick="activar('.$reg->id.')"><i class="fa fa-check"></i></button> ',
+			'<button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->idE.')"><i class="fa fa-edit"></i></button>'.
 
-				 	'1' => $reg->cedula,
-				 	'2' => $reg->p_nombre,
-				 	'3' => $reg->p_apellido,
-					'4' => $reg->email,
-					'5' => $reg->movil,
-					'6' => $reg->fijo,
-					'7' => $reg->oficio );
+			' <button class="btn btn-outline-success" title="Activar" onclick="activar('.$reg->idE.')"><i class="fa fa-check"></i></button> ',
+
+				 	'1' => $reg->cedulaE,
+				 	'2' => $reg->nombreE,
+				 	'3' => $reg->apellidoE,
+					'4' => $edad.$cumple = isset($cumple) ? $cumple : '',
+					'5' => $reg->cedulaM,
+					'6' => $reg->cedulaP);
 		}
 
 		$results = array(
@@ -245,7 +293,7 @@ switch ($_GET['op']) {
 
 	case 'mostrar':
 	
-		$rspta = $representante->mostrar($idrepresentante);
+		$rspta = $estudiante->mostrar($idestudiante);
 
 		#Se codifica el resultado utilizando Json
 		echo json_encode($rspta->fetch_object());
@@ -270,7 +318,8 @@ switch ($_GET['op']) {
 
 	case 'comprobarpadres': 
 		$cedula = $_POST['comprobarpadres'];
-		$rspta = $estudiante->comprobarpadres($cedula);
+		$generopadres = $_POST['generopadres'];
+		$rspta = $estudiante->comprobarpadres($cedula, $generopadres);
 		echo json_encode($rspta->fetch_object());
 		break;
 
