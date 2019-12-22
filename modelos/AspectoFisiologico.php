@@ -24,4 +24,13 @@ class AspectoFisiologico
 
 	}
 
+	#Método para editar registros
+	function editar($idestudiante, $vacunas, $peso, $talla, $alergico)
+	{
+		$sql = "UPDATE aspecto_fisiologico SET todas_vacunas = '$vacunas', peso = '$peso', talla = '$talla', alergico = '$alergico' WHERE idestudiante = '$idestudiante'";
+
+		return ejecutarConsulta($sql);
+
+	}
+
 }

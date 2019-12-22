@@ -26,7 +26,14 @@ class Enfermedad
 		}
 
 		return $sw;
+	}
 
+	#Método para eliminar registros
+	function eliminar($idestudiante)
+	{
+		$sql = "DELETE FROM enfermedad WHERE idestudiante = '$idestudiante'";
+
+		return ejecutarConsulta($sql);	
 	}
 
 }

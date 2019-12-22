@@ -337,6 +337,7 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="../public/js/bootstrap-select.min.js"></script>
 
-        
+    <!-- JQuery Number -->
+    <script src="../public/js/jqueryNumber/jquerynumber.min.js"></script>  
   </body>
 </html>

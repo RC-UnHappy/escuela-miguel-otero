@@ -4,9 +4,9 @@
 require_once '../config/conexion.php';
 
 /**
- * Modelo de Diversidad Funcional
+ * Modelo de Sosten de Hogar
  */
-class DiversidadFuncional 
+class SostenHogar 
 {	
 	
 	#Constructor de la clase
@@ -16,11 +16,11 @@ class DiversidadFuncional
 	}
 
 	#Método para insertar registros
-	function insertar($idestudiante, $diversidad)
+	function insertar($idestudiante, $sosten)
 	{
 		$sw = TRUE;
-		for ($i=0; $i < count($diversidad) ; $i++) { 
-			$sql = "INSERT INTO diversidad_funcional (id, idestudiante, diversidad) VALUES(NULL, '$idestudiante', '$diversidad[$i]')";
+		for ($i=0; $i < count($sosten) ; $i++) { 
+			$sql = "INSERT INTO sosten_hogar (id, idestudiante, sosten) VALUES(NULL, '$idestudiante', '$sosten[$i]')";
 
 			ejecutarConsulta($sql) or $sw = FALSE;
 		}
@@ -32,7 +32,7 @@ class DiversidadFuncional
 	#Método para eliminar registros
 	function eliminar($idestudiante)
 	{
-		$sql = "DELETE FROM diversidad_funcional WHERE idestudiante = '$idestudiante'";
+		$sql = "DELETE FROM sosten_hogar WHERE idestudiante = '$idestudiante'";
 
 		return ejecutarConsulta($sql);
 		

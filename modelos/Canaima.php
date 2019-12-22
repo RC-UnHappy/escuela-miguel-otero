@@ -24,4 +24,13 @@ class Canaima
 
 	}
 
+	#Método para editar registros
+	function editar($idestudiante, $posee_canaima, $condicion)
+	{
+		$sql = "UPDATE canaima SET posee_canaima = '$posee_canaima', condicion= '$condicion' WHERE idestudiante = '$idestudiante'";
+
+		return ejecutarConsulta($sql);
+		
+	}
+
 }

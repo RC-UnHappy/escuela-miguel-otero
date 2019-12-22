@@ -74,6 +74,10 @@ switch ($_GET['op']) {
 		require_once '../modelos/Canaima.php';
 		$Canaima = new Canaima();
 
+		#Se incluye el modelo de Sosten de  Hogar
+		require_once '../modelos/SostenHogar.php';
+		$SostenHogar = new SostenHogar();
+
 		#Se deshabilita el guardado automático de la base de datos
 		autocommit(FALSE);
 
@@ -107,6 +111,9 @@ switch ($_GET['op']) {
 			#Se registra si el estudiante posee canaima o no
 			$Canaima->insertar($estudianteId, $canaima, $condicion_canaima) or $sw = FALSE;
 			
+			#Se registran las diversidades funcionales del estudiante
+			$SostenHogar->insertar($estudianteId, $sosten) or $sw = FALSE;
+
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
 				commit();
@@ -117,88 +124,69 @@ switch ($_GET['op']) {
 				echo 'false';
 			}
 		}
-		// elseif (!empty($personaId) && empty($idrepresentante)) {
-		// 	#Variable para comprobar que todo salió bien al final
-		// 	$sw = TRUE;
+		else{
+			#Variable para comprobar que todo salió bien al final
+			$sw = TRUE;
 
-		// 	#Se editan los datos de la persona
-		// 	$esto = $persona->editar($personaId, $cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email) or $sw = FALSE;
+			#Se obtiene el id de la persona 
+			$idpersona = $estudiante->idpersona($idestudiante);
+			$idpersona = $idpersona['idpersona'];
 
-		// 	#Se registra la dirección del representante
-		// 	$Direccion->insertar($personaId, $parroquia, $direccion) or $sw = FALSE;
-
-		// 	#Verifica que las variables de los teléfonos contengan datos y los guarda
-		// 	if (!empty($celular)) {
-		// 		$telefono->eliminar($personaId, 'M') or $sw = FALSE;
-		// 		$telefono->insertar($personaId, $celular, 'M') or $sw = FALSE;
-		// 	}
-		// 	else {
-		// 		$telefono->eliminar($personaId, 'M') or $sw = FALSE;
-		// 	}
-		// 	if (!empty($fijo)) {
-		// 		$telefono->eliminar($personaId, 'F') or $sw = FALSE;
-		// 		$telefono->insertar($personaId, $fijo, 'F') or $sw = FALSE;
-		// 	}
-		// 	else {
-		// 		$telefono->eliminar($personaId, 'F') or $sw = FALSE;
-		// 	}
-
-		// 	#Se registra el representante
-		// 	$rspta = $representante->insertar($personaId, $instruccion, $oficio) or $sw = FALSE;
-
-		// 	#Se verifica que todo salió bien y se guardan los datos o se eliminan todos
-		// 	if ($sw) {
-		// 		commit();
-		// 		echo 'update';
-		// 	}
-		// 	else {
-		// 		rollback();
-		// 		echo 'false';
-		// 	}
-		// }
-		// else{
-		// 	#Variable para comprobar que todo salió bien al final
-		// 	$sw = TRUE;
-
-		// 	#Se obtiene el id de la persona 
-		// 	$idpersona = $representante->idpersona($idrepresentante);
-		// 	$idpersona = $idpersona['idpersona'];
-
-		// 	#Se editan los datos de la persona
-		// 	$persona->editar($idpersona, $cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email) or $sw = FALSE;
+			#Se editan los datos de la persona
+			$persona->editar($idpersona, $cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email) or $sw = FALSE;
 			
-		// 	#Se edita la dirección del representante
-		// 	$Direccion->editar($idpersona, $parroquia, $direccion) or $sw = FALSE;
+			#Se edita la dirección del estudiante
+			$Direccion->editar($idpersona, $parroquia, $direccion) or $sw = FALSE;
 
-		// 	#Verifica que las variables de los teléfonos contengan datos y los guarda
-		// 	if (!empty($celular)) {
-		// 		$telefono->eliminar($idpersona, 'M') or $sw = FALSE;
-		// 		$telefono->insertar($idpersona, $celular, 'M') or $sw = FALSE;
-		// 	}
-		// 	else {
-		// 		$telefono->eliminar($idpersona, 'M') or $sw = FALSE;
-		// 	}
-		// 	if (!empty($fijo)) {
-		// 		$telefono->eliminar($idpersona, 'F') or $sw = FALSE;
-		// 		$telefono->insertar($idpersona, $fijo, 'F') or $sw = FALSE;
-		// 	}
-		// 	else {
-		// 		$telefono->eliminar($idpersona, 'F') or $sw = FALSE;
-		// 	}
+			#Se editan los aspectos fisiológicos del estudiante
+			$AspectoFisiologico->editar($idestudiante, $vacunas, $peso, $talla, $alergia) or $sw = FALSE;
 
-		// 	#Se edita el representante
-		// 	$rspta = $representante->editar($idrepresentante, $instruccion, $oficio) or $sw = FALSE;
+			#Verifica que la variable de diversidad contenga datos y los guarda
+			if (!empty($diversidad)) {
+				$DiversidadFuncional->eliminar($idestudiante) or $sw = FALSE;
+				$DiversidadFuncional->insertar($idestudiante, $diversidad) or $sw = FALSE;
+			}
+			else {
+				$DiversidadFuncional->eliminar($idestudiante) or $sw = FALSE;
+			}
 
-		// 	#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
-		// 	if ($sw) {
-		// 		commit();
-		// 		echo 'update';
-		// 	}
-		// 	else {
-		// 		rollback();
-		// 		echo 'false';
-		// 	}
-		// }
+			#Verifica que la variable de enfermedad contenga datos y los guarda
+			if (!empty($enfermedad)) {
+				$Enfermedad->eliminar($idestudiante) or $sw = FALSE;
+				$Enfermedad->insertar($idestudiante, $enfermedad) or $sw = FALSE;
+			}
+			else {
+				$Enfermedad->eliminar($idestudiante) or $sw = FALSE;
+			}
+
+			#Se editan los aspectos socioeconómicos del estudiante
+			$AspectoSocioeconomico->editar($idestudiante, $vivienda, $grupo_familiar, $ingreso_mensual) or $sw = FALSE;
+
+			#Verifica que la variable de sosten contenga datos y los guarda
+			if (!empty($sosten)) {
+				$SostenHogar->eliminar($idestudiante) or $sw = FALSE;
+				$SostenHogar->insertar($idestudiante, $sosten) or $sw = FALSE;
+			}
+			else {
+				$SostenHogar->eliminar($idestudiante) or $sw = FALSE;
+			}
+
+			#Se edita si el estudiante posee canaima o no
+			$Canaima->editar($idestudiante, $canaima, $condicion_canaima) or $sw = FALSE;
+
+			#Se edita el estudiante
+			$rspta = $estudiante->editar($idestudiante, $idmadre, $idpadre, $parto, $orden) or $sw = FALSE;
+
+			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
+			if ($sw) {
+				commit();
+				echo 'update';
+			}
+			else {
+				rollback();
+				echo 'false';
+			}
+		}
 		break;
 
 	case 'listar':
@@ -232,15 +220,10 @@ switch ($_GET['op']) {
 			else {
 				$edad = $anoA - $anoN;
 			}
-			$data[] = array('0' => ($reg->estatus == 'REGISTRADO') ? '<button class="btn btn-outline-primary " title="Editar" onclick="mostrar('.$reg->idE.')"><i class="fas fa-edit"></i></button>'.
-
-			' <button class="btn btn-outline-danger" title="Desactivar" onclick="desactivar('.$reg->idE.')"> <i class="fas fa-times"> </i></button> '
-
+			$data[] = array('0' => ($reg->estatus == 'REGISTRADO') ? '<button class="btn btn-outline-primary " title="Editar" onclick="mostrar('.$reg->idE.')"><i class="fas fa-edit"></i></button>'
 				 :
 
-			'<button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->idE.')"><i class="fa fa-edit"></i></button>'.
-
-			' <button class="btn btn-outline-success" title="Activar" onclick="activar('.$reg->idE.')"><i class="fa fa-check"></i></button> ',
+			'<button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->idE.')"><i class="fa fa-edit"></i></button>',
 
 				 	'1' => $reg->cedulaE,
 				 	'2' => $reg->nombreE,
@@ -298,22 +281,6 @@ switch ($_GET['op']) {
 		#Se codifica el resultado utilizando Json
 		echo json_encode($rspta->fetch_object());
 
-		break;
-
-	case 'desactivar': 
-		$rspta = $representante->desactivar($idrepresentante);
-		echo $rspta ? 'true' : 'false';
-		break;
-
-	case 'activar': 
-		$rspta = $representante->activar($idrepresentante);
-		echo $rspta ? 'true' : 'false';
-		break;
-
-	case 'comprobarrepresentante': 
-		$cedula = $_POST['cedula'];
-		$rspta = $representante->comprobarrepresentante($cedula);
-		echo json_encode($rspta->fetch_object());
 		break;
 
 	case 'comprobarpadres': 

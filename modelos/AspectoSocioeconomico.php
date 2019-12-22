@@ -24,4 +24,13 @@ class AspectoSocioeconomico
 
 	}
 
+	#Método para editar registros
+	function editar($idestudiante, $tipo_vivienda, $grupo_familiar, $ingreso_mensual)
+	{
+		$sql = "UPDATE aspecto_socioeconomico SET tipo_vivienda = '$tipo_vivienda', grupo_familiar = '$grupo_familiar', ingreso_mensual = '$ingreso_mensual' WHERE idestudiante = '$idestudiante'";
+
+		return ejecutarConsulta($sql);
+		
+	}
+
 }

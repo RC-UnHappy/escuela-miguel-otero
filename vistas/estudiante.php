@@ -68,6 +68,48 @@ if ($_SESSION['usuario'] == 1) {
                         <div class="row">
 
                           <div class="form-group col-md-6">
+                            <label for="documento_madre">Cédula de la madre (*)</label>
+                              <div class="input-group ">
+                                <div class="input-group-prepend">
+                                  <select name="documento_madre" id="documento_madre" class="form-control selectpicker" required="true">
+                                    <option value="">Seleccione</option>
+                                    <option value="venezolano">Venezolano</option>
+                                    <option value="extranjero">Extranjero</option>
+                                    <option value="pasaporte">Pasaporte</option>
+                                  </select>
+                                </div>
+
+                                <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula_madre"  id="cedula_madre"  maxlength="8" minlength="7" required>
+
+                                <input type="hidden" name="idmadre" id="idmadre"> <!-- Input oculto que guardará el id de la madre -->
+                                <div class="invalid-feedback">
+                                  Campo Obligatorio
+                                </div>
+                              </div>
+                          </div>
+
+                          <div class="form-group col-md-6">
+                            <label for="documento_padre">Cédula del padre</label>
+                              <div class="input-group ">
+                                <div class="input-group-prepend">
+                                  <select name="documento_padre" id="documento_padre" class="form-control selectpicker">
+                                    <option value="">Seleccione</option>
+                                    <option value="venezolano">Venezolano</option>
+                                    <option value="extranjero">Extranjero</option>
+                                    <option value="pasaporte">Pasaporte</option>
+                                  </select>
+                                </div>
+
+                                <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula_padre"  id="cedula_padre"  maxlength="8" minlength="7">
+
+                                <input type="hidden" name="idpadre" id="idpadre"> <!-- Input oculto que guardará el id del padre cuando sea necesario -->
+                                <div class="invalid-feedback">
+                                  Campo Obligatorio
+                                </div>
+                              </div>
+                          </div>
+
+                          <div class="form-group col-md-6">
                             <label for="documento">Tipo de documento (*)</label>
                               <div class="input-group ">
                                 <select name="documento" id="documento" class="form-control selectpicker" required="true">
@@ -197,48 +239,6 @@ if ($_SESSION['usuario'] == 1) {
                                   Campo Obligatorio
                               </div>
                             </div>
-                          </div>
-
-                          <div class="form-group col-md-6">
-                            <label for="documento_madre">Cédula de la madre (*)</label>
-                              <div class="input-group ">
-                                <div class="input-group-prepend">
-                                  <select name="documento_madre" id="documento_madre" class="form-control selectpicker" required="true">
-                                    <option value="">Seleccione</option>
-                                    <option value="venezolano">Venezolano</option>
-                                    <option value="extranjero">Extranjero</option>
-                                    <option value="pasaporte">Pasaporte</option>
-                                  </select>
-                                </div>
-
-                                <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula_madre"  id="cedula_madre"  maxlength="8" minlength="7" required>
-
-                                <input type="hidden" name="idmadre" id="idmadre"> <!-- Input oculto que guardará el id de la madre -->
-                                <div class="invalid-feedback">
-                                  Campo Obligatorio
-                                </div>
-                              </div>
-                          </div>
-
-                          <div class="form-group col-md-6">
-                            <label for="documento_padre">Cédula del padre</label>
-                              <div class="input-group ">
-                                <div class="input-group-prepend">
-                                  <select name="documento_padre" id="documento_padre" class="form-control selectpicker">
-                                    <option value="">Seleccione</option>
-                                    <option value="venezolano">Venezolano</option>
-                                    <option value="extranjero">Extranjero</option>
-                                    <option value="pasaporte">Pasaporte</option>
-                                  </select>
-                                </div>
-
-                                <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula_padre"  id="cedula_padre"  maxlength="8" minlength="7">
-
-                                <input type="hidden" name="idpadre" id="idpadre"> <!-- Input oculto que guardará el id del padre cuando sea necesario -->
-                                <div class="invalid-feedback">
-                                  Campo Obligatorio
-                                </div>
-                              </div>
                           </div>
 
                         </div>
@@ -404,17 +404,17 @@ if ($_SESSION['usuario'] == 1) {
                             <div class="input-group">
                               
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="motora" value="motora" name="diversidad[]">
+                                <input type="checkbox" class="custom-control-input diversidad" id="motora" value="motora" name="diversidad[]">
                                 <label class="custom-control-label" for="motora">Motora</label>
                               </div>
 
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="autismo" value="autismo" name="diversidad[]">
+                                <input type="checkbox" class="custom-control-input diversidad" id="autismo" value="autismo" name="diversidad[]">
                                 <label class="custom-control-label" for="autismo">Autismo</label>
                               </div>
 
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="asperger"  value="asperger" name="diversidad[]">
+                                <input type="checkbox" class="custom-control-input diversidad" id="asperger"  value="asperger" name="diversidad[]">
                                 <label class="custom-control-label" for="asperger">Asperger</label>
                               </div>
  
@@ -426,22 +426,22 @@ if ($_SESSION['usuario'] == 1) {
                             <div class="input-group">
                               
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="repiratoria"  value="repiratoria" name="enfermedad[]">
+                                <input type="checkbox" class="custom-control-input enfermedad" id="repiratoria"  value="repiratoria" name="enfermedad[]">
                                 <label class="custom-control-label" for="repiratoria">Respiratoria</label>
                               </div>
 
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="renal"  value="renal" name="enfermedad[]">
+                                <input type="checkbox" class="custom-control-input enfermedad" id="renal"  value="renal" name="enfermedad[]">
                                 <label class="custom-control-label" for="renal">Renal</label>
                               </div>
 
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="visual"  value="visual" name="enfermedad[]">
+                                <input type="checkbox" class="custom-control-input enfermedad" id="visual"  value="visual" name="enfermedad[]">
                                 <label class="custom-control-label" for="visual">Visual</label>
                               </div>
 
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="auditiva"  value="auditiva" name="enfermedad[]">
+                                <input type="checkbox" class="custom-control-input enfermedad" id="auditiva"  value="auditiva" name="enfermedad[]">
                                 <label class="custom-control-label" for="auditiva">Auditiva</label>
                               </div>                        
                               
@@ -476,8 +476,6 @@ if ($_SESSION['usuario'] == 1) {
                                 </div>
                               </div>
 
-
-
                               <div class="custom-control custom-radio custom-control-inline">
                                 <input type="radio" id="apartamento" name="vivienda" class="custom-control-input" required value="apartamento">
                                 <label class="custom-control-label" for="apartamento">Apartamento</label>
@@ -491,8 +489,7 @@ if ($_SESSION['usuario'] == 1) {
                                  <div class="invalid-feedback">
                                 </div>
                               </div>
-
-                              
+  
                             </div>
                           </div>
 
@@ -501,22 +498,22 @@ if ($_SESSION['usuario'] == 1) {
                             <div class="input-group">
                               
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="papa"  value="papa" name="sosten[]">
+                                <input type="checkbox" class="custom-control-input sosten" id="papa"  value="papa" name="sosten[]">
                                 <label class="custom-control-label" for="papa">Papá</label>
                               </div>
 
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="mama"  value="mama" name="sosten[]">
+                                <input type="checkbox" class="custom-control-input sosten" id="mama"  value="mama" name="sosten[]">
                                 <label class="custom-control-label" for="mama">Mamá</label>
                               </div>
 
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="abuelos"  value="abuelos" name="sosten[]">
+                                <input type="checkbox" class="custom-control-input sosten" id="abuelos"  value="abuelos" name="sosten[]">
                                 <label class="custom-control-label" for="abuelos">Abuelos</label>
                               </div>
 
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="otros"  value="otros" name="sosten[]">
+                                <input type="checkbox" class="custom-control-input sosten" id="otros"  value="otros" name="sosten[]">
                                 <label class="custom-control-label" for="otros">Otros</label>
                               </div>                        
                               
@@ -539,7 +536,7 @@ if ($_SESSION['usuario'] == 1) {
                           </div> 
 
                           <div class="form-group col-md-6">
-                            <label for="ingreso_mensual">Ingreso Mensual (*)</label>
+                            <label for="ingreso_mensual">Ingreso Mensual Bs.F (*)</label>
                             <div class="input-group">
                             
                               <div class="input-group">

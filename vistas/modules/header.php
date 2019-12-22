@@ -176,7 +176,7 @@ if (strlen(session_id()) < 1)
             <li class="nav-title">Configuración</li>
 
             <li class="nav-item">
-              <a class="nav-link" href="usuario.php">
+              <a class="nav-link" href="personal.php">
                 <i class="nav-icon fas fa-chalkboard-teacher"></i> Personal</a>
             </li>
 

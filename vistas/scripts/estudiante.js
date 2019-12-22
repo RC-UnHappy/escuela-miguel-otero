@@ -290,7 +290,7 @@ function guardaryeditar(event) {
 	var cedula = formData.get('cedula');// Se obtiene la cédula 
 	
 	formData.set('cedula', documento+cedula);//Se le asigna a la cédula del formData el tipo de documento
-
+	console.log(formData.get('ingreso_mensual'));
 	$.ajax({
 		url: '../controladores/estudiante.php?op=guardaryeditar', //Dirección a donde se envían los datos
 		type: 'POST', //Método por el cual se envían los datos
@@ -298,6 +298,7 @@ function guardaryeditar(event) {
 		contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
 		processData: false, //Evita que jquery transforme la data en un string
 		success: function (datos) {
+			console.log("datos", datos);
 			if (datos == 'true') {
 				const Toast = Swal.mixin({
 				  toast: true,
@@ -309,6 +310,19 @@ function guardaryeditar(event) {
 				Toast.fire({
 				  type: 'success',
 				  title: 'Usuario registrado exitosamente :)'
+				});
+			}
+			if (datos == 'update') {
+				const Toast = Swal.mixin({
+				  toast: true,
+				  position: 'top-end',
+				  showConfirmButton: false,
+				  timer: 3000
+				});
+
+				Toast.fire({
+				  type: 'success',
+				  title: 'Estudiante actualizado exitosamente :)'
 				});
 			}
 			else {
@@ -462,7 +476,6 @@ function mostrar(idestudiante) {
 			$('#vacunasNo').attr('checked', true)
 		}
 
-		console.log(data.alergico);
 		if (data.alergico == 1) {
 			$('#alergicoSi').attr('checked', true)
 		}
@@ -470,117 +483,64 @@ function mostrar(idestudiante) {
 			$('#alergicoNo').attr('checked', true)
 		}
 
+		//Muestra las diversidades funcionales
+		if (data.diversidades != null) {
+			diversidad = data.diversidades.split(',');
+			numeroDiversidad = $('.diversidad').length;
+			for (var i = 0; i < numeroDiversidad; i++) {
+				if (jQuery.inArray($('.diversidad')[i].value, diversidad) != -1) {
+					$('.diversidad')[i].checked = 'true';
+				}
+			}
+		}
+
+		//Muestra las enfermedades
+		if (data.enfermedades != null) {
+			enfermedad = data.enfermedades.split(',');
+			numeroEnfermedad = $('.enfermedad').length;
+			for (var i = 0; i < numeroEnfermedad; i++) {
+				if (jQuery.inArray($('.enfermedad')[i].value, enfermedad) != -1) {
+					$('.enfermedad')[i].checked = 'true';
+				}
+			}	
+		}
+
+		var tipo_vivienda = data.tipo_vivienda;
+		$('#'+tipo_vivienda).attr('checked', true);
+
+		//Muestra los que sostienen el hogar
+		if (data.sostenes != null) {
+			sosten = data.sostenes.split(',');
+			numeroSosten = $('.sosten').length;
+			for (var i = 0; i < numeroSosten; i++) {
+				if (jQuery.inArray($('.sosten')[i].value, sosten) != -1) {
+					$('.sosten')[i].checked = 'true';
+				}
+			}
+
+		}
+
+		$('#grupo_familiar').val(data.grupo_familiar);
+		$('#ingreso_mensual').val(data.ingreso_mensual);
+
+		if (data.posee_canaima == 'si') {
+			$('#canaimaSi').attr('checked', true)
+			$('#condicion_canaima').prop('disabled', false)
+		}
+		else {
+			$('#canaimaNo').attr('checked', true)
+		}
+
+		$('#condicion_canaima').val(data.condicion);
+
+		$('#idestudiante').val(data.id);
+		
+		var data = 'padre';
+		comprobarPadres(data);
+		var data = 'madre';
+		comprobarPadres(data);
 
 	});
-}
-
-//Función para eliminar(desactivar) usuarios
-function desactivar(idusuario) {
-
-		const swalWithBootstrapButtons = Swal.mixin({
-		  customClass: {
-		    confirmButton: 'btn btn-primary  mx-1 p-2',
-		    cancelButton: 'btn btn-danger  mx-1 p-2'
-		  },
-		  buttonsStyling: false
-		})
-
-		swalWithBootstrapButtons.fire({
-		  title: '¿Estas seguro?',
-		  text: "¿Quieres desactivar a este usuario?",
-		  type: 'warning',
-		  showCancelButton: true,
-		  confirmButtonText: 'Desactivar',
-		  cancelButtonText: 'Cancelar',
-		  reverseButtons: true
-		}).then((result) => {
-		  if (result.value) {
-		  	$.post('../controladores/usuario.php?op=desactivar', {idusuario: idusuario}, function (e) {
-				if (e == 'true') {
-					const Toast = Swal.mixin({
-					  toast: true,
-					  position: 'top-end',
-					  showConfirmButton: false,
-					  timer: 3000
-					});
-
-					Toast.fire({
-					  type: 'success',
-					  title: 'El usuario ha sido desactivado :)'
-					});
-				}
-				else {
-					const Toast = Swal.mixin({
-					  toast: true,
-					  position: 'top-end',
-					  showConfirmButton: false,
-					  timer: 3000
-					});
-
-					Toast.fire({
-					  type: 'error',
-					  title: 'Ups! No se pudo desactivar el usuario'
-					});
-				}
-				tabla.ajax.reload();
-			});  
-		  } 
-		});
-}
-
-//Función para activar usuarios
-function activar(idusuario) {
-
-	const swalWithBootstrapButtons = Swal.mixin({
-		  customClass: {
-		    confirmButton: 'btn btn-primary  mx-1 p-2',
-		    cancelButton: 'btn btn-danger  mx-1 p-2'
-		  },
-		  buttonsStyling: false
-		})
-
-		swalWithBootstrapButtons.fire({
-		  title: '¿Estas seguro?',
-		  text: "¿Quieres activar a este usuario?",
-		  type: 'warning',
-		  showCancelButton: true,
-		  confirmButtonText: 'Activar',
-		  cancelButtonText: 'Cancelar',
-		  reverseButtons: true
-		}).then((result) => {
-		  if (result.value) {
-		  	$.post('../controladores/usuario.php?op=activar', {idusuario: idusuario}, function (e) {
-				if (e == 'true') {
-					const Toast = Swal.mixin({
-					  toast: true,
-					  position: 'top-end',
-					  showConfirmButton: false,
-					  timer: 3000
-					});
-
-					Toast.fire({
-					  type: 'success',
-					  title: 'El usuario ha sido activado :)'
-					});
-				}
-				else {
-					const Toast = Swal.mixin({
-					  toast: true,
-					  position: 'top-end',
-					  showConfirmButton: false,
-					  timer: 3000
-					});
-
-					Toast.fire({
-					  type: 'error',
-					  title: 'Ups! No se pudo activar el usuario'
-					});
-				}
-				tabla.ajax.reload();
-			});  
-		  } 
-		});
-
 }
 
 //Función para mostrar o ocultar el formulario
@@ -607,25 +567,38 @@ function cancelarform() {
 
 //Función para limpiar el formulario
 function limpiar() {
+	$("#formularioregistros")[0].reset();
+	$('#documento_madre').val('');
+	$('#documento_madre').selectpicker('refresh');
+	$('#idmadre').val('');
+	$('#alertaMadre').remove();
+	$('#documento_padre').val('');
+	$('#documento_padre').selectpicker('refresh');
+	$('#idpadre').val('');
+	$('#alertaPadre').remove();
 	$('#documento').val('');
 	$('#documento').selectpicker('refresh');
-	$('#cedula').removeClass('is-invalid');
-	$('#cedula').val('');
-	$('#p_nombre').val('');
-	$('#s_nombre').val('');
-	$('#p_apellido').val('');
-	$('#s_apellido').val('');
 	$('#genero').val('');
 	$('#genero').selectpicker('refresh');
 	$('#icono_genero').removeClass('bg-primary');
 	$('#icono_genero').removeClass('bg-danger');
-	$('#f_nac').val('');
-	$('#email').val('');
-	$('#celular').val('');
-	$('#fijo').val('');
+	$('input[name="parto"]').attr('checked', false);
+	$('#orden').attr('disabled', true);
+	$('#estado').val('');
+	$('#estado').selectpicker('refresh');
+	$('#municipio').html('<option value="">Seleccione</option>');
+	$('#municipio').prop('disabled', true);
+	$('#municipio').selectpicker('refresh');
+	$('#parroquia').html('<option value="">Seleccione</option>');
+	$('#parroquia').prop('disabled', true);
+	$('#parroquia').selectpicker('refresh');
+	$('input[name="vacunas"]').attr('checked', false);
+	$('input[name="alergia"]').attr('checked', false);
+	$('input[name="vivienda"]').attr('checked', false);
+	$('input[name="canaima"]').attr('checked', false);
+	$('#condicion_canaima').prop('disabled', true);
 	$('#formularioregistros').removeClass('was-validated');
-	$('#rol').val('');
-	$('#rol').selectpicker('refresh');
+	$('#idestudiante').val('');
 }
 
 //Determinar documento 

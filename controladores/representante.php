@@ -85,6 +85,7 @@ switch ($_GET['op']) {
 			}
 
 		}
+		#Ésto es cuando la persona ya estaba registrada en el sistema pero no como representante
 		elseif (!empty($personaId) && empty($idrepresentante)) {
 			#Variable para comprobar que todo salió bien al final
 			$sw = TRUE;
