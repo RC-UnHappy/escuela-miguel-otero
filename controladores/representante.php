@@ -91,7 +91,7 @@ switch ($_GET['op']) {
 			$sw = TRUE;
 
 			#Se editan los datos de la persona
-			$esto = $persona->editar($personaId, $cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email) or $sw = FALSE;
+			$persona->editar($personaId, $cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email) or $sw = FALSE;
 
 			#Se registra la dirección del representante
 			$Direccion->insertar($personaId, $parroquia, $direccion) or $sw = FALSE;
@@ -118,7 +118,7 @@ switch ($_GET['op']) {
 			#Se verifica que todo salió bien y se guardan los datos o se eliminan todos
 			if ($sw) {
 				commit();
-				echo 'update';
+				echo 'true';
 			}
 			else {
 				rollback();

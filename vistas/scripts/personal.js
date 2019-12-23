@@ -9,8 +9,8 @@ function init() {
 	listar();
 
 	//Se ejecuta cuando se envia el formulario
-	$([usuario]).on('submit', function (event) {
-		if ($([usuario])[0].checkValidity()) {
+	$([personal]).on('submit', function (event) {
+		if ($([personal])[0].checkValidity()) {
 			guardaryeditar(event);
 		}
 		else {
@@ -20,78 +20,107 @@ function init() {
 
 	//Se ejecuta al quitar el foco del input cedula
 	$('#cedula').on('blur', function () {
-		comprobarUsuario();
+		comprobarPersonal();
+		comprobarPersona();
 	});
 
+	//Se ejecuta al seleccionar un elemento del select documento
+	$('#documento').on('change', function () {
+		comprobarPersonal();
+		comprobarPersona();
+	});
 
-	//Se ejecuta al quitar el foco del select rol
-	$('#rol').on('change', function () {
-		rol();
-	})
-
-
-	//Comprueba que la url 
-	if ($(location).attr('href').slice(55,71) == 'actualizarPerfil'){
-		actualizarPerfil();
-	}
-
-	tabla.ajax.reload();
-			
+	tabla.ajax.reload();			
 }
 
-//Comprueba que el usuario no esté registrado
-function comprobarUsuario() {
+//Comprueba que el personal no esté registrado
+function comprobarPersonal() {
 	var documento = $('#documento')[0].value;
 	var cedula = $('#cedula')[0].value;
 
-	if (documento == 'venezolano') {
-		documento = 'V-';
-	}
-	else if (documento == 'extranjero') {
-		documento = 'E-';
-	}
-	else if (documento == 'pasaporte') {
-		documento = 'P-';
-	}
 
-	cedula = documento+cedula;
+	if (documento != '' && cedula != '') {
 
-	$.ajax({
-		url: '../controladores/usuario.php?op=comprobarusuario',
-		type: 'POST',
-		data: {cedula: cedula},
-		success: function (datos) {
-			if (datos != 'null') {
-				$('#cedula').removeClass('is-valid');
-				$('#cedula').addClass('is-invalid');
-				$('#mensajeCedula').html('El usuario ya se encuentra registrado');
-			}
+		if (documento == 'venezolano') {
+			documento = 'V-';
 		}
-	});
+		else if (documento == 'extranjero') {
+			documento = 'E-';
+		}
+		else if (documento == 'pasaporte') {
+			documento = 'P-';
+		}
+
+		cedula = documento+cedula;
+
+		$.ajax({
+			url: '../controladores/personal.php?op=comprobarpersonal',
+			type: 'POST',
+			data: {cedula: cedula},
+			success: function (datosPersonal) {
+				if (datosPersonal != 'null') {
+					$('#cedula').removeClass('is-valid');
+					$('#cedula').addClass('is-invalid');
+					$('#mensajeCedula').html('El personal ya se encuentra registrado');
+				}
+				else {
+					$('#cedula').removeClass('is-invalid');
+					$('#cedula').addClass('is-valid');
+				}
+			}
+		});
+	}
 }
 
-// Función para ocultar los permisos en cuestión del cargo
-function rol() {
+//Comprueba que la persona no esté registrada
+function comprobarPersona() {
+	var documento = $('#documento')[0].value;
+	var cedula = $('#cedula')[0].value;
 
-	var rol = $('#rol')[0].value;
+	if (documento != '' && cedula != '') {
 
-	if (rol == 'Docente') {
-		$('#permisos').hide();
+		if (documento == 'venezolano') {
+			documento = 'V-';
+		}
+		else if (documento == 'extranjero') {
+			documento = 'E-';
+		}
+		else if (documento == 'pasaporte') {
+			documento = 'P-';
+		}
+
+		cedula = documento+cedula;
+
+		$.ajax({
+			url: '../controladores/personal.php?op=comprobarpersonal',
+			type: 'POST',
+			data: {cedula: cedula},
+			success: function (datos) {
+				datosPersonal = datos;
+				$.ajax({
+					url: '../controladores/personal.php?op=comprobarpersona',
+					type: 'POST',
+					data: {cedula: cedula},
+					success: function (datosPersona) {
+						if (datosPersonal == 'null' && datosPersona != 'null') {
+							data = JSON.parse(datosPersona);
+							$('#p_nombre').val(data.p_nombre);
+							$('#s_nombre').val(data.s_nombre);
+							$('#p_apellido').val(data.p_apellido);
+							$('#s_apellido').val(data.s_apellido);
+							$('#genero').val(data.genero);
+							$('#genero').selectpicker('refresh');
+							$('#f_nac').val(data.f_nac);
+							$('#email').val(data.email);
+							$('#celular').val(data.celular);
+							$('#fijo').val(data.fijo);
+							$('#idpersona').val(data.id);
+						}
+					}
+				});
+			}
+		});
 	}
-	else if (rol == 'Personal') {
-		$('#permisos').show();
-	}
-	else if (rol == '') {
-		$('#permisos').show();
-	}
-
-}
-
-//Función para actualizar el perfil
-function actualizarPerfil() {
-	$.post('..controladores/usuario.php?op=actualizarperfil', function (datos) {
-		console.log(JSON.parse(datos));
-	});
 }
 
 //Función para guardar y editar 
@@ -99,7 +128,7 @@ function guardaryeditar(event) {
 	event.preventDefault(); //Evita que se envíe el formulario automaticamente
 	// 
 	$('#btnGuardar').prop('disabled', true); //Deshabilita el botón submit para evitar que lo presionen dos veces
-	var formData = new FormData($([usuario])[0]); //Se obtienen los datos del formulario
+	var formData = new FormData($([personal])[0]); //Se obtienen los datos del formulario
 	
 	var documento = formData.get('documento'); //Se obtiene el tipo de documento
 	documento = tipo_documento(documento);//Se llama la función que lo transforma Ej: 'Venezolano' = V-
@@ -109,7 +138,7 @@ function guardaryeditar(event) {
 	formData.set('cedula', documento+cedula);//Se le asigna a la cédula del formData el tipo de documento
 
 	$.ajax({
-		url: '../controladores/usuario.php?op=guardaryeditar', //Dirección a donde se envían los datos
+		url: '../controladores/personal.php?op=guardaryeditar', //Dirección a donde se envían los datos
 		type: 'POST', //Método por el cual se envían los datos
 		data: formData, //Datos
 		contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
@@ -125,7 +154,20 @@ function guardaryeditar(event) {
 
 				Toast.fire({
 				  type: 'success',
-				  title: 'Usuario registrado exitosamente :)'
+				  title: 'Personal registrado exitosamente :)'
+				});
+			}
+			if (datos == 'update') {
+				const Toast = Swal.mixin({
+				  toast: true,
+				  position: 'top-end',
+				  showConfirmButton: false,
+				  timer: 3000
+				});
+
+				Toast.fire({
+				  type: 'success',
+				  title: 'Personal actualizado exitosamente :)'
 				});
 			}
 			else {
@@ -145,19 +187,14 @@ function guardaryeditar(event) {
 			mostrarform(false);
 			limpiar();
 			tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
-
 		}
-
-	});
-
-		
+	});		
 }
 
 //Función para listar los registros
 function listar() {
 	tabla = $('#tblistado').DataTable({
 		"processing": true,
-		// "serverSide": true,
 		pagingType: "first_last_numbers",
 		language: {
 			"info":           "Mostrando desde _START_ hasta _END_ de _TOTAL_ registros",
@@ -175,145 +212,54 @@ function listar() {
 		dom: 'lfrtip', 
 		"destroy": true, //Elimina cualquier elemente que se encuentre en la tabla
 		"ajax": {
-			url: '../controladores/usuario.php?op=listar',
+			url: '../controladores/personal.php?op=listar',
 			type: 'GET',
-			dataType: 'json',
-			error: function (data) {
-				console.log(data.responseText);
-			}
+			dataType: 'json'
 		},
 		'order': [[0, 'desc']]
 	});
 }
 
-
-/*==========================================================
-=            Funciones para provover a Director            =
-==========================================================*/
-
-//Función para promover a director a un docente
-function promoverdirector(idusuario) {
-	$.post('../controladores/usuario.php?op=promoverdirector', {idusuario: idusuario}, function (data) {
-		tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
-		if (data) {	
-			const Toast = Swal.mixin({
-						  toast: true,
-						  position: 'top-end',
-						  showConfirmButton: false,
-						  timer: 3000
-						});
-
-						Toast.fire({
-						  type: 'success',
-						  title: 'Operación exitosa'
-						});
-		}
-	});
-}
-
-//Función para promover a director a un docente
-function degradardirector(idusuario) {
-	$.post('../controladores/usuario.php?op=degradardirector', {idusuario: idusuario}, function (data) {
-		tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
-		if (data) {			
-			const Toast = Swal.mixin({
-						  toast: true,
-						  position: 'top-end',
-						  showConfirmButton: false,
-						  timer: 3000
-						});
-
-						Toast.fire({
-						  type: 'success',
-						  title: 'Operación exitosa'
-						});
-		}
-	});
-}
-
-/*=====  End of Funciones para provover a Director  ======*/
-
-
-
-/*=============================================================
-=            Funciones para promover a Subdirector            =
-=============================================================*/
-
-//Función para promover a subdirector a un docente
-function promoversubdirector(idusuario) {
-	$.post('../controladores/usuario.php?op=promoversubdirector', {idusuario: idusuario}, function (data) {
-		tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
-		if (data) {	
-			const Toast = Swal.mixin({
-						  toast: true,
-						  position: 'top-end',
-						  showConfirmButton: false,
-						  timer: 3000
-						});
-
-						Toast.fire({
-						  type: 'success',
-						  title: 'Operación exitosa'
-						});
-		}
-	});
-}
-
-//Función para promover a subdirector a un docente
-function degradarsubdirector(idusuario) {
-	$.post('../controladores/usuario.php?op=degradarsubdirector', {idusuario: idusuario}, function (data) {
-		tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
-		if (data) {			
-			const Toast = Swal.mixin({
-						  toast: true,
-						  position: 'top-end',
-						  showConfirmButton: false,
-						  timer: 3000
-						});
-
-						Toast.fire({
-						  type: 'success',
-						  title: 'Operación exitosa'
-						});
-		}
-	});
-}
-
-/*=====  End of Funciones para promover a Subdirector  ======*/
-
-
-
-
 //Función para mostrar un registro para editar
-function mostrar(idusuario) {
-	$.post('../controladores/usuario.php?op=mostrar',{idusuario: idusuario}, function (data) {	
+function mostrar(idpersonal) {
+	$.post('../controladores/personal.php?op=mostrar',{idpersonal: idpersonal}, function (data) {	
 		data = JSON.parse(data);
 		mostrarform(true);
 
-		$('#nombre').val(data.nombre);
-		$('#tipo_documento').val(data.tipo_documento);
-		$('#tipo_documento').selectpicker('refresh');
-		$('#num_documento').val(data.num_documento);
-		$('#direccion').val(data.direccion);
-		$('#telefono').val(data.telefono);
-		$('#email').val(data.email);
-		$('#cargo').val(data.cargo);
-		$('#login').val(data.login);
-		$('#clave').val(data.clave);
-		$('#imagenmuestra').show();
-		$('#imagenmuestra').attr('src', '../files/usuarios/'+data.imagen);
-		$('#imagenactual').val(data.imagen);
-		$('#idusuario').val(data.idusuario);
-	});
+		var documento = data.cedula.slice(0,2);
+		var cedula = data.cedula.slice(2);
 
-	//Mostramos los permisos
-	$.post('../controladores/usuario.php?op=permisos&id='+idusuario, function (r) {
-		$('#permisos').html(r);
+		if (documento == 'V-') {
+			documento = 'venezolano';
+		}
+		else if (documento == 'E-') {
+			documento = 'extranjero';
+		}
+		else if (documento == 'P-') {
+			documento = 'pasaporte';
+		}
+
+		$('#documento').val(documento);
+		$('#documento').selectpicker('refresh');
+		$('#cedula').val(cedula);
+		$('#p_nombre').val(data.p_nombre);
+		$('#s_nombre').val(data.s_nombre);
+		$('#p_apellido').val(data.p_apellido);
+		$('#s_apellido').val(data.s_apellido);
+		$('#genero').val(data.genero);
+		$('#genero').selectpicker('refresh');
+		$('#f_nac').val(data.f_nac);
+		$('#email').val(data.email);
+		$('#celular').val(data.movil);
+		$('#fijo').val(data.fijo);
+		$('#cargo').val(data.cargo);
+		$('#cargo').selectpicker('refresh');
+		$('#idpersonal').val(data.id);
 	});
 }
 
-//Función para eliminar(desactivar) usuarios
-function desactivar(idusuario) {
+//Función para eliminar(desactivar) personal
+function desactivar(idpersonal) {
 
 		const swalWithBootstrapButtons = Swal.mixin({
 		  customClass: {
@@ -325,7 +271,7 @@ function desactivar(idusuario) {
 
 		swalWithBootstrapButtons.fire({
 		  title: '¿Estas seguro?',
-		  text: "¿Quieres desactivar a este usuario?",
+		  text: "¿Quieres desactivar a esta persona?",
 		  type: 'warning',
 		  showCancelButton: true,
 		  confirmButtonText: 'Desactivar',
@@ -333,8 +279,7 @@ function desactivar(idusuario) {
 		  reverseButtons: true
 		}).then((result) => {
 		  if (result.value) {
-		  	$.post('../controladores/usuario.php?op=desactivar', {idusuario: idusuario}, function (e) {
-				console.log(e);
+		  	$.post('../controladores/personal.php?op=desactivar', {idpersonal: idpersonal}, function (e) {
 				if (e == 'true') {
 					const Toast = Swal.mixin({
 					  toast: true,
@@ -345,7 +290,7 @@ function desactivar(idusuario) {
 
 					Toast.fire({
 					  type: 'success',
-					  title: 'El usuario ha sido desactivado :)'
+					  title: 'El personal ha sido desactivado :)'
 					});
 				}
 				else {
@@ -358,7 +303,7 @@ function desactivar(idusuario) {
 
 					Toast.fire({
 					  type: 'error',
-					  title: 'Ups! No se pudo desactivar el usuario'
+					  title: 'Ups! No se pudo desactivar el personal'
 					});
 				}
 				tabla.ajax.reload();
@@ -367,8 +312,8 @@ function desactivar(idusuario) {
 		});
 }
 
-//Función para activar usuarios
-function activar(idusuario) {
+//Función para activar personal
+function activar(idpersonal) {
 
 	const swalWithBootstrapButtons = Swal.mixin({
 		  customClass: {
@@ -380,7 +325,7 @@ function activar(idusuario) {
 
 		swalWithBootstrapButtons.fire({
 		  title: '¿Estas seguro?',
-		  text: "¿Quieres activar a este usuario?",
+		  text: "¿Quieres activar a esta persona?",
 		  type: 'warning',
 		  showCancelButton: true,
 		  confirmButtonText: 'Activar',
@@ -388,7 +333,7 @@ function activar(idusuario) {
 		  reverseButtons: true
 		}).then((result) => {
 		  if (result.value) {
-		  	$.post('../controladores/usuario.php?op=activar', {idusuario: idusuario}, function (e) {
+		  	$.post('../controladores/personal.php?op=activar', {idpersonal: idpersonal}, function (e) {
 				if (e == 'true') {
 					const Toast = Swal.mixin({
 					  toast: true,
@@ -399,7 +344,7 @@ function activar(idusuario) {
 
 					Toast.fire({
 					  type: 'success',
-					  title: 'El usuario ha sido activado :)'
+					  title: 'El personal ha sido activado :)'
 					});
 				}
 				else {
@@ -412,14 +357,13 @@ function activar(idusuario) {
 
 					Toast.fire({
 					  type: 'error',
-					  title: 'Ups! No se pudo activar el usuario'
+					  title: 'Ups! No se pudo activar el personal'
 					});
 				}
 				tabla.ajax.reload();
 			});  
 		  } 
 		});
-
 }
 
 //Función para mostrar o ocultar el formulario
@@ -430,12 +374,6 @@ function mostrarform(flag) {
 		$('#formularioregistros').show();
 		$('#btnGuardar').prop('disabled', false);
 		$('#btnagregar').hide();
-
-		//Mostramos los permisos 
-		$.post('../controladores/usuario.php?op=permisos', function (response) {
-			$('#permisos').html(response);
-		});
-
 	}
 	else{
 		$('#listadoregistros').show();
@@ -469,9 +407,10 @@ function limpiar() {
 	$('#celular').val('');
 	$('#fijo').val('');
 	$('#formularioregistros').removeClass('was-validated');
-	$('#rol').val('');
-	$('#rol').selectpicker('refresh');
-	// $('#').attr('src', '');
+	$('#cargo').val('');
+	$('#cargo').selectpicker('refresh');
+	$('#idpersonal').val('');
+	$('#idpersona').val('');
 }
 
 //Determinar documento 
@@ -487,7 +426,4 @@ function tipo_documento(documento) {
 	}
 }
 
-
 init();
-
-

@@ -7,9 +7,9 @@ require_once '../config/conexion.php';
 require_once 'Persona.php';
 
 /**
- * Modelo de Usuario
+ * Modelo de Personal
  */
-class Usuario //extends Persona
+class Personal //extends Persona
 {
 	
 	#Constructor de la clase
@@ -19,28 +19,17 @@ class Usuario //extends Persona
 	}
 
 	#Método para insertar registros
-	function insertar($idpersona, $usuario, $clave, $rol, $img, $i_fallidos, $estatus, $permisos)
+	function insertar($idpersona, $cargo, $estatus)
 	{
-		$sql = "INSERT INTO usuario (idpersona, usuario, clave, rol, img, i_fallidos, estatus) VALUES('$idpersona', '$usuario', '$clave', '$rol', '$img', '$i_fallidos', '$estatus')";
+		$sql = "INSERT INTO personal (id, idpersona, cargo, estatus) VALUES(NULL, '$idpersona', '$cargo', '$estatus')";
 
-		$idusuarionew = ejecutarConsulta_retornarID($sql);
-
-		$num_elementos = 0;
-		$sw = true;
-
-		while ($num_elementos < count($permisos)) {
-			$sql_detalle = "INSERT INTO usuario_permiso (idusuario, idpermiso) VALUES('$idusuarionew', '$permisos[$num_elementos]')";
-			ejecutarConsulta($sql_detalle) or $sw = false;
-			$num_elementos = $num_elementos + 1;
-		}
-
-		return $sw;
+		return ejecutarConsulta($sql);
 	}
 
 	#Método para editar registros
-	function editar($id, $cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac)
+	function editar($id, $cargo)
 	{
-		$sql = "UPDATE persona SET cedula='$cedula', p_nombre = '$p_nombre', s_nombre = '$s_nombre', p_apellido = '$p_apellido', s_apellido = '$s_apellido', genero = '$genero', f_nac = '$f_nac'  WHERE id = '$id'";
+		$sql = "UPDATE personal SET cargo='$cargo' WHERE id = '$id'";
 
 		return ejecutarConsulta($sql);
 
@@ -56,53 +45,56 @@ class Usuario //extends Persona
 	#Método para listar todos los usuarios
 	function listar()
 	{
-		$sql = "SELECT p.p_nombre, p.p_apellido, p.email, u.usuario, u.rol, u.estatus, u.id FROM persona as p INNER JOIN usuario as u ON p.id = u.idpersona";
+		$sql = "SELECT p.cedula, p.p_nombre, p.p_apellido, p.email, pe.estatus, pe.id, pe.cargo, (SELECT telefono FROM telefono WHERE tipo = 'M' AND p.id = idpersona) as celular, (SELECT telefono FROM telefono WHERE tipo = 'F' AND p.id = idpersona) as fijo FROM persona as p INNER JOIN personal as pe ON p.id = pe.idpersona";
 
 		return ejecutarConsulta($sql);
 	}
 
-	function mostrar($idusuario)
+	function mostrar($idpersonal)
 	{
-		$sql = "SELECT * FROM usuario WHERE idusuario = '$idusuario'";
+		$sql = "SELECT p.cedula, p.p_nombre, p.s_nombre, p.p_apellido, p.s_apellido, p.genero, p.f_nac, p.email, pe.cargo, pe.id, (SELECT telefono FROM telefono WHERE tipo = 'M' AND idpersona = p.id) as movil, (SELECT telefono FROM telefono WHERE tipo = 'F' AND idpersona = p.id) as fijo FROM persona p INNER JOIN personal pe ON p.id = pe.idpersona WHERE pe.id = '$idpersonal'";
 
 		return ejecutarConsultaSimpleFila($sql);
 	}
 
-	#Método para vefiricar el acceso al sistema
-	function verificar($usuario, $clave)
+	#Método para obtener el id de la persona
+	function idpersona($idpersonal)
 	{
-		$sql = "SELECT u.id, u.usuario, u.rol, u.img, p.p_nombre, p.p_apellido, p.genero, p.email FROM usuario as u INNER JOIN persona as p ON u.idpersona = p.id WHERE u.usuario = '$usuario' AND u.clave = '$clave' AND u.estatus = '1'";
+		$sql = "SELECT idpersona FROM personal WHERE id = '$idpersonal'";
 
-		return ejecutarConsulta($sql);
-
+		return ejecutarConsultaSimpleFila($sql);
 	}
 
-	#Método para desactivar usuarios
-	function desactivar($idusuario)
+	#Método para desactivar idpersonal
+	function desactivar($idpersonal)
 	{
-		$sql = "UPDATE usuario SET estatus = '0' WHERE id = '$idusuario'";
+		$sql = "UPDATE personal SET estatus = '0' WHERE id = '$idpersonal'";
 
-		return ejecutarConsulta($sql);
-
-	}
-
-	#Método para desactivar usuarios
-	function activar($idusuario)
-	{
-		$sql = "UPDATE usuario SET estatus = '1' WHERE id = '$idusuario'";
-
-		return ejecutarConsulta($sql);
-
-	}
-
-	#Método para comprobar si existe el usuario
-	function comprobarusuario($cedula)
-	{
-		$sql = "SELECT usuario FROM usuario WHERE usuario = '$cedula'";
 		return ejecutarConsulta($sql);
 	}
 
+	#Método para activar idpersonal
+	function activar($idpersonal)
+	{
+		$sql = "UPDATE personal SET estatus = '1' WHERE id = '$idpersonal'";
 
+		return ejecutarConsulta($sql);
+	}
+
+	#Método para comprobar si existe el personal
+	function comprobarpersonal($cedula)
+	{
+		$sql = "SELECT p.p_nombre, p.p_apellido FROM persona p INNER JOIN personal pe ON pe.idpersona = p.id WHERE p.cedula = '$cedula'";
+		return ejecutarConsulta($sql);
+	}
+
+	#Método para comprobar si existe la persona
+	function comprobarpersona($cedula)
+	{
+		$sql = "SELECT p.id, p.cedula, p.p_nombre, p.s_nombre, p.p_apellido, p.s_apellido, p.genero, p.f_nac, p.email, GROUP_CONCAT(IF(t.tipo = 'M', t.telefono, null)) celular, GROUP_CONCAT(IF(t.tipo = 'F', t.telefono, null)) fijo FROM persona p LEFT JOIN telefono t ON p.id = t.idpersona WHERE p.cedula = '$cedula'";
+
+		return ejecutarConsulta($sql);
+	}
 
 	/*===========================================================
 	=            Funciones relacionadas con Director            =

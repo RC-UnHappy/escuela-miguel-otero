@@ -114,7 +114,6 @@ function comprobarRepresentante() {
 			}
 		});
 	}
-
 }
 
 //Comprueba que la persona no esté registrada
