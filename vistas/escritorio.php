@@ -9,120 +9,183 @@ require_once 'modules/header.php';
 
 <!-- Contenido -->
       <main class="main">
-        <!-- Breadcrumb-->
+       
         <ol class="breadcrumb">
           <li class="breadcrumb-item">Home</li>
-          <li class="breadcrumb-item">
-            <a href="#">Admin</a>
-          </li>
-          <li class="breadcrumb-item active">Dashboard</li>
-          <!-- Breadcrumb Menu-->
-          <li class="breadcrumb-menu d-md-down-none">
-            <div class="btn-group" role="group" aria-label="Button group">
-              <a class="btn" href="#">
-                <i class="icon-speech"></i>
-              </a>
-              <a class="btn" href="./">
-                <i class="icon-graph"></i>  Dashboard</a>
-              <a class="btn" href="#">
-                <i class="icon-settings"></i>  Settings</a>
-            </div>
-          </li>
+          <li class="breadcrumb-item active">Escritorio</li>
         </ol>
+
         <div class="container-fluid">
           <div class="animated fadeIn">
+
             <div class="row">
+
+              <div class="col-sm-6 col-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="h1 text-muted text-right mb-4">
+                      <i class="fas fa-calendar-alt text-info" style="font-size: 50px;"></i>
+                    </div>
+                    <div class="text-value">2019 - 2020</div>
+                    <small class="text-muted text-uppercase font-weight-bold">Periodo Escolar</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="h1 text-muted text-right mb-4">
+                      <i class="fas fa-venus-mars text-success" style="font-size: 50px;"></i>
+                    </div>
+                    <div class="text-value" id="mostrarMatricula">400</div>
+                    <small class="text-muted text-uppercase font-weight-bold">Total Estudiantes</small>
+                  </div>
+                </div>
+              </div>
+
               <div class="col-sm-6 col-lg-3">
-                <div class="card text-white bg-primary">
-                  <div class="card-body pb-0">
+                <div class="card text-white bg-pink">
+                  <div class="card-body pb-3">
+                    <i class="fas fa-venus" style="font-size: 30px;"></i>
+                    <div class="text-value" id="mostrarHembras">200</div>
+                    <div>Niñas</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-blue">
+                  <div class="card-body pb-3">
+                    <i class="fas fa-mars" style="font-size: 30px;"></i>
+                    <div class="text-value" id="mostrarVarones">200</div>
+                    <div>Niños</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-teal">
+                  <div class="card-body pb-3">
                     <div class="btn-group float-right">
                       <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="icon-settings"></i>
+                        <i class="fa fa-cog text-white"></i>
                       </button>
                       <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        <a class="dropdown-item" href="personal.php">Ir a Personal</a>
                       </div>
                     </div>
-                    <div class="text-value">9.823</div>
-                    <div>Members online</div>
-                  </div>
-                  <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
-                    <canvas class="chart" id="card-chart1" height="70"></canvas>
+                    <i class="fas fa-chalkboard-teacher" style="font-size: 30px;"></i>
+                    <div class="text-value" id="mostrarDocentes">20</div>
+                    <div>Docentes de Aula</div>
                   </div>
                 </div>
               </div>
-              <!-- /.col-->
+
               <div class="col-sm-6 col-lg-3">
-                <div class="card text-white bg-info">
-                  <div class="card-body pb-0">
-                    <button class="btn btn-transparent p-0 float-right" type="button">
-                      <i class="icon-location-pin"></i>
-                    </button>
-                    <div class="text-value">9.823</div>
-                    <div>Members online</div>
-                  </div>
-                  <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
-                    <canvas class="chart" id="card-chart2" height="70"></canvas>
-                  </div>
-                </div>
-              </div>
-              <!-- /.col-->
-              <div class="col-sm-6 col-lg-3">
-                <div class="card text-white bg-warning">
-                  <div class="card-body pb-0">
+                <div class="card text-white bg-indigo">
+                  <div class="card-body pb-3">
                     <div class="btn-group float-right">
                       <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="icon-settings"></i>
+                        <i class="fa fa-cog text-white"></i>
                       </button>
                       <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        <a class="dropdown-item" href="personal.php">Ir a Personal</a>
                       </div>
                     </div>
-                    <div class="text-value">9.823</div>
-                    <div>Members online</div>
-                  </div>
-                  <div class="chart-wrapper mt-3" style="height:70px;">
-                    <canvas class="chart" id="card-chart3" height="70"></canvas>
+                    <i class="fas fa-user-md" style="font-size: 30px;"></i>
+                    <div class="text-value" id="mostrarEspecialistas">7</div>
+                    <div>Docentes Especialistas</div>
                   </div>
                 </div>
               </div>
-              <!-- /.col-->
-              <div class="col-sm-6 col-lg-3">
-                <div class="card text-white bg-danger">
-                  <div class="card-body pb-0">
-                    <div class="btn-group float-right">
-                      <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="icon-settings"></i>
-                      </button>
-                      <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
+
+              <div class="col-6 col-lg-3">
+                <div class="card">
+                  <div class="card-body p-3 d-flex align-items-center">
+                    <i class="fa fa-ruler bg-orange mr-3 text-white" style="font-size: 70px; padding: 20px;"></i>
+                    <div>
+                      <div class="text-value-sm" style="color: #f8cb00" id="mostrarAmbientes">20
+                      </div>
+                      <div class="text-muted text-uppercase font-weight-bold small">Ambientes
                       </div>
                     </div>
-                    <div class="text-value">9.823</div>
-                    <div>Members online</div>
                   </div>
-                  <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
-                    <canvas class="chart" id="card-chart4" height="70"></canvas>
+                  <div class="card-footer px-3 py-2">
+                    <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="ambiente.php">
+                      <span class="small font-weight-bold">Ir a Ambiente</span>
+                      <i class="fa fa-angle-right"></i>
+                    </a>
                   </div>
                 </div>
               </div>
-              <!-- /.col-->
+
+              <div class="col-6 col-lg-3">
+                <div class="card">
+                  <div class="card-body p-3 d-flex align-items-center">
+                    <i class="fa fa-suitcase bg-purple mr-3 text-white" style="font-size: 70px; padding: 20px;"></i>
+                    <div>
+                      <div class="text-value-sm" style="color: #6f42c1" id="mostrarAdministrativos">3</div>
+                      <div class="text-muted text-uppercase font-weight-bold small">
+                        Personal Administrativo
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-footer px-3 py-2">
+                    <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="personal.php">
+                      <span class="small font-weight-bold">Ir a Personal</span>
+                      <i class="fa fa-angle-right"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6 col-lg-3">
+                <div class="card">
+                  <div class="card-body p-3 d-flex align-items-center">
+                    <i class="fas fa-hard-hat bg-blue mr-3 text-white" style="font-size: 70px; padding: 20px;"></i>
+                    <div>
+                      <div class="text-value-sm" style="color: #20a8d8" id="mostrarObreros">3</div>
+                      <div class="text-muted text-uppercase font-weight-bold small">Personal Obrero</div>
+                    </div>
+                  </div>
+                  <div class="card-footer px-3 py-2">
+                    <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="personal.php">
+                      <span class="small font-weight-bold">Ir a Personal</span>
+                      <i class="fa fa-angle-right"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6 col-lg-3">
+                <div class="card">
+                  <div class="card-body p-3 d-flex align-items-center">
+                    <i class="fas fa-user-secret bg-yellow mr-3 text-white" style="font-size: 70px; padding: 20px;"></i>
+                    <div>
+                      <div class="text-value-sm" style="color: #ffc107" id="mostrarVigilantes">3</div>
+                      <div class="text-muted text-uppercase font-weight-bold small">Vigilantes</div>
+                    </div>
+                  </div>
+                  <div class="card-footer px-3 py-2">
+                    <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="personal.php">
+                      <span class="small font-weight-bold">Ir a Personal</span>
+                      <i class="fa fa-angle-right"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
             </div>
-            <!-- /.row-->
-            <div class="card">
+
+           <!--  <div class="card">
               <div class="card-body">
                 <div class="row">
                   <div class="col-sm-5">
                     <h4 class="card-title mb-0">Traffic</h4>
                     <div class="small text-muted">November 2017</div>
                   </div>
-                  <!-- /.col-->
+
                   <div class="col-sm-7 d-none d-md-block">
                     <button class="btn btn-primary float-right" type="button">
                       <i class="icon-cloud-download"></i>
@@ -139,9 +202,9 @@ require_once 'modules/header.php';
                       </label>
                     </div>
                   </div>
-                  <!-- /.col-->
+
                 </div>
-                <!-- /.row-->
+
                 <div class="chart-wrapper" style="height:300px;margin-top:40px;">
                   <canvas class="chart" id="main-chart" height="300"></canvas>
                 </div>
@@ -185,9 +248,9 @@ require_once 'modules/header.php';
                   </div>
                 </div>
               </div>
-            </div>
-            <!-- /.card-->
-            <div class="row">
+            </div> -->
+
+          <!--   <div class="row">
               <div class="col-sm-6 col-lg-3">
                 <div class="brand-card">
                   <div class="brand-card-header bg-facebook">
@@ -208,7 +271,7 @@ require_once 'modules/header.php';
                   </div>
                 </div>
               </div>
-              <!-- /.col-->
+
               <div class="col-sm-6 col-lg-3">
                 <div class="brand-card">
                   <div class="brand-card-header bg-twitter">
@@ -229,7 +292,7 @@ require_once 'modules/header.php';
                   </div>
                 </div>
               </div>
-              <!-- /.col-->
+
               <div class="col-sm-6 col-lg-3">
                 <div class="brand-card">
                   <div class="brand-card-header bg-linkedin">
@@ -250,7 +313,7 @@ require_once 'modules/header.php';
                   </div>
                 </div>
               </div>
-              <!-- /.col-->
+ 
               <div class="col-sm-6 col-lg-3">
                 <div class="brand-card">
                   <div class="brand-card-header bg-google-plus">
@@ -271,10 +334,10 @@ require_once 'modules/header.php';
                   </div>
                 </div>
               </div>
-              <!-- /.col-->
+
             </div>
-            <!-- /.row-->
-            <div class="row">
+ -->
+            <!-- <div class="row">
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header">Traffic & Sales</div>
@@ -292,7 +355,7 @@ require_once 'modules/header.php';
                               </div>
                             </div>
                           </div>
-                          <!-- /.col-->
+
                           <div class="col-sm-6">
                             <div class="callout callout-danger">
                               <small class="text-muted">Recuring Clients</small>
@@ -303,9 +366,9 @@ require_once 'modules/header.php';
                               </div>
                             </div>
                           </div>
-                          <!-- /.col-->
+
                         </div>
-                        <!-- /.row-->
+
                         <hr class="mt-0">
                         <div class="progress-group mb-4">
                           <div class="progress-group-prepend">
@@ -399,7 +462,7 @@ require_once 'modules/header.php';
                           </div>
                         </div>
                       </div>
-                      <!-- /.col-->
+
                       <div class="col-sm-6">
                         <div class="row">
                           <div class="col-sm-6">
@@ -412,7 +475,7 @@ require_once 'modules/header.php';
                               </div>
                             </div>
                           </div>
-                          <!-- /.col-->
+
                           <div class="col-sm-6">
                             <div class="callout callout-success">
                               <small class="text-muted">Organic</small>
@@ -423,9 +486,9 @@ require_once 'modules/header.php';
                               </div>
                             </div>
                           </div>
-                          <!-- /.col-->
+
                         </div>
-                        <!-- /.row-->
+
                         <hr class="mt-0">
                         <div class="progress-group">
                           <div class="progress-group-header">
@@ -504,9 +567,9 @@ require_once 'modules/header.php';
                           </div>
                         </div>
                       </div>
-                      <!-- /.col-->
+
                     </div>
-                    <!-- /.row-->
+
                     <br>
                     <table class="table table-responsive-sm table-hover table-outline mb-0">
                       <thead class="thead-light">
@@ -525,7 +588,7 @@ require_once 'modules/header.php';
                         <tr>
                           <td class="text-center">
                             <div class="avatar">
-                              <img class="img-avatar" src="img/avatars/1.jpg" alt="admin@bootstrapmaster.com">
+                              <img class="img-avatar" src="../public/img/avatars/1.jpg" alt="admin@bootstrapmaster.com">
                               <span class="avatar-status badge-success"></span>
                             </div>
                           </td>
@@ -561,7 +624,7 @@ require_once 'modules/header.php';
                         <tr>
                           <td class="text-center">
                             <div class="avatar">
-                              <img class="img-avatar" src="img/avatars/2.jpg" alt="admin@bootstrapmaster.com">
+                              <img class="img-avatar" src="../public/img/avatars/2.jpg" alt="admin@bootstrapmaster.com">
                               <span class="avatar-status badge-danger"></span>
                             </div>
                           </td>
@@ -597,7 +660,7 @@ require_once 'modules/header.php';
                         <tr>
                           <td class="text-center">
                             <div class="avatar">
-                              <img class="img-avatar" src="img/avatars/3.jpg" alt="admin@bootstrapmaster.com">
+                              <img class="img-avatar" src="../public/img/avatars/3.jpg" alt="admin@bootstrapmaster.com">
                               <span class="avatar-status badge-warning"></span>
                             </div>
                           </td>
@@ -633,7 +696,7 @@ require_once 'modules/header.php';
                         <tr>
                           <td class="text-center">
                             <div class="avatar">
-                              <img class="img-avatar" src="img/avatars/4.jpg" alt="admin@bootstrapmaster.com">
+                              <img class="img-avatar" src="../public/img/avatars/4.jpg" alt="admin@bootstrapmaster.com">
                               <span class="avatar-status badge-secondary"></span>
                             </div>
                           </td>
@@ -669,7 +732,7 @@ require_once 'modules/header.php';
                         <tr>
                           <td class="text-center">
                             <div class="avatar">
-                              <img class="img-avatar" src="img/avatars/5.jpg" alt="admin@bootstrapmaster.com">
+                              <img class="img-avatar" src="../public/img/avatars/5.jpg" alt="admin@bootstrapmaster.com">
                               <span class="avatar-status badge-success"></span>
                             </div>
                           </td>
@@ -705,7 +768,7 @@ require_once 'modules/header.php';
                         <tr>
                           <td class="text-center">
                             <div class="avatar">
-                              <img class="img-avatar" src="img/avatars/6.jpg" alt="admin@bootstrapmaster.com">
+                              <img class="img-avatar" src="../public/img/avatars/6.jpg" alt="admin@bootstrapmaster.com">
                               <span class="avatar-status badge-danger"></span>
                             </div>
                           </td>
@@ -743,9 +806,9 @@ require_once 'modules/header.php';
                   </div>
                 </div>
               </div>
-              <!-- /.col-->
-            </div>
-            <!-- /.row-->
+
+            </div> -->
+
           </div>
         </div>
       </main>
@@ -753,5 +816,9 @@ require_once 'modules/header.php';
 
 <?php 
 require_once 'modules/footer.php';
+?>
+<script src="scripts/escritorio.js"></script>
+<?php 
+ob_end_flush();
 ?>
     

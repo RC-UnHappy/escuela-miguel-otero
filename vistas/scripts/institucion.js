@@ -2,6 +2,10 @@
 
 function init() {
 
+	mostrarform(false);
+
+	mostrarDatosInstitucion();
+
 	//Se ejecuta cuando se envia el formulario
 	$([institucion]).on('submit', function (event) {
 		if ($([institucion])[0].checkValidity()) {
@@ -52,6 +56,41 @@ function init() {
 	});		
 }
 
+//Funcion para mostrar los datos de la institución
+function mostrarDatosInstitucion() {
+	$.post('../controladores/institucion.php?op=mostrardatosinstitucion', function (data) {
+		data = JSON.parse(data);
+
+		$('#mostrarNombre').html(data.nombre);
+		$('#mostrarEstado').html(data.estado);
+		$('#mostrarMunicipio').html(data.municipio);
+		$('#mostrarParroquia').html(data.parroquia);
+		$('#mostrarDireccion').html(data.direccion);
+		$('#mostrarTelefono').html(data.telefono);
+		$('#mostrarCorreo').html(data.correo);
+		$('#mostrarDependencia').html(data.dependencia);
+		$('#mostrarCodDea').html(data.cod_dea);
+		$('#mostrarCodEstadistico').html(data.cod_estadistico);
+		$('#mostrarCodDependencia').html(data.cod_dependencia);
+		$('#mostrarCodElectoral').html(data.cod_electoral);
+		$('#mostrarFechaFundada').html(data.fecha_fundada);
+		$('#mostrarFechaBolivariana').html(data.fecha_bolivariana);
+		$('#mostrarClase').html(data.clase_plantel);
+		$('#mostrarCategoria').html(data.categoria);
+		$('#mostrarCondicion').html(data.condicion_estudio);
+		$('#mostrarTipoMatricula').html(data.tipo_matricula);
+		$('#mostrarTurno').html(data.turno);
+		$('#mostrarHorario').html(data.horario);
+		$('#mostrarMatricula').html('Total: '+data.estudiantes+' '+'Varones: '+data.varones+' '+'Hembras: '+data.hembras);
+		$('#mostrarAmbientes').html(data.ambientes);
+		$('#mostrarDocentes').html(data.docentes);
+		$('#mostrarEspecialistas').html(data.especialistas);
+		$('#mostrarAdministrativos').html(data.administrativos);
+		$('#mostrarObreros').html(data.obreros);
+		$('#mostrarVigilantes').html(data.vigilantes);
+	});
+}
+
 //Función para mostrar los estados
 function estados() {
 	$.post('../controladores/representante.php?op=listarestados', function (data) {
@@ -82,22 +121,16 @@ function guardaryeditar(event) {
 	event.preventDefault(); //Evita que se envíe el formulario automaticamente
 	// 
 	$('#btnGuardar').prop('disabled', true); //Deshabilita el botón submit para evitar que lo presionen dos veces
-	var formData = new FormData($([representante])[0]); //Se obtienen los datos del formulario
-	
-	var documento = formData.get('documento'); //Se obtiene el tipo de documento
-	documento = tipo_documento(documento);//Se llama la función que lo transforma Ej: 'Venezolano' = V-
-	
-	var cedula = formData.get('cedula');// Se obtiene la cédula 
-	
-	formData.set('cedula', documento+cedula);//Se le asigna a la cédula del formData el tipo de documento
+	var formData = new FormData($([institucion])[0]); //Se obtienen los datos del formulario
 
 	$.ajax({
-		url: '../controladores/representante.php?op=guardaryeditar', //Dirección a donde se envían los datos
+		url: '../controladores/institucion.php?op=guardaryeditar', //Dirección a donde se envían los datos
 		type: 'POST', //Método por el cual se envían los datos
 		data: formData, //Datos
 		contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
 		processData: false, //Evita que jquery transforme la data en un string
 		success: function (datos) {
+			// console.log("datos", datos);
 			if (datos == 'true') {
 				const Toast = Swal.mixin({
 				  toast: true,
@@ -108,10 +141,11 @@ function guardaryeditar(event) {
 
 				Toast.fire({
 				  type: 'success',
-				  title: 'Representante registrado exitosamente :)'
+				  title: 'Datos de la institucion registrados exitosamente :)'
 				});
 			}
-			if (datos == 'update') {
+			else if (datos == 'update') {
+				mostrarDatosInstitucion();
 				const Toast = Swal.mixin({
 				  toast: true,
 				  position: 'top-end',
@@ -121,7 +155,7 @@ function guardaryeditar(event) {
 
 				Toast.fire({
 				  type: 'success',
-				  title: 'Representante actualizado exitosamente :)'
+				  title: 'Datos de la institucion actualizados exitosamente :)'
 				});
 			}
 			else {
@@ -141,48 +175,17 @@ function guardaryeditar(event) {
 
 			mostrarform(false);
 			limpiar();
-			tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
-
 		}
-
 	});		
 }
 
 //Función para mostrar un registro para editar
-function mostrar(idrepresentante) {
-	$.post('../controladores/representante.php?op=mostrar',{idrepresentante: idrepresentante}, function (data) {	
+function mostrar() {
+	$.post('../controladores/institucion.php?op=mostrar', function (data) {	
 		data = JSON.parse(data);
 		mostrarform(true);
 
-		var documento = data.cedula.slice(0,2);
-		var cedula = data.cedula.slice(2);
-
-		if (documento == 'V-') {
-			documento = 'venezolano';
-		}
-		else if (documento == 'E-') {
-			documento = 'extranjero';
-		}
-		else if (documento == 'P-') {
-			documento = 'pasaporte';
-		}
-
-		$('#documento').val(documento);
-		$('#documento').selectpicker('refresh');
-		$('#cedula').val(cedula);
-		$('#p_nombre').val(data.p_nombre);
-		$('#s_nombre').val(data.s_nombre);
-		$('#p_apellido').val(data.p_apellido);
-		$('#s_apellido').val(data.s_apellido);
-		$('#genero').val(data.genero);
-		$('#genero').selectpicker('refresh');
-		$('#f_nac').val(data.f_nac);
-		$('#instruccion').val(data.instruccion);
-		$('#instruccion').selectpicker('refresh');
-		$('#oficio').val(data.oficio);
-		$('#email').val(data.email);
-		$('#celular').val(data.movil);
-		$('#fijo').val(data.fijo);
+		$('#nombre').val(data.nombre);
 		$('#estado').val(data.idestado);
 		$('#estado').selectpicker('refresh');
 		$('#municipio').html('<option value="'+data.idmunicipio+'">'+data.municipio+'</option>');
@@ -192,7 +195,22 @@ function mostrar(idrepresentante) {
 		$('#parroquia').prop('disabled', false);
 		$('#parroquia').selectpicker('refresh');
 		$('#direccion').val(data.direccion);
-		$('#idrepresentante').val(data.idrepresentante);
+		$('#telefono').val(data.telefono);
+		$('#correo').val(data.correo);
+		$('#dependencia').val(data.dependencia);
+		$('#cod_dea').val(data.cod_dea);
+		$('#cod_estadistico').val(data.cod_estadistico);
+		$('#cod_dependencia').val(data.cod_dependencia);
+		$('#cod_electoral').val(data.cod_electoral);
+		$('#fecha_fundada').val(data.fecha_fundada);
+		$('#fecha_bolivariana').val(data.fecha_bolivariana);
+		$('#clase_plantel').val(data.clase_plantel);
+		$('#categoria').val(data.categoria);
+		$('#condicion_estudio').val(data.condicion_estudio);
+		$('#tipo_matricula').val(data.tipo_matricula);
+		$('#turno').val(data.turno);
+		$('#horario').val(data.horario);
+		$('#idinstitucion').val(data.id);
 	});
 }
 
@@ -200,15 +218,15 @@ function mostrar(idrepresentante) {
 function mostrarform(flag) {
 	limpiar();
 	if (flag) {
-		$('#listadoregistros').hide();
+		$('#datosInstitucion').hide();
 		$('#formularioregistros').show();
 		$('#btnGuardar').prop('disabled', false);
-		$('#btnagregar').hide();
+		$('#btneditar').hide();
 	}
 	else{
-		$('#listadoregistros').show();
+		$('#datosInstitucion').show();
 		$('#formularioregistros').hide();
-		$('#btnagregar').show();
+		$('#btneditar').show();
 	}
 }
 
@@ -220,38 +238,32 @@ function cancelarform() {
 
 //Función para limpiar el formulario
 function limpiar() {
-	$('#documento').val('');
-	$('#documento').selectpicker('refresh');
-	$('#cedula').removeClass('is-invalid');
-	$('#cedula').removeClass('is-valid');
-	$('#cedula').val('');
-	$('#p_nombre').val('');
-	$('#s_nombre').val('');
-	$('#p_apellido').val('');
-	$('#s_apellido').val('');
-	$('#genero').val('');
-	$('#genero').selectpicker('refresh');
-	$('#icono_genero').removeClass('bg-primary');
-	$('#icono_genero').removeClass('bg-danger');
-	$('#instruccion').val('');
-	$('#instruccion').selectpicker('refresh');
-	$('#oficio').val('');
-	$('#f_nac').val('');
-	$('#email').val('');
-	$('#celular').val('');
-	$('#fijo').val('');
-	$('#estado').val('');
-	$('#estado').selectpicker('refresh');
-	$('#municipio').html('<option value="">Seleccione</option>');
-	$('#municipio').prop('disabled', true);
-	$('#municipio').selectpicker('refresh');
-	$('#parroquia').html('<option value="">Seleccione</option>');
-	$('#parroquia').prop('disabled', true);
-	$('#parroquia').selectpicker('refresh');
-	$('#direccion').val('');
-	$('#idrepresentante').val('');
-	$('#idpersona').val('');
-	$('#formularioregistros').removeClass('was-validated');
+		$('#nombre').val('');
+		$('#estado').val('');
+		$('#estado').selectpicker('refresh');
+		$('#municipio').html('<option value="">Seleccione</option>');
+		$('#municipio').prop('disabled', true);
+		$('#municipio').selectpicker('refresh');
+		$('#parroquia').html('<option value="">Seleccione</option>');
+		$('#parroquia').prop('disabled', true);
+		$('#parroquia').selectpicker('refresh');
+		$('#direccion').val('');
+		$('#telefono').val('');
+		$('#correo').val('');
+		$('#dependencia').val('');
+		$('#cod_dea').val('');
+		$('#cod_estadistico').val('');
+		$('#cod_dependencia').val('');
+		$('#cod_electoral').val('');
+		$('#fecha_fundada').val('');
+		$('#fecha_bolivariana').val('');
+		$('#clase_plantel').val('');
+		$('#categoria').val('');
+		$('#condicion_estudio').val('');
+		$('#tipo_matricula').val('');
+		$('#turno').val('');
+		$('#horario').val('');
+		$('#idinstitucion').val('');
 }
 
 init();

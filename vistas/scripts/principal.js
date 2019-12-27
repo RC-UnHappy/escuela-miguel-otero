@@ -108,10 +108,4 @@ $('.genero').on('change', function () {
 	}
 });
 
-//Función para actualizar la información del usuario
-function actualizarPerfil(id) {
-	$(location).attr('href', 'usuario.php?actualizarPerfil&id='+id);
-}
-
-
 fecha_actual();

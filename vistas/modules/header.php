@@ -97,12 +97,15 @@ if (strlen(session_id()) < 1)
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" id="dropdownMenuLink">
+            
             <img class="img-avatar" src="<?php 
             if(empty($_SESSION['img'] ) && $_SESSION['genero'] == 'M') { echo '../files/perfil/hombre.jpg';} 
             elseif (empty($_SESSION['img'] ) && $_SESSION['genero'] == 'F') {echo '../files/perfil/mujer.jpg';} 
             else { echo $_SESSION['img'];}?>" alt="Imagen">
+          
+            
             <span class="hidden-xs"><?php echo ucfirst($_SESSION['p_nombre']).' '.ucfirst($_SESSION['p_apellido']); ?></span>
-
+            
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
             <div class="dropdown-header text-center">
