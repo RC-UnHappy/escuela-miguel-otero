@@ -26,7 +26,7 @@ require_once 'modules/header.php';
                     <div class="h1 text-muted text-right mb-4">
                       <i class="fas fa-calendar-alt text-info" style="font-size: 50px;"></i>
                     </div>
-                    <div class="text-value">2019 - 2020</div>
+                    <div class="text-value" id="mostrarPeriodo">2019 - 2020</div>
                     <small class="text-muted text-uppercase font-weight-bold">Periodo Escolar</small>
                   </div>
                 </div>

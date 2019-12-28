@@ -18,6 +18,18 @@ function mostrarDatosInstitucion() {
 		$('#mostrarObreros').html(data.obreros);
 		$('#mostrarVigilantes').html(data.vigilantes);
 	});
+
+	$.post('../controladores/periodo-escolar.php?op=verificar',function (data) {
+		data = JSON.parse(data);
+
+		if (data != null) {
+			$('#mostrarPeriodo').html(data.periodo);
+		}
+		else {
+			$('#mostrarPeriodo').html('<a class="badge badge-danger text-white" href="periodo-escolar.php">Ir a Período Escolar</a>');
+
+		}
+	})
 }
 
 init();

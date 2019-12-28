@@ -57,8 +57,6 @@ if (strlen(session_id()) < 1)
           <i class="fas fa-school" style="font-size: 26px;"></i>
           <em>Escuela M.O.S</em>
         </div>
-        <!-- <img class="navbar-brand-full" src="../public/img/brand/logo.svg" width="89" height="25" alt="CoreUI Logo"> -->
-        <!-- <img class="navbar-brand-minimized" src="../public/img/brand/sygnet.svg" width="30" height="30" alt="CoreUI Logo"> -->
         <i class="navbar-brand-minimized fas fa-school" style="font-size: 26px;"></i>
       </a>
 
@@ -221,6 +219,18 @@ if (strlen(session_id()) < 1)
                 <li class="nav-item">
                   <a class="nav-link" href="grado.php">
                     <i class="nav-icon fas fa-pencil-ruler"></i> Grado
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="periodo-escolar.php">
+                    <i class="nav-icon fas fa-calendar-alt"></i> Período Escolar
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="planificacion.php">
+                    <i class="nav-icon fas fa-tasks"></i> Planificación
                   </a>
                 </li>
 
