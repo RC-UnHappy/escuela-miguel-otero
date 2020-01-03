@@ -68,29 +68,40 @@ switch ($_GET['op']) {
 	case 'listar':
 
 		$rspta = $grado->listar();
-		
-		while ($reg = $rspta->fetch_object()) {
 
-			$data[] = array('0' => ($reg->estatus) ? '<button class="btn btn-outline-primary " title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#gradoModal"><i class="fas fa-edit"></i></button>'.
+		if ($rspta->num_rows != 0) {
 
-				' <button class="btn btn-outline-danger" title="Desactivar" onclick="desactivar('.$reg->id.')"> <i class="fas fa-times"> </i></button> '
+			while ($reg = $rspta->fetch_object()) {
 
-					 :
+				$data[] = array('0' => ($reg->estatus) ? '<button class="btn btn-outline-primary " title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#gradoModal"><i class="fas fa-edit"></i></button>'.
 
-				 '<button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#gradoModal"><i class="fa fa-edit"></i></button>'.
+					' <button class="btn btn-outline-danger" title="Desactivar" onclick="desactivar('.$reg->id.')"> <i class="fas fa-times"> </i></button> '
 
-				 ' <button class="btn btn-outline-success" title="Activar" onclick="activar('.$reg->id.')"><i class="fa fa-check"></i></button> ',
+						 :
 
-				 	'1' => $reg->grado.'º');
+					 '<button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#gradoModal"><i class="fa fa-edit"></i></button>'.
+
+					 ' <button class="btn btn-outline-success" title="Activar" onclick="activar('.$reg->id.')"><i class="fa fa-check"></i></button> ',
+
+					 	'1' => $reg->grado.'º');
+			}
+
+			$results = array(
+				"draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+				"recordsTotal" => count($data), #Se envía el total de registros al datatable
+				"recordsFiltered" => count($data), #Se envía el total de registros a visualizar
+				"data" => $data #datos en un array
+
+			);
 		}
-
-		$results = array(
-			"draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
-			"recordsTotal" => count($data), #Se envía el total de registros al datatable
-			"recordsFiltered" => count($data), #Se envía el total de registros a visualizar
-			"data" => $data #datos en un array
-
-		);
+		else {
+			$results = array(
+				"draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+				"recordsTotal" => 0, #Se envía el total de registros al datatable
+				"recordsFiltered" => 0, #Se envía el total de registros a visualizar
+				"data" => '' #datos en un array
+			);
+		}
 
 		echo json_encode($results);
 

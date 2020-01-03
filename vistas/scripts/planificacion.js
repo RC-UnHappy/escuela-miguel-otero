@@ -2,12 +2,12 @@
 
 function init() {
 
-	//Muestra la lista de secciones
+	//Muestra la lista de planificaciones
 	listar();
 
 	//Se ejecuta cuando se envia el formulario
-	$([formularioSeccion]).on('submit', function (event) {
-		if ($([formularioSeccion])[0].checkValidity()) {
+	$([formularioPlanificacion]).on('submit', function (event) {
+		if ($([formularioPlanificacion])[0].checkValidity()) {
 			guardaryeditar(event);
 		}
 		else {
@@ -15,40 +15,100 @@ function init() {
 		}
 	});
 
-	//Se ejecuta al ingresar la letra en el input de sección
-	$('#seccion').on('blur', function () {
-		comprobarSeccion(this);
-		
-	});
 
 	$('#btnAgregar').on('click', function () {
-		limpiar();
+		traerGrados();
+		traerAmbientes();
+		traerDocentes();
+	});
+
+	//Comprueba cada cambio en el select de grado
+	$('#grado').on('change', function () {
+		idgrado = $('#grado')[0].value;
+		if (idgrado != '') {
+			$('#seccion').prop('disabled', false);
+			traerSecciones(idgrado);
+		}
+		else {
+			$('#seccion').html('<option value="">Seleccione</option>');
+			$('#seccion').prop('disabled', true);
+			$('#seccion').selectpicker('refresh');
+		}
 	});
 
 	tabla.ajax.reload();
 			
 }
 
-//Comprueba que no exista la sección en el base de datos
-
-function comprobarSeccion(esto) {
-	var seccion = esto.value;
-	$.post('../controladores/seccion.php?op=comprobarseccion',{seccion: seccion}, function (data) {	
-		if (data != 'null') {
-			esto.value = '';
-			const Toast = Swal.mixin({
-				  toast: true,
-				  position: 'top-end',
-				  showConfirmButton: false,
-				  timer: 3000
-				});
-
-				Toast.fire({
-				  type: 'error',
-				  title: 'La sección ya existe'
-				});
+function traerGrados() {
+	$.post('../controladores/planificacion.php?op=traergrados', function (data) {
+		data = JSON.parse(data);
+		let grado = '';
+		if (data.length != 0) {
+			data.forEach ( function (indice, valor) {
+				grado += '<option value="'+indice.id+'">'+indice.grado+' º</option>';
+			});	
 		}
+		else {
+			grado = '<option value="">Debe Ingresar grados en configuración</option>';
+		}
+		$('#grado').html('<option value="">Seleccione</option>');
+		$('#grado').append(grado);
+		$('#grado').selectpicker('refresh');
+	});
+}
 
+function traerSecciones(grado) {
+	$.post('../controladores/planificacion.php?op=traersecciones',{idgrado:idgrado}, function (data) {
+		data = JSON.parse(data);
+		let seccion = '';
+		if (data.length != 0) {
+			data.forEach ( function (indice, valor) {
+				seccion += '<option value="'+indice.id+'">'+indice.seccion+'</option>';
+			});	
+		}
+		else {
+			seccion = '<option value="">Debe Ingresar secciones en configuración</option>';
+		}
+		$('#seccion').html('<option value="">Seleccione</option>');
+		$('#seccion').append(seccion);
+		$('#seccion').selectpicker('refresh');
+	});
+}
+
+function traerAmbientes() {
+	$.post('../controladores/planificacion.php?op=traerambientes', function (data) {
+		data = JSON.parse(data);
+		let ambiente = '';
+		if (data.length != 0) {
+			data.forEach ( function (indice, valor) {
+				ambiente += '<option value="'+indice.id+'">'+indice.ambiente+'</option>';
+			});	
+		}
+		else {
+			ambiente = '<option value="">Debe Ingresar ambientes en configuración</option>';
+		}
+		$('#ambiente').html('<option value="">Seleccione</option>');
+		$('#ambiente').append(ambiente);
+		$('#ambiente').selectpicker('refresh');
+	});
+}
+
+function traerDocentes() {
+	$.post('../controladores/planificacion.php?op=traerdocentes', function (data) {
+		data = JSON.parse(data);
+		let docente = '';
+		if (data.length != 0) {
+			data.forEach ( function (indice, valor) {
+				docente += '<option value="'+indice.id+'">'+indice.p_nombre+' '+indice.p_apellido+'</option>';
+			});	
+		}
+		else {
+			docente = '<option value="">Debe Ingresar docentes en configuración</option>';
+		}
+		$('#docente').html('<option value="">Seleccione</option>');
+		$('#docente').append(docente);
+		$('#docente').selectpicker('refresh');
 	});
 }
 
@@ -61,10 +121,10 @@ function cancelarform() {
 function guardaryeditar(event) {
 	event.preventDefault(); //Evita que se envíe el formulario automaticamente
 	// 
-	var formData = new FormData($([formularioSeccion])[0]); //Se obtienen los datos del formulario
+	var formData = new FormData($([formularioPlanificacion])[0]); //Se obtienen los datos del formulario
 	
 	$.ajax({
-		url: '../controladores/seccion.php?op=guardaryeditar', //Dirección a donde se envían los datos
+		url: '../controladores/planificacion.php?op=guardaryeditar', //Dirección a donde se envían los datos
 		type: 'POST', //Método por el cual se envían los datos
 		data: formData, //Datos
 		contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
@@ -80,7 +140,7 @@ function guardaryeditar(event) {
 
 				Toast.fire({
 				  type: 'success',
-				  title: 'Sección registrada exitosamente :)'
+				  title: 'Planificación registrada exitosamente :)'
 				});
 			}
 			else if (datos == 'update') {
@@ -93,7 +153,7 @@ function guardaryeditar(event) {
 
 				Toast.fire({
 				  type: 'success',
-				  title: 'Sección modificada exitosamente :)'
+				  title: 'Planificación modificada exitosamente :)'
 				});
 			}
 			else {
@@ -112,7 +172,19 @@ function guardaryeditar(event) {
 
 			limpiar();
 			tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
-			$('#seccionModal').modal('hide');
+			traerAmbientes();
+			traerDocentes();
+
+			idgrado = $('#grado')[0].value;
+			if (idgrado != '') {
+				$('#seccion').prop('disabled', false);
+				traerSecciones(idgrado);
+			}
+			else {
+				$('#seccion').html('<option value="">Seleccione</option>');
+				$('#seccion').prop('disabled', true);
+				$('#seccion').selectpicker('refresh');
+			}
 		}
 
 	});		
@@ -139,7 +211,7 @@ function listar() {
 		dom: 'lfrtip', 
 		"destroy": true, //Elimina cualquier elemente que se encuentre en la tabla
 		"ajax": {
-			url: '../controladores/seccion.php?op=listar',
+			url: '../controladores/planificacion.php?op=listar',
 			type: 'GET',
 			dataType: 'json'
 		},
@@ -148,14 +220,29 @@ function listar() {
 }
 
 //Función para mostrar un registro para editar
-function mostrar(idseccion) {
-	$.post('../controladores/seccion.php?op=mostrar',{idseccion: idseccion}, function (data) {	
+function mostrar(idplanificacion) {
+	$.post('../controladores/planificacion.php?op=mostrar',{idplanificacion: idplanificacion}, function (data) {	
 		data = JSON.parse(data);
+		// console.log("data", data);
 
-		$('#seccion').val(data.seccion);
-		$('#estatus').val(data.estatus);
-		$('#estatus').selectpicker('refresh');
-		$('#idseccion').val(data.id);
+		$.post('../controladores/planificacion.php?op=traergrados', function (data) {
+			data = JSON.parse(data);
+			let grado = '';
+			if (data.length != 0) {
+				data.forEach ( function (indice, valor) {
+					grado += '<option value="'+indice.id+'">'+indice.grado+' º</option>';
+				});	
+			}
+			else {
+				grado = '<option value="">Debe Ingresar grados en configuración</option>';
+			}
+			$('#grado').html('<option value="">Seleccione</option>');
+			$('#grado').append(grado);
+			$('#grado').selectpicker('refresh');
+		}).then(function () {
+			$('#grado').selectpicker('val', data.idgrado);
+		});
+		
 	});
 }
 
@@ -271,14 +358,10 @@ function activar(idseccion) {
 //Función para limpiar el formulario
 function limpiar() {
 	$('#seccion').val('');
-	$('#seccion').removeClass('is-invalid');
-	$('#estatus').val('');
-	$('#estatus').removeClass('is-invalid');
-	$('#estatus').selectpicker('refresh');
-	$('#idseccion').val('');
+	$('#seccion').prop('disabled', true);
+	$('#seccion').selectpicker('refresh');
+	$('#cupo').val('');
 	$('#formularioregistros').removeClass('was-validated');
 }
 
 init();
-
-

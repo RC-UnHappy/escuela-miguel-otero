@@ -157,7 +157,7 @@ function guardaryeditar(event) {
 				  title: 'Personal registrado exitosamente :)'
 				});
 			}
-			if (datos == 'update') {
+			else if (datos == 'update') {
 				const Toast = Swal.mixin({
 				  toast: true,
 				  position: 'top-end',

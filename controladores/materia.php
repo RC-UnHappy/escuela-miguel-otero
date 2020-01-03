@@ -3,23 +3,22 @@
 #Se inicia la sesión
 if (strlen(session_id() < 1)) session_start(); 
 
-#Se incluye el modelo de Ambiente
-require_once '../modelos/Ambiente.php';
+#Se incluye el modelo de Materia
+require_once '../modelos/Materia.php';
 
-#Se instancia el objeto de Ambiente
-$ambiente = new Ambiente();
+#Se instancia el objeto de Materia
+$Materia = new Materia();
 
-$idambiente = isset($_POST['idambiente']) ? limpiarCadena($_POST['idambiente']) : '';
-$numeroambiente = isset($_POST['ambiente']) ? limpiarCadena($_POST['ambiente']) : '';
+$idmateria = isset($_POST['idmateria']) ? limpiarCadena($_POST['idmateria']) : '';
+$materia = isset($_POST['materia']) ? limpiarCadena(mb_strtoupper($_POST['materia'])) : '';
 $estatus = isset($_POST['estatus']) ? limpiarCadena($_POST['estatus']) : '';
 
 #Se ejecuta un caso dependiendo del valor del parámetro GET
 switch ($_GET['op']) {
 	
-	case 'comprobarambiente': 
-		$numeroambiente = $_POST['ambiente'];
+	case 'comprobarmateria': 
 
-		$rspta = $ambiente->comprobarambiente($numeroambiente);
+		$rspta = $Materia->comprobarmateria($materia);
 		echo json_encode($rspta->fetch_object());
 		break;
 
@@ -32,10 +31,10 @@ switch ($_GET['op']) {
 		$sw = TRUE;
 
 		#Si la variable esta vacía quiere decir que es un nuevo registro
-		if (empty($idambiente)) {
+		if (empty($idmateria)) {
 			
-			#Se registra el ambiente
-			$ambiente->insertar($numeroambiente, $estatus) or $sw = FALSE;
+			#Se registra la materia
+			$Materia->insertar($materia, $estatus) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
@@ -50,8 +49,8 @@ switch ($_GET['op']) {
 		}
 		else{
 
-			#Se registra el ambiente
-			$ambiente->editar($idambiente, $numeroambiente, $estatus) or $sw = FALSE;
+			#Se edita la materia
+			$Materia->editar($idmateria, $materia, $estatus) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
@@ -67,23 +66,23 @@ switch ($_GET['op']) {
 
 	case 'listar':
 
-		$rspta = $ambiente->listar();
+		$rspta = $Materia->listar();
 
 		if ($rspta->num_rows != 0) {
-
+			
 			while ($reg = $rspta->fetch_object()) {
 
-				$data[] = array('0' => ($reg->estatus) ? '<button class="btn btn-outline-primary " title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#ambienteModal"><i class="fas fa-edit"></i></button>'.
+				$data[] = array('0' => ($reg->estatus) ? '<button class="btn btn-outline-primary " title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#materiaModal"><i class="fas fa-edit"></i></button>'.
 
 					' <button class="btn btn-outline-danger" title="Desactivar" onclick="desactivar('.$reg->id.')"> <i class="fas fa-times"> </i></button> '
 
 						 :
 
-					 '<button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#ambienteModal"><i class="fa fa-edit"></i></button>'.
+					 '<button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#materiaModal"><i class="fa fa-edit"></i></button>'.
 
 					 ' <button class="btn btn-outline-success" title="Activar" onclick="activar('.$reg->id.')"><i class="fa fa-check"></i></button> ',
 
-					 	'1' => $reg->ambiente);
+					 	'1' => $reg->materia);
 			}
 
 			$results = array(
@@ -102,7 +101,6 @@ switch ($_GET['op']) {
 				"data" => '' #datos en un array
 			);
 		}
-		
 
 		echo json_encode($results);
 
@@ -110,7 +108,7 @@ switch ($_GET['op']) {
 
 	case 'mostrar':
 	
-		$rspta = $ambiente->mostrar($idambiente);
+		$rspta = $Materia->mostrar($idmateria);
 
 		#Se codifica el resultado utilizando Json
 		echo json_encode($rspta);
@@ -119,13 +117,13 @@ switch ($_GET['op']) {
 
 	case 'desactivar': 
 
-		$rspta = $ambiente->desactivar($idambiente);
+		$rspta = $Materia->desactivar($idmateria);
 		echo $rspta ? 'true' : 'false';
 		break;
 
 	case 'activar': 
 
-		$rspta = $ambiente->activar($idambiente);
+		$rspta = $Materia->activar($idmateria);
 		echo $rspta ? 'true' : 'false';
 		break;
 }

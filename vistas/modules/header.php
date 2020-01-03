@@ -223,6 +223,12 @@ if (strlen(session_id()) < 1)
                 </li>
 
                 <li class="nav-item">
+                  <a class="nav-link" href="materia.php">
+                    <i class="nav-icon fas fa-book"></i> Materia
+                  </a>
+                </li>
+
+                <li class="nav-item">
                   <a class="nav-link" href="periodo-escolar.php">
                     <i class="nav-icon fas fa-calendar-alt"></i> Período Escolar
                   </a>

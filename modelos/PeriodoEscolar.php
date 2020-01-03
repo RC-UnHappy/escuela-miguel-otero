@@ -18,7 +18,7 @@ class PeriodoEscolar
 	#Método para insertar registros
 	function insertar($periodo, $estatus)
 	{
-		$sql = "INSERT INTO periodo_escolar (periodo, estatus) VALUES('$periodo', $estatus)";
+		$sql = "INSERT INTO periodo_escolar (periodo, fecha_creacion, estatus) VALUES('$periodo', CURDATE(), $estatus)";
 
 		return ejecutarConsulta($sql);
 	}
@@ -58,7 +58,7 @@ class PeriodoEscolar
 	#Método para desactivar un período escolar
 	function desactivar($idperiodo)
 	{
-		$sql = "UPDATE periodo_escolar SET estatus = '0' WHERE id = '$idperiodo'";
+		$sql = "UPDATE periodo_escolar SET estatus = '0', fecha_finalizacion = CURDATE() WHERE id = '$idperiodo'";
 
 		return ejecutarConsulta($sql);
 

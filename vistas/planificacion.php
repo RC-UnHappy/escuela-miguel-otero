@@ -20,9 +20,9 @@ require_once 'modules/header.php';
 
               <div class="card-header pt-0 pb-1 bg-white mb-3"> <!-- Botonera del panel -->
               
-                <!-- Botón para mostrar modal sección -->
+                <!-- Botón para mostrar modal planificación -->
                 <h1 class="font-weight-normal h5">Planificacón 
-                  <button class="btn btn-outline-primary btn-pill shadow-sm" data-toggle="modal" data-target="#seccionModal" id="btnAgregar">
+                  <button class="btn btn-outline-primary btn-pill shadow-sm" data-toggle="modal" data-target="#planificacionModal" id="btnAgregar">
                     <i class="fa fa-plus-circle"></i> Agregar
                   </button>
                 </h1>
@@ -33,11 +33,16 @@ require_once 'modules/header.php';
                 <div class="col-sm-12">
                   <div class="table-responsive">
                     <table class="table table-borderless table-striped" id="tblistado">
-                      <caption>Lista de secciones</caption>
+                      <caption>Lista de planificaciones</caption>
                       <thead class="fondo-degradado text-white">
                         <tr>
                           <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Opciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                          <th scope="col">Grado</th>
                           <th scope="col">Sección</th>
+                          <th scope="col">Ambiente</th>
+                          <th scope="col">Docente</th>
+                          <th scope="col">Cupo</th>
+                          <th scope="col">Período Escolar</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -48,15 +53,15 @@ require_once 'modules/header.php';
                 </div>  
               </div>
               
-              <!-- Modal para crear ambiente -->
-              <div class="modal fade" id="seccionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog rounded" role="document">
+              <!-- Modal para crear planificación -->
+              <div class="modal fade" id="planificacionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog rounded modal-lg" role="document">
                   <div class="modal-content">
                     
-                    <form class="needs-validation" novalidate name="formularioSeccion" id="formularioregistros"> <!-- Formulario de ambiente -->
+                    <form class="needs-validation" novalidate name="formularioPlanificacion" id="formularioregistros"> <!-- Formulario de planificación -->
 
                       <div class="modal-header fondo-degradado rounded">
-                        <h5 class="modal-title text-white" id="exampleModalLabel">Crear Sección</h5>
+                        <h5 class="modal-title text-white" id="exampleModalLabel">Crear Planifiación</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -66,35 +71,69 @@ require_once 'modules/header.php';
 
                         <div class="row"> 
 
-                            <div class="form-group col-md-6">
-                              <label for="ambiente">Sección (*)</label>
-
-                              <div class="input-group">
-
-                                <input type="text" class="form-control solo_letras seccion text-uppercase" placeholder="Ej: A" name="seccion"  id="seccion"  maxlength="1" required>
-
-                                <input type="hidden" name="idseccion" id="idseccion"> <!-- Input oculto que guardará el id de la sección cuando sea necesario -->
-                                
-                                <div class="invalid-feedback" >
-                                    Campo Obligatorio
-                                </div>
-
-                              </div>
-                            </div>
-
-                            <div class="form-group col-md-6">
-                              <label for="estatus">Estatus (*)</label>
+                            <div class="form-group col-md-2">
+                              <label for="grado">Grado (*)</label>
                                 <div class="input-group ">
-                                  <select name="estatus" id="estatus" class="form-control selectpicker" required="true">
+                                  <select name="idgrado" id="grado" class="form-control selectpicker" required="true">
                                     <option value="">Seleccione</option>
-                                    <option value="1">Activo</option>
-                                    <option value="0">Inactivo</option>
+                                    
                                   </select>
                                   <div class="invalid-feedback">
                                     Campo Obligatorio
                                   </div>
                                 </div>
                             </div>
+
+                            <div class="form-group col-md-2">
+                              <label for="seccion">Sección (*)</label>
+                                <div class="input-group ">
+                                  <select name="idseccion" id="seccion" class="form-control selectpicker" required="true" disabled>
+                                    <option value="">Seleccione</option>
+                                    
+                                  </select>
+                                  <div class="invalid-feedback">
+                                    Campo Obligatorio
+                                  </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-2">
+                              <label for="ambiente">Ambiente (*)</label>
+                                <div class="input-group ">
+                                  <select name="idambiente" id="ambiente" class="form-control selectpicker" required="true">
+                                    <option value="">Seleccione</option>
+                                    
+                                  </select>
+                                  <div class="invalid-feedback">
+                                    Campo Obligatorio
+                                  </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                              <label for="docente">Docente (*)</label>
+                                <div class="input-group ">
+                                  <select name="iddocente" id="docente" class="form-control selectpicker " required="true" data-live-search="true">
+                                    <option value="">Seleccione</option>
+                                    
+                                  </select>
+                                  <div class="invalid-feedback">
+                                    Campo Obligatorio
+                                  </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-2">
+                            <label for="cupo">Cupo (*)</label>
+                            <div class="input-group">
+                              
+                              <input type="text" class="form-control solo_numeros" placeholder="Ej: 30" name="cupo"  id="cupo"  maxlength="2" required>
+                              
+                              <div class="invalid-feedback">
+                                  Campo Obligatorio
+                              </div>
+                            </div>
+                          </div>
 
                         </div> <!-- Fin row -->     
                       
@@ -121,7 +160,7 @@ require_once 'modules/header.php';
 
 require_once 'modules/footer.php';
 ?>
-<script src="scripts/seccion.js"></script>
+<script src="scripts/planificacion.js"></script>
 
 <?php 
 } //Cierre del else que muestra esta vista

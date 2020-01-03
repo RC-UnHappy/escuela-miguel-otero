@@ -41,12 +41,26 @@ function verificar() {
 function periodo() {
 	$.post('../controladores/periodo-escolar.php?op=traerultimo', function (data) {
 		let datos = JSON.parse(data);
-		let periodo = datos.periodo;
-		periodo = periodo.split('-');
-		let segundo =  Number(periodo[1]) + 1;
-		let nuevoPeriodo = periodo[1]+'-'+segundo;
-		$('#periodo').html('<option value="'+nuevoPeriodo+'">'+nuevoPeriodo+'</option>');
-		$('#periodo').selectpicker('refresh');
+		let nuevoPeriodo = '';
+
+		if (datos != null) {
+			let periodo = datos.periodo;
+			periodo = periodo.split('-');
+			let segundaFecha =  Number(periodo[1]) + 1;
+			nuevoPeriodo = periodo[1]+'-'+segundaFecha;
+			$('#periodo').html('<option value="'+nuevoPeriodo+'">'+nuevoPeriodo+'</option>');
+			$('#periodo').selectpicker('refresh');
+		}
+		else {
+			let fechaActual = new Date();
+			fechaActual = fechaActual.getFullYear();
+			nuevoPeriodo = fechaActual+'-'+Number(fechaActual+1);
+			$('#periodo').html('<option value="'+nuevoPeriodo+'">'+nuevoPeriodo+'</option>');
+			nuevoPeriodo = Number(fechaActual+1)+'-'+Number(fechaActual+2);
+			$('#periodo').append('<option value="'+nuevoPeriodo+'">'+nuevoPeriodo+'</option>');
+			$('#periodo').selectpicker('refresh');
+		}
+
 	});
 }
 
@@ -90,6 +104,7 @@ function guardaryeditar(event) {
 				});
 			}
 
+			$('#btnAgregar').hide();
 			tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
 			$('#periodoModal').modal('hide');
 		}
@@ -147,6 +162,7 @@ function finalizar(idperiodo) {
 		}).then((result) => {
 		  if (result.value) {
 		  	$.post('../controladores/periodo-escolar.php?op=desactivar', {idperiodo: idperiodo}, function (e) {
+
 				if (e == 'true') {
 					const Toast = Swal.mixin({
 					  toast: true,

@@ -161,9 +161,9 @@ require_once 'modules/header.php';
               <div class="col-6 col-lg-3">
                 <div class="card">
                   <div class="card-body p-3 d-flex align-items-center">
-                    <i class="fas fa-user-secret bg-yellow mr-3 text-white" style="font-size: 70px; padding: 20px;"></i>
+                    <i class="fas fa-user-secret bg-red mr-3 text-white" style="font-size: 70px; padding: 20px;"></i>
                     <div>
-                      <div class="text-value-sm" style="color: #ffc107" id="mostrarVigilantes">3</div>
+                      <div class="text-value-sm text-danger" id="mostrarVigilantes">3</div>
                       <div class="text-muted text-uppercase font-weight-bold small">Vigilantes</div>
                     </div>
                   </div>

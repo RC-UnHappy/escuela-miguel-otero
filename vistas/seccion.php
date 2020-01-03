@@ -48,12 +48,12 @@ require_once 'modules/header.php';
                 </div>  
               </div>
               
-              <!-- Modal para crear ambiente -->
+              <!-- Modal para crear sección -->
               <div class="modal fade" id="seccionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog rounded" role="document">
                   <div class="modal-content">
                     
-                    <form class="needs-validation" novalidate name="formularioSeccion" id="formularioregistros"> <!-- Formulario de ambiente -->
+                    <form class="needs-validation" novalidate name="formularioSeccion" id="formularioregistros"> <!-- Formulario de sección -->
 
                       <div class="modal-header fondo-degradado rounded">
                         <h5 class="modal-title text-white" id="exampleModalLabel">Crear Sección</h5>
@@ -67,7 +67,7 @@ require_once 'modules/header.php';
                         <div class="row"> 
 
                             <div class="form-group col-md-6">
-                              <label for="ambiente">Sección (*)</label>
+                              <label for="seccion">Sección (*)</label>
 
                               <div class="input-group">
 

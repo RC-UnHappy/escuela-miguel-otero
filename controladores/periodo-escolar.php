@@ -66,9 +66,7 @@ switch ($_GET['op']) {
 				"recordsTotal" => count($data), #Se envía el total de registros al datatable
 				"recordsFiltered" => count($data), #Se envía el total de registros a visualizar
 				"data" => $data #datos en un array
-
 			);
-			echo json_encode($results);
 		}
 		else {
 			$results = array(
@@ -76,11 +74,11 @@ switch ($_GET['op']) {
 				"recordsTotal" => 0, #Se envía el total de registros al datatable
 				"recordsFiltered" => 0, #Se envía el total de registros a visualizar
 				"data" => '' #datos en un array
-
 			);
-			echo json_encode($results);
 		}
 
+		echo json_encode($results);
+		
 		break;	
 
 	case 'desactivar': 
@@ -90,15 +88,8 @@ switch ($_GET['op']) {
 
 		#Variable para comprobar que todo salió bien al final
 		$sw = TRUE;
-
-		$periodo = $PeriodoEscolar->mostrar($idperiodo) or $sw = FALSE;
-		$periodo = $periodo['periodo'];
-		list($primero, $segundo) = explode('-', $periodo);
-		$periodo = ($primero + 1).'-'.($segundo + 1);
-		$periodo = $PeriodoEscolar->seleccionar($periodo);
-		$periodo = $periodo['id'];
+		
 		$rspta = $PeriodoEscolar->desactivar($idperiodo) or $sw = FALSE;
-		$rspta = $PeriodoEscolar->activar($periodo) or $sw = FALSE;
 
 		#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 		if ($sw) {

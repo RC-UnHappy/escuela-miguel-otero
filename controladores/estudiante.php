@@ -197,49 +197,60 @@ switch ($_GET['op']) {
 		#Establece la zona horaria
 		date_default_timezone_set('America/Caracas');
 
-		while ($reg = $rspta->fetch_object()) {
+		if ($rspta->num_rows != 0) {
 
-			list($anoN, $mesN, $diaN) = explode('-', $reg->fechaE);
-			list($anoA, $mesA, $diaA) = explode('-', date('Y-m-d'));
+			while ($reg = $rspta->fetch_object()) {
 
-			if ($mesN == $mesA) {
-				if ($diaN == $diaA) {
-					$edad = $anoA - $anoN;
-					$cumple = ' <span class="pull-right badge badge-light"><i class="fa fa-birthday-cake" style="font-size:18px; color: #F06292;"></i></span><span class="sr-only">Cumpleaños</span>';
+				list($anoN, $mesN, $diaN) = explode('-', $reg->fechaE);
+				list($anoA, $mesA, $diaA) = explode('-', date('Y-m-d'));
+
+				if ($mesN == $mesA) {
+					if ($diaN == $diaA) {
+						$edad = $anoA - $anoN;
+						$cumple = ' <span class="pull-right badge badge-light"><i class="fa fa-birthday-cake" style="font-size:18px; color: #F06292;"></i></span><span class="sr-only">Cumpleaños</span>';
+					}
+					elseif ($diaN < $diaA) {
+						$edad = $anoA - $anoN;
+					}
+					else {
+						$edad = ($anoA - $anoN) - 1;
+					}
 				}
-				elseif ($diaN < $diaA) {
-					$edad = $anoA - $anoN;
-				}
-				else {
+				elseif ($mesN > $mesA ) {
 					$edad = ($anoA - $anoN) - 1;
 				}
-			}
-			elseif ($mesN > $mesA ) {
-				$edad = ($anoA - $anoN) - 1;
-			}
-			else {
-				$edad = $anoA - $anoN;
-			}
-			$data[] = array('0' => ($reg->estatus == 'REGISTRADO') ? '<button class="btn btn-outline-primary " title="Editar" onclick="mostrar('.$reg->idE.')"><i class="fas fa-edit"></i></button>'
-				 :
+				else {
+					$edad = $anoA - $anoN;
+				}
+				$data[] = array('0' => ($reg->estatus == 'REGISTRADO') ? '<button class="btn btn-outline-primary " title="Editar" onclick="mostrar('.$reg->idE.')"><i class="fas fa-edit"></i></button>'
+					 :
 
-			'<button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->idE.')"><i class="fa fa-edit"></i></button>',
+				'<button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->idE.')"><i class="fa fa-edit"></i></button>',
 
-				 	'1' => $reg->cedulaE,
-				 	'2' => $reg->nombreE,
-				 	'3' => $reg->apellidoE,
-					'4' => $edad.$cumple = isset($cumple) ? $cumple : '',
-					'5' => $reg->cedulaM,
-					'6' => $reg->cedulaP);
+					 	'1' => $reg->cedulaE,
+					 	'2' => $reg->nombreE,
+					 	'3' => $reg->apellidoE,
+						'4' => $edad.$cumple = isset($cumple) ? $cumple : '',
+						'5' => $reg->cedulaM,
+						'6' => $reg->cedulaP);
+			}
+
+			$results = array(
+				"draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+				"recordsTotal" => count($data), #Se envía el total de registros al datatable
+				"recordsFiltered" => count($data), #Se envía el total de registros a visualizar
+				"data" => $data #datos en un array
+
+			);
 		}
-
-		$results = array(
-			"draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
-			"recordsTotal" => count($data), #Se envía el total de registros al datatable
-			"recordsFiltered" => count($data), #Se envía el total de registros a visualizar
-			"data" => $data #datos en un array
-
-		);
+		else {
+			$results = array(
+				"draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+				"recordsTotal" => 0, #Se envía el total de registros al datatable
+				"recordsFiltered" => 0, #Se envía el total de registros a visualizar
+				"data" => '' #datos en un array
+			);
+		}
 
 		echo json_encode($results);
 
