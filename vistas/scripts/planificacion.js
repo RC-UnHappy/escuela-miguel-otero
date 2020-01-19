@@ -1,7 +1,5 @@
 //Funcion que se ejecutará al inicio
-
-function init() {
-
+(function () {  
 	//Muestra la lista de planificaciones
 	listar();
 
@@ -11,7 +9,7 @@ function init() {
 			guardaryeditar(event);
 		}
 		else {
-			scrollTo(0,100);
+			scrollTo(0, 100);
 		}
 	});
 
@@ -37,17 +35,16 @@ function init() {
 	});
 
 	tabla.ajax.reload();
-			
-}
+})();
 
 function traerGrados() {
 	$.post('../controladores/planificacion.php?op=traergrados', function (data) {
 		data = JSON.parse(data);
 		let grado = '';
 		if (data.length != 0) {
-			data.forEach ( function (indice, valor) {
-				grado += '<option value="'+indice.id+'">'+indice.grado+' º</option>';
-			});	
+			data.forEach(function (indice, valor) {
+				grado += '<option value="' + indice.id + '">' + indice.grado + ' º</option>';
+			});
 		}
 		else {
 			grado = '<option value="">Debe Ingresar grados en configuración</option>';
@@ -58,14 +55,14 @@ function traerGrados() {
 	});
 }
 
-function traerSecciones(grado) {
-	$.post('../controladores/planificacion.php?op=traersecciones',{idgrado:idgrado}, function (data) {
+function traerSecciones(idgrado, idplanificacion) {
+	$.post('../controladores/planificacion.php?op=traersecciones', { idgrado: idgrado, idplanificacion: idplanificacion }, function (data) {
 		data = JSON.parse(data);
 		let seccion = '';
 		if (data.length != 0) {
-			data.forEach ( function (indice, valor) {
-				seccion += '<option value="'+indice.id+'">'+indice.seccion+'</option>';
-			});	
+			data.forEach(function (indice, valor) {
+				seccion += '<option value="' + indice.id + '">' + indice.seccion + '</option>';
+			});
 		}
 		else {
 			seccion = '<option value="">Debe Ingresar secciones en configuración</option>';
@@ -76,17 +73,17 @@ function traerSecciones(grado) {
 	});
 }
 
-function traerAmbientes() {
-	$.post('../controladores/planificacion.php?op=traerambientes', function (data) {
+function traerAmbientes(idambiente = null) {
+	$.post('../controladores/planificacion.php?op=traerambientes', {idambiente: idambiente}, function (data) {
 		data = JSON.parse(data);
 		let ambiente = '';
 		if (data.length != 0) {
-			data.forEach ( function (indice, valor) {
-				ambiente += '<option value="'+indice.id+'">'+indice.ambiente+'</option>';
-			});	
+			data.forEach(function (indice, valor) {
+				ambiente += '<option value="' + indice.id + '">' + indice.ambiente + '</option>';
+			});
 		}
 		else {
-			ambiente = '<option value="">Debe Ingresar ambientes en configuración</option>';
+			ambiente = '<option value="">Debe ingresar ambientes en configuración</option>';
 		}
 		$('#ambiente').html('<option value="">Seleccione</option>');
 		$('#ambiente').append(ambiente);
@@ -94,14 +91,15 @@ function traerAmbientes() {
 	});
 }
 
-function traerDocentes() {
-	$.post('../controladores/planificacion.php?op=traerdocentes', function (data) {
+function traerDocentes(iddocente = null) {
+	$.post('../controladores/planificacion.php?op=traerdocentes', {iddocente: iddocente}, function (data) {
+		
 		data = JSON.parse(data);
 		let docente = '';
 		if (data.length != 0) {
-			data.forEach ( function (indice, valor) {
-				docente += '<option value="'+indice.id+'">'+indice.p_nombre+' '+indice.p_apellido+'</option>';
-			});	
+			data.forEach(function (indice, valor) {
+				docente += '<option value="' + indice.id + '">' + indice.p_nombre + ' ' + indice.p_apellido + '</option>';
+			});
 		}
 		else {
 			docente = '<option value="">Debe Ingresar docentes en configuración</option>';
@@ -122,7 +120,7 @@ function guardaryeditar(event) {
 	event.preventDefault(); //Evita que se envíe el formulario automaticamente
 	// 
 	var formData = new FormData($([formularioPlanificacion])[0]); //Se obtienen los datos del formulario
-	
+
 	$.ajax({
 		url: '../controladores/planificacion.php?op=guardaryeditar', //Dirección a donde se envían los datos
 		type: 'POST', //Método por el cual se envían los datos
@@ -132,41 +130,43 @@ function guardaryeditar(event) {
 		success: function (datos) {
 			if (datos == 'true') {
 				const Toast = Swal.mixin({
-				  toast: true,
-				  position: 'top-end',
-				  showConfirmButton: false,
-				  timer: 3000
+					toast: true,
+					position: 'top-end',
+					showConfirmButton: false,
+					timer: 3000
 				});
 
 				Toast.fire({
-				  type: 'success',
-				  title: 'Planificación registrada exitosamente :)'
+					type: 'success',
+					title: 'Planificación registrada exitosamente :)'
 				});
 			}
 			else if (datos == 'update') {
 				const Toast = Swal.mixin({
-				  toast: true,
-				  position: 'top-end',
-				  showConfirmButton: false,
-				  timer: 3000
+					toast: true,
+					position: 'top-end',
+					showConfirmButton: false,
+					timer: 3000
 				});
 
 				Toast.fire({
-				  type: 'success',
-				  title: 'Planificación modificada exitosamente :)'
+					type: 'success',
+					title: 'Planificación modificada exitosamente :)'
 				});
+
+				$('#planificacionModal').modal('hide');
 			}
 			else {
 				const Toast = Swal.mixin({
-				  toast: true,
-				  position: 'top-end',
-				  showConfirmButton: false,
-				  timer: 3000
+					toast: true,
+					position: 'top-end',
+					showConfirmButton: false,
+					timer: 3000
 				});
 
 				Toast.fire({
-				  type: 'error',
-				  title: 'Ocurrió un error y no se pudo registrar :('
+					type: 'error',
+					title: 'Ocurrió un error y no se pudo registrar :('
 				});
 			}
 
@@ -187,7 +187,7 @@ function guardaryeditar(event) {
 			}
 		}
 
-	});		
+	});
 }
 
 //Función para listar los registros
@@ -196,24 +196,28 @@ function listar() {
 		"processing": true,
 		pagingType: "first_last_numbers",
 		language: {
-			"info":           "Mostrando desde _START_ hasta _END_ de _TOTAL_ registros",
-			"lengthMenu":     "Mostrar _MENU_ entradas",
+			"info": "Mostrando desde _START_ hasta _END_ de _TOTAL_ registros",
+			"lengthMenu": "Mostrar _MENU_ entradas",
 			"loadingRecords": "Cargando...",
-		    "processing":     "Procesando...",
-		    "search":         "Buscar:",
-			"emptyTable":     "No hay datos para mostrar",
-			"infoEmpty":      "Mostrando 0 hasta 0 de 0 entradas",
+			"processing": "Procesando...",
+			"search": "Buscar:",
+			"emptyTable": "No hay datos para mostrar",
+			"infoEmpty": "Mostrando 0 hasta 0 de 0 entradas",
 			"paginate": {
-	        "first":      "Primero",
-	        "last":       "Último"
-	    	},
+				"first": "Primero",
+				"last": "Último"
+			},
 		},
-		dom: 'lfrtip', 
+		dom: 'lfrtip',
 		"destroy": true, //Elimina cualquier elemente que se encuentre en la tabla
 		"ajax": {
 			url: '../controladores/planificacion.php?op=listar',
 			type: 'GET',
-			dataType: 'json'
+			dataType: 'json',
+			error: function (e) {
+				console.log(e.responseText);
+				
+			  }
 		},
 		'order': [[0, 'desc']]
 	});
@@ -221,17 +225,16 @@ function listar() {
 
 //Función para mostrar un registro para editar
 function mostrar(idplanificacion) {
-	$.post('../controladores/planificacion.php?op=mostrar',{idplanificacion: idplanificacion}, function (data) {	
-		data = JSON.parse(data);
-		// console.log("data", data);
+	$.post('../controladores/planificacion.php?op=mostrar', { idplanificacion: idplanificacion }, function (planificacion) {
+		planificacion = JSON.parse(planificacion);
 
-		$.post('../controladores/planificacion.php?op=traergrados', function (data) {
-			data = JSON.parse(data);
+		$.post('../controladores/planificacion.php?op=traergrados', function (grados) {
+			grados = JSON.parse(grados);
 			let grado = '';
-			if (data.length != 0) {
-				data.forEach ( function (indice, valor) {
-					grado += '<option value="'+indice.id+'">'+indice.grado+' º</option>';
-				});	
+			if (grados.length != 0) {
+				grados.forEach(function (indice, valor) {
+					grado += '<option value="' + indice.id + '">' + indice.grado + ' º</option>';
+				});
 			}
 			else {
 				grado = '<option value="">Debe Ingresar grados en configuración</option>';
@@ -240,119 +243,122 @@ function mostrar(idplanificacion) {
 			$('#grado').append(grado);
 			$('#grado').selectpicker('refresh');
 		}).then(function () {
-			$('#grado').selectpicker('val', data.idgrado);
+			$('#grado').selectpicker('val', planificacion.idgrado);
 		});
-		
+
+		$.post('../controladores/planificacion.php?op=traersecciones', { idgrado: planificacion.idgrado, idplanificacion: planificacion.id }, function (data) {
+			data = JSON.parse(data);
+			let seccion = '';
+			if (data.length != 0) {
+				data.forEach(function (indice, valor) {
+					seccion += '<option value="' + indice.id + '">' + indice.seccion + '</option>';
+				});
+			}
+			else {
+				seccion = '<option value="">Debe Ingresar secciones en configuración</option>';
+			}
+			$('#seccion').prop('disabled', false);
+			$('#seccion').html('<option value="">Seleccione</option>');
+			$('#seccion').append(seccion);
+			$('#seccion').selectpicker('refresh');
+		})
+		.then( () => {
+			$('#seccion').selectpicker('val', planificacion.idseccion);
+		});
+
+		$.post('../controladores/planificacion.php?op=traerambientes', { idambiente: planificacion.idambiente }, function (data) {
+			data = JSON.parse(data);
+			let ambiente = '';
+			if (data.length != 0) {
+				data.forEach(function (indice, valor) {
+					ambiente += '<option value="' + indice.id + '">' + indice.ambiente + '</option>';
+				});
+			}
+			else {
+				ambiente = '<option value="">Debe ingresar ambientes en configuración</option>';
+			}
+			$('#ambiente').html('<option value="">Seleccione</option>');
+			$('#ambiente').append(ambiente);
+			$('#ambiente').selectpicker('refresh');
+		}).then(()=>{
+			$('#ambiente').selectpicker('val', planificacion.idambiente);
+		});
+
+		$.post('../controladores/planificacion.php?op=traerdocentes', { iddocente: planificacion.iddocente }, function (data) {
+			data = JSON.parse(data);
+			let docente = '';
+			if (data.length != 0) {
+				data.forEach(function (indice, valor) {
+					docente += '<option value="' + indice.id + '">' + indice.p_nombre + ' ' + indice.p_apellido + '</option>';
+				});
+			}
+			else {
+				docente = '<option value="">Debe Ingresar docentes en configuración</option>';
+			}
+			$('#docente').html('<option value="">Seleccione</option>');
+			$('#docente').append(docente);
+			$('#docente').selectpicker('refresh');
+		}).then(() => {
+			$('#docente').selectpicker('val', planificacion.iddocente);
+		});
+
+		$('#cupo').val(planificacion.cupo);
+		$('#idplanificacion').val(planificacion.id);
 	});
 }
 
-//Función para desactivar la sección
-function desactivar(idseccion) {
-
-		const swalWithBootstrapButtons = Swal.mixin({
-		  customClass: {
-		    confirmButton: 'btn btn-primary  mx-1 p-2',
-		    cancelButton: 'btn btn-danger  mx-1 p-2'
-		  },
-		  buttonsStyling: false
-		})
-
-		swalWithBootstrapButtons.fire({
-		  title: '¿Estas seguro?',
-		  text: "¿Quieres desactivar esta sección?",
-		  type: 'warning',
-		  showCancelButton: true,
-		  confirmButtonText: 'Desactivar',
-		  cancelButtonText: 'Cancelar',
-		  reverseButtons: true
-		}).then((result) => {
-		  if (result.value) {
-		  	$.post('../controladores/seccion.php?op=desactivar', {idseccion: idseccion}, function (e) {
-				if (e == 'true') {
-					const Toast = Swal.mixin({
-					  toast: true,
-					  position: 'top-end',
-					  showConfirmButton: false,
-					  timer: 3000
-					});
-
-					Toast.fire({
-					  type: 'success',
-					  title: 'La sección ha sido desactivada :)'
-					});
-				}
-				else {
-					const Toast = Swal.mixin({
-					  toast: true,
-					  position: 'top-end',
-					  showConfirmButton: false,
-					  timer: 3000
-					});
-
-					Toast.fire({
-					  type: 'error',
-					  title: 'Ups! No se pudo desactivar la sección'
-					});
-				}
-				tabla.ajax.reload();
-			});  
-		  } 
-		});
-}
-
-//Función para activar la sección
-function activar(idseccion) {
+//Función para eliminar una planificación
+function eliminar(idplanificacion) {
 
 	const swalWithBootstrapButtons = Swal.mixin({
-		  customClass: {
-		    confirmButton: 'btn btn-primary  mx-1 p-2',
-		    cancelButton: 'btn btn-danger  mx-1 p-2'
-		  },
-		  buttonsStyling: false
-		})
+		customClass: {
+			confirmButton: 'btn btn-primary  mx-1 p-2',
+			cancelButton: 'btn btn-danger  mx-1 p-2'
+		},
+		buttonsStyling: false
+	})
 
-		swalWithBootstrapButtons.fire({
-		  title: '¿Estas seguro?',
-		  text: "¿Quieres activar esta sección?",
-		  type: 'warning',
-		  showCancelButton: true,
-		  confirmButtonText: 'Activar',
-		  cancelButtonText: 'Cancelar',
-		  reverseButtons: true
-		}).then((result) => {
-		  if (result.value) {
-		  	$.post('../controladores/seccion.php?op=activar', {idseccion: idseccion}, function (e) {
+	swalWithBootstrapButtons.fire({
+		title: '¿Estas seguro?',
+		text: "¿Quieres eliminar esta planificación?",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonText: 'Eliminar',
+		cancelButtonText: 'Cancelar',
+		reverseButtons: true
+	}).then((result) => {
+		if (result.value) {
+			$.post('../controladores/planificacion.php?op=eliminar', { idplanificacion: idplanificacion }, function (e) {
 				if (e == 'true') {
 					const Toast = Swal.mixin({
-					  toast: true,
-					  position: 'top-end',
-					  showConfirmButton: false,
-					  timer: 3000
+						toast: true,
+						position: 'top-end',
+						showConfirmButton: false,
+						timer: 3000
 					});
 
 					Toast.fire({
-					  type: 'success',
-					  title: 'La sección ha sido activada :)'
+						type: 'success',
+						title: 'La planificación ha sido eliminada :)'
 					});
 				}
 				else {
 					const Toast = Swal.mixin({
-					  toast: true,
-					  position: 'top-end',
-					  showConfirmButton: false,
-					  timer: 3000
+						toast: true,
+						position: 'top-end',
+						showConfirmButton: false,
+						timer: 3000
 					});
 
 					Toast.fire({
-					  type: 'error',
-					  title: 'Ups! No se pudo activar la sección'
+						type: 'error',
+						title: 'Ups! No se pudo eliminar la planificación'
 					});
 				}
 				tabla.ajax.reload();
-			});  
-		  } 
-		});
-
+			});
+		}
+	});
 }
 
 //Función para limpiar el formulario
@@ -361,7 +367,7 @@ function limpiar() {
 	$('#seccion').prop('disabled', true);
 	$('#seccion').selectpicker('refresh');
 	$('#cupo').val('');
+	$('#idplanificacion').val('');
 	$('#formularioregistros').removeClass('was-validated');
 }
 
-init();

@@ -34,7 +34,7 @@ switch ($_GET['op']) {
 			$idperiodo_escolar = $Planificacion->consultarperiodo() or $sw = FALSE;
 			
 			#Se registra la planificación
-			$eto = $Planificacion->insertar($idperiodo_escolar['id'], $idgrado, $idseccion, $idambiente, $iddocente, $cupo, 1) or $sw = FALSE;
+			$Planificacion->insertar($idperiodo_escolar['id'], $idgrado, $idseccion, $idambiente, $iddocente, $cupo, 1) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
@@ -49,8 +49,8 @@ switch ($_GET['op']) {
 		}
 		else{
 
-			#Se registra el planificación
-			$seccion->editar($idseccion, $letraseccion, $estatus) or $sw = FALSE;
+			#Se edita la planificación
+			$Planificacion->editar($idplanificacion, $idgrado, $idseccion, $idambiente, $iddocente, $cupo) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
@@ -71,15 +71,15 @@ switch ($_GET['op']) {
 		if ($rspta->num_rows != 0) {
 			while ($reg = $rspta->fetch_object()) {
 
-				$data[] = array('0' => ($reg->estatus) ? '<button class="btn btn-outline-primary " title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#planificacionModal"><i class="fas fa-edit"></i></button>'.
+				$data[] = array('0' => ($reg->estatus) ? 
+					
+					'<button class="btn btn-outline-primary " title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#planificacionModal"><i class="fas fa-edit"></i></button>'.
 
-					' <button class="btn btn-outline-danger" title="Desactivar" onclick="desactivar('.$reg->id.')"> <i class="fas fa-times"> </i></button> '
+					' <button class="btn btn-outline-danger" title="Eliminar" onclick="eliminar('.$reg->id.')"> <i class="fas fa-times"> </i></button> '
 
 						 :
 
-					 '<button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#planificacionModal"><i class="fa fa-edit"></i></button>'.
-
-					 ' <button class="btn btn-outline-success" title="Activar" onclick="activar('.$reg->id.')"><i class="fa fa-check"></i></button> ',
+					 '<button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#planificacionModal"><i class="fa fa-edit"></i></button>',
 
 					 	'1' => $reg->grado.' º',
 					 	'2' => '"'.$reg->seccion.'"',
@@ -120,15 +120,9 @@ switch ($_GET['op']) {
 
 		break;
 
-	case 'desactivar': 
+	case 'eliminar': 
 
-		$rspta = $seccion->desactivar($idseccion);
-		echo $rspta ? 'true' : 'false';
-		break;
-
-	case 'activar': 
-
-		$rspta = $seccion->activar($idseccion);
+		$rspta = $Planificacion->eliminar($idplanificacion);
 		echo $rspta ? 'true' : 'false';
 		break;
 
@@ -152,7 +146,8 @@ switch ($_GET['op']) {
 
 	case 'traersecciones': 
 
-		$rspta = $Planificacion->traersecciones($idgrado);
+		#idplanificación es un parámetro que puede o no estar vacío
+		$rspta = $Planificacion->traersecciones($idgrado, $idplanificacion);
 
 		$data = array();
 		if ($rspta->num_rows != 0) {
@@ -170,7 +165,8 @@ switch ($_GET['op']) {
 
 	case 'traerambientes': 
 
-		$rspta = $Planificacion->traerambientes();
+		#idambiente es un parámetro que puede o no estar vacío
+		$rspta = $Planificacion->traerambientes($idambiente);
 
 		$data = array();
 		if ($rspta->num_rows != 0) {
@@ -188,7 +184,8 @@ switch ($_GET['op']) {
 
 	case 'traerdocentes': 
 
-		$rspta = $Planificacion->traerdocentes();
+		#iddocente es un parámetro que puede o no estar vacío
+		$rspta = $Planificacion->traerdocentes($iddocente);
 
 		$data = array();
 		if ($rspta->num_rows != 0) {
