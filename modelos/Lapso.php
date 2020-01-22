@@ -4,9 +4,9 @@
 require_once '../config/conexion.php';
 
 /**
- * Modelo de Sección
+ * Modelo de Lapso
  */
-class Seccion
+class Lapso
 {
 
     #Constructor de la clase
@@ -63,10 +63,10 @@ class Seccion
         return ejecutarConsulta($sql);
     }
 
-    #Método para comprobar si existe la sección
-    function comprobarseccion($seccion)
+    #Método para comprobar si existe el Lapso
+    function comprobarlapso($lapso)
     {
-        $sql = "SELECT seccion FROM seccion WHERE seccion = '$seccion'";
+        $sql = "SELECT lapso FROM lapso WHERE lapso = '$lapso'";
         return ejecutarConsulta($sql);
     }
 }

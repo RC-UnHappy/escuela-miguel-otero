@@ -20,9 +20,9 @@ if (!isset($_SESSION['usuario'])) {
                     <div class="card-header pt-0 pb-1 bg-white mb-3">
                         <!-- Botonera del panel -->
 
-                        <!-- Botón para mostrar modal sección -->
+                        <!-- Botón para mostrar modal lapso -->
                         <h1 class="font-weight-normal h5">Lapso
-                            <button class="btn btn-outline-primary btn-pill shadow-sm" data-toggle="modal" data-target="#seccionModal" id="btnAgregar">
+                            <button class="btn btn-outline-primary btn-pill shadow-sm" data-toggle="modal" data-target="#lapsoModal" id="btnAgregar">
                                 <i class="fa fa-plus-circle"></i> Agregar
                             </button>
                         </h1>
@@ -33,11 +33,11 @@ if (!isset($_SESSION['usuario'])) {
                         <div class="col-sm-12">
                             <div class="table-responsive">
                                 <table class="table table-borderless table-striped" id="tblistado">
-                                    <caption>Lista de secciones</caption>
+                                    <caption>Lista de lapsos</caption>
                                     <thead class="fondo-degradado text-white">
                                         <tr>
                                             <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Opciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                                            <th scope="col">Sección</th>
+                                            <th scope="col">Lapso</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -48,16 +48,16 @@ if (!isset($_SESSION['usuario'])) {
                         </div>
                     </div>
 
-                    <!-- Modal para crear sección -->
-                    <div class="modal fade" id="seccionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <!-- Modal para crear lapso -->
+                    <div class="modal fade" id="lapsoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog rounded" role="document">
                             <div class="modal-content">
 
-                                <form class="needs-validation" novalidate name="formularioSeccion" id="formularioregistros">
-                                    <!-- Formulario de sección -->
+                                <form class="needs-validation" novalidate name="formularioLapso" id="formularioregistros">
+                                    <!-- Formulario de lapso -->
 
                                     <div class="modal-header fondo-degradado rounded">
-                                        <h5 class="modal-title text-white" id="exampleModalLabel">Crear Sección</h5>
+                                        <h5 class="modal-title text-white" id="exampleModalLabel">Crear Lapso</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -68,13 +68,13 @@ if (!isset($_SESSION['usuario'])) {
                                         <div class="row">
 
                                             <div class="form-group col-md-6">
-                                                <label for="seccion">Sección (*)</label>
+                                                <label for="lapso">Lapso (*)</label>
 
                                                 <div class="input-group">
 
-                                                    <input type="text" class="form-control solo_letras seccion text-uppercase" placeholder="Ej: A" name="seccion" id="seccion" maxlength="1" required>
+                                                    <input type="text" class="form-control solo_numeros lapso" placeholder="Ej: 1" name="lapso" id="lapso" maxlength="1" required>
 
-                                                    <input type="hidden" name="idseccion" id="idseccion"> <!-- Input oculto que guardará el id de la sección cuando sea necesario -->
+                                                    <input type="hidden" name="idlapso" id="idlapso"> <!-- Input oculto que guardará el id del lapso cuando sea necesario -->
 
                                                     <div class="invalid-feedback">
                                                         Campo Obligatorio

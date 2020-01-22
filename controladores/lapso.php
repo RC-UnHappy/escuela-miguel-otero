@@ -4,22 +4,21 @@
 if (strlen(session_id() < 1)) session_start();
 
 #Se incluye el autoload
-require_once '../config/autoload.php';
+require_once '../modelos/Lapso.php';
 
 #Se instancia el objeto de Sección
-$seccion = new Seccion();
+$Lapso = new Lapso();
 
-$idseccion = isset($_POST['idseccion']) ? limpiarCadena($_POST['idseccion']) : '';
-$letraseccion = isset($_POST['seccion']) ? limpiarCadena(mb_strtoupper($_POST['seccion'])) : '';
+$idlapso = isset($_POST['idlapso']) ? limpiarCadena($_POST['idlapso']) : '';
+$lapso = isset($_POST['lapso']) ? limpiarCadena(mb_strtoupper($_POST['lapso'])) : '';
 $estatus = isset($_POST['estatus']) ? limpiarCadena($_POST['estatus']) : '';
 
 #Se ejecuta un caso dependiendo del valor del parámetro GET
 switch ($_GET['op']) {
 
-    case 'comprobarseccion':
-        $letraseccion = mb_strtoupper($_POST['seccion']);
+    case 'comprobarlapso':
 
-        $rspta = $seccion->comprobarseccion($letraseccion);
+        $rspta = $Lapso->comprobarlapso($lapso);
         echo json_encode($rspta->fetch_object());
         break;
 

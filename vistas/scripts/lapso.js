@@ -1,13 +1,12 @@
 //Funcion que se ejecutará al inicio
-
-function init() {
-
-    //Muestra la lista de secciones
+(function () {  
+    
+    //Muestra la lista de lapsos
     listar();
 
     //Se ejecuta cuando se envia el formulario
-    $([formularioSeccion]).on('submit', function (event) {
-        if ($([formularioSeccion])[0].checkValidity()) {
+    $([formularioLapso]).on('submit', function (event) {
+        if ($([formularioLapso])[0].checkValidity()) {
             guardaryeditar(event);
         }
         else {
@@ -16,8 +15,8 @@ function init() {
     });
 
     //Se ejecuta al ingresar la letra en el input de sección
-    $('#seccion').on('blur', function () {
-        comprobarSeccion(this);
+    $('#lapso').on('blur', function () {
+        comprobarLapso(this);
 
     });
 
@@ -27,13 +26,14 @@ function init() {
 
     tabla.ajax.reload();
 
-}
+})();
 
 //Comprueba que no exista la sección en el base de datos
 
-function comprobarSeccion(esto) {
-    var seccion = esto.value;
-    $.post('../controladores/seccion.php?op=comprobarseccion', { seccion: seccion }, function (data) {
+function comprobarLapso(esto) {
+    var lapso = esto.value;
+    $.post('../controladores/lapso.php?op=comprobarlapso', { lapso: lapso }, function (data) {
+        
         if (data != 'null') {
             esto.value = '';
             const Toast = Swal.mixin({
@@ -45,7 +45,7 @@ function comprobarSeccion(esto) {
 
             Toast.fire({
                 type: 'error',
-                title: 'La sección ya existe'
+                title: 'El lapso ya existe'
             });
         }
 
@@ -279,6 +279,5 @@ function limpiar() {
     $('#formularioregistros').removeClass('was-validated');
 }
 
-init();
 
 
