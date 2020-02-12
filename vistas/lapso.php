@@ -106,7 +106,6 @@ if (!isset($_SESSION['usuario'])) {
                                         <button type="submit" id="btnGuardar" class="btn btn-primary">Guardar</button>
                                     </div>
 
-
                                 </form> <!-- Fin del formulario -->
                             </div>
                         </div>

@@ -213,11 +213,7 @@ function listar() {
 		"ajax": {
 			url: '../controladores/planificacion.php?op=listar',
 			type: 'GET',
-			dataType: 'json',
-			error: function (e) {
-				console.log(e.responseText);
-				
-			  }
+			dataType: 'json'
 		},
 		'order': [[0, 'desc']]
 	});

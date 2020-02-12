@@ -166,6 +166,7 @@ function mostrar(idambiente) {
 		data = JSON.parse(data);
 
 		$('#ambiente').val(data.ambiente);
+		$('#capacidad').val(data.capacidad);
 		$('#estatus').val(data.estatus);
 		$('#estatus').selectpicker('refresh');
 		$('#idambiente').val(data.id);
@@ -285,6 +286,8 @@ function activar(idambiente) {
 function limpiar() {
 	$('#ambiente').val('');
 	$('#ambiente').removeClass('is-invalid');
+	$('#capacidad').val('');
+	$('#capacidad').removeClass('is-invalid');
 	$('#estatus').val('');
 	$('#estatus').removeClass('is-invalid');
 	$('#estatus').selectpicker('refresh');

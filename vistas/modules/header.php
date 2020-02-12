@@ -6,44 +6,44 @@ if (strlen(session_id()) < 1)
 <html lang="es">
 
 <head>
-  <base href="./">
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <meta name="description" content="E.B.B Miguel Otero Silva - Acarigua, Portuguesa">
   <meta name="author" content="Alexis Cáceres">
   <meta name="keyword" content="Escuela,Básica,Bolivariana,Miguel,Otero,Silva,Acarigua,Portuguesa,Venezuela">
-  <link rel="icon" type="image/jpeg" href="../public/img/icono.jpg" />
+  <link rel="icon" type="image/jpeg" href="/escuela-miguel-otero/public/img/icono.jpg" />
 
   <title>Escuela Básica - Miguel Otero Silva</title>
 
 
   <!-- Icons-->
   <link rel="icon" type="image/ico" href="./img/favicon.ico" sizes="any" />
-  <link href="../public/css/coreui-icons.min.css" rel="stylesheet">
-  <link href="../public/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/escuela-miguel-otero/public/css/coreui-icons.min.css" rel="stylesheet">
+  <link href="/escuela-miguel-otero/public/css/font-awesome.min.css" rel="stylesheet">
 
   <!-- Main styles for this application-->
-  <link href="../public/css/style.css" rel="stylesheet">
-  <link href="../public/css/pace.min.css" rel="stylesheet">
+  <link href="/escuela-miguel-otero/public/css/style.css" rel="stylesheet">
+  <link href="/escuela-miguel-otero/public/css/pace.min.css" rel="stylesheet">
   <!-- <link href="css/style.css" rel="stylesheet"> 
     <link href="vendors/pace-progress/css/pace.min.css" rel="stylesheet"> -->
 
   <!-- Datatable -->
-  <link rel="stylesheet" href="../public/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="../public/css/buttons.bootstrap4.min.css">
-  <link rel="stylesheet" href="../public/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="../public/css/scroller.bootstrap4.min.css">
+  <link rel="stylesheet" href="/escuela-miguel-otero/public/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="/escuela-miguel-otero/public/css/buttons.bootstrap4.min.css">
+  <link rel="stylesheet" href="/escuela-miguel-otero/public/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="/escuela-miguel-otero/public/css/scroller.bootstrap4.min.css">
 
   <!-- Font awesome principal -->
-  <link href="../public/css/fontawesome.min.css" rel="stylesheet">
-  <link href="../public/css/regular.min.css" rel="stylesheet">
-  <link href="../public/css/solid.min.css" rel="stylesheet">
+  <link href="/escuela-miguel-otero/public/css/fontawesome.min.css" rel="stylesheet">
+  <link href="/escuela-miguel-otero/public/css/regular.min.css" rel="stylesheet">
+  <link href="/escuela-miguel-otero/public/css/solid.min.css" rel="stylesheet">
 
   <!-- Estilos principales -->
-  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="/escuela-miguel-otero/vistas/css/estilos.css">
 
-  <link rel="stylesheet" href="../public/css/bootstrap-select.min.css">
+  <link rel="stylesheet" href="/escuela-miguel-otero/public/css/bootstrap-select.min.css">
 
 </head>
 
@@ -68,7 +68,7 @@ if (strlen(session_id()) < 1)
 
     <ul class="nav navbar-nav d-md-down-none">
       <li class="nav-item px-3">
-        <a class="nav-link" href="escritorio.php">Escritorio</a>
+        <a class="nav-link" href="/escuela-miguel-otero/vistas/escritorio.php">Escritorio</a>
       </li>
       <li class="nav-item px-3">
         <a class="nav-link" href="#">Users</a>
@@ -100,9 +100,9 @@ if (strlen(session_id()) < 1)
 
           <img class="img-avatar" src="<?php
                                         if (empty($_SESSION['img']) && $_SESSION['genero'] == 'M') {
-                                          echo '../files/perfil/hombre.jpg';
+                                          echo '/escuela-miguel-otero/files/perfil/hombre.jpg';
                                         } elseif (empty($_SESSION['img']) && $_SESSION['genero'] == 'F') {
-                                          echo '../files/perfil/mujer.jpg';
+                                          echo '/escuela-miguel-otero/files/perfil/mujer.jpg';
                                         } else {
                                           echo $_SESSION['img'];
                                         } ?>" alt="Imagen">
@@ -137,7 +137,7 @@ if (strlen(session_id()) < 1)
             <i class="fa fa-file"></i> Projects
             <span class="badge badge-primary">42</span>
           </a>
-          <a class="dropdown-item" href="../controladores/usuario.php?op=salir">
+          <a class="dropdown-item" href="/escuela-miguel-otero/controladores/usuario.php?op=salir">
             <i class="fa fa-lock"></i> Salir</a>
         </div>
       </li>
@@ -158,7 +158,7 @@ if (strlen(session_id()) < 1)
           <?php
           if ($_SESSION['escritorio'] == 1) {
             echo '<li class="nav-item">
-                        <a class="nav-link" href="escritorio.php">
+                        <a class="nav-link" href="/escuela-miguel-otero/vistas/escritorio.php">
                           <i class="nav-icon fas fa-tachometer-alt"></i> Escritorio
                           <!-- <span class="badge badge-primary">NEW</span> -->
                         </a>
@@ -171,21 +171,38 @@ if (strlen(session_id()) < 1)
           <li class="nav-title">Institución</li>
 
           <li class="nav-item">
-            <a class="nav-link" href="estudiante.php">
+            <a class="nav-link" href="/escuela-miguel-otero/vistas/estudiante.php">
               <i class="nav-icon fas fa-user-graduate"></i> Estudiante</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="representante.php">
+            <a class="nav-link" href="/escuela-miguel-otero/vistas/representante.php">
               <i class="nav-icon fas fa-user-tie"></i> Representante</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/escuela-miguel-otero/vistas/personal.php">
+              <i class="nav-icon fas fa-chalkboard-teacher"></i> Personal</a>
+          </li>
+
+          <li class="nav-item nav-dropdown">
+            <a class="nav-link nav-dropdown-toggle" href="#">
+              <i class="nav-icon fas fa-money-check"></i> Inscripción
+            </a>
+
+            <ul class="nav-dropdown-items">
+
+              <li class="nav-item">
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/inscripcion/inicial.php">
+                  <i class="nav-icon fas fa-check"></i> Inicial
+                </a>
+              </li>
+
+            </ul>
           </li>
 
           <li class="nav-title">Configuración</li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="personal.php">
-              <i class="nav-icon fas fa-chalkboard-teacher"></i> Personal</a>
-          </li>
 
           <?php
           if ($_SESSION['usuario'] == 1) {
@@ -195,7 +212,7 @@ if (strlen(session_id()) < 1)
                         </a>
                         <ul class="nav-dropdown-items">
                           <li class="nav-item">
-                            <a class="nav-link" href="usuario.php">
+                            <a class="nav-link" href="/escuela-miguel-otero/vistas/usuario.php">
                               <i class="nav-icon fas fa-user-plus"></i> Gestionar</a>
                           </li>
                         </ul>
@@ -212,49 +229,49 @@ if (strlen(session_id()) < 1)
 
 
               <li class="nav-item">
-                <a class="nav-link" href="ambiente.php">
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/ambiente.php">
                   <i class="nav-icon fas fa-ruler-vertical"></i> Ambiente
                 </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="seccion.php">
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/seccion.php">
                   <i class="nav-icon fas fa-apple-alt"></i> Sección
                 </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="grado.php">
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/grado.php">
                   <i class="nav-icon fas fa-pencil-ruler"></i> Grado
                 </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="materia.php">
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/materia.php">
                   <i class="nav-icon fas fa-book"></i> Materia
                 </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="lapso.php">
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/lapso.php">
                   <i class="nav-icon fas fa-cut"></i> Lapso
                 </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="periodo-escolar.php">
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/periodo-escolar.php">
                   <i class="nav-icon fas fa-calendar-alt"></i> Período Escolar
                 </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="planificacion.php">
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/planificacion.php">
                   <i class="nav-icon fas fa-tasks"></i> Planificación
                 </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="institucion.php">
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/institucion.php">
                   <i class="nav-icon fas fa-school"></i> Institución
                 </a>
               </li>

@@ -14,51 +14,49 @@ class Lapso
     { }
 
     #Método para insertar registros
-    function insertar($seccion, $estatus)
+    function insertar($lapso, $estatus)
     {
-        $sql = "INSERT INTO seccion (seccion, estatus) VALUES('$seccion', '$estatus')";
+        $sql = "INSERT INTO lapso (lapso, estatus) VALUES('$lapso', '$estatus')";
 
         return ejecutarConsulta($sql);
     }
 
-    #Método para editar registros
-    function editar($idseccion, $seccion, $estatus)
+    #Método para editar lapsos
+    function editar($idlapso, $lapso, $estatus)
     {
-        $sql = "UPDATE seccion SET seccion='$seccion', estatus = '$estatus' WHERE id = '$idseccion'";
+        $sql = "UPDATE lapso SET lapso='$lapso', estatus = '$estatus' WHERE id = '$idlapso'";
 
         return ejecutarConsulta($sql);
     }
 
-    #Método para listar todos las secciones
+    #Método para listar todos los lapsos
     function listar()
     {
-        $sql = "SELECT * FROM seccion";
+        $sql = "SELECT * FROM lapso ORDER BY lapso";
 
         return ejecutarConsulta($sql);
     }
 
-    #Método para mostrar un ambiente
-    function mostrar($idseccion)
+    #Método para mostrar un lapso
+    function mostrar($idlapso)
     {
-        $sql = "SELECT * FROM seccion WHERE id = '$idseccion'";
+        $sql = "SELECT * FROM lapso WHERE id = '$idlapso'";
 
         return ejecutarConsultaSimpleFila($sql);
     }
 
-
-
-    #Método para desactivar ambiente
-    function desactivar($idseccion)
+    #Método para desactivar lapso
+    function desactivar($idlapso)
     {
-        $sql = "UPDATE seccion SET estatus = '0' WHERE id = '$idseccion'";
+        $sql = "UPDATE lapso SET estatus = '0' WHERE id = '$idlapso'";
 
         return ejecutarConsulta($sql);
     }
 
-    #Método para activar ambiente
-    function activar($idseccion)
+    #Método para activar lapso
+    function activar($idlapso)
     {
-        $sql = "UPDATE seccion SET estatus = '1' WHERE id = '$idseccion'";
+        $sql = "UPDATE lapso SET estatus = '1' WHERE id = '$idlapso'";
 
         return ejecutarConsulta($sql);
     }

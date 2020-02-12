@@ -14,10 +14,9 @@
         }
     });
 
-    //Se ejecuta al ingresar la letra en el input de sección
+    //Se ejecuta al quitar el foco en el input de lapso
     $('#lapso').on('blur', function () {
         comprobarLapso(this);
-
     });
 
     $('#btnAgregar').on('click', function () {
@@ -28,8 +27,7 @@
 
 })();
 
-//Comprueba que no exista la sección en el base de datos
-
+//Comprueba que no exista el lapso en el base de datos
 function comprobarLapso(esto) {
     var lapso = esto.value;
     $.post('../controladores/lapso.php?op=comprobarlapso', { lapso: lapso }, function (data) {
@@ -61,10 +59,10 @@ function cancelarform() {
 function guardaryeditar(event) {
     event.preventDefault(); //Evita que se envíe el formulario automaticamente
     // 
-    var formData = new FormData($([formularioSeccion])[0]); //Se obtienen los datos del formulario
+    var formData = new FormData($([formularioLapso])[0]); //Se obtienen los datos del formulario
 
     $.ajax({
-        url: '../controladores/seccion.php?op=guardaryeditar', //Dirección a donde se envían los datos
+        url: '../controladores/lapso.php?op=guardaryeditar', //Dirección a donde se envían los datos
         type: 'POST', //Método por el cual se envían los datos
         data: formData, //Datos
         contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
@@ -80,7 +78,7 @@ function guardaryeditar(event) {
 
                 Toast.fire({
                     type: 'success',
-                    title: 'Sección registrada exitosamente :)'
+                    title: 'Laspo registrado exitosamente :)'
                 });
             }
             else if (datos == 'update') {
@@ -93,7 +91,7 @@ function guardaryeditar(event) {
 
                 Toast.fire({
                     type: 'success',
-                    title: 'Sección modificada exitosamente :)'
+                    title: 'Laspo modificado exitosamente :)'
                 });
             }
             else {
@@ -112,9 +110,8 @@ function guardaryeditar(event) {
 
             limpiar();
             tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
-            $('#seccionModal').modal('hide');
+            $('#lapsoModal').modal('hide');
         }
-
     });
 }
 
@@ -139,7 +136,7 @@ function listar() {
         dom: 'lfrtip',
         "destroy": true, //Elimina cualquier elemente que se encuentre en la tabla
         "ajax": {
-            url: '../controladores/seccion.php?op=listar',
+            url: '../controladores/lapso.php?op=listar',
             type: 'GET',
             dataType: 'json'
         },
@@ -148,19 +145,18 @@ function listar() {
 }
 
 //Función para mostrar un registro para editar
-function mostrar(idseccion) {
-    $.post('../controladores/seccion.php?op=mostrar', { idseccion: idseccion }, function (data) {
+function mostrar(idlapso) {
+    $.post('../controladores/lapso.php?op=mostrar', { idlapso: idlapso }, function (data) {
         data = JSON.parse(data);
 
-        $('#seccion').val(data.seccion);
-        $('#estatus').val(data.estatus);
-        $('#estatus').selectpicker('refresh');
-        $('#idseccion').val(data.id);
+        $('#lapso').val(data.lapso);
+        $('#estatus').selectpicker('val', data.estatus);
+        $('#idlapso').val(data.id);
     });
 }
 
-//Función para desactivar la sección
-function desactivar(idseccion) {
+//Función para desactivar el lapso
+function desactivar(idlapso) {
 
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -172,7 +168,7 @@ function desactivar(idseccion) {
 
     swalWithBootstrapButtons.fire({
         title: '¿Estas seguro?',
-        text: "¿Quieres desactivar esta sección?",
+        text: "¿Quieres desactivar este lapso?",
         type: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Desactivar',
@@ -180,7 +176,7 @@ function desactivar(idseccion) {
         reverseButtons: true
     }).then((result) => {
         if (result.value) {
-            $.post('../controladores/seccion.php?op=desactivar', { idseccion: idseccion }, function (e) {
+            $.post('../controladores/lapso.php?op=desactivar', { idlapso: idlapso }, function (e) {
                 if (e == 'true') {
                     const Toast = Swal.mixin({
                         toast: true,
@@ -191,7 +187,7 @@ function desactivar(idseccion) {
 
                     Toast.fire({
                         type: 'success',
-                        title: 'La sección ha sido desactivada :)'
+                        title: 'El lapso ha sido desactivado :)'
                     });
                 }
                 else {
@@ -204,7 +200,7 @@ function desactivar(idseccion) {
 
                     Toast.fire({
                         type: 'error',
-                        title: 'Ups! No se pudo desactivar la sección'
+                        title: 'Ups! No se pudo desactivar el lapso'
                     });
                 }
                 tabla.ajax.reload();
@@ -213,8 +209,8 @@ function desactivar(idseccion) {
     });
 }
 
-//Función para activar la sección
-function activar(idseccion) {
+//Función para activar el lapso
+function activar(idlapso) {
 
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -226,7 +222,7 @@ function activar(idseccion) {
 
     swalWithBootstrapButtons.fire({
         title: '¿Estas seguro?',
-        text: "¿Quieres activar esta sección?",
+        text: "¿Quieres activar este lapso?",
         type: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Activar',
@@ -234,7 +230,7 @@ function activar(idseccion) {
         reverseButtons: true
     }).then((result) => {
         if (result.value) {
-            $.post('../controladores/seccion.php?op=activar', { idseccion: idseccion }, function (e) {
+            $.post('../controladores/lapso.php?op=activar', { idlapso: idlapso }, function (e) {
                 if (e == 'true') {
                     const Toast = Swal.mixin({
                         toast: true,
@@ -245,7 +241,7 @@ function activar(idseccion) {
 
                     Toast.fire({
                         type: 'success',
-                        title: 'La sección ha sido activada :)'
+                        title: 'El lapso ha sido activado :)'
                     });
                 }
                 else {
@@ -258,7 +254,7 @@ function activar(idseccion) {
 
                     Toast.fire({
                         type: 'error',
-                        title: 'Ups! No se pudo activar la sección'
+                        title: 'Ups! No se pudo activar el lapso'
                     });
                 }
                 tabla.ajax.reload();
@@ -270,12 +266,11 @@ function activar(idseccion) {
 
 //Función para limpiar el formulario
 function limpiar() {
-    $('#seccion').val('');
-    $('#seccion').removeClass('is-invalid');
-    $('#estatus').val('');
+    $("#formularioregistros")[0].reset();
+    $('#lapso').removeClass('is-invalid');
     $('#estatus').removeClass('is-invalid');
-    $('#estatus').selectpicker('refresh');
-    $('#idseccion').val('');
+    $('#estatus').selectpicker('val', '');
+    $('#idlapso').val('');
     $('#formularioregistros').removeClass('was-validated');
 }
 

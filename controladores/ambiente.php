@@ -11,6 +11,7 @@ $ambiente = new Ambiente();
 
 $idambiente = isset($_POST['idambiente']) ? limpiarCadena($_POST['idambiente']) : '';
 $numeroambiente = isset($_POST['ambiente']) ? limpiarCadena($_POST['ambiente']) : '';
+$capacidad = isset($_POST['capacidad']) ? limpiarCadena($_POST['capacidad']) : '';
 $estatus = isset($_POST['estatus']) ? limpiarCadena($_POST['estatus']) : '';
 
 #Se ejecuta un caso dependiendo del valor del parámetro GET
@@ -35,7 +36,7 @@ switch ($_GET['op']) {
 		if (empty($idambiente)) {
 			
 			#Se registra el ambiente
-			$ambiente->insertar($numeroambiente, $estatus) or $sw = FALSE;
+			$ambiente->insertar($numeroambiente, $capacidad, $estatus) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
@@ -51,7 +52,7 @@ switch ($_GET['op']) {
 		else{
 
 			#Se registra el ambiente
-			$ambiente->editar($idambiente, $numeroambiente, $estatus) or $sw = FALSE;
+			$ambiente->editar($idambiente, $numeroambiente, $capacidad, $estatus) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
@@ -83,7 +84,9 @@ switch ($_GET['op']) {
 
 					 ' <button class="btn btn-outline-success" title="Activar" onclick="activar('.$reg->id.')"><i class="fa fa-check"></i></button> ',
 
-					 	'1' => $reg->ambiente);
+					 '1' => $reg->ambiente,
+
+					 '2' => $reg->capacidad);
 			}
 
 			$results = array(

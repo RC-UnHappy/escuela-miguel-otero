@@ -92,7 +92,7 @@ class Planificacion
 		return ejecutarConsulta($sql);
 	}
 
-	#Método para traer las secciones que estén disponibles
+	#Método para traer los docentes
 	function traerdocentes($iddocente)
 	{
 		if ($iddocente != NULL) {

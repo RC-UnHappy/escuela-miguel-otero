@@ -16,17 +16,17 @@ class Ambiente
 	}
 
 	#Método para insertar registros
-	function insertar($ambiente, $estatus)
+	function insertar($ambiente, $capacidad, $estatus)
 	{
-		$sql = "INSERT INTO ambiente (ambiente, estatus) VALUES('$ambiente', '$estatus')";
+		$sql = "INSERT INTO ambiente (ambiente, capacidad, estatus) VALUES('$ambiente', '$capacidad', '$estatus')";
 
 		return ejecutarConsulta($sql);
 	}
 
 	#Método para editar registros
-	function editar($idambiente, $ambiente, $estatus)
+	function editar($idambiente, $ambiente, $capacidad, $estatus)
 	{
-		$sql = "UPDATE ambiente SET ambiente='$ambiente', estatus = '$estatus' WHERE id = '$idambiente'";
+		$sql = "UPDATE ambiente SET ambiente='$ambiente', capacidad='$capacidad', estatus = '$estatus' WHERE id = '$idambiente'";
 
 		return ejecutarConsulta($sql);
 

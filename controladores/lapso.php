@@ -31,10 +31,10 @@ switch ($_GET['op']) {
         $sw = TRUE;
 
         #Si la variable esta vacía quiere decir que es un nuevo registro
-        if (empty($idseccion)) {
+        if (empty($idlapso)) {
 
-            #Se registra el ambiente
-            $seccion->insertar($letraseccion, $estatus) or $sw = FALSE;
+            #Se registra el lapso
+            $Lapso->insertar($lapso, $estatus) or $sw = FALSE;
 
             #Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
             if ($sw) {
@@ -46,8 +46,8 @@ switch ($_GET['op']) {
             }
         } else {
 
-            #Se registra el ambiente
-            $seccion->editar($idseccion, $letraseccion, $estatus) or $sw = FALSE;
+            #Se edita el lapso
+            $Lapso->editar($idlapso, $lapso, $estatus) or $sw = FALSE;
 
             #Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
             if ($sw) {
@@ -62,22 +62,22 @@ switch ($_GET['op']) {
 
     case 'listar':
 
-        $rspta = $seccion->listar();
+        $rspta = $Lapso->listar();
 
         if ($rspta->num_rows != 0) {
 
             while ($reg = $rspta->fetch_object()) {
 
                 $data[] = array(
-                    '0' => ($reg->estatus) ? '<button class="btn btn-outline-primary " title="Editar" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#seccionModal"><i class="fas fa-edit"></i></button>' .
+                    '0' => ($reg->estatus) ? '<button class="btn btn-outline-primary " title="Editar" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#lapsoModal"><i class="fas fa-edit"></i></button>' .
 
                         ' <button class="btn btn-outline-danger" title="Desactivar" onclick="desactivar(' . $reg->id . ')"> <i class="fas fa-times"> </i></button> '
 
-                        : '<button class="btn btn-outline-primary" title="Editar" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#seccionModal"><i class="fa fa-edit"></i></button>' .
+                        : '<button class="btn btn-outline-primary" title="Editar" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#lapsoModal"><i class="fa fa-edit"></i></button>' .
 
                         ' <button class="btn btn-outline-success" title="Activar" onclick="activar(' . $reg->id . ')"><i class="fa fa-check"></i></button> ',
 
-                    '1' => $reg->seccion
+                    '1' => $reg->lapso.'º lapso'
                 );
             }
 
@@ -103,7 +103,7 @@ switch ($_GET['op']) {
 
     case 'mostrar':
 
-        $rspta = $seccion->mostrar($idseccion);
+        $rspta = $Lapso->mostrar($idlapso);
 
         #Se codifica el resultado utilizando Json
         echo json_encode($rspta);
@@ -112,13 +112,13 @@ switch ($_GET['op']) {
 
     case 'desactivar':
 
-        $rspta = $seccion->desactivar($idseccion);
+        $rspta = $Lapso->desactivar($idlapso);
         echo $rspta ? 'true' : 'false';
         break;
 
     case 'activar':
 
-        $rspta = $seccion->activar($idseccion);
+        $rspta = $Lapso->activar($idlapso);
         echo $rspta ? 'true' : 'false';
         break;
 }

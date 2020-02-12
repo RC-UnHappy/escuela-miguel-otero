@@ -124,7 +124,7 @@ if ($_SESSION['usuario'] == 1) {
 
                   <div class="col-md-4">
                     <div class="h-75 shadow-sm callout  callout-primary ">
-                      <strong class="text-primary">Fecha de Fundadción:</strong><br>
+                      <strong class="text-primary">Fecha de Fundación:</strong><br>
                       <p class="ml-2" id="mostrarFechaFundada"></p>
                     </div>
                   </div>
@@ -391,7 +391,7 @@ if ($_SESSION['usuario'] == 1) {
                           </div>
 
                           <div class="form-group col-md-3">
-                            <label for="fecha_fundada">Fecha de Fundadción (*)</label>
+                            <label for="fecha_fundada">Fecha de Fundación (*)</label>
                             <div class="input-group">
                               <div class="input-group-prepend">
                                 <div class="input-group-text">
