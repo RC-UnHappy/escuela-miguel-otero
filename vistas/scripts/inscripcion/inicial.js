@@ -182,88 +182,43 @@ function listar() {
     });
 }
 
-//Función para mostrar un registro para editar
+//Función para mostrar los estudiantes inscritos en una planificación
 function mostrar(idplanificacion) {
-    $.post('../controladores/planificacion.php?op=mostrar', { idplanificacion: idplanificacion }, function (planificacion) {
-        planificacion = JSON.parse(planificacion);
+    // $.post('../../controladores/inscripcion/inicial.php?op=mostrar', { idplanificacion: idplanificacion }, function (dataEstudiantes) {
+        // console.log(dataEstudiantes);
 
-        $.post('../controladores/planificacion.php?op=traergrados', function (grados) {
-            grados = JSON.parse(grados);
-            let grado = '';
-            if (grados.length != 0) {
-                grados.forEach(function (indice, valor) {
-                    grado += '<option value="' + indice.id + '">' + indice.grado + ' º</option>';
-                });
-            }
-            else {
-                grado = '<option value="">Debe Ingresar grados en configuración</option>';
-            }
-            $('#grado').html('<option value="">Seleccione</option>');
-            $('#grado').append(grado);
-            $('#grado').selectpicker('refresh');
-        }).then(function () {
-            $('#grado').selectpicker('val', planificacion.idgrado);
+        tablaEstudiantes = $('#tblistadoEstudiantes').DataTable({
+            "processing": true,
+            pagingType: "first_last_numbers",
+            language: {
+                "info": "Mostrando desde _START_ hasta _END_ de _TOTAL_ registros",
+                "lengthMenu": "Mostrar _MENU_ entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "emptyTable": "No hay datos para mostrar",
+                "infoEmpty": "Mostrando 0 hasta 0 de 0 entradas",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último"
+                },
+            },
+            dom: 'lfrtip',
+            "destroy": true, //Elimina cualquier elemento que se encuentre en la tabla
+            "ajax": {
+                url: '../../controladores/inscripcion/inicial.php?op=mostrar&idplanificacion='+idplanificacion,
+                type: 'GET',
+                dataType: 'json',
+                error : function (e) {
+                    console.log(e);
+                  }
+            },
+            'order': [[0, 'desc']],
         });
-
-        $.post('../controladores/planificacion.php?op=traersecciones', { idgrado: planificacion.idgrado, idplanificacion: planificacion.id }, function (data) {
-            data = JSON.parse(data);
-            let seccion = '';
-            if (data.length != 0) {
-                data.forEach(function (indice, valor) {
-                    seccion += '<option value="' + indice.id + '">' + indice.seccion + '</option>';
-                });
-            }
-            else {
-                seccion = '<option value="">Debe Ingresar secciones en configuración</option>';
-            }
-            $('#seccion').prop('disabled', false);
-            $('#seccion').html('<option value="">Seleccione</option>');
-            $('#seccion').append(seccion);
-            $('#seccion').selectpicker('refresh');
-        })
-            .then(() => {
-                $('#seccion').selectpicker('val', planificacion.idseccion);
-            });
-
-        $.post('../controladores/planificacion.php?op=traerambientes', { idambiente: planificacion.idambiente }, function (data) {
-            data = JSON.parse(data);
-            let ambiente = '';
-            if (data.length != 0) {
-                data.forEach(function (indice, valor) {
-                    ambiente += '<option value="' + indice.id + '">' + indice.ambiente + '</option>';
-                });
-            }
-            else {
-                ambiente = '<option value="">Debe ingresar ambientes en configuración</option>';
-            }
-            $('#ambiente').html('<option value="">Seleccione</option>');
-            $('#ambiente').append(ambiente);
-            $('#ambiente').selectpicker('refresh');
-        }).then(() => {
-            $('#ambiente').selectpicker('val', planificacion.idambiente);
-        });
-
-        $.post('../controladores/planificacion.php?op=traerdocentes', { iddocente: planificacion.iddocente }, function (data) {
-            data = JSON.parse(data);
-            let docente = '';
-            if (data.length != 0) {
-                data.forEach(function (indice, valor) {
-                    docente += '<option value="' + indice.id + '">' + indice.p_nombre + ' ' + indice.p_apellido + '</option>';
-                });
-            }
-            else {
-                docente = '<option value="">Debe Ingresar docentes en configuración</option>';
-            }
-            $('#docente').html('<option value="">Seleccione</option>');
-            $('#docente').append(docente);
-            $('#docente').selectpicker('refresh');
-        }).then(() => {
-            $('#docente').selectpicker('val', planificacion.iddocente);
-        });
-
-        $('#cupo').val(planificacion.cupo);
-        $('#idplanificacion').val(planificacion.id);
-    });
+        
+        tablaEstudiantes.ajax.reload();
+    // });
+    
 }
 
 //Función para eliminar una planificación

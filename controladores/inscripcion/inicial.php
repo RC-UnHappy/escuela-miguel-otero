@@ -32,6 +32,15 @@ switch ($_GET['op']) {
             #Se trae el id del período escolar en curso
             $idperiodo_escolar = $Inicial->consultarperiodo() or $sw = FALSE;
 
+            #Se comprueba que haya cupo disponible en la planificación
+            $cupo_disponible = $Inicial->verificarcupodisponible($idplanificacion) or $sw = FALSE;
+
+            if($cupo_disponible = 0)
+                $sw = FALSE;
+            
+            #Método para restar un cupo a la planificación
+            $Inicial->restarcupo($idplanificacion) or $sw = FALSE;
+            
             #Se registra la inscripción
             $Inicial->insertar($idperiodo_escolar['id'], $idplanificacion, $idestudiante, $idrepresentante, $estatus) or $sw = FALSE;
 
@@ -46,7 +55,7 @@ switch ($_GET['op']) {
         } else {
 
             #Se edita la planificación
-            $Planificacion->editar($idplanificacion, $idgrado, $idseccion, $idambiente, $iddocente, $cupo) or $sw = FALSE;
+            $Inicial->editar($idplanificacion, $idgrado, $idseccion, $idambiente, $iddocente, $cupo) or $sw = FALSE;
 
             #Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
             if ($sw) {
@@ -66,27 +75,34 @@ switch ($_GET['op']) {
         if ($rspta->num_rows != 0) {
             while ($reg = $rspta->fetch_object()) {
 
+                $percentage = ($reg->cupo_disponible * 100) / $reg->cupo;
+                $percentage = 100 - $percentage;
+                $percentage_color = ($percentage >= 50 && $percentage < 75) ? 'bg-warning' 
+                : ($percentage >= 75) ? 'bg-danger' 
+                : 'bg-success';
+
                 $data[] = array(
                     '0' => ($reg->estatus) ?
 
-                        '<button class="btn btn-outline-primary " title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#inscripcionModal"><i class="fas fa-eye"></i></button>' .
+                        '<button class="btn btn-outline-primary " title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#estudiantesSeccionModal"><i class="fas fa-eye"></i></button>' 
 
-                        ' <button class="btn btn-outline-danger" title="Eliminar" onclick="eliminar(' . $reg->id . ')"> <i class="fas fa-times"> </i></button> '
-
-                        : '<button class="btn btn-outline-primary" title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#inscripcionModal"><i class="fas fa-eye"></i></button>',
+                        : 
+                        
+                        '<button class="btn btn-outline-primary" title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#estudiantesSeccionModal"><i class="fas fa-eye"></i></button>',
 
                     '1' => $reg->grado . ' º',
                     '2' => '"' . $reg->seccion . '"',
                     '3' => $reg->p_nombre . ' ' . $reg->p_apellido,
                     '4' => '<div class="text-uppercase">
                                 <small>
-                                    <b>Cupo</b>
+                                    <b>Porcentaje de Ocupación</b>
                                 </small>
                             </div>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress bg-secondary" style="height: 30px;" bg-success>
+                                <div class="progress-bar '.$percentage_color.'"                  role="progressbar" style="width: '.$percentage.'%; color:white;"           aria-valuenow="'.$percentage.'" aria-valuemin="0" aria-valuemax="100">'.number_format($percentage, 1).' %
+                                </div>
                             </div>
-                            <small class="text-muted">30 /' .$reg->cupo. ' cupos disponibles</small>',
+                            <small >'.($reg->cupo - $reg->cupo_disponible).' / '.$reg->cupo. ' cupos</small>',
                     '5' => $reg->periodo
                 );
             }
@@ -114,10 +130,44 @@ switch ($_GET['op']) {
 
     case 'mostrar':
 
-        $rspta = $Planificacion->mostrar($idplanificacion);
+        $idplanificacion = isset($_GET['idplanificacion']) ? limpiarCadena($_GET['idplanificacion']) : '';
+        $rspta = $Inicial->mostrar($idplanificacion);
+
+        $data = array();
+        if ($rspta->num_rows != 0) {
+            while ($reg = $rspta->fetch_object()) {
+
+                $data[] = [
+                    '0' => '
+                    <button class="btn btn-outline-danger" title="Retirar estudiante" onclick="desactivar('.$reg->id.')"> <i class="fas fa-times"> </i></button>',
+                    '1' => $reg->cedula,
+                    '2' => $reg->p_nombre,
+                    '3' => $reg->s_nombre,
+                    '4' => $reg->p_apellido,
+                    '5' => $reg->s_apellido
+                ];
+            }
+
+            $results = array(
+                "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+                "recordsTotal" => count($data), #Se envía el total de registros al datatable
+                "recordsFiltered" => count($data), #Se envía el total de registros a visualizar
+                "data" => $data #datos en un array
+
+            );
+        }
+        else {
+            $results = array(
+                "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+                "recordsTotal" => 0, #Se envía el total de registros al datatable
+                "recordsFiltered" => 0, #Se envía el total de registros a visualizar
+                "data" => '' #datos en un array
+
+            );
+        }
 
         #Se codifica el resultado utilizando Json
-        echo json_encode($rspta);
+        echo json_encode($results);
 
         break;
 

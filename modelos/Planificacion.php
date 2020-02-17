@@ -16,17 +16,17 @@ class Planificacion
 	}
 
 	#Método para insertar registros
-	function insertar($idperiodo_escolar, $idgrado, $idseccion, $idambiente, $iddocente, $cupo, $estatus)
+	function insertar($idperiodo_escolar, $idgrado, $idseccion, $idambiente, $iddocente, $cupo, $cupo_disponible, $estatus)
 	{
-		$sql = "INSERT INTO planificacion (id, idperiodo_escolar, idgrado, idseccion, idambiente, iddocente, cupo, estatus) VALUES(NULL, '$idperiodo_escolar', '$idgrado', '$idseccion', '$idambiente', '$iddocente', '$cupo', $estatus)";
+		$sql = "INSERT INTO planificacion (id, idperiodo_escolar, idgrado, idseccion, idambiente, iddocente, cupo, cupo_disponible, estatus) VALUES(NULL, '$idperiodo_escolar', '$idgrado', '$idseccion', '$idambiente', '$iddocente', '$cupo', '$cupo_disponible', $estatus)";
 
 		return ejecutarConsulta($sql);
 	}
 
 	#Método para editar registros
-	function editar($id, $idgrado, $idseccion, $idambiente, $iddocente, $cupo)
+	function editar($id, $idgrado, $idseccion, $idambiente, $iddocente, $cupo, $cupo_disponible)
 	{
-		$sql = "UPDATE planificacion SET idgrado = '$idgrado', idseccion = '$idseccion', idambiente = '$idambiente', iddocente = '$iddocente', cupo = '$cupo' WHERE id = '$id'";
+		$sql = "UPDATE planificacion SET idgrado = '$idgrado', idseccion = '$idseccion', idambiente = '$idambiente', iddocente = '$iddocente', cupo = '$cupo', cupo_disponible = '$cupo_disponible' WHERE id = '$id'";
 
 		return ejecutarConsulta($sql);
 
@@ -109,6 +109,13 @@ class Planificacion
 	function consultarperiodo()
 	{
 		$sql = "SELECT id FROM periodo_escolar WHERE estatus = 1";
+		return ejecutarConsultaSimpleFila($sql);
+	}
+
+	#Método para consultar los cupos de una planificación
+	function verificarcupodisponible($idplanificacion)
+	{
+		$sql = "SELECT cupo FROM planificacion WHERE id = '$idplanificacion'";
 		return ejecutarConsultaSimpleFila($sql);
 	}
 	

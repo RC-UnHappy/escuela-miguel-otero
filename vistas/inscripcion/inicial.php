@@ -142,6 +142,49 @@ if (!isset($_SESSION['usuario'])) {
                         </div>
                     </div>
 
+                    <!-- Modal para ver los estudiantes de una sección -->
+                    <div class="modal fade" id="estudiantesSeccionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog rounded modal-xl" role="document">
+                            <div class="modal-content">
+
+                                <div class="modal-header fondo-degradado rounded">
+                                    <h5 class="modal-title text-white" id="exampleModalLabel">Lista de estudiantes</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="table-responsive">
+                                                <table class="table table-borderless table-striped" id="tblistadoEstudiantes">
+                                                    <caption>Lista de estudiantes</caption>
+                                                    <thead class="fondo-degradado text-white">
+                                                        <tr>
+                                                            <th scope="col">Opciones</th>
+                                                            <th scope="col">Cédula</th>
+                                                            <th scope="col">Primer nombre</th>
+                                                            <th scope="col">Segundo nombre</th>
+                                                            <th scope="col">Primer apellido</th>
+                                                            <th scope="col">Segundo apellido</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

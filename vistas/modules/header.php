@@ -187,14 +187,14 @@ if (strlen(session_id()) < 1)
 
           <li class="nav-item nav-dropdown">
             <a class="nav-link nav-dropdown-toggle" href="#">
-              <i class="nav-icon fas fa-money-check"></i> Inscripción
+              <i class="nav-icon fas fa-money-check"></i> Operaciones
             </a>
 
             <ul class="nav-dropdown-items">
 
               <li class="nav-item">
                 <a class="nav-link" href="/escuela-miguel-otero/vistas/inscripcion/inicial.php">
-                  <i class="nav-icon fas fa-check"></i> Inicial
+                  <i class="nav-icon fas fa-check"></i> Inscripción inicial
                 </a>
               </li>
 

@@ -37,12 +37,12 @@ class Inicial
         return ejecutarConsulta($sql);
     }
 
-    #Método para mostrar una planificación
+    #Método para mostrar los estudiantes inscritos en una planificación
     function mostrar($idplanificacion)
     {
-        $sql = "SELECT p.*, g.grado, s.seccion, a.ambiente, pe.p_nombre, pe.p_apellido FROM planificacion p  INNER JOIN grado g ON p.idgrado = g.id INNER JOIN seccion s ON p.idseccion = s.id INNER JOIN ambiente a ON p.idambiente = a.id INNER JOIN personal per ON p.iddocente = per.id INNER JOIN persona pe ON per.idpersona = pe.id WHERE p.id = '$idplanificacion'";
+        $sql = "SELECT  est.id, per.cedula, per.p_nombre, per.s_nombre, per.p_apellido, per.s_apellido FROM inscripcion ins INNER JOIN estudiante est ON ins.idestudiante = est.id  INNER JOIN persona per ON est.idpersona = per.id WHERE idplanificacion = '$idplanificacion'";
 
-        return ejecutarConsultaSimpleFila($sql);
+        return ejecutarConsulta($sql);
     }
 
 
@@ -105,6 +105,20 @@ class Inicial
     public function traerplanificaciones()
     {
         $sql = "SELECT pla.id, gra.grado, sec.seccion, persona.p_nombre, persona.p_apellido FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion INNER JOIN personal per ON per.id = pla.iddocente INNER JOIN persona persona ON persona.id = per.idpersona WHERE pla.estatus = 1 ORDER BY gra.grado, sec.seccion";
+        return ejecutarConsulta($sql);
+    }
+
+    #Método para comprobar lod cupos disponibles de una planificación
+    function verificarcupodisponible($idplanificacion)
+    {
+        $sql = "SELECT cupo FROM planificacion WHERE id = '$idplanificacion'";
+        return ejecutarConsultaSimpleFila($sql);
+    }
+
+    #Método para restar un cupo a la planificación
+    function restarcupo($idplanificacion)
+    {
+        $sql = "UPDATE planificacion SET cupo_disponible = (SELECT cupo_disponible FROM planificacion WHERE id = '$idplanificacion') - 1 WHERE id = '$idplanificacion'";
         return ejecutarConsulta($sql);
     }
 

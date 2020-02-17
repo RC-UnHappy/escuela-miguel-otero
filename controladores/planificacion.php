@@ -34,7 +34,7 @@ switch ($_GET['op']) {
 			$idperiodo_escolar = $Planificacion->consultarperiodo() or $sw = FALSE;
 			
 			#Se registra la planificación
-			$Planificacion->insertar($idperiodo_escolar['id'], $idgrado, $idseccion, $idambiente, $iddocente, $cupo, 1) or $sw = FALSE;
+			$Planificacion->insertar($idperiodo_escolar['id'], $idgrado, $idseccion, $idambiente, $iddocente, $cupo, $cupo, 1) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
@@ -48,9 +48,15 @@ switch ($_GET['op']) {
 
 		}
 		else{
+			
+			#Se consulta el cupo disponible para verificar que sea menor al cupo
+			$cupodisponible = $Planificacion->verificarcupodisponible($idplanificacion);
+
+			if($cupo < $cupodisponible)
+				$sw = FALSE;
 
 			#Se edita la planificación
-			$Planificacion->editar($idplanificacion, $idgrado, $idseccion, $idambiente, $iddocente, $cupo) or $sw = FALSE;
+			$Planificacion->editar($idplanificacion, $idgrado, $idseccion, $idambiente, $iddocente, $cupo, $cupo) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
