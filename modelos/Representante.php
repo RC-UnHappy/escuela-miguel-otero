@@ -47,7 +47,7 @@ class Representante
 	#Método para mostrar un representante
 	function mostrar($idrepresentante)
 	{
-		$sql = "SELECT p.*, p.id as idpersona,  r.*, r.id as idrepresentante, d.*, (SELECT telefono FROM telefono WHERE tipo = 'M' AND idpersona = p.id) as movil, (SELECT telefono FROM telefono WHERE tipo = 'F' AND idpersona = p.id) as fijo, (SELECT idmunicipio FROM parroquia WHERE id = d.idparroquia ) as idmunicipio, (SELECT idestado FROM municipio WHERE id = idmunicipio) as idestado, (SELECT municipio FROM municipio WHERE id = idmunicipio) as municipio, (SELECT parroquia FROM parroquia WHERE id = d.idparroquia) as parroquia, (SELECT estado FROM estado WHERE id = idestado) as estado FROM representante r INNER JOIN persona p ON p.id = r.idpersona INNER JOIN direccion d ON d.idpersona = p.id WHERE r.id = '$idrepresentante'";
+		$sql = "SELECT p.id as idpersona, r.id as idrepresentante, p.cedula, p.p_nombre, p.s_nombre, p.p_apellido, p.s_apellido, p.genero, p.f_nac, p.email,   r.instruccion, r.oficio , dr.idparroquia as idparroquiaresidencia, dr.direccion as direccionresidencia, dt.idparroquia as idparroquiatrabajo, dt.direccion as direcciontrabajo, (SELECT telefono FROM telefono WHERE tipo = 'M' AND idpersona = p.id) as movil, (SELECT telefono FROM telefono WHERE tipo = 'F' AND idpersona = p.id) as fijo, (SELECT idmunicipio FROM parroquia WHERE id = dr.idparroquia ) as idmunicipioresidencia, (SELECT idestado FROM municipio WHERE id = idmunicipioresidencia) as idestadoresidencia, (SELECT municipio FROM municipio WHERE id = idmunicipioresidencia) as municipioresidencia, (SELECT parroquia FROM parroquia WHERE id = dr.idparroquia) as parroquiaresidencia, (SELECT estado FROM estado WHERE id = idestadoresidencia) as estadoresidencia, (SELECT idmunicipio FROM parroquia WHERE id = dt.idparroquia ) as idmunicipiotrabajo, (SELECT idestado FROM municipio WHERE id = idmunicipiotrabajo) as idestadotrabajo, (SELECT municipio FROM municipio WHERE id = idmunicipiotrabajo) as municipiotrabajo, (SELECT parroquia FROM parroquia WHERE id = dt.idparroquia) as parroquiatrabajo, (SELECT estado FROM estado WHERE id = idestadotrabajo) as estadotrabajo FROM representante r INNER JOIN persona p ON p.id = r.idpersona LEFT JOIN direccion dr ON dr.idpersona = p.id LEFT JOIN direccion_trabajo dt ON dt.idpersona = p.id WHERE r.id = '$idrepresentante'";
 
 		return ejecutarConsulta($sql);
 	}
@@ -78,11 +78,21 @@ class Representante
 
 	}
 
+	#Método para listar los paises
+	function listarpaises()
+	{
+		$sql = "SELECT * FROM pais";
+
+		return ejecutarConsulta($sql);
+	}
 
     #Método para listar los estados
-    function listarestados()
+    function listarestados($idpais)
     {
-    	$sql = "SELECT * FROM estado";
+		if ($idpais !== NULL)
+			$sql = "SELECT * FROM estado WHERE idpais = '$idpais'";
+		else
+			$sql = "SELECT * FROM estado WHERE idpais = '232'";
 
 		return ejecutarConsulta($sql);
     }

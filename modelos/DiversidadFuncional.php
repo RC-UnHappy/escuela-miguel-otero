@@ -17,12 +17,15 @@ class DiversidadFuncional
 
 	#Método para insertar registros
 	function insertar($idestudiante, $diversidad)
-	{
+	{	
 		$sw = TRUE;
-		for ($i=0; $i < count($diversidad) ; $i++) { 
-			$sql = "INSERT INTO diversidad_funcional (id, idestudiante, diversidad) VALUES(NULL, '$idestudiante', '$diversidad[$i]')";
 
-			ejecutarConsulta($sql) or $sw = FALSE;
+		if ($diversidad != '') {
+			for ($i=0; $i < count($diversidad) ; $i++) { 
+				$sql = "INSERT INTO diversidad_funcional (id, idestudiante, diversidad) VALUES(NULL, '$idestudiante', '$diversidad[$i]')";
+	
+				ejecutarConsulta($sql) or $sw = FALSE;
+			}
 		}
 
 		return $sw;

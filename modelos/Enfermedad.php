@@ -19,10 +19,13 @@ class Enfermedad
 	function insertar($idestudiante, $enfermedad)
 	{
 		$sw = TRUE;
-		for ($i=0; $i < count($enfermedad) ; $i++) { 
-			$sql = "INSERT INTO enfermedad (id, idestudiante, enfermedad) VALUES(NULL, '$idestudiante', '$enfermedad[$i]')";
 
-			ejecutarConsulta($sql) or $sw = FALSE;
+		if ($enfermedad != '') {
+			for ($i=0; $i < count($enfermedad) ; $i++) { 
+				$sql = "INSERT INTO enfermedad (id, idestudiante, enfermedad) VALUES(NULL, '$idestudiante', '$enfermedad[$i]')";
+	
+				ejecutarConsulta($sql) or $sw = FALSE;
+			}
 		}
 
 		return $sw;

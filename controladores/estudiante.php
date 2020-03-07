@@ -26,9 +26,13 @@ $cedula_madre = isset($_POST['cedula_madre']) ? limpiarCadena($_POST['cedula_mad
 $idmadre = isset($_POST['idmadre']) ? limpiarCadena($_POST['idmadre']) : '';
 $cedula_padre = isset($_POST['cedula_padre']) ? limpiarCadena($_POST['cedula_padre']) : '';
 $idpadre = isset($_POST['idpadre']) ? limpiarCadena($_POST['idpadre']) : '';
-$estado = isset($_POST['estado']) ? limpiarCadena($_POST['estado']) : '';
-$municipio = isset($_POST['municipio']) ? limpiarCadena($_POST['municipio']) : '';
-$parroquia = isset($_POST['parroquia']) ? limpiarCadena($_POST['parroquia']) : '';
+$pais_nacimiento = isset($_POST['pais_nacimiento']) ? limpiarCadena($_POST['pais_nacimiento']) : '';
+$estado_nacimiento = isset($_POST['estado_nacimiento']) ? limpiarCadena($_POST['estado_nacimiento']) : '';
+$municipio_nacimiento = isset($_POST['municipio_nacimiento']) ? limpiarCadena($_POST['municipio_nacimiento']) : '';
+$parroquia_nacimiento = isset($_POST['parroquia_nacimiento']) ? limpiarCadena($_POST['parroquia_nacimiento']) : '';
+$estado_residencia = isset($_POST['estado_residencia']) ? limpiarCadena($_POST['estado_residencia']) : '';
+$municipio_residencia = isset($_POST['municipio_residencia']) ? limpiarCadena($_POST['municipio_residencia']) : '';
+$parroquia_residencia = isset($_POST['parroquia_residencia']) ? limpiarCadena($_POST['parroquia_residencia']) : '';
 $direccion = isset($_POST['direccion']) ? $_POST['direccion'] : '';
 $peso = isset($_POST['peso']) ? $_POST['peso'] : '';
 $talla = isset($_POST['talla']) ? $_POST['talla'] : '';
@@ -53,6 +57,10 @@ switch ($_GET['op']) {
 		#Se incluye el modelo de Dirección
 		require_once '../modelos/Direccion.php';
 		$Direccion = new Direccion();
+
+		#Se incluye el modelo de Lugar Nacimiento
+		require_once '../modelos/LugarNacimiento.php';
+		$LugarNacimiento = new LugarNacimiento();
 
 		#Se incluye el modelo de Aspecto Fisiológico
 		require_once '../modelos/AspectoFisiologico.php';
@@ -91,10 +99,13 @@ switch ($_GET['op']) {
 			$idpersona = $persona->insertar($cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email) or $sw = FALSE;
 			
 			#Se registra la dirección del estudiante
-			$Direccion->insertar($idpersona, $parroquia, $direccion) or $sw = FALSE;
+			$Direccion->insertar($idpersona, $parroquia_residencia, $direccion) or $sw = FALSE;
 
 			#Se registra el estudiante
 			$estudianteId = $estudiante->insertar($idpersona, $idmadre, $idpadre, $parto, $orden, 'REGISTRADO') or $sw = FALSE;
+
+			#Se registra el lugar de nacimiento del estudiante
+			$LugarNacimiento->insertar($estudianteId, $parroquia_nacimiento) or $sw = FALSE;
 
 			#Se registran los aspectos fisiológicos del estudiante
 			$AspectoFisiologico->insertar($estudianteId, $vacunas, $peso, $talla, $alergia) or $sw = FALSE;
@@ -111,7 +122,7 @@ switch ($_GET['op']) {
 			#Se registra si el estudiante posee canaima o no
 			$Canaima->insertar($estudianteId, $canaima, $condicion_canaima) or $sw = FALSE;
 			
-			#Se registran las diversidades funcionales del estudiante
+			#Se registran los sosten de hogar
 			$SostenHogar->insertar($estudianteId, $sosten) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
@@ -134,13 +145,28 @@ switch ($_GET['op']) {
 
 			#Se editan los datos de la persona
 			$persona->editar($idpersona, $cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email) or $sw = FALSE;
-			
-			#Se edita la dirección del estudiante
-			$Direccion->editar($idpersona, $parroquia, $direccion) or $sw = FALSE;
+
+			if ($Direccion->verificar($idpersona)) {
+				#Se edita la dirección del estudiante
+				$Direccion->editar($idpersona, $parroquia_residencia, $direccion) or $sw = FALSE;
+			} else {
+				#Se edita la dirección del estudiante
+				$Direccion->insertar($idpersona, $parroquia_residencia, $direccion) or $sw = FALSE;
+			}
 
 			#Se editan los aspectos fisiológicos del estudiante
 			$AspectoFisiologico->editar($idestudiante, $vacunas, $peso, $talla, $alergia) or $sw = FALSE;
 
+
+			if ($LugarNacimiento->verificar($idestudiante)) {
+				#Se edita el lugar de nacimiento del estudiante
+				$LugarNacimiento->editar($idestudiante, $parroquia_nacimiento) or $sw = FALSE;
+			}
+			else{
+				#Se registra el lugar de nacimiento del estudiante
+				$LugarNacimiento->insertar($idestudiante, $parroquia_nacimiento) or $sw = FALSE;
+			}
+			
 			#Verifica que la variable de diversidad contenga datos y los guarda
 			if (!empty($diversidad)) {
 				$DiversidadFuncional->eliminar($idestudiante) or $sw = FALSE;
@@ -256,8 +282,19 @@ switch ($_GET['op']) {
 
 		break;
 
+	case 'listarpaises':
+		$rspta = $estudiante->listarpaises();
+		
+		while ($pais = $rspta->fetch_object()) {
+			// $selected = $pais->pais == 'Venezuela' ? 'selected' : '';
+			echo '<option value="' . $pais->id . '">' . $pais->pais . '</option>';
+		}
+
+		break;
+
 	case 'listarestados':
-		$rspta = $representante->listarestados();
+		$idpais = isset($_GET['idpais']) ? $_GET['idpais'] : NULL; 
+		$rspta = $estudiante->listarestados($idpais);
 
 		while ($estado = $rspta->fetch_object()) {
 			echo '<option value="'.$estado->id.'">'.$estado->estado.'</option>';
@@ -266,8 +303,8 @@ switch ($_GET['op']) {
 		break;
 
 	case 'listarmunicipios':		
-		$idestado = $_GET['idestado'];
-		$rspta = $representante->listarmunicipios($idestado);
+		$idestado = isset($_GET['idestado']) ? $_GET['idestado'] : NULL; 
+		$rspta = $estudiante->listarmunicipios($idestado);
 
 		while ($municipio = $rspta->fetch_object()) {
 			echo '<option value="'.$municipio->id.'">'.$municipio->municipio.'</option>';
@@ -276,8 +313,8 @@ switch ($_GET['op']) {
 		break;
 
 	case 'listarparroquias':		
-		$idmunicipio = $_GET['idmunicipio'];
-		$rspta = $representante->listarparroquias($idmunicipio);
+		$idmunicipio = isset($_GET['idmunicipio']) ? $_GET['idmunicipio'] : NULL; 
+		$rspta = $estudiante->listarparroquias($idmunicipio);
 
 		while ($parroquia = $rspta->fetch_object()) {
 			echo '<option value="'.$parroquia->id.'">'.$parroquia->parroquia.'</option>';

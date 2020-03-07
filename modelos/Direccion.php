@@ -28,9 +28,22 @@ class Direccion
 	function editar($idpersona, $idparroquia, $direccion)
 	{
 		$sql = "UPDATE direccion SET idparroquia = '$idparroquia', direccion = '$direccion' WHERE idpersona = '$idpersona'";
-
+		
 		return ejecutarConsulta($sql);
 
+	}
+
+	/**
+	 * Método para verificar si una persona tiene un registro en la tabla direccion
+	 *
+	 * @param integer $idpersona
+	 * @return void
+	 */
+	function verificar($idpersona)
+	{
+		$sql = "SELECT * FROM direccion WHERE idpersona = '$idpersona'";
+
+		return ejecutarConsultaSimpleFila($sql);
 	}
 
 }

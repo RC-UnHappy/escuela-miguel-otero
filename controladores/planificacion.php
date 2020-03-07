@@ -48,15 +48,22 @@ switch ($_GET['op']) {
 
 		}
 		else{
-			
-			#Se consulta el cupo disponible para verificar que sea menor al cupo
-			$cupodisponible = $Planificacion->verificarcupodisponible($idplanificacion);
+      #Se consulta el cupo anterior
+      $cupoanterior = $Planificacion->verificarcupo($idplanificacion, 'cupo');
+      $cupoanterior = $cupoanterior['cupo'];
 
-			if($cupo < $cupodisponible)
+			#Se consulta el cupo disponible
+			$cupodisponible = $Planificacion->verificarcupo($idplanificacion, 'cupo_disponible');
+      $cupodisponible = $cupodisponible['cupo_disponible'];
+
+      #Cantidad de estudiantes inscritos
+      $cantidad_estudiantes = ($cupoanterior - $cupodisponible);
+
+			if(($cupo - $cantidad_estudiantes) < 0)
 				$sw = FALSE;
 
 			#Se edita la planificación
-			$Planificacion->editar($idplanificacion, $idgrado, $idseccion, $idambiente, $iddocente, $cupo, $cupo) or $sw = FALSE;
+			$Planificacion->editar($idplanificacion, $idgrado, $idseccion, $idambiente, $iddocente, $cupo, ($cupo - $cantidad_estudiantes)) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {

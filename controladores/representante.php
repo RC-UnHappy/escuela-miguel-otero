@@ -26,10 +26,15 @@ $email = isset($_POST['email']) ? limpiarCadena($_POST['email']) : '';
 $celular = isset($_POST['celular']) ? limpiarCadena($_POST['celular']) : '';
 $fijo = isset($_POST['fijo']) ? limpiarCadena($_POST['fijo']) : '';
 
-$estado = isset($_POST['estado']) ? limpiarCadena($_POST['estado']) : '';
-$municipio = isset($_POST['municipio']) ? limpiarCadena($_POST['municipio']) : '';
-$parroquia = isset($_POST['parroquia']) ? limpiarCadena($_POST['parroquia']) : '';
-$direccion = isset($_POST['direccion']) ? $_POST['direccion'] : '';
+$estado_trabajo = isset($_POST['estado_trabajo']) ? limpiarCadena($_POST['estado_trabajo']) : '';
+$municipio_trabajo = isset($_POST['municipio_trabajo']) ? limpiarCadena($_POST['municipio_trabajo']) : '';
+$parroquia_trabajo = isset($_POST['parroquia_trabajo']) ? limpiarCadena($_POST['parroquia_trabajo']) : '';
+$direccion_trabajo = isset($_POST['direccion_trabajo']) ? $_POST['direccion_trabajo'] : '';
+
+$estado_residencia = isset($_POST['estado_residencia']) ? limpiarCadena($_POST['estado_residencia']) : '';
+$municipio_residencia = isset($_POST['municipio_residencia']) ? limpiarCadena($_POST['municipio_residencia']) : '';
+$parroquia_residencia = isset($_POST['parroquia_residencia']) ? limpiarCadena($_POST['parroquia_residencia']) : '';
+$direccion_residencia = isset($_POST['direccion_residencia']) ? $_POST['direccion_residencia'] : '';
 
 
 #Se ejecuta un caso dependiendo del valor del parámetro GET
@@ -48,6 +53,10 @@ switch ($_GET['op']) {
 		require_once '../modelos/Direccion.php';
 		$Direccion = new Direccion();
 
+		#Se incluye el modelo de DirecciónTrabajo
+		require_once '../modelos/DireccionTrabajo.php';
+		$DireccionTrabajo = new DireccionTrabajo();
+
 		#Se deshabilita el guardado automático de la base de datos
 		autocommit(FALSE);
 
@@ -60,8 +69,11 @@ switch ($_GET['op']) {
 			#Se registra la persona y se devuelve el id del registro
 			$idpersona = $persona->insertar($cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email) or $sw = FALSE;
 			
-			#Se registra la dirección del representante
-			$Direccion->insertar($idpersona, $parroquia, $direccion) or $sw = FALSE;
+			#Se registra la dirección de residencia del representante
+			$Direccion->insertar($idpersona, $parroquia_residencia, $direccion_residencia) or $sw = FALSE;
+
+			#Se registra la dirección de trabajo del representante
+			$DireccionTrabajo->insertar($idpersona, $parroquia_trabajo, $direccion_trabajo) or $sw = FALSE;
 
 			#Verifica que las variables de los teléfonos contengan datos y los guarda
 			if (!empty($celular)) {
@@ -93,8 +105,20 @@ switch ($_GET['op']) {
 			#Se editan los datos de la persona
 			$persona->editar($personaId, $cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email) or $sw = FALSE;
 
-			#Se registra la dirección del representante
-			$Direccion->insertar($personaId, $parroquia, $direccion) or $sw = FALSE;
+			if ($Direccion->verificar($personaId)) {
+				#Se edita la dirección de residencia del representante
+				$Direccion->editar($personaId, $parroquia_residencia, $direccion_residencia) or $sw = FALSE;
+			} else {
+				#Se registra la dirección de residencia del representante
+				$Direccion->insertar($personaId, $parroquia_residencia, $direccion_residencia) or $sw = FALSE;
+			}
+
+			if ($DireccionTrabajo->verificar($personaId)) {
+				#Se edita la dirección de trabajo del representante
+				$DireccionTrabajo->editar($personaId, $parroquia_trabajo, $direccion_trabajo) or $sw = FALSE;
+			} else {
+				$DireccionTrabajo->insertar($personaId, $parroquia_trabajo, $direccion_trabajo) or $sw = FALSE;
+			}
 
 			#Verifica que las variables de los teléfonos contengan datos y los guarda
 			if (!empty($celular)) {
@@ -135,9 +159,22 @@ switch ($_GET['op']) {
 
 			#Se editan los datos de la persona
 			$persona->editar($idpersona, $cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email) or $sw = FALSE;
-			
-			#Se edita la dirección del representante
-			$Direccion->editar($idpersona, $parroquia, $direccion) or $sw = FALSE;
+
+			if ($Direccion->verificar($idpersona)) {
+				#Se edita la dirección de residencia del representante
+				$Direccion->editar($idpersona, $parroquia_residencia, $direccion_residencia) or $sw = FALSE;
+			} else {
+				#Se registra la dirección de residencia del representante
+				$Direccion->insertar($idpersona, $parroquia_residencia, $direccion_residencia) or $sw = FALSE;
+			}
+
+			if ($DireccionTrabajo->verificar($idpersona)) {
+				#Se edita la dirección de trabajo del representante
+				$DireccionTrabajo->editar($idpersona, $parroquia_trabajo, $direccion_trabajo) or $sw = FALSE;
+			} else {
+				#Se edita la dirección de trabajo del representante
+				$DireccionTrabajo->insertar($idpersona, $parroquia_trabajo, $direccion_trabajo) or $sw = FALSE;
+			}
 
 			#Verifica que las variables de los teléfonos contengan datos y los guarda
 			if (!empty($celular)) {
@@ -221,11 +258,13 @@ switch ($_GET['op']) {
 		break;
 
 	case 'listarestados':
-		$rspta = $representante->listarestados();
+		$idpais = isset($_GET['idpais']) ? $_GET['idpais'] : NULL;
+		$rspta = $representante->listarestados($idpais);
 
 		while ($estado = $rspta->fetch_object()) {
-			echo '<option value="'.$estado->id.'">'.$estado->estado.'</option>';
+			echo '<option value="' . $estado->id . '">' . $estado->estado . '</option>';
 		}
+
 
 		break;
 

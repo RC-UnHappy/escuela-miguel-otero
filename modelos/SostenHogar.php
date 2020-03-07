@@ -19,10 +19,12 @@ class SostenHogar
 	function insertar($idestudiante, $sosten)
 	{
 		$sw = TRUE;
-		for ($i=0; $i < count($sosten) ; $i++) { 
-			$sql = "INSERT INTO sosten_hogar (id, idestudiante, sosten) VALUES(NULL, '$idestudiante', '$sosten[$i]')";
-
-			ejecutarConsulta($sql) or $sw = FALSE;
+		if ($sosten != '') {
+			for ($i=0; $i < count($sosten) ; $i++) { 
+				$sql = "INSERT INTO sosten_hogar (id, idestudiante, sosten) VALUES(NULL, '$idestudiante', '$sosten[$i]')";
+	
+				ejecutarConsulta($sql) or $sw = FALSE;
+			}
 		}
 
 		return $sw;

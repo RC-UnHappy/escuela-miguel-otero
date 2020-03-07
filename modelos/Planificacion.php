@@ -113,9 +113,9 @@ class Planificacion
 	}
 
 	#Método para consultar los cupos de una planificación
-	function verificarcupodisponible($idplanificacion)
+	function verificarcupo($idplanificacion, $tipo)
 	{
-		$sql = "SELECT cupo FROM planificacion WHERE id = '$idplanificacion'";
+		$sql = "SELECT $tipo FROM planificacion WHERE id = '$idplanificacion'";
 		return ejecutarConsultaSimpleFila($sql);
 	}
 	

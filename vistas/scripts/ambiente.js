@@ -70,7 +70,8 @@ function cancelarform() {
 //Función para guardar y editar 
 function guardaryeditar(event) {
 	event.preventDefault(); //Evita que se envíe el formulario automaticamente
-	// 
+  // 
+  $('#btnGuardar').prop('disabled', true); //Deshabilita el botón submit para evitar que lo presionen dos veces
 	var formData = new FormData($([formularioAmbiente])[0]); //Se obtienen los datos del formulario
 	
 	$.ajax({
@@ -80,6 +81,7 @@ function guardaryeditar(event) {
 		contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
 		processData: false, //Evita que jquery transforme la data en un string
 		success: function (datos) {
+      $('#btnGuardar').prop('disabled', false);
 			if (datos == 'true') {
 				const Toast = Swal.mixin({
 				  toast: true,

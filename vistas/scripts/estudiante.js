@@ -18,42 +18,148 @@ function init() {
 		}
 	});
 
-	//Carga los estados al select
-	estados();
+	//Comprueba cada cambio en el select de pais de nacimiento
+	$('#pais_nacimiento').on('change', function () {
+		let idpaisNacimiento = $('#pais_nacimiento')[0].value;
+			
+		if (idpaisNacimiento != '') {
+			let data = estados(idpaisNacimiento);
 
-	//Comprueba cada cambio en el select de estado
-	$('#estado').on('change', function () {
-		estado = $('#estado')[0].value;
-		if (estado != '') {
-			$('#municipio').prop('disabled', false);
-			municipios(estado);
+			data
+			.then(function (r) {
+				$('#estado_nacimiento').prop('disabled', false);
+				$('#estado_nacimiento').html('<option value="">Seleccione</option>');
+				$('#estado_nacimiento').append(r);
+				$('#estado_nacimiento').selectpicker('refresh');
 
-			$('#parroquia').html('<option value="">Seleccione</option>');
-			$('#parroquia').prop('disabled', true);
-			$('#parroquia').selectpicker('refresh');
+				$('#municipio_nacimiento').html('<option value="">Seleccione</option>');
+				$('#municipio_nacimiento').prop('disabled', true);
+				$('#municipio_nacimiento').selectpicker('refresh');
+
+				$('#parroquia_nacimiento').html('<option value="">Seleccione</option>');
+				$('#parroquia_nacimiento').prop('disabled', true);
+				$('#parroquia_nacimiento').selectpicker('refresh');
+			});
+			 
 		}
 		else {
-			$('#municipio').html('<option value="">Seleccione</option>');
-			$('#municipio').prop('disabled', true);
-			$('#municipio').selectpicker('refresh');
+			$('#estado_nacimiento').html('<option value="">Seleccione</option>');
+			$('#estado_nacimiento').prop('disabled', true);
+			$('#estado_nacimiento').selectpicker('refresh');
 
-			$('#parroquia').html('<option value="">Seleccione</option>');
-			$('#parroquia').prop('disabled', true);
-			$('#parroquia').selectpicker('refresh');
+			$('#municipio_nacimiento').html('<option value="">Seleccione</option>');
+			$('#municipio_nacimiento').prop('disabled', true);
+			$('#municipio_nacimiento').selectpicker('refresh');
+
+			$('#parroquia_nacimiento').html('<option value="">Seleccione</option>');
+			$('#parroquia_nacimiento').prop('disabled', true);
+			$('#parroquia_nacimiento').selectpicker('refresh');
 		}
 	});
 
-	//Comprueba cada cambio en el select de municipio
-	$('#municipio').on('change', function () {
-		municipio = $('#municipio')[0].value;
-		if (municipio != '') {
-			$('#parroquia').prop('disabled', false);
-			parroquias(municipio);
+	//Comprueba cada cambio en el select de estado de nacimiento
+	$('#estado_nacimiento').on('change', function () {
+		let idestadoNacimiento = $('#estado_nacimiento')[0].value;
+
+		if (idestadoNacimiento != '') {
+			let data = municipios(idestadoNacimiento);
+			
+			data
+				.then(function (r) {
+					$('#municipio_nacimiento').prop('disabled', false);
+					$('#municipio_nacimiento').html('<option value="">Seleccione</option>');
+					$('#municipio_nacimiento').append(r);
+					$('#municipio_nacimiento').selectpicker('refresh');
+
+					$('#parroquia_nacimiento').html('<option value="">Seleccione</option>');
+					$('#parroquia_nacimiento').prop('disabled', true);
+					$('#parroquia_nacimiento').selectpicker('refresh');
+				});
+
 		}
 		else {
-			$('#parroquia').html('<option value="">Seleccione</option>');
-			$('#parroquia').prop('disabled', true);
-			$('#parroquia').selectpicker('refresh');
+
+			$('#municipio_nacimiento').html('<option value="">Seleccione</option>');
+			$('#municipio_nacimiento').prop('disabled', true);
+			$('#municipio_nacimiento').selectpicker('refresh');
+
+			$('#parroquia_nacimiento').html('<option value="">Seleccione</option>');
+			$('#parroquia_nacimiento').prop('disabled', true);
+			$('#parroquia_nacimiento').selectpicker('refresh');
+		}
+	});
+
+	//Comprueba cada cambio en el select de municipio de nacimiento
+	$('#municipio_nacimiento').on('change', function () {
+		let idmunicipioNacimiento = $('#municipio_nacimiento')[0].value;
+
+		if (idmunicipioNacimiento != '') {
+			let data = parroquias(idmunicipioNacimiento);
+
+			data
+				.then(function (r) {
+					$('#parroquia_nacimiento').prop('disabled', false);
+					$('#parroquia_nacimiento').html('<option value="">Seleccione</option>');
+					$('#parroquia_nacimiento').append(r);
+					$('#parroquia_nacimiento').selectpicker('refresh');
+				});
+
+		}
+		else {
+
+			$('#parroquia_nacimiento').html('<option value="">Seleccione</option>');
+			$('#parroquia_nacimiento').prop('disabled', true);
+			$('#parroquia_nacimiento').selectpicker('refresh');
+		}
+	});
+
+	//Comprueba cada cambio en el select de estado de residencia
+	$('#estado_residencia').on('change', function () {
+		let idestadoResidencia = $('#estado_residencia')[0].value;
+		if (idestadoResidencia != '') {
+			let data = municipios(idestadoResidencia);
+
+			data
+				.then(function (r) {
+					$('#municipio_residencia').prop('disabled', false);
+					$('#municipio_residencia').html('<option value="">Seleccione</option>');
+					$('#municipio_residencia').append(r);
+					$('#municipio_residencia').selectpicker('refresh');
+
+					$('#parroquia_residencia').html('<option value="">Seleccione</option>');
+					$('#parroquia_residencia').prop('disabled', true);
+					$('#parroquia_residencia').selectpicker('refresh');
+				});
+		}
+		else {
+			$('#municipio_residencia').html('<option value="">Seleccione</option>');
+			$('#municipio_residencia').prop('disabled', true);
+			$('#municipio_residencia').selectpicker('refresh');
+
+			$('#parroquia_residencia').html('<option value="">Seleccione</option>');
+			$('#parroquia_residencia').prop('disabled', true);
+			$('#parroquia_residencia').selectpicker('refresh');
+		}
+	});
+
+	//Comprueba cada cambio en el select municipio de residencia
+	$('#municipio_residencia').on('change', function () {
+		let idmunicipioResidencia = $('#municipio_residencia')[0].value;
+		if (idmunicipioResidencia != '') {
+			let data = parroquias(idmunicipioResidencia);
+
+			data
+				.then(function (r) {
+					$('#parroquia_residencia').prop('disabled', false);
+					$('#parroquia_residencia').html('<option value="">Seleccione</option>');
+					$('#parroquia_residencia').append(r);
+					$('#parroquia_residencia').selectpicker('refresh');
+				});
+		}
+		else {
+			$('#parroquia_residencia').html('<option value="">Seleccione</option>');
+			$('#parroquia_residencia').prop('disabled', true);
+			$('#parroquia_residencia').selectpicker('refresh');
 		}
 	});
 
@@ -71,6 +177,7 @@ function init() {
 		}
 		else {
 			$('#alertaMadre').remove();
+			$('#cedula_madre').removeClass('is-invalid');
 		}
 	});
 
@@ -82,6 +189,7 @@ function init() {
 		}
 		else {
 			$('#alertaMadre').remove();
+			$('#cedula_madre').removeClass('is-invalid');
 		}
 	});
 
@@ -94,6 +202,7 @@ function init() {
 		}
 		else {
 			$('#alertaPadre').remove();
+			$('#cedula_padre').removeClass('is-invalid');
 		}
 	});
 
@@ -105,6 +214,7 @@ function init() {
 		}
 		else {
 			$('#alertaPadre').remove();
+			$('#cedula_padre').removeClass('is-invalid');
 		}
 	});
 
@@ -116,6 +226,7 @@ function init() {
 		else {
 			$('#orden')[0].value = '';
 			$('#orden').prop('disabled', true);
+			crearCedulaEstudiantil();
 		}
 		
 	});
@@ -142,8 +253,7 @@ function init() {
 		
 	});
 
-	tabla.ajax.reload();
-			
+	tabla.ajax.reload();			
 }
 
 function comprobarTipoDocumento() {
@@ -194,6 +304,7 @@ function comprobarPadres(data) {
 					$('#alertaMadre').remove();
 					$('#idmadre').val('');
 					$('#cedula_madre').addClass('is-invalid');
+					$('#feedback-cedula-madre').html('La cédula no se encuentra registrada');
 				}
 			}
 		});
@@ -228,6 +339,8 @@ function comprobarPadres(data) {
 				else {
 					$('#alertaPadre').remove();
 					$('#idpadre').val('');
+					$('#cedula_padre').addClass('is-invalid');
+					$('#feedback-cedula-padre').html('La cédula no se encuentra registrada');
 				}
 			}
 		});
@@ -252,29 +365,69 @@ function crearCedulaEstudiantil() {
 	}
 }
 
-//Función para mostrar los estados
-function estados() {
-	$.post('../controladores/representante.php?op=listarestados', function (data) {
-		$('#estado').append(data);
-	});
+//Función para mostrar los paises
+function paises(idpais = null) {
+
+	if (idpais !== null) {
+		$.post('../controladores/estudiante.php?op=listarpaises', function (data) {
+			$('#pais_nacimiento').append(data);
+			$('#pais_nacimiento').val(idpais);
+			$('#pais_nacimiento').selectpicker('refresh');
+		});
+	}
+	else{
+		$.post('../controladores/estudiante.php?op=listarpaises', function (data) {
+			$('#pais_nacimiento').append(data);
+			$('#pais_nacimiento').selectpicker('refresh');
+
+			$('#estado_nacimiento').html('<option value="">Seleccione</option>');
+			$('#estado_nacimiento').prop('disabled', true);
+			$('#estado_nacimiento').selectpicker('refresh');
+
+			$('#municipio_nacimiento').html('<option value="">Seleccione</option>');
+			$('#municipio_nacimiento').prop('disabled', true);
+			$('#municipio_nacimiento').selectpicker('refresh');
+
+			$('#parroquia_nacimiento').html('<option value="">Seleccione</option>');
+			$('#parroquia_nacimiento').prop('disabled', true);
+			$('#parroquia_nacimiento').selectpicker('refresh');
+		});
+	}
+}
+
+//Función para traer los estados
+function estados(idpais = null) {
+	let estados;
+	if (idpais !== null) 
+		estados = $.post('../controladores/estudiante.php?op=listarestados&idpais='+idpais);
+	else 
+		estados = $.post('../controladores/estudiante.php?op=listarestados');
+	
+	return estados;
 }
 
 //Función para mostrar los municipios
 function municipios(idestado) {
-	$.post('../controladores/representante.php?op=listarmunicipios&idestado='+idestado, function (data) {
-		$('#municipio').html('<option value="">Seleccione</option>');
-		$('#municipio').append(data);
-		$('#municipio').selectpicker('refresh');
-	});
+
+	let municipios;
+	if (idestado !== null)
+		municipios = $.post('../controladores/estudiante.php?op=listarmunicipios&idestado=' + idestado);
+	else
+		municipios = $.post('../controladores/estudiante.php?op=listarmunicipios');
+
+	return municipios;
 }
 
 //Función para mostrar las parroquias
 function parroquias(idmunicipio) {
-	$.post('../controladores/representante.php?op=listarparroquias&idmunicipio='+idmunicipio, function (data) {
-		$('#parroquia').html('<option value="">Seleccione</option>');
-		$('#parroquia').append(data);
-		$('#parroquia').selectpicker('refresh');
-	});
+
+	let parroquias;
+	if (idmunicipio !== null)
+		parroquias = $.post('../controladores/estudiante.php?op=listarparroquias&idmunicipio=' + idmunicipio);
+	else
+		parroquias = $.post('../controladores/estudiante.php?op=listarparroquias');
+
+	return parroquias;
 }
 
 //Función para guardar y editar 
@@ -290,7 +443,7 @@ function guardaryeditar(event) {
 	var cedula = formData.get('cedula');// Se obtiene la cédula 
 	
 	formData.set('cedula', documento+cedula);//Se le asigna a la cédula del formData el tipo de documento
-	console.log(formData.get('ingreso_mensual'));
+
 	$.ajax({
 		url: '../controladores/estudiante.php?op=guardaryeditar', //Dirección a donde se envían los datos
 		type: 'POST', //Método por el cual se envían los datos
@@ -298,7 +451,7 @@ function guardaryeditar(event) {
 		contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
 		processData: false, //Evita que jquery transforme la data en un string
 		success: function (datos) {
-			console.log("datos", datos);
+			
 			if (datos == 'true') {
 				const Toast = Swal.mixin({
 				  toast: true,
@@ -382,7 +535,8 @@ function listar() {
 function mostrar(idestudiante) {
 	$.post('../controladores/estudiante.php?op=mostrar',{idestudiante: idestudiante}, function (data) {	
 		data = JSON.parse(data);
-		mostrarform(true);
+		
+		mostrarform(true, data.idpaisnacimiento , data.idestadoresidencia);
 
 		var documento = data.cedula.slice(0,2);
 		var cedula = data.cedula.slice(2);
@@ -423,14 +577,24 @@ function mostrar(idestudiante) {
 
 		$('#orden').val(data.orden_nacimiento);
 
-		$('#estado').val(data.idestado);
-		$('#estado').selectpicker('refresh');
-		$('#municipio').html('<option value="'+data.idmunicipio+'">'+data.municipio+'</option>');
-		$('#municipio').prop('disabled', false);
-		$('#municipio').selectpicker('refresh');
-		$('#parroquia').html('<option value="'+data.idparroquia+'">'+data.parroquia+'</option>');
-		$('#parroquia').prop('disabled', false);
-		$('#parroquia').selectpicker('refresh');
+		// El país de nacimiento se carga desde la función mostrarform
+		$('#estado_nacimiento').html('<option value="' + data.idestadonacimiento + '">' + data.estadonacimiento + '</option>');
+		$('#estado_nacimiento').prop('disabled', false);
+		$('#estado_nacimiento').selectpicker('refresh');
+		$('#municipio_nacimiento').html('<option value="' + data.idmunicipionacimiento + '">' + data.municipionacimiento + '</option>');
+		$('#municipio_nacimiento').prop('disabled', false);
+		$('#municipio_nacimiento').selectpicker('refresh');
+		$('#parroquia_nacimiento').html('<option value="' + data.idparroquianacimiento + '">' + data.parroquianacimiento + '</option>');
+		$('#parroquia_nacimiento').prop('disabled', false);
+		$('#parroquia_nacimiento').selectpicker('refresh');
+
+		// Los estados de residencia se cargan desde la función mostrarform
+		$('#municipio_residencia').html('<option value="'+data.idmunicipioresidencia+'">'+data.municipioresidencia+'</option>');
+		$('#municipio_residencia').prop('disabled', false);
+		$('#municipio_residencia').selectpicker('refresh');
+		$('#parroquia_residencia').html('<option value="'+data.idparroquiaresidencia+'">'+data.parroquiaresidencia+'</option>');
+		$('#parroquia_residencia').prop('disabled', false);
+		$('#parroquia_residencia').selectpicker('refresh');
 		$('#direccion').val(data.direccion);
 
 		var documento_madre = data.cedulaM.slice(0,2);
@@ -544,13 +708,50 @@ function mostrar(idestudiante) {
 }
 
 //Función para mostrar o ocultar el formulario
-function mostrarform(flag) {
+function mostrarform(flag, idpais = null, idestadoresidencia = null) {
 	limpiar();
 	if (flag) {
 		$('#listadoregistros').hide();
 		$('#formularioregistros').show();
 		$('#btnGuardar').prop('disabled', false);
 		$('#btnagregar').hide();
+
+		//Carga los paises al select pais de nacimiento
+		if (idpais !== null) {
+			paises(idpais);
+		}
+		else {
+			paises();
+		}
+
+		//Carga los estados al select estado de residencia
+		if (idestadoresidencia !== null) {
+			let estadoResidencia = estados();
+			estadoResidencia
+			.then(function (r) {  
+				$('#estado_residencia').html('<option value="">Seleccione</option>');
+				$('#estado_residencia').append(r);
+				$('#estado_residencia').val(idestadoresidencia);	
+				$('#estado_residencia').selectpicker('refresh');
+			});	
+		}
+		else {
+			let estadoResidencia = estados();
+			estadoResidencia
+			.then(function (r) {
+				$('#estado_residencia').html('<option value="">Seleccione</option>');
+				$('#estado_residencia').append(r);
+				$('#estado_residencia').selectpicker('refresh');
+
+				$('#municipio_residencia').html('<option value="">Seleccione</option>');
+				$('#municipio_residencia').prop('disabled', true);
+				$('#municipio_residencia').selectpicker('refresh');
+
+				$('#parroquia_residencia').html('<option value="">Seleccione</option>');
+				$('#parroquia_residencia').prop('disabled', true);
+				$('#parroquia_residencia').selectpicker('refresh');
+			});	
+		}
 	}
 	else{
 		$('#listadoregistros').show();
@@ -584,14 +785,25 @@ function limpiar() {
 	$('#icono_genero').removeClass('bg-danger');
 	$('input[name="parto"]').attr('checked', false);
 	$('#orden').attr('disabled', true);
-	$('#estado').val('');
-	$('#estado').selectpicker('refresh');
-	$('#municipio').html('<option value="">Seleccione</option>');
-	$('#municipio').prop('disabled', true);
-	$('#municipio').selectpicker('refresh');
-	$('#parroquia').html('<option value="">Seleccione</option>');
-	$('#parroquia').prop('disabled', true);
-	$('#parroquia').selectpicker('refresh');
+	$('#pais_nacimiento').val('');
+	$('#pais_nacimiento').selectpicker('refresh');
+	$('#estado_nacimiento').html('<option value="">Seleccione</option>');
+	$('#estado_nacimiento').prop('disabled', true);
+	$('#estado_nacimiento').selectpicker('refresh');
+	$('#municipio_nacimiento').html('<option value="">Seleccione</option>');
+	$('#municipio_nacimiento').prop('disabled', true);
+	$('#municipio_nacimiento').selectpicker('refresh');
+	$('#parroquia_nacimiento').html('<option value="">Seleccione</option>');
+	$('#parroquia_nacimiento').prop('disabled', true);
+	$('#parroquia_nacimiento').selectpicker('refresh');
+	$('#estado_residencia').val('');
+	$('#estado_residencia').selectpicker('refresh');
+	$('#municipio_residencia').html('<option value="">Seleccione</option>');
+	$('#municipio_residencia').prop('disabled', true);
+	$('#municipio_residencia').selectpicker('refresh');
+	$('#parroquia_residencia').html('<option value="">Seleccione</option>');
+	$('#parroquia_residencia').prop('disabled', true);
+	$('#parroquia_residencia').selectpicker('refresh');
 	$('input[name="vacunas"]').attr('checked', false);
 	$('input[name="alergia"]').attr('checked', false);
 	$('input[name="vivienda"]').attr('checked', false);

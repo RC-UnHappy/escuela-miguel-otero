@@ -19,7 +19,6 @@ class Persona
 	function insertar($cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email)
 	{
 		$sql = "INSERT INTO persona (cedula, p_nombre, s_nombre, p_apellido, s_apellido, genero, f_nac, email, f_creacion) VALUES('$cedula', '$p_nombre', '$s_nombre', '$p_apellido', '$s_apellido', '$genero', '$f_nac', '$email', NOW())";
-
 		 
 		return ejecutarConsulta_retornarID($sql);
 	}

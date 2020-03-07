@@ -47,7 +47,7 @@ class Estudiante
 	#Método para mostrar un estudiante
 	function mostrar($idestudiante)
 	{
-		$sql = "SELECT pe.cedula, pe.p_nombre, pe.s_nombre, pe.p_apellido, pe.s_apellido, pe.genero, pe.f_nac, e.id, e.idmadre, e.idpadre, e.parto_multiple, e.orden_nacimiento, e.estatus, d.idparroquia, d.direccion, p.idmunicipio, p.parroquia, m.idestado, m.municipio, esta.estado, pm.cedula as cedulaM, pp.cedula as cedulaP, af.todas_vacunas, af.peso, af.talla, af.alergico, GROUP_CONCAT(DISTINCT df.diversidad) as diversidades, GROUP_CONCAT(DISTINCT enf.enfermedad) as enfermedades, aso.tipo_vivienda, aso.grupo_familiar, aso.ingreso_mensual, GROUP_CONCAT(DISTINCT sh.sosten) as sostenes, can.posee_canaima, can.condicion FROM persona pe INNER JOIN estudiante e ON pe.id = e.idpersona INNER JOIN direccion d ON d.idpersona = pe.id INNER JOIN parroquia p ON d.idparroquia = p.id INNER JOIN municipio m ON m.id = p.idmunicipio INNER JOIN estado esta ON esta.id = m.idestado INNER JOIN persona pm ON pm.id = e.idmadre LEFT JOIN persona pp ON pp.id = e.idpadre LEFT JOIN aspecto_fisiologico af ON af.idestudiante = e.id LEFT JOIN diversidad_funcional df ON df.idestudiante = e.id LEFT JOIN enfermedad enf ON enf.idestudiante = e.id INNER JOIN aspecto_socioeconomico as aso ON aso.idestudiante = e.id LEFT JOIN sosten_hogar sh ON sh.idestudiante = e.id inner JOIN canaima can ON can.idestudiante = e.id WHERE e.id = '$idestudiante'";
+		$sql = "SELECT pe.cedula, pe.p_nombre, pe.s_nombre, pe.p_apellido, pe.s_apellido, pe.genero, pe.f_nac, e.id, e.idmadre, e.idpadre, e.parto_multiple, e.orden_nacimiento, e.estatus, d.idparroquia as idparroquiaresidencia, d.direccion, p.idmunicipio as idmunicipioresidencia, p.parroquia as parroquiaresidencia, m.idestado as idestadoresidencia, m.municipio as municipioresidencia, esta.estado as estadoresidencia, ln.idparroquia as  idparroquianacimiento, pn.idmunicipio as idmunicipionacimiento, pn.parroquia as parroquianacimiento, mn.idestado as idestadonacimiento, mn.municipio as municipionacimiento, en.idpais as idpaisnacimiento , en.estado as estadonacimiento, pan.pais as paisnacimiento, pm.cedula as cedulaM, pp.cedula as cedulaP, af.todas_vacunas, af.peso, af.talla, af.alergico, GROUP_CONCAT(DISTINCT df.diversidad) as diversidades, GROUP_CONCAT(DISTINCT enf.enfermedad) as enfermedades, aso.tipo_vivienda, aso.grupo_familiar, aso.ingreso_mensual, GROUP_CONCAT(DISTINCT sh.sosten) as sostenes, can.posee_canaima, can.condicion FROM persona pe INNER JOIN estudiante e ON pe.id = e.idpersona LEFT JOIN direccion d ON d.idpersona = pe.id LEFT JOIN parroquia p ON d.idparroquia = p.id LEFT JOIN municipio m ON m.id = p.idmunicipio LEFT JOIN estado esta ON esta.id = m.idestado LEFT JOIN lugar_nacimiento ln ON ln.idestudiante = e.id LEFT JOIN parroquia pn ON pn.id = ln.idparroquia LEFT JOIN municipio mn ON mn.id = pn.idmunicipio LEFT JOIN estado en ON en.id = mn.idestado LEFT JOIN pais pan ON pan.id = en.idpais INNER JOIN persona pm ON pm.id = e.idmadre LEFT JOIN persona pp ON pp.id = e.idpadre LEFT JOIN aspecto_fisiologico af ON af.idestudiante = e.id LEFT JOIN diversidad_funcional df ON df.idestudiante = e.id LEFT JOIN enfermedad enf ON enf.idestudiante = e.id INNER JOIN aspecto_socioeconomico as aso ON aso.idestudiante = e.id LEFT JOIN sosten_hogar sh ON sh.idestudiante = e.id inner JOIN canaima can ON can.idestudiante = e.id WHERE e.id = '$idestudiante'";
 
 		return ejecutarConsulta($sql);
 	}
@@ -60,29 +60,46 @@ class Estudiante
 		return ejecutarConsultaSimpleFila($sql);
 	}
 
-    #Método para listar los estados
-    function listarestados()
-    {
-    	$sql = "SELECT * FROM estado";
+	#Método para listar los paises
+	function listarpaises()
+	{
+		$sql = "SELECT * FROM pais";
 
 		return ejecutarConsulta($sql);
-    }
+	}
 
-    #Método para listar los municipios
-    function listarmunicipios($idestado)
-    {
-    	$sql = "SELECT * FROM municipio WHERE idestado = '$idestado'";
+  #Método para listar los estados
+  function listarestados($idpais)
+  {
+  if ($idpais !== NULL)
+    $sql = "SELECT * FROM estado WHERE idpais = '$idpais'";
+  else
+    $sql = "SELECT * FROM estado WHERE idpais = '232'";
 
-		return ejecutarConsulta($sql);
-    }
+  return ejecutarConsulta($sql);
+  }
 
-    #Método para listar las parroquias
-    function listarparroquias($idmunicipio)
-    {
-    	$sql = "SELECT * FROM parroquia WHERE idmunicipio = '$idmunicipio'";
+  #Método para listar los municipios
+  function listarmunicipios($idestado)
+  {
+  if ($idestado !== NULL)
+    $sql = "SELECT * FROM municipio WHERE idestado = '$idestado'";
+  else
+    $sql = "SELECT * FROM municipio";
 
-		return ejecutarConsulta($sql);
-    }
+  return ejecutarConsulta($sql);
+  }
+
+  #Método para listar las parroquias
+  function listarparroquias($idmunicipio)
+  {
+  if ($idmunicipio !== NULL)
+    $sql = "SELECT * FROM parroquia WHERE idmunicipio = '$idmunicipio'";
+  else
+    $sql = "SELECT * FROM parroquia";
+
+  return ejecutarConsulta($sql);
+  }
 
 	#Método para comprobar si existe la persona
 	function comprobarpadres($cedula, $genero)
@@ -91,5 +108,3 @@ class Estudiante
 		return ejecutarConsulta($sql);
 	}
 }
-
-

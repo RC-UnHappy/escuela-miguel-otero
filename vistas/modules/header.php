@@ -177,7 +177,7 @@ if (strlen(session_id()) < 1)
 
           <li class="nav-item">
             <a class="nav-link" href="/escuela-miguel-otero/vistas/representante.php">
-              <i class="nav-icon fas fa-user-tie"></i> Representante</a>
+              <i class="nav-icon fas fa-user-tie"></i> Padres y representantes</a>
           </li>
 
           <li class="nav-item">
