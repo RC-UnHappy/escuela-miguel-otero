@@ -524,44 +524,6 @@ function traerPlanificaciones() {
     });
 }
 
-// function traerEstudiantes() {
-//     $.post('../../controladores/inscripcion/inicial.php?op=traerestudiantes', function (data) {
-
-//         data = JSON.parse(data);
-        
-//         let estudiante = '';
-//         if (data.length != 0) {
-//             data.forEach(function (indice) {
-//                 estudiante += '<option value="' + indice.id + '">' + indice.cedula + ' - '+ indice.nombre + ' '+ indice.apellido +'</option>';
-//             });
-//         }
-//         else {
-//             estudiante = '<option value="">Debe registrar estudiantes</option>';
-//         }
-//         $('#estudiante').html('<option value="">Seleccione</option>');
-//         $('#estudiante').append(estudiante);
-//         $('#estudiante').selectpicker('refresh');
-//     });
-// }
-
-// function traerRepresentantes() {
-//     $.post('../../controladores/inscripcion/inicial.php?op=traerrepresentantes', function (data) {
-        
-//         data = JSON.parse(data);
-//         let representante = '';
-//         if (data.length != 0) {
-//             data.forEach(function (indice) {
-//                 representante += '<option value="' + indice.id + '">' + indice.cedula + ' - ' + indice.nombre + ' ' + indice.apellido + '</option>';
-//             });
-//         }
-//         else {
-//             representante = '<option value="">Debe registrar representantes</option>';
-//         }
-//         $('#representante').html('<option value="">Seleccione</option>');
-//         $('#representante').append(representante);
-//         $('#representante').selectpicker('refresh');
-//     });
-// }
 
 //Función cancelarform
 function cancelarform() {
@@ -616,53 +578,50 @@ function guardaryeditar(event) {
         success: function (datos) {
             console.log(datos);
             
-            // if (datos == 'true') {
-            //     const Toast = Swal.mixin({
-            //         toast: true,
-            //         position: 'top-end',
-            //         showConfirmButton: false,
-            //         timer: 3000
-            //     });
+            if (datos == 'true') {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
 
-            //     Toast.fire({
-            //         type: 'success',
-            //         title: 'Inscripción registrada exitosamente :)'
-            //     });
-            // }
-            // else if (datos == 'update') {
-            //     const Toast = Swal.mixin({
-            //         toast: true,
-            //         position: 'top-end',
-            //         showConfirmButton: false,
-            //         timer: 3000
-            //     });
+                Toast.fire({
+                    type: 'success',
+                    title: 'Inscripción realizada exitosamente :)'
+                });
+            }
+            else if (datos == 'update') {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
 
-            //     Toast.fire({
-            //         type: 'success',
-            //         title: 'Inscripción modificada exitosamente :)'
-            //     });
+                Toast.fire({
+                    type: 'success',
+                    title: 'Inscripción modificada exitosamente :)'
+                });
 
-            //     $('#planificacionModal').modal('hide');
-            // }
-            // else {
-            //     const Toast = Swal.mixin({
-            //         toast: true,
-            //         position: 'top-end',
-            //         showConfirmButton: false,
-            //         timer: 3000
-            //     });
+                $('#planificacionModal').modal('hide');
+            }
+            else {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
 
-            //     Toast.fire({
-            //         type: 'error',
-            //         title: 'Ocurrió un error y no se pudo registrar :('
-            //     });
-            // }
+                Toast.fire({
+                    type: 'error',
+                    title: 'Ocurrió un error y no se pudo inscribir :('
+                });
+            }
 
-            // traerPlanificaciones();
-            // // traerEstudiantes();
-            // // traerRepresentantes();
-            // limpiar();
-            // tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
+            limpiar();
+            tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
 
         }
 
@@ -724,10 +683,7 @@ function mostrar(idplanificacion) {
             "ajax": {
                 url: '../../controladores/inscripcion/inicial.php?op=mostrar&idplanificacion='+idplanificacion,
                 type: 'GET',
-                dataType: 'json',
-                error : function (e) {
-                    console.log(e);
-                  }
+                dataType: 'json'
             },
             'order': [[0, 'desc']],
         });
@@ -793,10 +749,18 @@ function eliminar(idplanificacion) {
 
 //Función para limpiar el formulario
 function limpiar() {
-    $('#planificacion').selectpicker('val', '');
-    $('#estudiante').selectpicker('val', '');
-    $('#representante').selectpicker('val', '');
-    $('#estatus').selectpicker('val', '');
-    $('#formularioregistros').removeClass('was-validated');
+  $([formularioInscripcion])[0].reset();
+  $('#documento_estudiante').selectpicker('val', '');
+  $('#genero_estudiante').selectpicker('val', '');
+  $('#pais_nacimiento_estudiante').selectpicker('val', '');
+  $('#estado_nacimiento_estudiante').selectpicker('val', '');
+  $('#municipio_nacimiento_estudiante').selectpicker('val', '');
+  $('#parroquia_nacimiento_estudiante').selectpicker('val', '');
+  $('#documento_madre').selectpicker('val', '');
+  $('#documento_padre').selectpicker('val', '');
+  $('#documento_representante').selectpicker('val', '');
+  $('#genero_representante').selectpicker('val', '');
+  $('#planificacion').selectpicker('val', '');
+  $([formularioInscripcion]).removeClass('was-validated');
 }
 

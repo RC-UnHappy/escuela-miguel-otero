@@ -15,7 +15,7 @@ class Inicial
 
   public function inscribir($idperiodo_escolar, $idplanificacion, $idestudiante, $idrepresentante, $parentesco, $plantel_procedencia, $repite, $observaciones, $estatus)
   {
-    $sql = "INSERT INTO inscripcion (id, idperiodo_escolar, idplanificacion, idestudiante, idrepresentante, parentesco, plantel_procedencia, repite, observaciones, fecha_inscripcion, estatus) VALUES(NULL, $idperiodo_escolar, $idplanificacion, $idestudiante, $idrepresentante, $parentesco,  $plantel_procedencia, $repite, $observaciones, CURDATE(), $estatus) ";
+    $sql = "INSERT INTO inscripcion (id, idperiodo_escolar, idplanificacion, idestudiante, idrepresentante, parentesco, plantel_procedencia, repite, observaciones, fecha_inscripcion, estatus) VALUES(NULL, $idperiodo_escolar, $idplanificacion, $idestudiante, $idrepresentante, '$parentesco',  '$plantel_procedencia', '$repite', '$observaciones', CURDATE(), '$estatus') ";
 
     return ejecutarConsulta_retornarID($sql);
   }
@@ -139,7 +139,7 @@ class Inicial
   #Método para insertar registros
   function insertar_estudiante($idpersona, $idmadre, $idpadre, $parto_multiple, $orden_nacimiento, $estatus)
   {
-    $sql = "INSERT INTO estudiante (id, idpersona, idmadre, idpadre, parto_multiple, orden_nacimiento, estatus) VALUES(NULL, '$idpersona', '$idmadre', '$idpadre', '$parto_multiple', '$orden_nacimiento', '$estatus')";
+    $sql = "INSERT INTO estudiante (idpersona, idmadre, idpadre, parto_multiple, orden_nacimiento, estatus) VALUES('$idpersona', '$idmadre', '$idpadre', '$parto_multiple', '$orden_nacimiento', '$estatus')";
 
     return ejecutarConsulta_retornarID($sql);
   }
@@ -298,6 +298,7 @@ class Inicial
   function verificarcupo($idplanificacion, $tipo)
   {
       $sql = "SELECT $tipo FROM planificacion WHERE id = '$idplanificacion'";
+
       return ejecutarConsultaSimpleFila($sql);
   }
 

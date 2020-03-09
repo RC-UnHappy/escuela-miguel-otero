@@ -358,29 +358,30 @@ switch ($_GET['op']) {
      */
     #Si la variable esta vacía quiere decir que es un nuevo registro
     $idpersonaestudiante = $Inicial->comprobarpersona($cedula_estudiante, FALSE);
-    $idpersonaestudiante = $idpersonaestudiante['id']; 
+    $idpersonaestudiante = !empty($idpersonaestudiante) ? $idpersonaestudiante['id'] : NULL; 
     
     $idestudiante = $Inicial->comprobarestudiante($cedula_estudiante);
-    $idestudiante = $idestudiante['id'];
+    $idestudiante = !empty($idestudiante) ? $idestudiante['id'] : NULL;
+    
     
     if (empty($idestudiante) && empty($idpersonaestudiante)) {
+      
       $idpersonaestudiante = $Inicial->insertar_persona($cedula_estudiante, $p_nombre_estudiante, $s_nombre_estudiante, $p_apellido_estudiante, $s_apellido_estudiante, $genero_estudiante) or $sw = FALSE;
       
+      /////////////////////////////////////////////////// Vas por aquí
       #Se registra el estudiante
-      $idestudiante = $Inicial->insertar_estudiante($idpersonaestudiante, $idmadre, $idpadre, $parto, $orden, 'INSCRITO') or $sw = FALSE;
-      
-      var_dump($idestudiante);
-      die;
+      $idestudiante = $Inicial->insertar_estudiante($idpersonaestudiante, $idpersonamadre, $idpersonapadre, $parto, $orden, 'INSCRITO') or $sw = FALSE;
+        
       #Se registra el lugar de nacimiento del estudiante
-      $nada = $Inicial->insertar_lugar_nacimiento($idestudiante, $parroquia_nacimiento_estudiante) or $sw = FALSE;
+      $Inicial->insertar_lugar_nacimiento($idestudiante, $parroquia_nacimiento_estudiante) or $sw = FALSE;
+
     }
-    
     // Cuando la persona ya estaba registrada pero no como estudiante
     else if (!empty($idpersonaestudiante) && empty($idestudiante)) {
       
       $Inicial->editar_persona($idpersonaestudiante, $cedula_estudiante, $p_nombre_estudiante, $s_nombre_estudiante, $p_apellido_estudiante, $s_apellido_estudiante) or $sw = FALSE;
       
-      $idestudiante = $Inicial->insertar_estudiante($idpersonaestudiante, $idmadre, $idpadre, $parto, $orden, 'INSCRITO') or $sw = FALSE;
+      $idestudiante = $Inicial->insertar_estudiante($idpersonaestudiante, $idpersonamadre, $idpersonapadre, $parto, $orden, 'INSCRITO') or $sw = FALSE;
       
       if ($Inicial->verificar_lugar_nacimiento($idestudiante)) {
         #Se edita el lugar de nacimiento del estudiante
@@ -396,7 +397,7 @@ switch ($_GET['op']) {
       // Se editan los datos de la persona 
       $Inicial->editar_persona($idpersonaestudiante, $cedula_estudiante, $p_nombre_estudiante, $s_nombre_estudiante, $p_apellido_estudiante, $s_apellido_estudiante) or $sw = FALSE;
       
-      $Inicial->editar_estudiante($idpersonaestudiante, $idmadre, $idpadre, $parto, $orden, 'INSCRITO');
+      $Inicial->editar_estudiante($idpersonaestudiante, $idpersonamadre, $idpersonapadre, $parto, $orden, 'INSCRITO');
       
       if ($Inicial->verificar_lugar_nacimiento($idestudiante)) {
         #Se edita el lugar de nacimiento del estudiante
@@ -407,7 +408,7 @@ switch ($_GET['op']) {
       }
     }
     
-    
+
     /**
      * Operaciones relacionadas con la inscripción
      */     
@@ -418,23 +419,24 @@ switch ($_GET['op']) {
     #Se comprueba que haya cupo disponible en la planificación
     $cupo_disponible = $Inicial->verificarcupo($idplanificacion, 'cupo_disponible') or $sw = FALSE;
     $cupo_disponible = $cupo_disponible['cupo_disponible'];
-
-    if($cupo_disponible = 0)
-    $sw = FALSE;
-
+    
+    if($cupo_disponible == 0)
+      $sw = FALSE;
+    
     $cupo_disponible = ($cupo_disponible - 1);
+
     #Método para restar un cupo a la planificación
     $Inicial->restarcupo($idplanificacion, $cupo_disponible) or $sw = FALSE;
     
     #Se registra la inscripción
     $idinscripcion = $Inicial->inscribir($idperiodo_escolar, $idplanificacion, $idestudiante, $idrepresentante, $parentesco_representante, $plantel_procedencia_estudiante, $repite, $observaciones, '1') or $sw = FALSE;
+   
     
-
     /**
      * Operaciones relacionadas con los documentos consignados
      */
     $Inicial->registrar_documentos_consignados($idinscripcion, $fotocopia_cedula_madre, $fotocopia_cedula_padre, $fotocopia_cedula_representante, $fotos_representante, $fotocopia_partida_nacimiento, $fotocopia_cedula_estudiante, $fotocopia_constancia_vacunas, $fotos_estudiante, $boleta_promocion, $constancia_buena_conducta, $informe_descriptivo) or $sw = FALSE;
-
+ 
     #Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
     if ($sw) {
       commit();
