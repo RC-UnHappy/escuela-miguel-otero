@@ -23,7 +23,7 @@ class Personal //extends Persona
 	{
 		$sql = "INSERT INTO personal (id, idpersona, cargo, estatus) VALUES(NULL, '$idpersona', '$cargo', '$estatus')";
 
-		return ejecutarConsulta($sql);
+		return ejecutarConsulta_retornarID($sql);
 	}
 
 	#Método para editar registros
@@ -94,7 +94,18 @@ class Personal //extends Persona
 		$sql = "SELECT p.id, p.cedula, p.p_nombre, p.s_nombre, p.p_apellido, p.s_apellido, p.genero, p.f_nac, p.email, GROUP_CONCAT(IF(t.tipo = 'M', t.telefono, null)) celular, GROUP_CONCAT(IF(t.tipo = 'F', t.telefono, null)) fijo FROM persona p LEFT JOIN telefono t ON p.id = t.idpersona WHERE p.cedula = '$cedula'";
 
 		return ejecutarConsulta($sql);
-	}
+  }
+  
+  #Método para traer el id del período escolar activo
+	function consultarperiodo()
+	{
+		$sql = "SELECT id FROM periodo_escolar WHERE estatus = 1";
+		return ejecutarConsultaSimpleFila($sql);
+  }
+  
+  // function comprobar_cargo_directivo(){
+  //   $sql = "SELECT id FROM personal_directivo WHERE cargo = ";
+  // }
 
 	/*===========================================================
 	=            Funciones relacionadas con Director            =

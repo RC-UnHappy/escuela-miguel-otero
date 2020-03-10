@@ -24,6 +24,7 @@ $email = isset($_POST['email']) ? limpiarCadena($_POST['email']) : '';
 $celular = isset($_POST['celular']) ? limpiarCadena($_POST['celular']) : '';
 $fijo = isset($_POST['fijo']) ? limpiarCadena($_POST['fijo']) : '';
 $cargo = isset($_POST['cargo']) ? limpiarCadena($_POST['cargo']) : '';
+$cargo_directivo = isset($_POST['cargo_directivo']) ? $_POST['cargo_directivo'] : '';
 
 #Se ejecuta un caso dependiendo del valor del parámetro GET
 switch ($_GET['op']) {
@@ -58,7 +59,14 @@ switch ($_GET['op']) {
 			}
 
 			#Se registra el personal
-			$rspta = $Personal->insertar($idpersona, $cargo, '1') or $sw = FALSE;
+      $idpersonal = $Personal->insertar($idpersona, $cargo, '1') or $sw = FALSE;
+      
+      // if (!empty($cargo_directivo)) {
+      //   $idperiodo_escolar = $Personal->consultarperiodo();
+      //   $idperiodo_escolar = $idperiodo_escolar['id'];
+
+      //   $Personal->ingresar_cargo_directivo($idpersonal, $idperiodo_escolar, $cargo_directivo);
+      // }
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {

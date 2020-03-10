@@ -525,7 +525,7 @@ function listar() {
 		"ajax": {
 			url: '../controladores/estudiante.php?op=listar',
 			type: 'GET',
-			dataType: 'json'
+      dataType: 'json'
 		},
 		'order': [[0, 'desc']]
 	});

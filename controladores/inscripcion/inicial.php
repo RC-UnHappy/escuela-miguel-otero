@@ -366,9 +366,8 @@ switch ($_GET['op']) {
     
     if (empty($idestudiante) && empty($idpersonaestudiante)) {
       
-      $idpersonaestudiante = $Inicial->insertar_persona($cedula_estudiante, $p_nombre_estudiante, $s_nombre_estudiante, $p_apellido_estudiante, $s_apellido_estudiante, $genero_estudiante) or $sw = FALSE;
+      $idpersonaestudiante = $Inicial->insertar_persona($cedula_estudiante, $p_nombre_estudiante, $s_nombre_estudiante, $p_apellido_estudiante, $s_apellido_estudiante, $genero_estudiante, $f_nac_estudiante) or $sw = FALSE;
       
-      /////////////////////////////////////////////////// Vas por aquí
       #Se registra el estudiante
       $idestudiante = $Inicial->insertar_estudiante($idpersonaestudiante, $idpersonamadre, $idpersonapadre, $parto, $orden, 'INSCRITO') or $sw = FALSE;
         
@@ -546,11 +545,6 @@ switch ($_GET['op']) {
 
     #Se codifica el resultado utilizando Json
     echo json_encode($results);
-    break;
-        
-  case 'eliminar':
-    $rspta = $Planificacion->eliminar($idplanificacion);
-    echo $rspta ? 'true' : 'false';
     break;
         
   case 'comprobarinscripcion':

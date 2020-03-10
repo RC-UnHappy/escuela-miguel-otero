@@ -659,8 +659,6 @@ function listar() {
 
 //Función para mostrar los estudiantes inscritos en una planificación
 function mostrar(idplanificacion) {
-    // $.post('../../controladores/inscripcion/inicial.php?op=mostrar', { idplanificacion: idplanificacion }, function (dataEstudiantes) {
-        // console.log(dataEstudiantes);
 
         tablaEstudiantes = $('#tblistadoEstudiantes').DataTable({
             "processing": true,
@@ -689,62 +687,6 @@ function mostrar(idplanificacion) {
         });
         
         tablaEstudiantes.ajax.reload();
-    // });
-    
-}
-
-//Función para eliminar una planificación
-function eliminar(idplanificacion) {
-
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-primary  mx-1 p-2',
-            cancelButton: 'btn btn-danger  mx-1 p-2'
-        },
-        buttonsStyling: false
-    })
-
-    swalWithBootstrapButtons.fire({
-        title: '¿Estas seguro?',
-        text: "¿Quieres eliminar esta planificación?",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Eliminar',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-    }).then((result) => {
-        if (result.value) {
-            $.post('../controladores/planificacion.php?op=eliminar', { idplanificacion: idplanificacion }, function (e) {
-                if (e == 'true') {
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-
-                    Toast.fire({
-                        type: 'success',
-                        title: 'La planificación ha sido eliminada :)'
-                    });
-                }
-                else {
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Ups! No se pudo eliminar la planificación'
-                    });
-                }
-                tabla.ajax.reload();
-            });
-        }
-    });
 }
 
 //Función para limpiar el formulario

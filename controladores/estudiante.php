@@ -227,27 +227,31 @@ switch ($_GET['op']) {
 
 			while ($reg = $rspta->fetch_object()) {
 
-				list($anoN, $mesN, $diaN) = explode('-', $reg->fechaE);
-				list($anoA, $mesA, $diaA) = explode('-', date('Y-m-d'));
-
+        
+        list($anoN, $mesN, $diaN) = explode('-', $reg->fechaE);
+        list($anoA, $mesA, $diaA) = explode('-', date('Y-m-d'));
+        
 				if ($mesN == $mesA) {
-					if ($diaN == $diaA) {
-						$edad = $anoA - $anoN;
+          if ($diaN == $diaA) {
+            $edad = $anoA - $anoN;
 						$cumple = ' <span class="pull-right badge badge-light"><i class="fa fa-birthday-cake" style="font-size:18px; color: #F06292;"></i></span><span class="sr-only">Cumpleaños</span>';
 					}
 					elseif ($diaN < $diaA) {
-						$edad = $anoA - $anoN;
+            $edad = $anoA - $anoN;
 					}
 					else {
-						$edad = ($anoA - $anoN) - 1;
+            $edad = ($anoA - $anoN) - 1;
 					}
 				}
 				elseif ($mesN > $mesA ) {
-					$edad = ($anoA - $anoN) - 1;
+          $edad = ($anoA - $anoN) - 1;
+          
 				}
 				else {
-					$edad = $anoA - $anoN;
-				}
+          $edad = ($anoA - $anoN);
+          
+        }
+        
 				$data[] = array('0' => ($reg->estatus == 'REGISTRADO') ? '<button class="btn btn-outline-primary " title="Editar" onclick="mostrar('.$reg->idE.')"><i class="fas fa-edit"></i></button>'
 					 :
 

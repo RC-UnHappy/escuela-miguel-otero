@@ -28,10 +28,12 @@ class Inicial
   }
 
   #Método para insertar una persona y devolver el id
-  function insertar_persona($cedula = NULL, $p_nombre = NULL, $s_nombre = NULL, $p_apellido = NULL, $s_apellido = NULL, $genero = NULL)
+  function insertar_persona($cedula = NULL, $p_nombre = NULL, $s_nombre = NULL, $p_apellido = NULL, $s_apellido = NULL, $genero = NULL, $f_nac = NULL)
   {
-    $sql = "INSERT INTO persona (cedula, p_nombre, s_nombre, p_apellido, s_apellido, genero, f_creacion) VALUES('$cedula', '$p_nombre', '$s_nombre', '$p_apellido', '$s_apellido', '$genero', NOW())";
-
+    if (  $f_nac == NULL)
+      $sql = "INSERT INTO persona (cedula, p_nombre, s_nombre, p_apellido, s_apellido, genero, f_creacion) VALUES('$cedula', '$p_nombre', '$s_nombre', '$p_apellido', '$s_apellido', '$genero', NOW())";
+    else
+      $sql = "INSERT INTO persona (cedula, p_nombre, s_nombre, p_apellido, s_apellido, genero, f_nac, f_creacion) VALUES('$cedula', '$p_nombre', '$s_nombre', '$p_apellido', '$s_apellido', '$genero', $f_nac ,NOW())";
     return ejecutarConsulta_retornarID($sql);
   }
 

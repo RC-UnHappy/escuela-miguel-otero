@@ -218,6 +218,7 @@ if ($_SESSION['usuario'] == 1) {
                               </div>
                               <select id="cargo" name="cargo" class="form-control selectpicker" required>
                                 <option value="">Seleccione</option>
+                                <option value="Ninguno">Ninguno</option>
                                 <option value="Docente Aula">Docente Aula</option>
                                 <option value="Especialista - Cultura">Especialista - Cultura</option>
                                 <option value="Especialista - Educación Física">Especialista - Educación Física</option>
@@ -233,6 +234,28 @@ if ($_SESSION['usuario'] == 1) {
                               <div class="invalid-feedback">
                                   Campo Obligatorio
                               </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group col-md-6">
+                            <label for="">Cargo directivo</label>
+                            <div class="input-group">
+
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input cargo_directivo" id="director" value="director" name="cargo_directivo[]">
+                                <label class="custom-control-label" for="director">Director</label>
+                              </div>
+
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input cargo_directivo" id="subdirector-academico" value="subdirector-academico" name="cargo_directivo[]">
+                                <label class="custom-control-label" for="subdirector-academico">Subdirector académico</label>
+                              </div>
+
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input cargo_directivo" id="subdirector-administrativo" value="subdirector-administrativo" name="cargo_directivo[]">
+                                <label class="custom-control-label" for="subdirector-administrativo">Subdirector administrativo</label>
+                              </div>
+
                             </div>
                           </div>
 
