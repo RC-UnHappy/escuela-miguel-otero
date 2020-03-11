@@ -26,6 +26,20 @@ if ($_SESSION['usuario'] == 1) {
                   </button>
 
                 </h1>
+                <p class="mb-0" id="directoractual">
+                  
+                  
+                </p>
+
+                <p class="mb-0" id="subdiracademicoactual">
+                  
+                  
+                </p>
+
+                <p class="mb-0" id="subdiradministrativoactual">
+                  
+                </p>
+                
               </div>
               
               <div class="row" id="listadoregistros">
@@ -241,17 +255,17 @@ if ($_SESSION['usuario'] == 1) {
                             <label for="">Cargo directivo</label>
                             <div class="input-group">
 
-                              <div class="custom-control custom-checkbox custom-control-inline">
+                              <div class="custom-control custom-checkbox custom-control-inline col-md-6">
                                 <input type="checkbox" class="custom-control-input cargo_directivo" id="director" value="director" name="cargo_directivo[]">
                                 <label class="custom-control-label" for="director">Director</label>
                               </div>
 
-                              <div class="custom-control custom-checkbox custom-control-inline">
+                              <div class="custom-control custom-checkbox custom-control-inline col-md-6">
                                 <input type="checkbox" class="custom-control-input cargo_directivo" id="subdirector-academico" value="subdirector-academico" name="cargo_directivo[]">
                                 <label class="custom-control-label" for="subdirector-academico">Subdirector académico</label>
                               </div>
 
-                              <div class="custom-control custom-checkbox custom-control-inline">
+                              <div class="custom-control custom-checkbox custom-control-inline col-md-6">
                                 <input type="checkbox" class="custom-control-input cargo_directivo" id="subdirector-administrativo" value="subdirector-administrativo" name="cargo_directivo[]">
                                 <label class="custom-control-label" for="subdirector-administrativo">Subdirector administrativo</label>
                               </div>

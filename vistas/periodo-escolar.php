@@ -51,7 +51,7 @@ require_once 'modules/header.php';
               
               <!-- Modal para crear Período Escolar -->
               <div class="modal fade" id="periodoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog rounded" role="document">
+                <div class="modal-dialog rounded modal-xl" role="document">
                   <div class="modal-content">
                     
                     <form class="needs-validation" novalidate name="formularioPeriodo" id="formularioregistros"> <!-- Formulario de Período Escolar -->
@@ -67,17 +67,60 @@ require_once 'modules/header.php';
 
                         <div class="row"> 
 
-                            <div class="form-group col-md-12">
-                              <label for="periodo">Período Escolar (*)</label>
-                                <div class="input-group ">
-                                  <select name="periodo" id="periodo" class="form-control selectpicker" required="true">
-                                    
-                                  </select>
-                                  <div class="invalid-feedback">
-                                    Campo Obligatorio
-                                  </div>
+                          <div class="form-group col-md-3">
+                            <label for="periodo">Período Escolar (*)</label>
+                              <div class="input-group ">
+                                <select name="periodo" id="periodo" class="form-control selectpicker" required="true">
+                                  
+                                </select>
+                                <div class="invalid-feedback">
+                                  Campo Obligatorio
                                 </div>
+                              </div>
+                          </div>
+
+                          <div class="form-group col-md-3">
+                            <label for="fecha_inicio">Fecha de inicio (*)</label>
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                  <i class="fas fa-calendar-alt"></i>
+                                </div>
+                              </div>
+                              <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
+                              <div class="invalid-feedback">
+                                Campo Obligatorio
+                              </div>
                             </div>
+                          </div>
+
+                          <div class="form-group col-md-3">
+                            <label for="fecha_fin">Fecha de fin (*)</label>
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                  <i class="fas fa-calendar-alt"></i>
+                                </div>
+                              </div>
+                              <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" required>
+                              <div class="invalid-feedback">
+                                Campo Obligatorio
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group col-md-3">
+                            <label for="estatus">Estatus (*)</label>
+                            <div class="input-group">
+                              
+                              <select name="estatus" class="form-control selectpicker estatus" id="estatus" required>
+                                
+                              </select>
+                              <div class="invalid-feedback">
+                                Campo Obligatorio
+                              </div>
+                            </div>
+                          </div>
 
                         </div> <!-- Fin row -->     
                       

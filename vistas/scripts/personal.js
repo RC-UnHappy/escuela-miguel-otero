@@ -6,7 +6,10 @@ function init() {
 	mostrarform(false);
 
 	//Muestra la lista de usuarios
-	listar();
+  listar();
+  
+
+  traerpersonaldirectivo();
 
 	//Se ejecuta cuando se envia el formulario
 	$([personal]).on('submit', function (event) {
@@ -28,9 +31,42 @@ function init() {
 	$('#documento').on('change', function () {
 		comprobarPersonal();
 		comprobarPersona();
-	});
+  });
+  
+
 
 	tabla.ajax.reload();			
+}
+
+/**
+ * trae el nombre del personal que tenga un cargo directivo
+ */
+function traerpersonaldirectivo() {
+  $.post('../controladores/personal.php?op=traerpersonaldirectivo', function (data) {
+    data = JSON.parse(data);
+
+    if (data.director != '') {
+      $('#directoractual').html('<strong>Director: </strong>' + data.director);     
+    }
+    else {
+      $('#directoractual').html('<strong>Director: </strong>' + 'Ninguno'); 
+    }
+
+    if (data.subdirectorAcademico != '') {
+      $('#subdiracademicoactual').html('<strong>Subdirector académico: </strong>' + data.subdirectorAcademico);
+    }
+    else {
+      $('#subdiracademicoactual').html('<strong>Subdirector académico: </strong>' + 'Ninguno');
+    }
+
+    if (data.subdirectorAdministrativo!= '') {
+      $('#subdiradministrativoactual').html('<strong>Subdirector administrativo: </strong>' + data.subdirectorAdministrativo);
+    }
+    else {
+      $('#subdiradministrativoactual').html('<strong>Subdirector administrativo: </strong>' + 'Ninguno');
+    }
+    
+  });
 }
 
 //Comprueba que el personal no esté registrado
@@ -144,8 +180,7 @@ function guardaryeditar(event) {
 		contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
 		processData: false, //Evita que jquery transforme la data en un string
 		success: function (datos) {
-      console.log(datos);
-      return;
+      
 			if (datos == 'true') {
 				const Toast = Swal.mixin({
 				  toast: true,
@@ -187,7 +222,8 @@ function guardaryeditar(event) {
 			}
 
 			mostrarform(false);
-			limpiar();
+      limpiar();
+      traerpersonaldirectivo();
 			tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
 		}
 	});		
@@ -256,8 +292,20 @@ function mostrar(idpersonal) {
 		$('#fijo').val(data.fijo);
 		$('#cargo').val(data.cargo);
 		$('#cargo').selectpicker('refresh');
-		$('#idpersonal').val(data.id);
-	});
+    $('#idpersonal').val(data.id);
+    
+    //Muestra los cargos directivos
+    if (data.cargos_directivos != null) {
+      cargos_directivos = data.cargos_directivos.split(',');
+      numeroCargosDirectivos = $('.cargo_directivo').length;
+      for (var i = 0; i < numeroCargosDirectivos; i++) {
+        if (jQuery.inArray($('.cargo_directivo')[i].value, cargos_directivos) != -1) {
+          $('.cargo_directivo')[i].checked = 'true';
+        }
+      }
+    }
+  });
+  
 }
 
 //Función para eliminar(desactivar) personal
@@ -392,6 +440,7 @@ function cancelarform() {
 
 //Función para limpiar el formulario
 function limpiar() {
+  $('#formularioregistros')[0].reset();
 	$('#documento').val('');
 	$('#documento').selectpicker('refresh');
 	$('#cedula').removeClass('is-invalid');
@@ -412,7 +461,9 @@ function limpiar() {
 	$('#cargo').val('');
 	$('#cargo').selectpicker('refresh');
 	$('#idpersonal').val('');
-	$('#idpersona').val('');
+  $('#idpersona').val('');
+  
+
 }
 
 //Determinar documento 

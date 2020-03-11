@@ -61,12 +61,15 @@ switch ($_GET['op']) {
 			#Se registra el personal
       $idpersonal = $Personal->insertar($idpersona, $cargo, '1') or $sw = FALSE;
       
-      // if (!empty($cargo_directivo)) {
-      //   $idperiodo_escolar = $Personal->consultarperiodo();
-      //   $idperiodo_escolar = $idperiodo_escolar['id'];
+      /**
+       * Métodos para asignar cargos directivos
+       */
+      $Personal->quitar_cargo_directivo($cargo_directivo) or $sw = FALSE;
 
-      //   $Personal->ingresar_cargo_directivo($idpersonal, $idperiodo_escolar, $cargo_directivo);
-      // }
+      $idperiodo_escolar = $Personal->consultarperiodo();
+      $idperiodo_escolar = $idperiodo_escolar['id'];
+
+      $Personal->asignar_cargo_directivo($idpersonal, $idperiodo_escolar, $cargo_directivo) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
@@ -104,7 +107,17 @@ switch ($_GET['op']) {
 			}
 
 			#Se registra el personal
-			$rspta = $Personal->insertar($idpersona, $cargo, '1') or $sw = FALSE;
+      $idpersonal = $Personal->insertar($idpersona, $cargo, '1') or $sw = FALSE;
+      
+      /**
+       * Métodos para asignar cargos directivos
+       */
+      $Personal->quitar_cargo_directivo($cargo_directivo) or $sw = FALSE;
+
+      $idperiodo_escolar = $Personal->consultarperiodo();
+      $idperiodo_escolar = $idperiodo_escolar['id'];
+
+      $Personal->asignar_cargo_directivo($idpersonal, $idperiodo_escolar, $cargo_directivo) or $sw = FALSE;
 
 			#Se verifica que todo salió bien y se guardan los datos o se eliminan todos
 			if ($sw) {
@@ -144,7 +157,17 @@ switch ($_GET['op']) {
 			}
 
 			#Se edita el personal
-			$rspta = $Personal->editar($idpersonal, $cargo) or $sw = FALSE;
+      $rspta = $Personal->editar($idpersonal, $cargo) or $sw = FALSE;
+      
+      /**
+       * Métodos para asignar cargos directivos
+       */
+      $Personal->quitar_cargo_directivo($cargo_directivo) or $sw = FALSE;
+
+      $idperiodo_escolar = $Personal->consultarperiodo();
+      $idperiodo_escolar = $idperiodo_escolar['id'];
+
+      $Personal->asignar_cargo_directivo($idpersonal, $idperiodo_escolar, $cargo_directivo) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
@@ -261,6 +284,20 @@ switch ($_GET['op']) {
 		$idusuario = $_POST['idusuario'];
 		$rspta = $usuario->degradarsubdirector($idusuario);
 		echo $rspta;
-		break;
+    break;
+    
+  case 'traerpersonaldirectivo':
+    $director = $Personal->traerpersonaldirectivo('director');
+    $subdirector_administrativo = $Personal->traerpersonaldirectivo('subdirector-administrativo');
+    $subdirector_academico = $Personal->traerpersonaldirectivo('subdirector-academico');
+    
+    $directivos = array('director' => !empty($director) ? $director['p_nombre'].' '.$director['p_apellido'] : '',
+    'subdirectorAdministrativo' => !empty($subdirector_administrativo) ?  $subdirector_administrativo['p_nombre'].' '.$subdirector_administrativo['p_apellido'] : '',
+    'subdirectorAcademico' => !empty($subdirector_academico) ? $subdirector_academico['p_nombre'].' '.$subdirector_academico['p_apellido'] : ''
+  
+    );
+
+    echo json_encode($directivos);
+    break;
 	
 }

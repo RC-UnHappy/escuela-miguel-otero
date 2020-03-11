@@ -58,7 +58,9 @@ function periodo() {
 			$('#periodo').html('<option value="'+nuevoPeriodo+'">'+nuevoPeriodo+'</option>');
 			nuevoPeriodo = Number(fechaActual+1)+'-'+Number(fechaActual+2);
 			$('#periodo').append('<option value="'+nuevoPeriodo+'">'+nuevoPeriodo+'</option>');
-			$('#periodo').selectpicker('refresh');
+      $('#periodo').selectpicker('refresh');
+      $('#estatus').html('<option value="">Seleccione</option>');
+      $('#estatus').append('<option value="ACTIVO">Activo</option>');
 		}
 
 	});

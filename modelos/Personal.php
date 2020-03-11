@@ -52,7 +52,7 @@ class Personal //extends Persona
 
 	function mostrar($idpersonal)
 	{
-		$sql = "SELECT p.cedula, p.p_nombre, p.s_nombre, p.p_apellido, p.s_apellido, p.genero, p.f_nac, p.email, pe.cargo, pe.id, (SELECT telefono FROM telefono WHERE tipo = 'M' AND idpersona = p.id) as movil, (SELECT telefono FROM telefono WHERE tipo = 'F' AND idpersona = p.id) as fijo FROM persona p INNER JOIN personal pe ON p.id = pe.idpersona WHERE pe.id = '$idpersonal'";
+		$sql = "SELECT p.cedula, p.p_nombre, p.s_nombre, p.p_apellido, p.s_apellido, p.genero, p.f_nac, p.email, pe.cargo, pe.id, (SELECT telefono FROM telefono WHERE tipo = 'M' AND idpersona = p.id) as movil, (SELECT telefono FROM telefono WHERE tipo = 'F' AND idpersona = p.id) as fijo, (SELECT GROUP_CONCAT(cargo) FROM personal_directivo WHERE idpersonal = '$idpersonal' AND estatus = 1) as cargos_directivos FROM persona p INNER JOIN personal pe ON p.id = pe.idpersona WHERE pe.id = '$idpersonal'";
 
 		return ejecutarConsultaSimpleFila($sql);
 	}
@@ -103,9 +103,45 @@ class Personal //extends Persona
 		return ejecutarConsultaSimpleFila($sql);
   }
   
-  // function comprobar_cargo_directivo(){
-  //   $sql = "SELECT id FROM personal_directivo WHERE cargo = ";
-  // }
+  /**
+   * Método para quitar los cargos directivos
+   *
+   * @param bool $cargos
+   * @return void
+   */
+  function quitar_cargo_directivo($cargos)
+  {
+    $sw = TRUE;
+    if (!empty($cargos)) {
+      foreach ($cargos as $key => $value) {
+        $sql = "UPDATE personal_directivo SET fecha_fin = CURDATE(), estatus = 0 WHERE cargo = '$value' AND estatus = 1";
+        ejecutarConsulta($sql) or $sw = FALSE;
+      }
+    } 
+    
+    return $sw;
+  }
+
+  function asignar_cargo_directivo($idpersonal, $idperiodo_escolar, $cargos)
+  {
+    $sw = TRUE;
+
+    if (!empty($cargos)) {
+      foreach ($cargos as $key => $value) {
+        $sql = "INSERT INTO personal_directivo (idpersonal, idperiodo_escolar, cargo, fecha_inicio, estatus) VALUES ('$idpersonal', '$idperiodo_escolar', '$value', CURDATE(), 1)";
+        ejecutarConsulta($sql) or $sw = FALSE;
+      }
+    }
+
+    return $sw;
+  }
+
+  function traerpersonaldirectivo($cargo)
+  {
+    $sql = "SELECT per.p_nombre, per.p_apellido FROM personal_directivo per_dir INNER JOIN personal ON per_dir.idpersonal = personal.id INNER JOIN persona per ON personal.idpersona = per.id WHERE per_dir.cargo = '$cargo' AND per_dir.estatus = 1";
+
+    return ejecutarConsultaSimpleFila($sql);
+  }
 
 	/*===========================================================
 	=            Funciones relacionadas con Director            =
