@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-03-2020 a las 02:38:41
+-- Tiempo de generación: 11-03-2020 a las 04:30:20
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -224,17 +224,6 @@ CREATE TABLE `documentos_consignados` (
   `constancia_buena_conducta` tinyint(1) NOT NULL,
   `informe_descriptivo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `documentos_consignados`
---
-
-INSERT INTO `documentos_consignados` (`id`, `idinscripcion`, `fotocopia_cedula_madre`, `fotocopia_cedula_padre`, `fotocopia_cedula_representante`, `fotos_representante`, `fotocopia_partida_nacimiento`, `fotocopia_cedula_estudiante`, `fotocopia_constancia_vacunas`, `fotos_estudiante`, `boleta_promocion`, `constancia_buena_conducta`, `informe_descriptivo`) VALUES
-(14, 11, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-(15, 12, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-(16, 13, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-(17, 14, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-(18, 15, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -564,9 +553,7 @@ INSERT INTO `estudiante` (`id`, `idpersona`, `idmadre`, `idpadre`, `parto_multip
 (35, 103, 34, 43, 'no', 0, 'INSCRITO'),
 (36, 107, 34, 43, 'no', 0, 'REGISTRADO'),
 (131, 195, 34, 43, 'no', 1, 'INSCRITO'),
-(136, 200, 34, 43, 'no', 0, 'INSCRITO'),
-(138, 202, 34, 43, 'si', 9, 'INSCRITO'),
-(139, 203, 34, 43, 'si', 4, 'INSCRITO');
+(142, 204, 34, 43, 'no', 0, 'INSCRITO');
 
 -- --------------------------------------------------------
 
@@ -611,19 +598,6 @@ CREATE TABLE `inscripcion` (
   `fecha_inscripcion` date NOT NULL,
   `estatus` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `inscripcion`
---
-
-INSERT INTO `inscripcion` (`id`, `idperiodo_escolar`, `idplanificacion`, `idestudiante`, `idrepresentante`, `parentesco`, `plantel_procedencia`, `repite`, `observaciones`, `fecha_inscripcion`, `estatus`) VALUES
-(4, 23, 35, 30, 3, '', NULL, 0, '', '2020-02-14', 1),
-(6, 23, 35, 20, 3, '', NULL, 0, '', '2020-02-16', 1),
-(11, 23, 35, 136, 4, 'Padre', 'sadsadsa', 0, 'dasdsadasd', '2020-03-08', 1),
-(12, 23, 35, 35, 4, 'Padre', 'dasda', 0, 'asdsadsadsad', '2020-03-08', 1),
-(13, 23, 35, 35, 4, 'Padre', 'sadsad', 0, 'sadsadasdsad', '2020-03-08', 1),
-(14, 23, 35, 138, 16, 'Madre', 'dasdsa', 0, 'dasdsadsadsa', '2020-03-08', 1),
-(15, 23, 36, 139, 4, 'Padre', 'dasdsad', 0, 'asdsadasdasd', '2020-03-08', 1);
 
 -- --------------------------------------------------------
 
@@ -700,13 +674,11 @@ CREATE TABLE `lugar_nacimiento` (
 --
 
 INSERT INTO `lugar_nacimiento` (`id`, `idestudiante`, `idparroquia`) VALUES
-(5, 35, 728),
+(5, 35, 722),
 (6, 20, 1131),
 (7, 30, 304),
 (8, 36, 349),
-(52, 136, 739),
-(54, 138, 729),
-(55, 139, 722);
+(58, 142, 736);
 
 -- --------------------------------------------------------
 
@@ -2992,13 +2964,6 @@ CREATE TABLE `periodo_escolar` (
   `estatus` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `periodo_escolar`
---
-
-INSERT INTO `periodo_escolar` (`id`, `periodo`, `fecha_creacion`, `fecha_finalizacion`, `estatus`) VALUES
-(23, '2020-2021', '2019-12-29', '2020-02-07', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -3058,15 +3023,13 @@ INSERT INTO `persona` (`id`, `cedula`, `p_nombre`, `s_nombre`, `p_apellido`, `s_
 (96, 'V-18693827', 'Petra', '', 'Bullones', '', 'F', '1980-06-23', 'petra@gmail.com', '2019-12-30 23:26:32'),
 (97, 'V-18693828', 'Jose', '', 'Juarez', '', 'M', '1980-06-23', 'jose@gmail.com', '2019-12-30 23:27:40'),
 (98, 'CE-11311693822', 'Génesis', 'Nayle', 'Cáceres', 'Romero', 'F', '2013-04-16', '', '2020-02-14 20:13:52'),
-(103, 'CE-19811693822', 'dasd', 'sadasd', 'dasda', 'dsadsa', 'M', '1998-06-23', '', '2020-02-23 21:27:02'),
+(103, 'CE-19811693822', 'dasd', '', 'dasdsa', '', 'M', '1998-06-23', '', '2020-02-23 21:27:02'),
 (106, 'V-11111111', 'Jose', '', 'Pérez', '', 'M', '1970-06-23', 'jose@correo.com', '2020-02-24 17:50:09'),
 (107, 'V-30878211', 'sadas', 'asddasd', 'asdasd', 'asdasd', 'M', '1998-06-23', '', '2020-02-25 17:15:12'),
 (113, 'V-30693822', 'Alexis', 'dasdsa', 'dasdsa', 'dsadsa', 'M', '1998-06-23', '', '2020-02-26 15:55:01'),
 (114, 'V-11026307', 'Ana', 'Maria', 'Romero', '', 'F', '1967-07-25', 'fsdfds@gmail.com', '2020-02-28 14:17:46'),
 (195, 'CE-37693822', 'dasd', 'dasds', 'asdsa', 'asddas', 'M', '1998-03-02', NULL, '2020-03-08 20:21:37'),
-(200, 'V-36693822', 'asdsa', 'dasdsa', 'asdsa', 'dasdsa', 'M', NULL, NULL, '2020-03-08 20:01:49'),
-(202, 'CE-99811693822', 'dasd', 'asdasd', 'dasdsa', 'saddsa', 'M', NULL, NULL, '2020-03-08 20:45:25'),
-(203, 'CE-49811693822', 'dasd', 'asdas', 'dsadsa', 'sadasd', 'M', NULL, NULL, '2020-03-08 20:47:20');
+(204, 'V-37693822', 'asdad', '', 'sadsad', '', 'M', '0000-00-00', NULL, '2020-03-09 22:28:42');
 
 -- --------------------------------------------------------
 
@@ -3097,6 +3060,22 @@ INSERT INTO `personal` (`id`, `idpersona`, `cargo`, `estatus`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `personal_directivo`
+--
+
+CREATE TABLE `personal_directivo` (
+  `id` int(11) NOT NULL,
+  `idpersonal` int(11) NOT NULL,
+  `idperiodo_escolar` int(11) NOT NULL,
+  `cargo` varchar(45) NOT NULL,
+  `fecha_inicio` date NOT NULL,
+  `fecha_fin` date NOT NULL,
+  `estatus` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `planificacion`
 --
 
@@ -3111,16 +3090,6 @@ CREATE TABLE `planificacion` (
   `cupo_disponible` int(11) NOT NULL,
   `estatus` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `planificacion`
---
-
-INSERT INTO `planificacion` (`id`, `idperiodo_escolar`, `idgrado`, `idseccion`, `idambiente`, `iddocente`, `cupo`, `cupo_disponible`, `estatus`) VALUES
-(33, 23, 5, 3, 11, 13, 30, 30, 1),
-(35, 23, 3, 2, 5, 1, 15, 9, 1),
-(36, 23, 1, 2, 6, 14, 30, 29, 1),
-(38, 23, 1, 3, 8, 15, 30, 30, 1);
 
 -- --------------------------------------------------------
 
@@ -3232,12 +3201,8 @@ INSERT INTO `telefono` (`id`, `idpersona`, `telefono`, `tipo`) VALUES
 (12, 36, '0426-7573749', 'M'),
 (15, 40, '0416-2692642', 'M'),
 (16, 40, '0255-6630637', 'F'),
-(117, 92, '0416-2692642', 'M'),
-(118, 92, '0255-6630637', 'F'),
 (119, 93, '0416-2692642', 'M'),
 (120, 93, '0255-6630637', 'F'),
-(121, 84, '0416-2692642', 'M'),
-(122, 84, '0255-6630637', 'F'),
 (127, 96, '0416-2692642', 'M'),
 (128, 96, '0255-6630637', 'F'),
 (129, 97, '0416-2692642', 'M'),
@@ -3249,10 +3214,14 @@ INSERT INTO `telefono` (`id`, `idpersona`, `telefono`, `tipo`) VALUES
 (153, 106, '0255-8476133', 'F'),
 (155, 43, '0255-6630637', 'F'),
 (156, 114, '0416-3065905', 'M'),
-(157, 94, '0416-2692642', 'M'),
-(158, 94, '0255-6630637', 'F'),
-(423, 34, '0416-3065905', 'M'),
-(424, 43, '0416-2692642', 'M');
+(431, 34, '0416-3065905', 'M'),
+(432, 43, '0416-2692642', 'M'),
+(455, 84, '0416-2692642', 'M'),
+(456, 84, '0255-6630637', 'F'),
+(457, 94, '0416-2692642', 'M'),
+(458, 94, '0255-6630637', 'F'),
+(459, 92, '0416-2692642', 'M'),
+(460, 92, '0255-6630637', 'F');
 
 -- --------------------------------------------------------
 
@@ -3497,6 +3466,14 @@ ALTER TABLE `personal`
   ADD KEY `idpersona` (`idpersona`);
 
 --
+-- Indices de la tabla `personal_directivo`
+--
+ALTER TABLE `personal_directivo`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idpersonal` (`idpersonal`),
+  ADD KEY `idperiodo_escolar` (`idperiodo_escolar`);
+
+--
 -- Indices de la tabla `planificacion`
 --
 ALTER TABLE `planificacion`
@@ -3615,7 +3592,7 @@ ALTER TABLE `diversidad_funcional`
 -- AUTO_INCREMENT de la tabla `documentos_consignados`
 --
 ALTER TABLE `documentos_consignados`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `enfermedad`
@@ -3633,7 +3610,7 @@ ALTER TABLE `estado`
 -- AUTO_INCREMENT de la tabla `estudiante`
 --
 ALTER TABLE `estudiante`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=143;
 
 --
 -- AUTO_INCREMENT de la tabla `grado`
@@ -3645,7 +3622,7 @@ ALTER TABLE `grado`
 -- AUTO_INCREMENT de la tabla `inscripcion`
 --
 ALTER TABLE `inscripcion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `institucion`
@@ -3663,7 +3640,7 @@ ALTER TABLE `lapso`
 -- AUTO_INCREMENT de la tabla `lugar_nacimiento`
 --
 ALTER TABLE `lugar_nacimiento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT de la tabla `materia`
@@ -3705,13 +3682,19 @@ ALTER TABLE `permiso`
 -- AUTO_INCREMENT de la tabla `persona`
 --
 ALTER TABLE `persona`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=204;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=207;
 
 --
 -- AUTO_INCREMENT de la tabla `personal`
 --
 ALTER TABLE `personal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT de la tabla `personal_directivo`
+--
+ALTER TABLE `personal_directivo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `planificacion`
@@ -3747,7 +3730,7 @@ ALTER TABLE `sosten_hogar`
 -- AUTO_INCREMENT de la tabla `telefono`
 --
 ALTER TABLE `telefono`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=425;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=461;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
@@ -3876,6 +3859,13 @@ ALTER TABLE `parroquia`
 --
 ALTER TABLE `personal`
   ADD CONSTRAINT `idpersona_persona` FOREIGN KEY (`idpersona`) REFERENCES `persona` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `personal_directivo`
+--
+ALTER TABLE `personal_directivo`
+  ADD CONSTRAINT `personal_directivo_ibfk_1` FOREIGN KEY (`idperiodo_escolar`) REFERENCES `periodo_escolar` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `personal_directivo_ibfk_2` FOREIGN KEY (`idpersonal`) REFERENCES `personal` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `planificacion`
