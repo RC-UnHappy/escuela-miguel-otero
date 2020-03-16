@@ -56,6 +56,7 @@ if (!isset($_SESSION['usuario'])) {
                       <th scope="col">Docente</th>
                       <th scope="col">Cupo</th>
                       <th scope="col">Período Escolar</th>
+                      <th scope="col">Estatus</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -75,7 +76,7 @@ if (!isset($_SESSION['usuario'])) {
                   <!-- Formulario de planificación -->
 
                   <div class="modal-header fondo-degradado rounded">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Crear Planificación</h5>
+                    <h5 class="modal-title text-white" id="tituloModal">Crear planificación</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -89,7 +90,6 @@ if (!isset($_SESSION['usuario'])) {
                         <label for="periodo_escolar">Período escolar (*)</label>
                         <div class="input-group ">
                           <select name="idperiodo_escolar" id="periodo_escolar" class="form-control selectpicker" required="true">
-                            <option value="">Seleccione</option>
 
                           </select>
                           <div class="invalid-feedback">

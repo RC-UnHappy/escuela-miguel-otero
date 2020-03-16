@@ -17,24 +17,38 @@
 
 
 	$('#btnAgregar').on('click', function () {
+    $('#tituloModal').html('Crear planificación');
     traerPeriodosActivoPlanificados();
 		traerGrados();
-		traerAmbientes();
+    traerAmbientes();
 		traerDocentes();
 	});
 
 	//Comprueba cada cambio en el select de grado
 	$('#grado').on('change', function () {
-		idgrado = $('#grado')[0].value;
+    idgrado = $('#grado')[0].value;
+    idPeriodoEscolar = $('#periodo_escolar')[0].value;
 		if (idgrado != '') {
 			$('#seccion').prop('disabled', false);
-			traerSecciones(idgrado);
+			traerSecciones(idgrado, '', idPeriodoEscolar);
 		}
 		else {
 			$('#seccion').html('<option value="">Seleccione</option>');
 			$('#seccion').prop('disabled', true);
 			$('#seccion').selectpicker('refresh');
 		}
+  });
+
+  $('#periodo_escolar').on('change', function () {
+    idPeriodoEscolar = $('#periodo_escolar')[0].value;  
+    $('#grado').val('');
+    $('#grado').selectpicker('refresh');
+    $('#seccion').html('<option value="">Seleccione</option>');
+    $('#seccion').prop('disabled', true);
+    $('#seccion').selectpicker('refresh');
+    traerAmbientes('', idPeriodoEscolar);
+    traerDocentes('', idPeriodoEscolar);
+    $('#cupo').val('');
   });
   
   $('#periodos').on('change', function () {
@@ -98,8 +112,7 @@ function traerPeriodosActivoPlanificados() {
           else {
             periodos = '<option value="">Debe crear un período escolar</option>';
           }
-          $('#periodo_escolar').html('<option value="">Seleccione</option>');
-          $('#periodo_escolar').append(periodos);
+          $('#periodo_escolar').html(periodos);
           $('#periodo_escolar').selectpicker('refresh');
         });
     });
@@ -110,7 +123,7 @@ function traerGrados() {
 		data = JSON.parse(data);
 		let grado = '';
 		if (data.length != 0) {
-			data.forEach(function (indice, valor) {
+			data.forEach(function (indice) {
 				grado += '<option value="' + indice.id + '">' + indice.grado + ' º</option>';
 			});
 		}
@@ -123,9 +136,10 @@ function traerGrados() {
 	});
 }
 
-function traerSecciones(idgrado, idplanificacion) {
-	$.post('../controladores/planificacion.php?op=traersecciones', { idgrado: idgrado, idplanificacion: idplanificacion }, function (data) {
-		data = JSON.parse(data);
+function traerSecciones(idgrado, idplanificacion, idPeriodoEscolar) {
+  $.post('../controladores/planificacion.php?op=traersecciones', { idgrado: idgrado, idplanificacion: idplanificacion, idperiodo_escolar: idPeriodoEscolar }, function (data) {
+
+    data = JSON.parse(data);
 		let seccion = '';
 		if (data.length != 0) {
 			data.forEach(function (indice, valor) {
@@ -141,8 +155,8 @@ function traerSecciones(idgrado, idplanificacion) {
 	});
 }
 
-function traerAmbientes(idambiente = null) {
-	$.post('../controladores/planificacion.php?op=traerambientes', {idambiente: idambiente}, function (data) {
+function traerAmbientes(idambiente = null, idPeriodoEscolar) {
+	$.post('../controladores/planificacion.php?op=traerambientes', {idambiente: idambiente, idperiodo_escolar: idPeriodoEscolar}, function (data) {
     data = JSON.parse(data);
 		let ambiente = '';
 		if (data.length != 0) {
@@ -159,8 +173,8 @@ function traerAmbientes(idambiente = null) {
 	});
 }
 
-function traerDocentes(iddocente = null) {
-	$.post('../controladores/planificacion.php?op=traerdocentes', {iddocente: iddocente}, function (data) {
+function traerDocentes(iddocente = null, idPeriodoEscolar) {
+  $.post('../controladores/planificacion.php?op=traerdocentes', { iddocente: iddocente, idperiodo_escolar: idPeriodoEscolar}, function (data) {
 		
 		data = JSON.parse(data);
 		let docente = '';
@@ -245,7 +259,7 @@ function guardaryeditar(event) {
 			tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
 			traerAmbientes();
 			traerDocentes();
-
+      $('#planificacionModal').modal('hide');
 			idgrado = $('#grado')[0].value;
 			if (idgrado != '') {
 				$('#seccion').prop('disabled', false);
@@ -292,9 +306,14 @@ function listar(idperiodo = null) {
 
 //Función para mostrar un registro para editar
 function mostrar(idplanificacion) {
+  $('#tituloModal').html('Modificar planificación');
 	$.post('../controladores/planificacion.php?op=mostrar', { idplanificacion: idplanificacion }, function (planificacion) {
-		planificacion = JSON.parse(planificacion);
+    planificacion = JSON.parse(planificacion);
 
+    $('#periodo_escolar').html('<option value="'+planificacion.idperiodo_escolar+'">'+planificacion.periodo+'</option>');
+    $('#periodo_escolar').prop('readonly', true);
+    $('#periodo_escolar').selectpicker('refresh');
+    
 		$.post('../controladores/planificacion.php?op=traergrados', function (grados) {
 			grados = JSON.parse(grados);
 			let grado = '';
@@ -313,7 +332,7 @@ function mostrar(idplanificacion) {
 			$('#grado').selectpicker('val', planificacion.idgrado);
 		});
 
-		$.post('../controladores/planificacion.php?op=traersecciones', { idgrado: planificacion.idgrado, idplanificacion: planificacion.id }, function (data) {
+		$.post('../controladores/planificacion.php?op=traersecciones', { idgrado: planificacion.idgrado, idplanificacion: planificacion.id, idperiodo_escolar: planificacion.idperiodo_escolar }, function (data) {
 			data = JSON.parse(data);
 			let seccion = '';
 			if (data.length != 0) {
@@ -333,12 +352,12 @@ function mostrar(idplanificacion) {
 			$('#seccion').selectpicker('val', planificacion.idseccion);
 		});
 
-		$.post('../controladores/planificacion.php?op=traerambientes', { idambiente: planificacion.idambiente }, function (data) {
+    $.post('../controladores/planificacion.php?op=traerambientes', { idambiente: planificacion.idambiente, idperiodo_escolar: planificacion.idperiodo_escolar }, function (data) {
 			data = JSON.parse(data);
 			let ambiente = '';
 			if (data.length != 0) {
 				data.forEach(function (indice, valor) {
-					ambiente += '<option value="' + indice.id + '">' + indice.ambiente + '</option>';
+					ambiente += '<option value="' + indice.id + '" capacidad="'+indice.capacidad+'">' + indice.ambiente + '</option>';
 				});
 			}
 			else {
@@ -351,7 +370,7 @@ function mostrar(idplanificacion) {
 			$('#ambiente').selectpicker('val', planificacion.idambiente);
 		});
 
-		$.post('../controladores/planificacion.php?op=traerdocentes', { iddocente: planificacion.iddocente }, function (data) {
+    $.post('../controladores/planificacion.php?op=traerdocentes', { iddocente: planificacion.iddocente, idperiodo_escolar: planificacion.idperiodo_escolar }, function (data) {
 			data = JSON.parse(data);
 			let docente = '';
 			if (data.length != 0) {
@@ -396,6 +415,7 @@ function eliminar(idplanificacion) {
 	}).then((result) => {
 		if (result.value) {
 			$.post('../controladores/planificacion.php?op=eliminar', { idplanificacion: idplanificacion }, function (e) {
+
 				if (e == 'true') {
 					const Toast = Swal.mixin({
 						toast: true,
@@ -408,7 +428,20 @@ function eliminar(idplanificacion) {
 						type: 'success',
 						title: 'La planificación ha sido eliminada :)'
 					});
-				}
+        }
+        else if(e == 'inscritos'){
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+
+          Toast.fire({
+            type: 'error',
+            title: 'Hay estudiantes inscritos en ésta planificación y no se puede eliminar'
+          });
+        }
 				else {
 					const Toast = Swal.mixin({
 						toast: true,
@@ -430,6 +463,8 @@ function eliminar(idplanificacion) {
 
 //Función para limpiar el formulario
 function limpiar() {
+  // $('#periodo_escolar').val('');
+  $('#periodo_escolar').selectpicker('refresh');
 	$('#seccion').val('');
 	$('#seccion').prop('disabled', true);
 	$('#seccion').selectpicker('refresh');

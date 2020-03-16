@@ -46,12 +46,16 @@ class Planificacion
 	#Método para mostrar una planificación
 	function mostrar($idplanificacion)
 	{
-		$sql = "SELECT p.*, g.grado, s.seccion, a.ambiente, pe.p_nombre, pe.p_apellido FROM planificacion p  INNER JOIN grado g ON p.idgrado = g.id INNER JOIN seccion s ON p.idseccion = s.id INNER JOIN ambiente a ON p.idambiente = a.id INNER JOIN personal per ON p.iddocente = per.id INNER JOIN persona pe ON per.idpersona = pe.id WHERE p.id = '$idplanificacion'";
+		$sql = "SELECT p.*, g.grado, s.seccion, a.ambiente, pe.p_nombre, pe.p_apellido, per_es.periodo FROM planificacion p  INNER JOIN periodo_escolar per_es ON p.idperiodo_escolar = per_es.id INNER JOIN grado g ON p.idgrado = g.id INNER JOIN seccion s ON p.idseccion = s.id INNER JOIN ambiente a ON p.idambiente = a.id INNER JOIN personal per ON p.iddocente = per.id INNER JOIN persona pe ON per.idpersona = pe.id WHERE p.id = '$idplanificacion'";
 
 		return ejecutarConsultaSimpleFila($sql);
 	}
 
-	
+	function seleccionar_inscripciones_por_idplanificacion($idplanificacion)
+  {
+    $sql = "SELECT id, idplanificacion FROM inscripcion WHERE idplanificacion = '$idplanificacion'";
+		return ejecutarConsulta($sql);
+  }
 
 	#Método para eliminar planificación
 	function eliminar($idplanificacion)
@@ -70,39 +74,52 @@ class Planificacion
 	}
 
 	#Método para traer las secciones que estén disponibles
-	function traersecciones($idgrado, $idplanificacion)
+	function traersecciones($idgrado, $idplanificacion, $idperiodo_escolar)
 	{
 		if ($idplanificacion != NULL) {
-			$sql = "SELECT s.* FROM seccion s WHERE s.estatus = 1 AND s.id NOT IN(SELECT idseccion FROM planificacion WHERE idgrado = '$idgrado' AND id != '$idplanificacion') ORDER BY s.seccion";
+			$sql = "SELECT s.* FROM seccion s WHERE s.estatus = 1 AND s.id NOT IN(SELECT idseccion FROM planificacion WHERE idgrado = '$idgrado' AND id != '$idplanificacion' AND idperiodo_escolar = '$idperiodo_escolar') ORDER BY s.seccion";
 		}
 		else {
-			$sql = "SELECT s.* FROM seccion s WHERE s.estatus = 1 AND s.id NOT IN(SELECT idseccion FROM planificacion WHERE idgrado = '$idgrado') ORDER BY s.seccion";
+			$sql = "SELECT s.* FROM seccion s WHERE s.estatus = 1 AND s.id NOT IN(SELECT idseccion FROM planificacion WHERE idgrado = '$idgrado' AND idperiodo_escolar = '$idperiodo_escolar') ORDER BY s.seccion";
 		}
 
 		return ejecutarConsulta($sql);
 	}
 
 	#Método para traer los ambientes que estén disponibles
-	function traerambientes($idambiente)
+	function traerambientes($idambiente, $idperiodo_escolar)
 	{
 		if ($idambiente != NULL) {
-			$sql = "SELECT a.* FROM ambiente a WHERE a.estatus = 1 AND a.id NOT IN(SELECT idambiente FROM planificacion WHERE idambiente != $idambiente) ORDER BY a.ambiente";
+      if (empty($idperiodo_escolar)) 
+        $sql = "SELECT a.* FROM ambiente a WHERE a.estatus = 1 AND a.id NOT IN(SELECT idambiente FROM planificacion WHERE idambiente != $idambiente AND estatus = 'Activo') ORDER BY a.ambiente";
+      else
+			  $sql = "SELECT a.* FROM ambiente a WHERE a.estatus = 1 AND a.id NOT IN(SELECT idambiente FROM planificacion WHERE idambiente != $idambiente AND idperiodo_escolar = '$idperiodo_escolar') ORDER BY a.ambiente";
 		}
 		else {	
-			$sql = "SELECT a.* FROM ambiente a WHERE a.estatus = 1 AND a.id NOT IN(SELECT idambiente FROM planificacion) ORDER BY a.ambiente";
+      if (empty($idperiodo_escolar)) 
+        $sql = "SELECT a.* FROM ambiente a WHERE a.estatus = 1 AND a.id NOT IN(SELECT idambiente FROM planificacion WHERE estatus = 'Activo') ORDER BY a.ambiente";
+      else
+        $sql = "SELECT a.* FROM ambiente a WHERE a.estatus = 1 AND a.id NOT IN(SELECT idambiente FROM planificacion WHERE idperiodo_escolar = '$idperiodo_escolar') ORDER BY a.ambiente";
 		}
 
 		return ejecutarConsulta($sql);
 	}
 
 	#Método para traer los docentes
-	function traerdocentes($iddocente)
+	function traerdocentes($iddocente, $idperiodo_escolar)
 	{
 		if ($iddocente != NULL) {
-			$sql = "SELECT DISTINCT per.id, p.p_nombre, p.p_apellido FROM persona p INNER JOIN personal per ON p.id = per.idpersona WHERE per.cargo LIKE '%Docente%' AND per.estatus = 1 AND per.id NOT IN (SELECT iddocente FROM planificacion WHERE iddocente != $iddocente)";
+      if (empty($idperiodo_escolar)) 
+        $sql = "SELECT DISTINCT per.id, p.p_nombre, p.p_apellido FROM persona p INNER JOIN personal per ON p.id = per.idpersona WHERE per.cargo LIKE '%Docente%' AND per.estatus = 1 AND per.id NOT IN (SELECT iddocente FROM planificacion WHERE iddocente != $iddocente AND estatus = 'Activo')";
+      else {
+        $sql = "SELECT DISTINCT per.id, p.p_nombre, p.p_apellido FROM persona p INNER JOIN personal per ON p.id = per.idpersona WHERE per.cargo LIKE '%Docente%' AND per.estatus = 1 AND per.id NOT IN (SELECT iddocente FROM planificacion WHERE iddocente != $iddocente AND idperiodo_escolar = '$idperiodo_escolar')";
+      }
 		}
 		else{	
-			$sql = "SELECT DISTINCT per.id, p.p_nombre, p.p_apellido FROM persona p INNER JOIN personal per ON p.id = per.idpersona WHERE per.cargo LIKE '%Docente%' AND per.estatus = 1 AND per.id NOT IN (SELECT iddocente FROM planificacion)";
+      if (empty($idperiodo_escolar)) 
+        $sql = "SELECT DISTINCT per.id, p.p_nombre, p.p_apellido FROM persona p INNER JOIN personal per ON p.id = per.idpersona WHERE per.cargo LIKE '%Docente%' AND per.estatus = 1 AND per.id NOT IN (SELECT iddocente FROM planificacion WHERE estatus = 'Activo')";
+      else
+			  $sql = "SELECT DISTINCT per.id, p.p_nombre, p.p_apellido FROM persona p INNER JOIN personal per ON p.id = per.idpersona WHERE per.cargo LIKE '%Docente%' AND per.estatus = 1 AND per.id NOT IN (SELECT iddocente FROM planificacion WHERE idperiodo_escolar = '$idperiodo_escolar')";
 		}
 
 		return ejecutarConsulta($sql);

@@ -181,7 +181,7 @@ class Inicial
   #Método para listar 
   function listar()
   {
-      $sql = "SELECT p.*, pe.periodo, g.grado, s.seccion, a.ambiente, per.idpersona, persona.p_nombre, persona.p_apellido FROM planificacion p INNER JOIN periodo_escolar pe ON p.idperiodo_escolar = pe.id INNER JOIN grado g ON p.idgrado = g.id INNER JOIN seccion s ON s.id = p.idseccion INNER JOIN ambiente a ON a.id = p.idambiente INNER JOIN personal per ON per.id = p.iddocente INNER JOIN persona persona ON persona.id = per.idpersona WHERE p.estatus = 1 ORDER BY g.grado, s.seccion";
+      $sql = "SELECT p.*, pe.periodo, g.grado, s.seccion, a.ambiente, per.idpersona, persona.p_nombre, persona.p_apellido FROM planificacion p INNER JOIN periodo_escolar pe ON p.idperiodo_escolar = pe.id INNER JOIN grado g ON p.idgrado = g.id INNER JOIN seccion s ON s.id = p.idseccion INNER JOIN ambiente a ON a.id = p.idambiente INNER JOIN personal per ON per.id = p.iddocente INNER JOIN persona persona ON persona.id = per.idpersona WHERE p.estatus = 'Activo' ORDER BY g.grado, s.seccion";
 
       return ejecutarConsulta($sql);
   }
@@ -285,14 +285,14 @@ class Inicial
   #Método para traer el id del período escolar activo
   function consultarperiodo()
   {
-      $sql = "SELECT id FROM periodo_escolar WHERE estatus = 1";
+      $sql = "SELECT id FROM periodo_escolar WHERE estatus = 'Activo'";
       return ejecutarConsultaSimpleFila($sql);
   }
 
   #Método para mostrar las planificaciones con el formato de la vista de inscripción
   public function traerplanificaciones()
   {
-      $sql = "SELECT pla.id, gra.grado, sec.seccion, pla.cupo_disponible FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion WHERE pla.estatus = 1 AND pla.cupo_disponible > 0 ORDER BY gra.grado, sec.seccion";
+      $sql = "SELECT pla.id, gra.grado, sec.seccion, pla.cupo_disponible FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion WHERE pla.estatus = 'Activo' AND pla.cupo_disponible > 0 ORDER BY gra.grado, sec.seccion";
       return ejecutarConsulta($sql);
   }
 

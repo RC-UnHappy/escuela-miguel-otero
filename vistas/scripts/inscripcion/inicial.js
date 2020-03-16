@@ -576,7 +576,6 @@ function guardaryeditar(event) {
         contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
         processData: false, //Evita que jquery transforme la data en un string
         success: function (datos) {
-            console.log(datos);
             
             if (datos == 'true') {
                 const Toast = Swal.mixin({

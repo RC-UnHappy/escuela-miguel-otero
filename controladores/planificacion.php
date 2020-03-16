@@ -89,11 +89,31 @@ switch ($_GET['op']) {
     $idperiodo = isset($_GET['idperiodo']) ? $_GET['idperiodo'] : '';
 
 		$rspta = $Planificacion->listar($idperiodo);
-
+    
 		if ($rspta->num_rows != 0) {
-			while ($reg = $rspta->fetch_object()) {
+      while ($reg = $rspta->fetch_object()) {
+        
+        /**
+         * Lógica para mostrar o no los botones de opciones en la lista dependiendo de si la planificación tiene una inscripción activa
+         */
+        $idplanificaciones = $Planificacion->seleccionar_inscripciones_por_idplanificacion($reg->id);
 
-				$data[] = array('0' => ($reg->estatus) ? 
+        $arreglo_idplanificaciones = [];
+        if ($idplanificaciones->num_rows != 0) {
+          while ($resultado = $idplanificaciones->fetch_object()) {
+            array_push($arreglo_idplanificaciones, $resultado->idplanificacion);
+          }
+        }
+
+        $badge = '';
+        if ($reg->estatus == 'Activo') 
+          $badge = '<span class="badge badge-pill badge-success">Activo</span>';
+        elseif($reg->estatus == 'Planificado')
+          $badge = '<span class="badge badge-pill badge-warning">Planificado</span>';
+        else 
+          $badge = '<span class="badge badge-pill badge-danger">Finalizado</span>';
+
+				$data[] = array('0' => !in_array($reg->id, $arreglo_idplanificaciones) ? 
 					
 					'<button class="btn btn-outline-primary " title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#planificacionModal"><i class="fas fa-edit"></i></button>'.
 
@@ -101,14 +121,15 @@ switch ($_GET['op']) {
 
 						 :
 
-					 '<button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#planificacionModal"><i class="fa fa-edit"></i></button>',
+					 '',
 
 					 	'1' => $reg->grado.' º',
 					 	'2' => '"'.$reg->seccion.'"',
 					 	'3' => $reg->ambiente,
 					 	'4' => $reg->p_nombre.' '.$reg->p_apellido,
 					 	'5' => $reg->cupo,
-					 	'6' => $reg->periodo);
+            '6' => $reg->periodo,
+            '7' => $badge);
 			}
 
 			$results = array(
@@ -143,9 +164,15 @@ switch ($_GET['op']) {
 		break;
 
 	case 'eliminar': 
+    $idplanificaciones = $Planificacion->seleccionar_inscripciones_por_idplanificacion($idplanificacion);
 
-		$rspta = $Planificacion->eliminar($idplanificacion);
-		echo $rspta ? 'true' : 'false';
+    if ($idplanificaciones->num_rows == 0) {
+      $rspta = $Planificacion->eliminar($idplanificacion);
+      echo $rspta ? 'true' : 'false';
+    }
+    else {
+      echo 'inscritos';
+    }
 		break;
 
 	case 'traergrados': 
@@ -157,7 +184,8 @@ switch ($_GET['op']) {
 			while ($reg = $rspta->fetch_object()) {
 
 				$data[] = ['id' => $reg->id,
-						  'grado' => $reg->grado];
+              'grado' => $reg->grado];
+
 			}
 
 		}
@@ -169,7 +197,7 @@ switch ($_GET['op']) {
 	case 'traersecciones': 
 
 		#idplanificación es un parámetro que puede o no estar vacío
-		$rspta = $Planificacion->traersecciones($idgrado, $idplanificacion);
+		$rspta = $Planificacion->traersecciones($idgrado, $idplanificacion, $idperiodo_escolar);
 
 		$data = array();
 		if ($rspta->num_rows != 0) {
@@ -188,7 +216,7 @@ switch ($_GET['op']) {
 	case 'traerambientes': 
 
 		#idambiente es un parámetro que puede o no estar vacío
-		$rspta = $Planificacion->traerambientes($idambiente);
+		$rspta = $Planificacion->traerambientes($idambiente, $idperiodo_escolar);
 
 		$data = array();
 		if ($rspta->num_rows != 0) {
@@ -208,7 +236,7 @@ switch ($_GET['op']) {
 	case 'traerdocentes': 
 
 		#iddocente es un parámetro que puede o no estar vacío
-		$rspta = $Planificacion->traerdocentes($iddocente);
+		$rspta = $Planificacion->traerdocentes($iddocente, $idperiodo_escolar);
 
 		$data = array();
 		if ($rspta->num_rows != 0) {
