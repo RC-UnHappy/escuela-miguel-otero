@@ -16,9 +16,9 @@ class PeriodoEscolar
 	}
 
 	#Método para insertar registros
-	function insertar($periodo, $estatus)
+	function insertar($periodo, $fecha_inicio, $fecha_fin, $estatus)
 	{
-		$sql = "INSERT INTO periodo_escolar (periodo, fecha_creacion, estatus) VALUES('$periodo', CURDATE(), $estatus)";
+		$sql = "INSERT INTO periodo_escolar (periodo, fecha_creacion, fecha_finalizacion, estatus) VALUES('$periodo', '$fecha_inicio', '$fecha_fin', '$estatus')";
 
 		return ejecutarConsulta($sql);
 	}
@@ -37,6 +37,14 @@ class PeriodoEscolar
 		$sql = "SELECT * FROM periodo_escolar WHERE id = '$idperiodo'";
 
 		return ejecutarConsultaSimpleFila($sql);
+  }
+  
+  #Método para editar registros
+	function editar($idperiodo, $periodo, $fecha_inicio, $fecha_fin, $estatus)
+	{
+		$sql = "UPDATE periodo_escolar SET fecha_creacion = '$fecha_inicio', fecha_finalizacion = '$fecha_fin' WHERE id = '$idperiodo'";
+
+		return ejecutarConsulta($sql);
 	}
 
 	#Método para seleccionar un período escolar 
@@ -45,40 +53,48 @@ class PeriodoEscolar
 		$sql = "SELECT * FROM periodo_escolar WHERE periodo = '$periodo'";
 
 		return ejecutarConsultaSimpleFila($sql);
-	}
-
-	#Método para verificar si hay período activo
-	function verificar()
+  }
+  
+  #Método para activar un período escolar
+	function activar($idperiodo)
 	{
-		$sql = "SELECT * FROM periodo_escolar WHERE estatus = 1";
+		$sql = "UPDATE periodo_escolar SET estatus = 'Activo', fecha_creacion = CURDATE() WHERE id = '$idperiodo'";
 
-		return ejecutarConsultaSimpleFila($sql);
+		return ejecutarConsulta($sql);
 	}
 
 	#Método para desactivar un período escolar
-	function desactivar($idperiodo)
+	function finalizar($idperiodo)
 	{
-		$sql = "UPDATE periodo_escolar SET estatus = '0', fecha_finalizacion = CURDATE() WHERE id = '$idperiodo'";
+		$sql = "UPDATE periodo_escolar SET estatus = 'Finalizado', fecha_finalizacion = CURDATE() WHERE id = '$idperiodo'";
 
 		return ejecutarConsulta($sql);
-
-	}
-
-	#Método para activar un período escolar
-	function activar($idperiodo)
-	{
-		$sql = "UPDATE periodo_escolar SET estatus = '1' WHERE id = '$idperiodo'";
-
-		return ejecutarConsulta($sql);
-
-	}
+  }
 
 	#Método para traer el último perido
 	function traerultimo()
 	{
 		$sql = "SELECT * FROM periodo_escolar ORDER BY id DESC LIMIT 1";
 		return ejecutarConsultaSimpleFila($sql);
-	}
+  }
+  
+  function verificar_ultimo_finalizado()
+  {
+    $sql = "SELECT * FROM periodo_escolar WHERE estatus = 'Finalizado' ORDER BY id DESC LIMIT 1";
+		return ejecutarConsultaSimpleFila($sql);
+  }
+
+  function verificar_por_periodo($periodo)
+  {
+    $sql = "SELECT * FROM periodo_escolar WHERE periodo = '$periodo'";
+    return ejecutarConsultaSimpleFila($sql);
+  }
+
+  function verificar_periodo_activo()
+  {
+    $sql = "SELECT * FROM periodo_escolar WHERE estatus = 'Activo'";
+    return ejecutarConsultaSimpleFila($sql);
+  }
 	
 }
 

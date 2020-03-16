@@ -39,6 +39,7 @@ if (!isset($_SESSION['usuario'])) {
                       <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Opciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                       <th scope="col">Ambiente</th>
                       <th scope="col">Capacidad</th>
+                      <th scope="col">Ubicación</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -51,7 +52,7 @@ if (!isset($_SESSION['usuario'])) {
 
           <!-- Modal para crear ambiente -->
           <div class="modal fade" id="ambienteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog rounded" role="document">
+            <div class="modal-dialog rounded modal-lg" role="document">
               <div class="modal-content">
 
                 <form class="needs-validation" novalidate name="formularioAmbiente" id="formularioregistros">
@@ -68,7 +69,7 @@ if (!isset($_SESSION['usuario'])) {
 
                     <div class="row">
 
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-3">
                         <label for="ambiente">Número Ambiente (*)</label>
 
                         <div class="input-group">
@@ -84,7 +85,7 @@ if (!isset($_SESSION['usuario'])) {
                         </div>
                       </div>
 
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-3">
                         <label for="capacidad">Capacidad (*)</label>
 
                         <div class="input-group">
@@ -98,7 +99,22 @@ if (!isset($_SESSION['usuario'])) {
                         </div>
                       </div>
 
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-3">
+                        <label for="ubicacion">Ubicación (*)</label>
+                        <div class="input-group ">
+                          <select name="ubicacion" id="ubicacion" class="form-control selectpicker" required="true">
+                            <option value="">Seleccione</option>
+                            <option value="Planta baja">Planta baja</option>
+                            <option value="Primer piso">Primer piso</option>
+                            <option value="Segundo piso">Segundo piso</option>
+                          </select>
+                          <div class="invalid-feedback">
+                            Campo Obligatorio
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group col-md-3">
                         <label for="estatus">Estatus (*)</label>
                         <div class="input-group ">
                           <select name="estatus" id="estatus" class="form-control selectpicker" required="true">

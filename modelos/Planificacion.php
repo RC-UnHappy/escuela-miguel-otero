@@ -18,7 +18,7 @@ class Planificacion
 	#Método para insertar registros
 	function insertar($idperiodo_escolar, $idgrado, $idseccion, $idambiente, $iddocente, $cupo, $cupo_disponible, $estatus)
 	{
-		$sql = "INSERT INTO planificacion (id, idperiodo_escolar, idgrado, idseccion, idambiente, iddocente, cupo, cupo_disponible, estatus) VALUES(NULL, '$idperiodo_escolar', '$idgrado', '$idseccion', '$idambiente', '$iddocente', '$cupo', '$cupo_disponible', $estatus)";
+		$sql = "INSERT INTO planificacion (id, idperiodo_escolar, idgrado, idseccion, idambiente, iddocente, cupo, cupo_disponible, estatus) VALUES(NULL, '$idperiodo_escolar', '$idgrado', '$idseccion', '$idambiente', '$iddocente', '$cupo', '$cupo_disponible', '$estatus')";
 
 		return ejecutarConsulta($sql);
 	}
@@ -33,9 +33,12 @@ class Planificacion
 	}
 
 	#Método para listar 
-	function listar()
+	function listar($idperiodo)
 	{
-		$sql = "SELECT p.*, pe.periodo, g.grado, s.seccion, a.ambiente, per.idpersona, persona.p_nombre, persona.p_apellido FROM planificacion p INNER JOIN periodo_escolar pe ON p.idperiodo_escolar = pe.id INNER JOIN grado g ON p.idgrado = g.id INNER JOIN seccion s ON s.id = p.idseccion INNER JOIN ambiente a ON a.id = p.idambiente INNER JOIN personal per ON per.id = p.iddocente INNER JOIN persona persona ON persona.id = per.idpersona WHERE p.estatus = 1 ORDER BY g.grado, s.seccion";
+    if ($idperiodo == 'null') 
+      $sql = "SELECT p.*, pe.periodo, g.grado, s.seccion, a.ambiente, per.idpersona, persona.p_nombre, persona.p_apellido FROM planificacion p INNER JOIN periodo_escolar pe ON p.idperiodo_escolar = pe.id INNER JOIN grado g ON p.idgrado = g.id INNER JOIN seccion s ON s.id = p.idseccion INNER JOIN ambiente a ON a.id = p.idambiente INNER JOIN personal per ON per.id = p.iddocente INNER JOIN persona persona ON persona.id = per.idpersona WHERE p.estatus = 'Activo' ORDER BY g.grado, s.seccion";
+    else 
+      $sql = "SELECT p.*, pe.periodo, g.grado, s.seccion, a.ambiente, per.idpersona, persona.p_nombre, persona.p_apellido FROM planificacion p INNER JOIN periodo_escolar pe ON p.idperiodo_escolar = pe.id INNER JOIN grado g ON p.idgrado = g.id INNER JOIN seccion s ON s.id = p.idseccion INNER JOIN ambiente a ON a.id = p.idambiente INNER JOIN personal per ON per.id = p.iddocente INNER JOIN persona persona ON persona.id = per.idpersona WHERE p.idperiodo_escolar = '$idperiodo' ORDER BY g.grado, s.seccion";
 
 		return ejecutarConsulta($sql);
 	}
@@ -108,7 +111,7 @@ class Planificacion
 	#Método para traer el id del período escolar activo
 	function consultarperiodo()
 	{
-		$sql = "SELECT id FROM periodo_escolar WHERE estatus = 1";
+		$sql = "SELECT id FROM periodo_escolar WHERE estatus = 'Activo'";
 		return ejecutarConsultaSimpleFila($sql);
 	}
 
@@ -117,7 +120,19 @@ class Planificacion
 	{
 		$sql = "SELECT $tipo FROM planificacion WHERE id = '$idplanificacion'";
 		return ejecutarConsultaSimpleFila($sql);
-	}
+  }
+  
+  function traer_periodos_escolares()
+  {
+		$sql = "SELECT * FROM periodo_escolar";
+		return ejecutarConsulta($sql);
+  }
+
+  function traer_periodos_activo_planificados()
+  {
+		$sql = "SELECT * FROM periodo_escolar WHERE estatus = 'Activo' OR estatus = 'Planificado'";
+		return ejecutarConsulta($sql);
+  }
 	
 }
 

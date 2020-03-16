@@ -19,16 +19,29 @@ if (!isset($_SESSION['usuario'])) {
 
           <div class="card-header pt-0 pb-1 bg-white mb-3">
             <!-- Botonera del panel -->
+            <div class="row">
 
-            <!-- Botón para mostrar modal planificación -->
-            <h1 class="font-weight-normal h5">Planificacón
-              <button class="btn btn-outline-primary btn-pill shadow-sm" data-toggle="modal" data-target="#planificacionModal" id="btnAgregar">
-                <i class="fa fa-plus-circle"></i> Agregar
-              </button>
-            </h1>
+              <div class="pl-3 col-md-6 d-flex justify-content-start">
+                <!-- Botón para mostrar modal planificación -->
+                <h1 class="font-weight-normal h5">Planificación
+                  <button class="btn btn-outline-primary btn-pill shadow-sm" data-toggle="modal" data-target="#planificacionModal" id="btnAgregar">
+                    <i class="fa fa-plus-circle"></i> Agregar
+                  </button>
+                </h1>
+              </div>
+              
+              <div class="d-flex justify-content-end col-md-6">
+                <p class="h5 font-weight-normal mt-1 mr-2">Período escolar</p>
+                <select name="periodos" id="periodos" class="form-control selectpicker col-4">
+
+                </select>
+              
+              </div>
+
+            </div>
 
           </div>
-
+          
           <div class="row" id="listadoregistros">
             <div class="col-sm-12">
               <div class="table-responsive">
@@ -55,14 +68,14 @@ if (!isset($_SESSION['usuario'])) {
 
           <!-- Modal para crear planificación -->
           <div class="modal fade" id="planificacionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog rounded modal-lg" role="document">
+            <div class="modal-dialog rounded modal-xl" role="document">
               <div class="modal-content">
 
                 <form class="needs-validation" novalidate name="formularioPlanificacion" id="formularioregistros">
                   <!-- Formulario de planificación -->
 
                   <div class="modal-header fondo-degradado rounded">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Crear Planifiación</h5>
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Crear Planificación</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -72,6 +85,19 @@ if (!isset($_SESSION['usuario'])) {
 
                     <div class="row">
                       
+                      <div class="form-group col-md-2">
+                        <label for="periodo_escolar">Período escolar (*)</label>
+                        <div class="input-group ">
+                          <select name="idperiodo_escolar" id="periodo_escolar" class="form-control selectpicker" required="true">
+                            <option value="">Seleccione</option>
+
+                          </select>
+                          <div class="invalid-feedback">
+                            Campo Obligatorio
+                          </div>
+                        </div>
+                      </div>
+
                       <!-- guarda el id de la planificación cuando es necesario -->
                       <input type="hidden" value="" id="idplanificacion" name="idplanificacion">
                       <div class="form-group col-md-2">
@@ -113,7 +139,7 @@ if (!isset($_SESSION['usuario'])) {
                         </div>
                       </div>
 
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-2">
                         <label for="docente">Docente (*)</label>
                         <div class="input-group ">
                           <select name="iddocente" id="docente" class="form-control selectpicker " required="true" data-live-search="true">

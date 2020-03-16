@@ -38,6 +38,8 @@ require_once 'modules/header.php';
                         <tr>
                           <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Opciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                           <th scope="col">Período Escolar</th>
+                          <th scope="col">Fecha inicio</th>
+                          <th scope="col">Fecha fin</th>
                           <th scope="col">Estatus</th>
                         </tr>
                       </thead>
@@ -67,6 +69,7 @@ require_once 'modules/header.php';
 
                         <div class="row"> 
 
+                          <input type="hidden" name="idperiodo" id="idperiodo"> <!-- Input oculto que guardará el id del periodo cuando sea necesario -->
                           <div class="form-group col-md-3">
                             <label for="periodo">Período Escolar (*)</label>
                               <div class="input-group ">
@@ -114,7 +117,8 @@ require_once 'modules/header.php';
                             <div class="input-group">
                               
                               <select name="estatus" class="form-control selectpicker estatus" id="estatus" required>
-                                
+                                <option value="">Seleccione</option>
+                                <option value="Planificado">Planificado</option>
                               </select>
                               <div class="invalid-feedback">
                                 Campo Obligatorio
@@ -127,7 +131,7 @@ require_once 'modules/header.php';
                       </div>
 
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelarform()">Cancelar</button>
                         <button type="submit" id="btnGuardar" class="btn btn-primary">Guardar</button>
                       </div>
 

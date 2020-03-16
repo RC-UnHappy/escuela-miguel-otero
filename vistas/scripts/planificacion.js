@@ -1,7 +1,9 @@
 //Funcion que se ejecutará al inicio
 (function () {  
 	//Muestra la lista de planificaciones
-	listar();
+  listar();
+  
+  traerPeriodosEscolares();
 
 	//Se ejecuta cuando se envia el formulario
 	$([formularioPlanificacion]).on('submit', function (event) {
@@ -15,6 +17,7 @@
 
 
 	$('#btnAgregar').on('click', function () {
+    traerPeriodosActivoPlanificados();
 		traerGrados();
 		traerAmbientes();
 		traerDocentes();
@@ -32,10 +35,75 @@
 			$('#seccion').prop('disabled', true);
 			$('#seccion').selectpicker('refresh');
 		}
-	});
+  });
+  
+  $('#periodos').on('change', function () {
+    let idperiodo = $('#periodos')[0].value;
+    listar(idperiodo);
+  });
+  
+  $('#ambiente').on('change', function () {  
+    let capacidad = $('option:selected', this).attr('capacidad');
+    $('#cupo').val(capacidad);
+  });
 
 	tabla.ajax.reload();
 })();
+
+function traerPeriodosEscolares() {
+
+  $.post('../controladores/planificacion.php?op=consultarperiodo')
+  .then(function (periodoActual) { 
+    $.post('../controladores/planificacion.php?op=traerperiodosescolares')
+    .then(function (periodos) {  
+      data = JSON.parse(periodos);
+      periodos = '';
+      if (data.length != 0) {
+        let selected = '';
+        data.forEach(function (indice) {
+          if (indice.id == periodoActual) 
+            selected = 'selected';
+          else 
+            selected = '';
+          periodos += '<option value="' + indice.id + '"'+selected+'>' + indice.periodo + '</option>';
+        });
+      }
+      else {
+        periodos = '<option value="">Debe crear un período escolar</option>';
+      }
+      $('#periodos').append(periodos);
+      $('#periodos').selectpicker('refresh');
+    });
+  });
+}
+
+function traerPeriodosActivoPlanificados() {
+
+  $.post('../controladores/planificacion.php?op=consultarperiodo')
+    .then(function (periodoActual) {
+      $.post('../controladores/planificacion.php?op=traerperiodosactivoplanificados')
+        .then(function (periodos) {
+          data = JSON.parse(periodos);
+          periodos = '';
+          if (data.length != 0) {
+            let selected = '';
+            data.forEach(function (indice) {
+              if (indice.id == periodoActual)
+                selected = 'selected';
+              else
+                selected = '';
+              periodos += '<option value="' + indice.id + '"' + selected + '>' + indice.periodo + '</option>';
+            });
+          }
+          else {
+            periodos = '<option value="">Debe crear un período escolar</option>';
+          }
+          $('#periodo_escolar').html('<option value="">Seleccione</option>');
+          $('#periodo_escolar').append(periodos);
+          $('#periodo_escolar').selectpicker('refresh');
+        });
+    });
+}
 
 function traerGrados() {
 	$.post('../controladores/planificacion.php?op=traergrados', function (data) {
@@ -75,11 +143,11 @@ function traerSecciones(idgrado, idplanificacion) {
 
 function traerAmbientes(idambiente = null) {
 	$.post('../controladores/planificacion.php?op=traerambientes', {idambiente: idambiente}, function (data) {
-		data = JSON.parse(data);
+    data = JSON.parse(data);
 		let ambiente = '';
 		if (data.length != 0) {
 			data.forEach(function (indice, valor) {
-				ambiente += '<option value="' + indice.id + '">' + indice.ambiente + '</option>';
+        ambiente += '<option value="' + indice.id + '" capacidad="'+indice.capacidad+'">' + indice.ambiente + '</option>';
 			});
 		}
 		else {
@@ -129,7 +197,7 @@ function guardaryeditar(event) {
 		contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
 		processData: false, //Evita que jquery transforme la data en un string
 		success: function (datos) {
-      
+
       $('#btnGuardar').prop('disabled', false);
 			if (datos == 'true') {
 				const Toast = Swal.mixin({
@@ -194,7 +262,7 @@ function guardaryeditar(event) {
 }
 
 //Función para listar los registros
-function listar() {
+function listar(idperiodo = null) {
 	tabla = $('#tblistado').DataTable({
 		"processing": true,
 		pagingType: "first_last_numbers",
@@ -214,9 +282,9 @@ function listar() {
 		dom: 'lfrtip',
 		"destroy": true, //Elimina cualquier elemente que se encuentre en la tabla
 		"ajax": {
-			url: '../controladores/planificacion.php?op=listar',
+			url: '../controladores/planificacion.php?op=listar&idperiodo='+idperiodo,
 			type: 'GET',
-			dataType: 'json'
+      dataType: 'json'
 		},
 		'order': [[0, 'desc']]
 	});

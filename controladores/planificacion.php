@@ -10,6 +10,7 @@ require_once '../modelos/Planificacion.php';
 $Planificacion = new Planificacion();
 
 $idplanificacion = isset($_POST['idplanificacion']) ? limpiarCadena($_POST['idplanificacion']) : '';
+$idperiodo_escolar = isset($_POST['idperiodo_escolar']) ? limpiarCadena($_POST['idperiodo_escolar']) : '';
 $idgrado = isset($_POST['idgrado']) ? limpiarCadena($_POST['idgrado']) : '';
 $idseccion = isset($_POST['idseccion']) ? limpiarCadena($_POST['idseccion']) : '';
 $idambiente = isset($_POST['idambiente']) ? limpiarCadena($_POST['idambiente']) : '';
@@ -31,10 +32,17 @@ switch ($_GET['op']) {
 		if (empty($idplanificacion)) {
 
 			#Se trae el id del período escolar en curso
-			$idperiodo_escolar = $Planificacion->consultarperiodo() or $sw = FALSE;
-			
+			$idperiodo_escolar_actual = $Planificacion->consultarperiodo() or $sw = FALSE;
+      $idperiodo_escolar_actual = !empty($idperiodo_escolar_actual) ? $idperiodo_escolar_actual['id'] : '';
+      
+      $estatus = '';
+      if ($idperiodo_escolar_actual == $idperiodo_escolar)
+        $estatus = 'Activo';
+      else 
+        $estatus = 'Planificado';
+
 			#Se registra la planificación
-			$Planificacion->insertar($idperiodo_escolar['id'], $idgrado, $idseccion, $idambiente, $iddocente, $cupo, $cupo, 1) or $sw = FALSE;
+			$Planificacion->insertar($idperiodo_escolar, $idgrado, $idseccion, $idambiente, $iddocente, $cupo, $cupo, $estatus) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
@@ -78,8 +86,9 @@ switch ($_GET['op']) {
 		break;
 
 	case 'listar':
+    $idperiodo = isset($_GET['idperiodo']) ? $_GET['idperiodo'] : '';
 
-		$rspta = $Planificacion->listar();
+		$rspta = $Planificacion->listar($idperiodo);
 
 		if ($rspta->num_rows != 0) {
 			while ($reg = $rspta->fetch_object()) {
@@ -186,7 +195,8 @@ switch ($_GET['op']) {
 			while ($reg = $rspta->fetch_object()) {
 
 				$data[] = ['id' => $reg->id,
-						  'ambiente' => $reg->ambiente];
+              'ambiente' => $reg->ambiente,
+              'capacidad' => $reg->capacidad];
 			}
 
 		}
@@ -213,6 +223,49 @@ switch ($_GET['op']) {
 
 		#Se codifica el resultado utilizando Json
 		echo json_encode($data);
-		break;
+    break;
+    
+  case 'traerperiodosescolares': 
+    
+    $rspta = $Planificacion->traer_periodos_escolares();
+
+		$data = array();
+		if ($rspta->num_rows != 0) {
+			while ($reg = $rspta->fetch_object()) {
+
+				$data[] = ['id' => $reg->id,
+						      'periodo' => $reg->periodo];
+			}
+
+		}
+
+		#Se codifica el resultado utilizando Json
+    echo json_encode($data);
+    break;
+
+  case 'traerperiodosactivoplanificados': 
+    
+    $rspta = $Planificacion->traer_periodos_activo_planificados();
+
+		$data = array();
+		if ($rspta->num_rows != 0) {
+			while ($reg = $rspta->fetch_object()) {
+
+				$data[] = ['id' => $reg->id,
+						      'periodo' => $reg->periodo];
+			}
+
+		}
+
+		#Se codifica el resultado utilizando Json
+    echo json_encode($data);
+    break;
+
+  case 'consultarperiodo': 
+    $periodo_actual = $Planificacion->consultarperiodo();
+    $periodo_actual = !empty($periodo_actual) ? $periodo_actual['id'] : '';
+
+    echo $periodo_actual;
+    break;
 
 }

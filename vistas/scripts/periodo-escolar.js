@@ -15,26 +15,115 @@ function init() {
 		}
 	});
 
-	verificar();
-
 	$('#btnAgregar').on('click', function () {
 		periodo();
-	});
+  });
+  
+  $('#fecha_inicio').on('blur', function () {  
+    verificarFechaInicio(this); 
+  });
 
-	tabla.ajax.reload();
-			
+  $('#fecha_fin').on('blur', function () {
+    verificarFechaFin(this);
+  });
+
+	tabla.ajax.reload();			
 }
 
-//Verifica si hay un período escolar activo
-function verificar() {
-	$.post('../controladores/periodo-escolar.php?op=verificar', function (data) {
-		if ( data == 'null') {
-			$('#btnAgregar').show();
-		}
-		else {
-			$('#btnAgregar').hide();
-		}
-	});
+/**
+ * Verifica que la fecha de inicio del período escolar y la fecha de inicio sean iguales
+ * @param {} fecha 
+ */
+function verificarFechaInicio(fecha) {
+  if (fecha.value != '') {
+    let periodoEscolar = $('#periodo')[0].value;
+
+    let periodoEscolarArreglo = periodoEscolar.split('-');
+    let inicioPeriodo = Number(periodoEscolarArreglo[0]);
+    let fechaInicio = fecha.value.split('-');
+    fechaInicio = Number(fechaInicio[0]);
+
+    if (fechaInicio != inicioPeriodo) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      });
+
+      Toast.fire({
+        type: 'error',
+        title: 'El año del período escolar y la fecha de inicio deben ser iguales'
+      });
+      $('#fecha_inicio').val('');
+    }
+    else{
+      $.post('../controladores/periodo-escolar.php?op=verificarfechainicio', { fecha_inicio: fecha.value, periodo: periodoEscolar }, function (data) {  
+        if (data != 'true') {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+
+          Toast.fire({
+            type: 'error',
+            title: 'La fecha de inicio de éste periodo choca con la fecha de fin del período anterior'
+          });
+
+          $('#fecha_inicio').val('');
+        }        
+      });
+    }
+  }
+  return;
+}
+
+function verificarFechaFin(fecha) {
+  if (fecha.value != '') {
+    let periodoEscolar = $('#periodo')[0].value;
+    let periodoEscolarArreglo = periodoEscolar.split('-');
+    let finPeriodo = Number(periodoEscolarArreglo[1]);
+    let fechaFin = fecha.value.split('-');
+    fechaFin = Number(fechaFin[0]);
+    
+    if (fechaFin != finPeriodo) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      });
+
+      Toast.fire({
+        type: 'error',
+        title: 'El año del período escolar y la fecha de fin deben ser iguales'
+      });
+      $('#fecha_fin').val('');
+    }
+    else {
+      $.post('../controladores/periodo-escolar.php?op=verificarfechafin', { fecha_fin: fecha.value, periodo: periodoEscolar }, function (data) {
+
+        if (data != 'true') {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+
+          Toast.fire({
+            type: 'error',
+            title: 'La fecha de fin de éste periodo choca con la fecha de inicio del período siguiente'
+          });
+
+          $('#fecha_fin').val('');
+        }
+      });
+    }
+  }
+  return;
 }
 
 //Crea el siguiente periodo según el último registrado en la base de datos
@@ -59,8 +148,6 @@ function periodo() {
 			nuevoPeriodo = Number(fechaActual+1)+'-'+Number(fechaActual+2);
 			$('#periodo').append('<option value="'+nuevoPeriodo+'">'+nuevoPeriodo+'</option>');
       $('#periodo').selectpicker('refresh');
-      $('#estatus').html('<option value="">Seleccione</option>');
-      $('#estatus').append('<option value="ACTIVO">Activo</option>');
 		}
 
 	});
@@ -80,6 +167,7 @@ function guardaryeditar(event) {
 		contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
 		processData: false, //Evita que jquery transforme la data en un string
 		success: function (datos) {
+
       $('#btnGuardar').prop('disabled', false);
 			if (datos == 'true') {
 				const Toast = Swal.mixin({
@@ -93,7 +181,20 @@ function guardaryeditar(event) {
 				  type: 'success',
 				  title: 'Período escolar registrado exitosamente :)'
 				});
-			}
+      }
+      else if(datos == 'update') {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
+
+        Toast.fire({
+          type: 'success',
+          title: 'Período escolar actualizado exitosamente :)'
+        });
+      }
 			else {
 				const Toast = Swal.mixin({
 				  toast: true,
@@ -107,8 +208,7 @@ function guardaryeditar(event) {
 				  title: 'Ocurrió un error y no se pudo registrar :('
 				});
 			}
-
-			$('#btnAgregar').hide();
+      limpiar();
 			tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
 			$('#periodoModal').modal('hide');
 		}
@@ -138,10 +238,79 @@ function listar() {
 		"ajax": {
 			url: '../controladores/periodo-escolar.php?op=listar',
 			type: 'GET',
-			dataType: 'json'
+      dataType: 'json'
 		},
 		'order': [[0, 'desc']]
 	});
+}
+
+//Función para mostrar un registro para editar
+function mostrar(idperiodo) {
+  $.post('../controladores/periodo-escolar.php?op=mostrar', { idperiodo: idperiodo }, function (data) {
+    data = JSON.parse(data);
+    $('#periodo').html('<option value="' + data.periodo + '">' + data.periodo + '</option>');
+    $('#periodo').selectpicker('refresh');
+    $('#fecha_inicio').val(data.fecha_creacion);
+    $('#fecha_fin').val(data.fecha_finalizacion);
+    $('#estatus').html('<option value="' + data.estatus + '">' + data.estatus + '</option>');
+    $('#estatus').selectpicker('refresh');
+    $('#idperiodo').val(data.id);
+  });
+}
+
+//Función para activar el período escolar
+function activar(idperiodo) {
+
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-primary  mx-1 p-2',
+      cancelButton: 'btn btn-danger  mx-1 p-2'
+    },
+    buttonsStyling: false
+  });
+
+  swalWithBootstrapButtons.fire({
+    title: '¿Estas seguro?',
+    text: "¡Ésta acción activará un nuevo período escolar!",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Activar',
+    cancelButtonText: 'Cancelar',
+    reverseButtons: true
+  }).then((result) => {
+    if (result.value) {
+      $.post('../controladores/periodo-escolar.php?op=activar', { idperiodo: idperiodo }, function (e) {
+
+        if (e == 'true') {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+
+          Toast.fire({
+            type: 'success',
+            title: 'Período escolar activado :)'
+          });
+        }
+        else {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+
+          Toast.fire({
+            type: 'error',
+            title: 'Ups! No se pudo activar el periodo escolar'
+          });
+        }
+        tabla.ajax.reload();
+      });
+    }
+  });
 }
 
 //Función para finalizar el período escolar
@@ -153,7 +322,7 @@ function finalizar(idperiodo) {
 		    cancelButton: 'btn btn-danger  mx-1 p-2'
 		  },
 		  buttonsStyling: false
-		})
+		});
 
 		swalWithBootstrapButtons.fire({
 		  title: '¿Estas seguro?',
@@ -165,7 +334,7 @@ function finalizar(idperiodo) {
 		  reverseButtons: true
 		}).then((result) => {
 		  if (result.value) {
-		  	$.post('../controladores/periodo-escolar.php?op=desactivar', {idperiodo: idperiodo}, function (e) {
+		  	$.post('../controladores/periodo-escolar.php?op=finalizar', {idperiodo: idperiodo}, function (e) {
 
 				if (e == 'true') {
 					const Toast = Swal.mixin({
@@ -193,11 +362,27 @@ function finalizar(idperiodo) {
 					  title: 'Ups! No se pudo finalizar el periodo escolar'
 					});
 				}
-				verificar();
 				tabla.ajax.reload();
 			});  
 		  } 
 		});
+}
+
+//Función para limpiar el formulario
+function limpiar() {
+  $("#formularioregistros")[0].reset();
+  $('#fecha_inicio').val('');
+  $('#fecha_fin').val('');
+  $('#estatus').html('<option value="">Seleccione</option>');
+  $('#estatus').append('<option value="Planificado">Planificado</option>');
+  $('#estatus').selectpicker('refresh');
+  $('#idperiodo').val('');
+  $('#formularioregistros').removeClass('was-validated');
+}
+
+//Función cancelarform
+function cancelarform() {
+  limpiar();
 }
 
 init();
