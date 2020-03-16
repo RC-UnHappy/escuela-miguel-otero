@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-03-2020 a las 04:30:20
+-- Tiempo de generación: 16-03-2020 a las 04:43:22
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -32,6 +32,7 @@ CREATE TABLE `ambiente` (
   `id` int(11) NOT NULL,
   `ambiente` int(2) UNSIGNED ZEROFILL NOT NULL,
   `capacidad` int(11) NOT NULL,
+  `ubicacion` char(12) NOT NULL,
   `estatus` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -39,23 +40,24 @@ CREATE TABLE `ambiente` (
 -- Volcado de datos para la tabla `ambiente`
 --
 
-INSERT INTO `ambiente` (`id`, `ambiente`, `capacidad`, `estatus`) VALUES
-(4, 01, 30, 0),
-(5, 02, 30, 1),
-(6, 03, 30, 1),
-(7, 04, 30, 1),
-(8, 05, 30, 1),
-(9, 06, 30, 1),
-(10, 07, 30, 1),
-(11, 08, 30, 1),
-(12, 09, 30, 1),
-(13, 10, 30, 1),
-(14, 11, 30, 1),
-(15, 12, 30, 1),
-(16, 20, 30, 1),
-(17, 19, 30, 1),
-(18, 22, 30, 1),
-(19, 23, 30, 1);
+INSERT INTO `ambiente` (`id`, `ambiente`, `capacidad`, `ubicacion`, `estatus`) VALUES
+(4, 01, 30, 'Planta baja', 0),
+(5, 02, 30, 'Planta baja', 1),
+(6, 03, 30, 'Planta baja', 1),
+(7, 04, 30, 'Planta baja', 1),
+(8, 05, 30, 'Planta baja', 1),
+(9, 06, 30, 'Planta baja', 1),
+(10, 07, 30, 'Primer piso', 1),
+(11, 08, 30, 'Primer piso', 1),
+(12, 09, 30, 'Primer piso', 1),
+(13, 10, 30, 'Primer piso', 1),
+(14, 11, 30, 'Primer piso', 1),
+(15, 12, 30, 'Segundo piso', 1),
+(16, 20, 30, 'Segundo piso', 1),
+(17, 19, 30, 'Segundo piso', 1),
+(18, 22, 30, 'Segundo piso', 1),
+(19, 23, 30, 'Segundo piso', 1),
+(20, 24, 35, 'Segundo piso', 1);
 
 -- --------------------------------------------------------
 
@@ -2961,8 +2963,17 @@ CREATE TABLE `periodo_escolar` (
   `periodo` varchar(9) NOT NULL,
   `fecha_creacion` date NOT NULL,
   `fecha_finalizacion` date DEFAULT NULL,
-  `estatus` tinyint(1) NOT NULL
+  `estatus` char(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `periodo_escolar`
+--
+
+INSERT INTO `periodo_escolar` (`id`, `periodo`, `fecha_creacion`, `fecha_finalizacion`, `estatus`) VALUES
+(44, '2020-2021', '2020-03-15', '2020-03-15', 'Finalizado'),
+(45, '2021-2022', '2020-03-15', '2022-06-30', 'Activo'),
+(46, '2022-2023', '2022-08-30', '2023-06-30', 'Planificado');
 
 -- --------------------------------------------------------
 
@@ -3088,8 +3099,16 @@ CREATE TABLE `planificacion` (
   `iddocente` int(11) NOT NULL,
   `cupo` int(11) NOT NULL,
   `cupo_disponible` int(11) NOT NULL,
-  `estatus` tinyint(1) NOT NULL
+  `estatus` char(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `planificacion`
+--
+
+INSERT INTO `planificacion` (`id`, `idperiodo_escolar`, `idgrado`, `idseccion`, `idambiente`, `iddocente`, `cupo`, `cupo_disponible`, `estatus`) VALUES
+(40, 45, 1, 2, 5, 1, 30, 30, 'Activo'),
+(41, 45, 1, 3, 20, 13, 35, 35, 'Activo');
 
 -- --------------------------------------------------------
 
@@ -3550,7 +3569,7 @@ ALTER TABLE `u_respuesta`
 -- AUTO_INCREMENT de la tabla `ambiente`
 --
 ALTER TABLE `ambiente`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `aspecto_fisiologico`
@@ -3670,7 +3689,7 @@ ALTER TABLE `parroquia`
 -- AUTO_INCREMENT de la tabla `periodo_escolar`
 --
 ALTER TABLE `periodo_escolar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT de la tabla `permiso`
@@ -3694,13 +3713,13 @@ ALTER TABLE `personal`
 -- AUTO_INCREMENT de la tabla `personal_directivo`
 --
 ALTER TABLE `personal_directivo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `planificacion`
 --
 ALTER TABLE `planificacion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT de la tabla `p_seguridad`
@@ -3730,7 +3749,7 @@ ALTER TABLE `sosten_hogar`
 -- AUTO_INCREMENT de la tabla `telefono`
 --
 ALTER TABLE `telefono`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=461;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=465;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
