@@ -280,7 +280,7 @@ if (!isset($_SESSION['usuario'])) {
                       <div class="col-sm-6">
                           <div class="card border-right-0 border-bottom-0 border-left-0  border-top-0 shadow mb-1 bg-white rounded">
                               <div class="card-header bg-white  shadow border-bottom-0 fondo-degradado">
-                                  <h5 class="m-0 p-0  font-italic font-weight-bold text-white"><i class="fas fa-user-tie"></i> Datos de la madre
+                                  <h5 class="m-0 p-0  font-italic font-weight-bold text-white"><i class="fas fa-female"></i> Datos de la madre
                                       <small class="text-dark">(Requerido)</small>
                                   </h5>
                               </div>
@@ -409,7 +409,7 @@ if (!isset($_SESSION['usuario'])) {
                       <div class="col-sm-6">
                           <div class="card border-right-0 border-bottom-0 border-left-0  border-top-0 shadow mb-3 bg-white rounded">
                               <div class="card-header bg-white  shadow border-bottom-0 fondo-degradado">
-                                  <h5 class="m-0 p-0  font-italic font-weight-bold text-white"><i class="fas fa-user-tie"></i> Datos del padre
+                                  <h5 class="m-0 p-0  font-italic font-weight-bold text-white"><i class="fas fa-male"></i> Datos del padre
                                       <small class="text-dark">(Requerido)</small>
                                   </h5>
                               </div>
@@ -699,7 +699,7 @@ if (!isset($_SESSION['usuario'])) {
                       <div class="col-sm-6">
                           <div class="card border-right-0 border-bottom-0 border-left-0  border-top-0 shadow mb-3 bg-white rounded">
                               <div class="card-header bg-white  shadow border-bottom-0 fondo-degradado">
-                                  <h5 class="m-0 p-0  font-italic font-weight-bold text-white"><i class="fas fa-user-graduate"></i> Documentos consignados
+                                  <h5 class="m-0 p-0  font-italic font-weight-bold text-white"><i class="fas fa-file"></i> Documentos consignados
                                       <small class="text-dark">(Requerido)</small>
                                   </h5>
                               </div>
@@ -788,7 +788,7 @@ if (!isset($_SESSION['usuario'])) {
                       <div class="col-sm-12">
                           <div class="card border-right-0 border-bottom-0 border-left-0  border-top-0 shadow mb-3 bg-white rounded">
                               <div class="card-header bg-white  shadow border-bottom-0 fondo-degradado">
-                                  <h5 class="m-0 p-0  font-italic font-weight-bold text-white"><i class="fas fa-user-graduate"></i> Inscripción
+                                  <h5 class="m-0 p-0  font-italic font-weight-bold text-white"><i class="fas fa-money-check"></i> Inscripción
                                       <small class="text-dark">(Requerido)</small>
                                   </h5>
                               </div>

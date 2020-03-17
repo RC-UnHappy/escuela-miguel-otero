@@ -65,39 +65,35 @@ if (!isset($_SESSION['usuario'])) {
 
                                     <div class="modal-body">
 
-                                        <div class="row">
+                                      <div class="row">
+                                          
+                                        <div class="form-group col-md-6">
+                                          <label for="lapso">Lapso (*)</label>
+                                          <div class="input-group ">
+                                              <select name="lapso" id="lapso" class="form-control selectpicker" required="true">
+                                        
+                                              </select>
+                                              <div class="invalid-feedback">
+                                                  Campo Obligatorio
+                                              </div>
+                                          </div>
+                                        </div>
 
-                                            <div class="form-group col-md-6">
-                                                <label for="lapso">Lapso (*)</label>
+                                        <div class="form-group col-md-6">
+                                          <label for="estatus">Estatus (*)</label>
+                                          <div class="input-group ">
+                                              <select name="estatus" id="estatus" class="form-control selectpicker" required="true">
+                                                  <option value="">Seleccione</option>
+                                                  <option value="1">Activo</option>
+                                                  <option value="0">Inactivo</option>
+                                              </select>
+                                              <div class="invalid-feedback">
+                                                  Campo Obligatorio
+                                              </div>
+                                          </div>
+                                        </div>
 
-                                                <div class="input-group">
-
-                                                    <input type="text" class="form-control solo_numeros lapso" placeholder="Ej: 1" name="lapso" id="lapso" maxlength="1" required>
-
-                                                    <input type="hidden" name="idlapso" id="idlapso"> <!-- Input oculto que guardará el id del lapso cuando sea necesario -->
-
-                                                    <div class="invalid-feedback">
-                                                        Campo Obligatorio
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group col-md-6">
-                                                <label for="estatus">Estatus (*)</label>
-                                                <div class="input-group ">
-                                                    <select name="estatus" id="estatus" class="form-control selectpicker" required="true">
-                                                        <option value="">Seleccione</option>
-                                                        <option value="1">Activo</option>
-                                                        <option value="0">Inactivo</option>
-                                                    </select>
-                                                    <div class="invalid-feedback">
-                                                        Campo Obligatorio
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div> <!-- Fin row -->
+                                      </div> <!-- Fin row -->
 
                                     </div>
 

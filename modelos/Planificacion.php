@@ -141,7 +141,7 @@ class Planificacion
   
   function traer_periodos_escolares()
   {
-		$sql = "SELECT * FROM periodo_escolar";
+		$sql = "SELECT * FROM periodo_escolar ORDER BY id DESC";
 		return ejecutarConsulta($sql);
   }
 

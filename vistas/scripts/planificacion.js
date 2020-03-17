@@ -300,7 +300,7 @@ function listar(idperiodo = null) {
 			type: 'GET',
       dataType: 'json'
 		},
-		'order': [[0, 'desc']]
+		'order': [[1, 'asc']]
 	});
 }
 

@@ -37,14 +37,6 @@ class Lapso
         return ejecutarConsulta($sql);
     }
 
-    #Método para mostrar un lapso
-    function mostrar($idlapso)
-    {
-        $sql = "SELECT * FROM lapso WHERE id = '$idlapso'";
-
-        return ejecutarConsultaSimpleFila($sql);
-    }
-
     #Método para desactivar lapso
     function desactivar($idlapso)
     {
@@ -61,10 +53,22 @@ class Lapso
         return ejecutarConsulta($sql);
     }
 
-    #Método para comprobar si existe el Lapso
-    function comprobarlapso($lapso)
+    #Método para traer el último lapso
+    function traerultimolapso()
     {
-        $sql = "SELECT lapso FROM lapso WHERE lapso = '$lapso'";
+        $sql = "SELECT MAX(lapso) as lapso FROM lapso";
         return ejecutarConsulta($sql);
+    }
+
+    function traerultimolapsoactivo()
+    {
+        $sql = "SELECT MAX(lapso) as lapso FROM lapso WHERE estatus = 1";
+        return ejecutarConsultaSimpleFila($sql);
+    }
+
+    function traerprimerlapsodesactivado()
+    {
+        $sql = "SELECT MIN(lapso) as lapso FROM lapso WHERE estatus = 0";
+        return ejecutarConsultaSimpleFila($sql);
     }
 }

@@ -16,9 +16,9 @@ $estatus = isset($_POST['estatus']) ? limpiarCadena($_POST['estatus']) : '';
 #Se ejecuta un caso dependiendo del valor del parámetro GET
 switch ($_GET['op']) {
 
-    case 'comprobarlapso':
+    case 'traerultimolapso':
 
-        $rspta = $Lapso->comprobarlapso($lapso);
+        $rspta = $Lapso->traerultimolapso();
         echo json_encode($rspta->fetch_object());
         break;
 
@@ -64,30 +64,37 @@ switch ($_GET['op']) {
 
         $rspta = $Lapso->listar();
 
+        $ultimolapso = $Lapso->traerultimolapsoactivo();
+        $ultimolapso = !empty($ultimolapso) ? $ultimolapso['lapso'] : '';
+
+        $primerlapso = $Lapso->traerprimerlapsodesactivado();
+        $primerlapso = !empty($primerlapso) ? $primerlapso['lapso'] : '';
+    
         if ($rspta->num_rows != 0) {
-
-            while ($reg = $rspta->fetch_object()) {
-
-                $data[] = array(
-                    '0' => ($reg->estatus) ? '<button class="btn btn-outline-primary " title="Editar" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#lapsoModal"><i class="fas fa-edit"></i></button>' .
-
-                        ' <button class="btn btn-outline-danger" title="Desactivar" onclick="desactivar(' . $reg->id . ')"> <i class="fas fa-times"> </i></button> '
-
-                        : '<button class="btn btn-outline-primary" title="Editar" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#lapsoModal"><i class="fa fa-edit"></i></button>' .
-
-                        ' <button class="btn btn-outline-success" title="Activar" onclick="activar(' . $reg->id . ')"><i class="fa fa-check"></i></button> ',
-
-                    '1' => $reg->lapso.'º lapso'
-                );
+          
+          while ($reg = $rspta->fetch_object()) {
+            
+            $opciones = '';
+            if ($ultimolapso == $reg->lapso) {
+              $opciones = ' <button class="btn btn-outline-danger" title="Desactivar" onclick="desactivar(' . $reg->id . ')"> <i class="fas fa-times"> </i></button> ';
+            }
+            else if ($reg->lapso == $primerlapso){
+              $opciones = ' <button class="btn btn-outline-success" title="Activar" onclick="activar(' . $reg->id . ')"><i class="fa fa-check"></i></button> ';
             }
 
-            $results = array(
-                "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
-                "recordsTotal" => count($data), #Se envía el total de registros al datatable
-                "recordsFiltered" => count($data), #Se envía el total de registros a visualizar
-                "data" => $data #datos en un array
-
+            $data[] = array(
+                '0' => $opciones,
+                '1' => $reg->lapso.'º Lapso'
             );
+          }
+
+          $results = array(
+              "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+              "recordsTotal" => count($data), #Se envía el total de registros al datatable
+              "recordsFiltered" => count($data), #Se envía el total de registros a visualizar
+              "data" => $data #datos en un array
+
+          );
         } else {
             $results = array(
                 "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
@@ -98,15 +105,6 @@ switch ($_GET['op']) {
         }
 
         echo json_encode($results);
-
-        break;
-
-    case 'mostrar':
-
-        $rspta = $Lapso->mostrar($idlapso);
-
-        #Se codifica el resultado utilizando Json
-        echo json_encode($rspta);
 
         break;
 

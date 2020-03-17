@@ -14,40 +14,30 @@
         }
     });
 
-    //Se ejecuta al quitar el foco en el input de lapso
-    $('#lapso').on('blur', function () {
-        comprobarLapso(this);
-    });
-
     $('#btnAgregar').on('click', function () {
-        limpiar();
+      traerUltimoLapso();
+      limpiar();
     });
 
     tabla.ajax.reload();
 
 })();
 
-//Comprueba que no exista el lapso en el base de datos
-function comprobarLapso(esto) {
-    var lapso = esto.value;
-    $.post('../controladores/lapso.php?op=comprobarlapso', { lapso: lapso }, function (data) {
-        
-        if (data != 'null') {
-            esto.value = '';
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000
-            });
+//Trae el último lapso y le suma uno
+function traerUltimoLapso() {
+  $.post('../controladores/lapso.php?op=traerultimolapso', function (data) {
+    data = JSON.parse(data)
+    if (data != 'null') {
+      let lapso = Number(data.lapso) + 1;
+      $('#lapso').html('<option value="'+lapso+'">'+lapso+'º Lapso</option>'); 
+      $('#lapso').selectpicker('refresh');   
+    }
+    else{
+      $('#lapso').html('<option value="1">1º Lapso</option>');
+      $('#lapso').selectpicker('refresh');
+    }
 
-            Toast.fire({
-                type: 'error',
-                title: 'El lapso ya existe'
-            });
-        }
-
-    });
+  });
 }
 
 //Función cancelarform
@@ -142,18 +132,7 @@ function listar() {
             type: 'GET',
             dataType: 'json'
         },
-        'order': [[0, 'desc']]
-    });
-}
-
-//Función para mostrar un registro para editar
-function mostrar(idlapso) {
-    $.post('../controladores/lapso.php?op=mostrar', { idlapso: idlapso }, function (data) {
-        data = JSON.parse(data);
-
-        $('#lapso').val(data.lapso);
-        $('#estatus').selectpicker('val', data.estatus);
-        $('#idlapso').val(data.id);
+        'order': [[1, 'asc']]
     });
 }
 

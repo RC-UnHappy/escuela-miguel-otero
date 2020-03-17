@@ -198,6 +198,30 @@ if (strlen(session_id()) < 1)
                 </a>
               </li>
 
+              <li class="nav-item">
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/lapso-academico.php">
+                  <i class="nav-icon fas fa-cut"></i> Lapso académico
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/periodo-escolar.php">
+                  <i class="nav-icon fas fa-calendar-alt"></i> Período Escolar
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/planificacion.php">
+                  <i class="nav-icon fas fa-tasks"></i> Planificación
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/pic.php">
+                  <i class="nav-icon fas fa-tasks"></i> PIC
+                </a>
+              </li>
+
             </ul>
           </li>
 
@@ -255,18 +279,6 @@ if (strlen(session_id()) < 1)
               <li class="nav-item">
                 <a class="nav-link" href="/escuela-miguel-otero/vistas/lapso.php">
                   <i class="nav-icon fas fa-cut"></i> Lapso
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/periodo-escolar.php">
-                  <i class="nav-icon fas fa-calendar-alt"></i> Período Escolar
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/planificacion.php">
-                  <i class="nav-icon fas fa-tasks"></i> Planificación
                 </a>
               </li>
 
