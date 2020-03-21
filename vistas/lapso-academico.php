@@ -37,7 +37,7 @@ require_once 'modules/header.php';
                       <thead class="fondo-degradado text-white">
                         <tr>
                           <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Opciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                          <th scope="col">Período Escolar</th>
+                          <th scope="col">Lapso</th>
                           <th scope="col">Fecha inicio</th>
                           <th scope="col">Fecha fin</th>
                           <th scope="col">Estatus</th>
@@ -56,10 +56,10 @@ require_once 'modules/header.php';
                 <div class="modal-dialog rounded modal-xl" role="document">
                   <div class="modal-content">
                     
-                    <form class="needs-validation" novalidate name="formularioLapso" id="formularioregistros"> <!-- Formulario de Período Escolar -->
+                    <form class="needs-validation" novalidate name="formularioLapso" id="formularioregistros"> <!-- Formulario de Lapso académico -->
 
                       <div class="modal-header fondo-degradado rounded">
-                        <h5 class="modal-title text-white" id="exampleModalLabel">Crear Período Escolar</h5>
+                        <h5 class="modal-title text-white" id="tituloModal">Crear lapso académico</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -69,11 +69,24 @@ require_once 'modules/header.php';
 
                         <div class="row"> 
 
-                          <input type="hidden" name="idperiodo" id="idperiodo"> <!-- Input oculto que guardará el id del periodo cuando sea necesario -->
-                          <div class="form-group col-md-3">
-                            <label for="periodo">Lapso (*)</label>
+                          <input type="hidden" name="idlapsoacademico" id="idlapsoacademico"> <!-- Input oculto que guardará el id del lapso academico cuando sea necesario -->
+                          
+                          <div class="form-group col-md-2">
+                            <label for="periodo_escolar">Período Escolar (*)</label>
                               <div class="input-group ">
-                                <select name="periodo" id="periodo" class="form-control selectpicker" required="true">
+                                <select name="idperiodo_escolar" id="periodo_escolar" class="form-control selectpicker" required="true">
+                                  
+                                </select>
+                                <div class="invalid-feedback">
+                                  Campo Obligatorio
+                                </div>
+                              </div>
+                          </div>
+
+                          <div class="form-group col-md-2">
+                            <label for="lapso_academico">Lapso (*)</label>
+                              <div class="input-group ">
+                                <select name="lapso_academico" id="lapso_academico" class="form-control selectpicker" required="true">
                                   
                                 </select>
                                 <div class="invalid-feedback">
@@ -112,7 +125,7 @@ require_once 'modules/header.php';
                             </div>
                           </div>
 
-                          <div class="form-group col-md-3">
+                          <div class="form-group col-md-2">
                             <label for="estatus">Estatus (*)</label>
                             <div class="input-group">
                               

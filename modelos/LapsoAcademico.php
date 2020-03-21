@@ -4,9 +4,9 @@
 require_once '../config/conexion.php';
 
 /**
- * Modelo de Período Escolar
+ * Modelo de Lapso Académico
  */
-class PeriodoEscolar
+class LapsoAcademico
 {
 	
 	#Constructor de la clase
@@ -16,25 +16,24 @@ class PeriodoEscolar
 	}
 
 	#Método para insertar registros
-	function insertar($periodo, $fecha_inicio, $fecha_fin, $estatus)
+	function insertar($idperiodo_escolar, $lapso_academico, $fecha_inicio, $fecha_fin , $estatus)
 	{
-		$sql = "INSERT INTO periodo_escolar (periodo, fecha_creacion, fecha_finalizacion, estatus) VALUES('$periodo', '$fecha_inicio', '$fecha_fin', '$estatus')";
+		$sql = "INSERT INTO lapso_academico (idperiodo_escolar, lapso, fecha_inicio, fecha_fin, estatus) VALUES('$idperiodo_escolar', '$lapso_academico', '$fecha_inicio', '$fecha_fin', '$estatus')";
 
 		return ejecutarConsulta($sql);
 	}
 
 	#Método para listar 
-	function listar()
+	function listar($idperiodo)
 	{
-		$sql = "SELECT * FROM periodo_escolar ORDER BY periodo DESC";
-
+		$sql = "SELECT * FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo' ORDER BY lapso ASC";
 		return ejecutarConsulta($sql);
 	}
 
-	#Método para mostrar un período escolar
-	function mostrar($idperiodo)
+	#Método para mostrar un lapso académico
+	function mostrar($idlapsoacademico)
 	{
-		$sql = "SELECT * FROM periodo_escolar WHERE id = '$idperiodo'";
+		$sql = "SELECT la.*, pe.periodo FROM lapso_academico la INNER JOIN periodo_escolar pe ON la.idperiodo_escolar = pe.id WHERE la.id = '$idlapsoacademico'";
 
 		return ejecutarConsultaSimpleFila($sql);
   }
@@ -47,40 +46,44 @@ class PeriodoEscolar
 		return ejecutarConsulta($sql);
 	}
 
-	#Método para seleccionar un período escolar 
-	function seleccionar($periodo)
+  #Método para activar un lapso académico
+	function activar($idlapsoacademico)
 	{
-		$sql = "SELECT * FROM periodo_escolar WHERE periodo = '$periodo'";
-
-		return ejecutarConsultaSimpleFila($sql);
-  }
-  
-  #Método para activar un período escolar
-	function activar($idperiodo)
-	{
-		$sql = "UPDATE periodo_escolar SET estatus = 'Activo', fecha_creacion = CURDATE() WHERE id = '$idperiodo'";
+		$sql = "UPDATE lapso_academico SET estatus = 'Activo' WHERE id = '$idlapsoacademico'";
 
 		return ejecutarConsulta($sql);
 	}
 
-	#Método para desactivar un período escolar
-	function finalizar($idperiodo)
+	#Método para desactivar un lapso académico
+	function finalizar($idlapsoacademico)
 	{
-		$sql = "UPDATE periodo_escolar SET estatus = 'Finalizado', fecha_finalizacion = CURDATE() WHERE id = '$idperiodo'";
+		$sql = "UPDATE lapso_academico SET estatus = 'Finalizado' WHERE id = '$idlapsoacademico'";
 
 		return ejecutarConsulta($sql);
   }
 
 	#Método para traer el último perido
-	function traerultimo()
+	function traerlapsos($idperiodo)
 	{
-		$sql = "SELECT * FROM periodo_escolar ORDER BY id DESC LIMIT 1";
+		$sql = "SELECT * FROM lapso WHERE estatus = 1 AND lapso NOT IN (SELECT lapso FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo') ORDER BY lapso ASC";
+		return ejecutarConsulta($sql);
+  }
+
+  function verificar_fecha_fin_lapso($lapso, $idperiodo_escolar)
+  {
+    $sql = "SELECT * FROM lapso_academico WHERE lapso = '$lapso' AND idperiodo_escolar = '$idperiodo_escolar'";
+		return ejecutarConsultaSimpleFila($sql);
+  }
+
+  function verificar_fecha_inicio_lapso($lapso, $idperiodo_escolar)
+  {
+    $sql = "SELECT * FROM lapso_academico WHERE lapso = '$lapso' AND idperiodo_escolar = '$idperiodo_escolar'";
 		return ejecutarConsultaSimpleFila($sql);
   }
   
-  function verificar_ultimo_finalizado()
+  function verificar_fecha_fin_ultimo_lapso($idperiodo)
   {
-    $sql = "SELECT * FROM periodo_escolar WHERE estatus = 'Finalizado' ORDER BY id DESC LIMIT 1";
+    $sql = "SELECT MAX(lapso) as lapso, fecha_fin FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo' AND estatus = 'Finalizado'";
 		return ejecutarConsultaSimpleFila($sql);
   }
 
@@ -95,7 +98,11 @@ class PeriodoEscolar
     $sql = "SELECT * FROM periodo_escolar WHERE estatus = 'Activo'";
     return ejecutarConsultaSimpleFila($sql);
   }
+
+  function verificar_lapso_activo()
+  {
+    $sql = "SELECT * FROM lapso_academico WHERE estatus = 'Activo'";
+    return ejecutarConsultaSimpleFila($sql);
+  }
 	
 }
-
-

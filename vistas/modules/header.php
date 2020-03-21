@@ -193,6 +193,12 @@ if (strlen(session_id()) < 1)
             <ul class="nav-dropdown-items">
 
               <li class="nav-item">
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/gestionar-indicador.php">
+                  <i class="nav-icon fas fa-tasks"></i> Gestionar Indicador
+                </a>
+              </li>
+              
+              <li class="nav-item">
                 <a class="nav-link" href="/escuela-miguel-otero/vistas/inscripcion/inicial.php">
                   <i class="nav-icon fas fa-check"></i> Inscripción inicial
                 </a>
@@ -204,9 +210,16 @@ if (strlen(session_id()) < 1)
                 </a>
               </li>
 
+
               <li class="nav-item">
                 <a class="nav-link" href="/escuela-miguel-otero/vistas/periodo-escolar.php">
                   <i class="nav-icon fas fa-calendar-alt"></i> Período Escolar
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/pic.php">
+                  <i class="nav-icon fas fa-tasks"></i> PIC
                 </a>
               </li>
 
@@ -216,11 +229,7 @@ if (strlen(session_id()) < 1)
                 </a>
               </li>
 
-              <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/pic.php">
-                  <i class="nav-icon fas fa-tasks"></i> PIC
-                </a>
-              </li>
+
 
             </ul>
           </li>
@@ -265,14 +274,14 @@ if (strlen(session_id()) < 1)
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/grado.php">
-                  <i class="nav-icon fas fa-pencil-ruler"></i> Grado
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/institucion.php">
+                  <i class="nav-icon fas fa-school"></i> Institución
                 </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/materia.php">
-                  <i class="nav-icon fas fa-book"></i> Materia
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/grado.php">
+                  <i class="nav-icon fas fa-pencil-ruler"></i> Grado
                 </a>
               </li>
 
@@ -281,10 +290,9 @@ if (strlen(session_id()) < 1)
                   <i class="nav-icon fas fa-cut"></i> Lapso
                 </a>
               </li>
-
               <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/institucion.php">
-                  <i class="nav-icon fas fa-school"></i> Institución
+                <a class="nav-link" href="/escuela-miguel-otero/vistas/materia.php">
+                  <i class="nav-icon fas fa-book"></i> Materia
                 </a>
               </li>
 

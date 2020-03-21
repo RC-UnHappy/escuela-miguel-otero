@@ -74,6 +74,9 @@ switch ($_GET['op']) {
         if ($idperiodo_actual == $reg->idperiodo_escolar && $reg->estatus == 'Planificado') {
           $opciones = ' <button class="btn btn-outline-success" title="Activar" onclick="activar('.$reg->id.')"><i class="fa fa-check"></i></button> <button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#picModal"><i class="fa fa-edit"></i></button>';
         }
+        elseif ($reg->estatus == 'Activo'){
+          $opciones = '<button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#picModal"><i class="fa fa-edit"></i></button>';
+        }
         elseif ($reg->estatus == 'Planificado') {
           $opciones = '<button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#picModal"><i class="fa fa-edit"></i></button>';
         }

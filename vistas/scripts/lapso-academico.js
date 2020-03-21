@@ -6,8 +6,8 @@ function init() {
   listar();
 
   //Se ejecuta cuando se envia el formulario
-  $([formularioPeriodo]).on('submit', function (event) {
-    if ($([formularioPeriodo])[0].checkValidity()) {
+  $([formularioLapso]).on('submit', function (event) {
+    if ($([formularioLapso])[0].checkValidity()) {
       guardaryeditar(event);
     }
     else {
@@ -16,7 +16,12 @@ function init() {
   });
 
   $('#btnAgregar').on('click', function () {
-    periodo();
+    $('#tituloModal').html('Crear lapso académico');
+    $('#estatus').html('<option value="">Seleccione</option>');
+    $('#estatus').append('<option value="Planificado">Planificado</option>');
+    $('#estatus').selectpicker('refresh');
+    traerPeriodoActivo();
+    traerLapsos();
   });
 
   $('#fecha_inicio').on('blur', function () {
@@ -31,50 +36,89 @@ function init() {
 }
 
 /**
+ * Trae el período escolar activo 
+ */
+function traerPeriodoActivo() {
+  $.post('../controladores/lapso-academico.php?op=traerperiodoactivo')
+    .then(function (periodo) {
+
+      periodo = JSON.parse(periodo);
+      datos = '';
+      if (periodo != null) {
+        datos = '<option value="' + periodo.id + '" periodo="'+periodo.periodo+'">' + periodo.periodo + '</option>';
+      }
+      else {
+        datos = '<option value="">Debe activar un período escolar</option>';
+      }
+      $('#periodo_escolar').html(datos);
+      $('#periodo_escolar').selectpicker('refresh');
+    });
+}
+
+/**
  * Verifica que la fecha de inicio del período escolar y la fecha de inicio sean iguales
- * @param {} fecha 
+ * @param {} fecha
  */
 function verificarFechaInicio(fecha) {
   if (fecha.value != '') {
-    let periodoEscolar = $('#periodo')[0].value;
 
-    let periodoEscolarArreglo = periodoEscolar.split('-');
+    let periodo_escolar = $('option:selected', $('#periodo_escolar')).attr('periodo');
+    let periodoEscolarArreglo = periodo_escolar.split('-');
     let inicioPeriodo = Number(periodoEscolarArreglo[0]);
+    let finPeriodo = Number(periodoEscolarArreglo[1]);
     let fechaInicio = fecha.value.split('-');
     fechaInicio = Number(fechaInicio[0]);
-
-    if (fechaInicio != inicioPeriodo) {
+    
+    if (fechaInicio < inicioPeriodo || fechaInicio > finPeriodo) {
       const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
         timer: 3000
       });
-
+      
       Toast.fire({
         type: 'error',
-        title: 'El año del período escolar y la fecha de inicio deben ser iguales'
+        title: 'La fecha del período escolar y la del lapso deben coincidir'
       });
       $('#fecha_inicio').val('');
     }
     else {
-      $.post('../controladores/periodo-escolar.php?op=verificarfechainicio', { fecha_inicio: fecha.value, periodo: periodoEscolar }, function (data) {
-        if (data != 'true') {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000
-          });
+      let lapso_academico = $('#lapso_academico')[0].value;
+      if (lapso_academico != '') {
+        $.post('../controladores/lapso-academico.php?op=verificarfechainicio', {fecha_inicio: fecha.value, lapso_academico: lapso_academico, periodo_escolar: periodo_escolar}, function (data) {
 
-          Toast.fire({
-            type: 'error',
-            title: 'La fecha de inicio de éste periodo choca con la fecha de fin del período anterior'
-          });
+          if (data != 'true') {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+  
+            Toast.fire({
+              type: 'error',
+              title: 'La fecha de inicio de éste lapso choca con la fecha de fin del lapso anterior'
+            });
+  
+            $('#fecha_inicio').val('');
+          }
+        }); 
+      }
+      else {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
 
-          $('#fecha_inicio').val('');
-        }
-      });
+        Toast.fire({
+          type: 'error',
+          title: 'Primero seleccione un lapso'
+        });
+        $('#fecha_inicio').val('');
+      }
     }
   }
   return;
@@ -82,73 +126,85 @@ function verificarFechaInicio(fecha) {
 
 function verificarFechaFin(fecha) {
   if (fecha.value != '') {
-    let periodoEscolar = $('#periodo')[0].value;
-    let periodoEscolarArreglo = periodoEscolar.split('-');
+    
+    let periodo_escolar = $('option:selected', $('#periodo_escolar')).attr('periodo');
+    let periodoEscolarArreglo = periodo_escolar.split('-');
+    let inicioPeriodo = Number(periodoEscolarArreglo[0]);
     let finPeriodo = Number(periodoEscolarArreglo[1]);
-    let fechaFin = fecha.value.split('-');
-    fechaFin = Number(fechaFin[0]);
-
-    if (fechaFin != finPeriodo) {
+    let fechaInicio = fecha.value.split('-');
+    fechaInicio = Number(fechaInicio[0]);
+    
+    if (fechaInicio < inicioPeriodo || fechaInicio > finPeriodo) {
       const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
         timer: 3000
       });
-
+      
       Toast.fire({
         type: 'error',
-        title: 'El año del período escolar y la fecha de fin deben ser iguales'
+        title: 'La fecha del período escolar y la del lapso deben coincidir'
       });
       $('#fecha_fin').val('');
     }
     else {
-      $.post('../controladores/periodo-escolar.php?op=verificarfechafin', { fecha_fin: fecha.value, periodo: periodoEscolar }, function (data) {
+      let lapso_academico = $('#lapso_academico')[0].value;
+      if (lapso_academico != '') {
+        $.post('../controladores/lapso-academico.php?op=verificarfechafin', {fecha_fin: fecha.value, lapso_academico: lapso_academico, periodo_escolar: periodo_escolar}, function (data) {
+          if (data != 'true') {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+  
+            Toast.fire({
+              type: 'error',
+              title: 'La fecha de fin de éste lapso choca con la fecha de inicio del lapso siguiente'
+            });
+  
+            $('#fecha_fin').val('');
+          }
+        }); 
+      }
+      else {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
 
-        if (data != 'true') {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000
-          });
-
-          Toast.fire({
-            type: 'error',
-            title: 'La fecha de fin de éste periodo choca con la fecha de inicio del período siguiente'
-          });
-
-          $('#fecha_fin').val('');
-        }
-      });
+        Toast.fire({
+          type: 'error',
+          title: 'Primero seleccione un lapso'
+        });
+        $('#fecha_fin').val('');
+      }
     }
   }
   return;
 }
 
-//Crea el siguiente periodo según el último registrado en la base de datos
-function periodo() {
-  $.post('../controladores/periodo-escolar.php?op=traerultimo', function (data) {
-    let datos = JSON.parse(data);
-    let nuevoPeriodo = '';
 
-    if (datos != null) {
-      let periodo = datos.periodo;
-      periodo = periodo.split('-');
-      let segundaFecha = Number(periodo[1]) + 1;
-      nuevoPeriodo = periodo[1] + '-' + segundaFecha;
-      $('#periodo').html('<option value="' + nuevoPeriodo + '">' + nuevoPeriodo + '</option>');
-      $('#periodo').selectpicker('refresh');
+//Trae los lapsos registrados en el maestro de lapso
+function traerLapsos() {
+  $.post('../controladores/lapso-academico.php?op=traerlapsos', function (data) {
+    data = JSON.parse(data);
+    let lapsos = '';
+    if (data.length != 0) {
+      data.forEach(function (indice) {
+        lapsos += '<option value="' + indice.lapso + '">' + indice.lapso + 'º Lapso</option>';
+      });
     }
     else {
-      let fechaActual = new Date();
-      fechaActual = fechaActual.getFullYear();
-      nuevoPeriodo = fechaActual + '-' + Number(fechaActual + 1);
-      $('#periodo').html('<option value="' + nuevoPeriodo + '">' + nuevoPeriodo + '</option>');
-      nuevoPeriodo = Number(fechaActual + 1) + '-' + Number(fechaActual + 2);
-      $('#periodo').append('<option value="' + nuevoPeriodo + '">' + nuevoPeriodo + '</option>');
-      $('#periodo').selectpicker('refresh');
+      lapsos = '<option value="">Debe ingresar lapsos en configuración</option>';
     }
+    $('#lapso_academico').html('<option value="">Seleccione</option>');
+    $('#lapso_academico').append(lapsos);
+    $('#lapso_academico').selectpicker('refresh');
 
   });
 }
@@ -158,10 +214,10 @@ function guardaryeditar(event) {
   event.preventDefault(); //Evita que se envíe el formulario automaticamente
   // 
   $('#btnGuardar').prop('disabled', true);
-  var formData = new FormData($([formularioPeriodo])[0]); //Se obtienen los datos del formulario
+  var formData = new FormData($([formularioLapso])[0]); //Se obtienen los datos del formulario
 
   $.ajax({
-    url: '../controladores/periodo-escolar.php?op=guardaryeditar', //Dirección a donde se envían los datos
+    url: '../controladores/lapso-academico.php?op=guardaryeditar', //Dirección a donde se envían los datos
     type: 'POST', //Método por el cual se envían los datos
     data: formData, //Datos
     contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
@@ -179,7 +235,7 @@ function guardaryeditar(event) {
 
         Toast.fire({
           type: 'success',
-          title: 'Período escolar registrado exitosamente :)'
+          title: 'Lapso académico registrado exitosamente :)'
         });
       }
       else if (datos == 'update') {
@@ -192,7 +248,7 @@ function guardaryeditar(event) {
 
         Toast.fire({
           type: 'success',
-          title: 'Período escolar actualizado exitosamente :)'
+          title: 'Lapso académico actualizado exitosamente :)'
         });
       }
       else {
@@ -210,7 +266,7 @@ function guardaryeditar(event) {
       }
       limpiar();
       tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
-      $('#periodoModal').modal('hide');
+      $('#lapsoModal').modal('hide');
     }
   });
 }
@@ -236,30 +292,33 @@ function listar() {
     dom: 'lfrtip',
     "destroy": true, //Elimina cualquier elemente que se encuentre en la tabla
     "ajax": {
-      url: '../controladores/periodo-escolar.php?op=listar',
+      url: '../controladores/lapso-academico.php?op=listar',
       type: 'GET',
       dataType: 'json'
     },
-    'order': [[0, 'desc']]
+    'order': [[1, 'asc']]
   });
 }
 
 //Función para mostrar un registro para editar
-function mostrar(idperiodo) {
-  $.post('../controladores/periodo-escolar.php?op=mostrar', { idperiodo: idperiodo }, function (data) {
+function mostrar(idlapsoacademico) {
+  $.post('../controladores/lapso-academico.php?op=mostrar', { idlapsoacademico: idlapsoacademico }, function (data) {
     data = JSON.parse(data);
-    $('#periodo').html('<option value="' + data.periodo + '">' + data.periodo + '</option>');
-    $('#periodo').selectpicker('refresh');
-    $('#fecha_inicio').val(data.fecha_creacion);
-    $('#fecha_fin').val(data.fecha_finalizacion);
+    $('#tituloModal').html('Modificar lapso académico');
+    $('#periodo_escolar').html('<option value="' + data.id + '" periodo="'+data.periodo+'"  selected>' + data.periodo + '</option>');
+    $('#periodo_escolar').selectpicker('refresh');
+    $('#lapso_academico').html('<option value="' + data.lapso+ '" selected>' + data.lapso + '</option>');
+    $('#lapso_academico').selectpicker('refresh');
+    $('#fecha_inicio').val(data.fecha_inicio);
+    $('#fecha_fin').val(data.fecha_fin);
     $('#estatus').html('<option value="' + data.estatus + '">' + data.estatus + '</option>');
     $('#estatus').selectpicker('refresh');
-    $('#idperiodo').val(data.id);
+    $('#idlapsoacademico').val(data.id);
   });
 }
 
-//Función para activar el período escolar
-function activar(idperiodo) {
+//Función para activar el lapso académico
+function activar(idlapsoacademico) {
 
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -271,7 +330,7 @@ function activar(idperiodo) {
 
   swalWithBootstrapButtons.fire({
     title: '¿Estas seguro?',
-    text: "¡Ésta acción activará un nuevo período escolar!",
+    text: "¡Ésta acción activará un nuevo lapso!",
     type: 'warning',
     showCancelButton: true,
     confirmButtonText: 'Activar',
@@ -279,7 +338,7 @@ function activar(idperiodo) {
     reverseButtons: true
   }).then((result) => {
     if (result.value) {
-      $.post('../controladores/periodo-escolar.php?op=activar', { idperiodo: idperiodo }, function (e) {
+      $.post('../controladores/lapso-academico.php?op=activar', { idlapsoacademico: idlapsoacademico }, function (e) {
 
         if (e == 'true') {
           const Toast = Swal.mixin({
@@ -291,7 +350,7 @@ function activar(idperiodo) {
 
           Toast.fire({
             type: 'success',
-            title: 'Período escolar activado :)'
+            title: 'Lapso activado :)'
           });
         }
         else {
@@ -304,7 +363,7 @@ function activar(idperiodo) {
 
           Toast.fire({
             type: 'error',
-            title: 'Ups! No se pudo activar el periodo escolar'
+            title: 'Ups! No se pudo activar el lapso'
           });
         }
         tabla.ajax.reload();
@@ -313,8 +372,8 @@ function activar(idperiodo) {
   });
 }
 
-//Función para finalizar el período escolar
-function finalizar(idperiodo) {
+//Función para finalizar el lapso académico
+function finalizar(idlapsoacademico) {
 
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -326,7 +385,7 @@ function finalizar(idperiodo) {
 
   swalWithBootstrapButtons.fire({
     title: '¿Estas seguro?',
-    text: "¡Finalizar el período escolar cerrará toda la planificación del año en curso!",
+    text: "¡Finalizar el lapso académico cerrará todos los indicadores de éste lapso!",
     type: 'warning',
     showCancelButton: true,
     confirmButtonText: 'Finalizar',
@@ -334,7 +393,7 @@ function finalizar(idperiodo) {
     reverseButtons: true
   }).then((result) => {
     if (result.value) {
-      $.post('../controladores/periodo-escolar.php?op=finalizar', { idperiodo: idperiodo }, function (e) {
+      $.post('../controladores/lapso-academico.php?op=finalizar', { idlapsoacademico: idlapsoacademico }, function (e) {
 
         if (e == 'true') {
           const Toast = Swal.mixin({
@@ -346,7 +405,7 @@ function finalizar(idperiodo) {
 
           Toast.fire({
             type: 'success',
-            title: 'Período escolar finalizado :)'
+            title: 'Lapso académico finalizado :)'
           });
         }
         else {
@@ -359,7 +418,7 @@ function finalizar(idperiodo) {
 
           Toast.fire({
             type: 'error',
-            title: 'Ups! No se pudo finalizar el periodo escolar'
+            title: 'Ups! No se pudo finalizar el lapso académico'
           });
         }
         tabla.ajax.reload();
@@ -371,12 +430,10 @@ function finalizar(idperiodo) {
 //Función para limpiar el formulario
 function limpiar() {
   $("#formularioregistros")[0].reset();
-  $('#fecha_inicio').val('');
-  $('#fecha_fin').val('');
-  $('#estatus').html('<option value="">Seleccione</option>');
-  $('#estatus').append('<option value="Planificado">Planificado</option>');
+  $('#periodo_escolar').selectpicker('refresh');
+  $('#lapso').selectpicker('refresh');
   $('#estatus').selectpicker('refresh');
-  $('#idperiodo').val('');
+  $('#idlapsoacademico').val('');
   $('#formularioregistros').removeClass('was-validated');
 }
 

@@ -145,7 +145,7 @@ function listar() {
       type: 'GET',
       dataType: 'json'
     },
-    'order': [[0, 'desc']]
+    'order': [[1, 'desc']]
   });
 }
 
