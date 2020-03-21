@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-03-2020 a las 04:01:36
+-- Tiempo de generación: 21-03-2020 a las 04:34:40
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -596,6 +596,20 @@ INSERT INTO `grado` (`id`, `grado`, `estatus`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `indicador`
+--
+
+CREATE TABLE `indicador` (
+  `id` int(11) NOT NULL,
+  `idplanificacion` int(11) NOT NULL,
+  `idlapso_academico` int(11) NOT NULL,
+  `idmateria` int(11) NOT NULL,
+  `indicador` char(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `inscripcion`
 --
 
@@ -679,6 +693,30 @@ INSERT INTO `lapso` (`id`, `lapso`, `estatus`) VALUES
 (9, 1, 1),
 (10, 2, 1),
 (11, 3, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `lapso_academico`
+--
+
+CREATE TABLE `lapso_academico` (
+  `id` int(11) NOT NULL,
+  `idperiodo_escolar` int(11) NOT NULL,
+  `lapso` char(1) NOT NULL,
+  `fecha_inicio` date NOT NULL,
+  `fecha_fin` date NOT NULL,
+  `estatus` char(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `lapso_academico`
+--
+
+INSERT INTO `lapso_academico` (`id`, `idperiodo_escolar`, `lapso`, `fecha_inicio`, `fecha_fin`, `estatus`) VALUES
+(4, 45, '1', '2021-08-25', '2021-12-10', 'Planificado'),
+(5, 45, '2', '2021-12-11', '2022-03-30', 'Planificado'),
+(7, 45, '3', '2022-04-01', '2022-06-30', 'Planificado');
 
 -- --------------------------------------------------------
 
@@ -3130,7 +3168,8 @@ CREATE TABLE `pic` (
 --
 
 INSERT INTO `pic` (`id`, `idperiodo_escolar`, `pic`, `estatus`) VALUES
-(11, 45, 'El reciclaje', 'Activo');
+(11, 45, 'El reciclaje', 'Activo'),
+(12, 46, 'Manos a la siembra', 'Planificado');
 
 -- --------------------------------------------------------
 
@@ -3160,6 +3199,30 @@ INSERT INTO `planificacion` (`id`, `idperiodo_escolar`, `idgrado`, `idseccion`, 
 (46, 45, 2, 2, 11, 14, 30, 29, 'Activo'),
 (50, 47, 1, 2, 8, 1, 30, 30, 'Planificado'),
 (56, 45, 3, 2, 9, 13, 30, 30, 'Activo');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `proyecto_aprendizaje`
+--
+
+CREATE TABLE `proyecto_aprendizaje` (
+  `id` int(11) NOT NULL,
+  `idplanificacion` int(11) NOT NULL,
+  `lapso_academico` char(1) NOT NULL,
+  `proyecto_aprendizaje` char(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `proyecto_aprendizaje`
+--
+
+INSERT INTO `proyecto_aprendizaje` (`id`, `idplanificacion`, `lapso_academico`, `proyecto_aprendizaje`) VALUES
+(1, 40, '1', 'El reciclaje socioproductivo integrador comunitario 3D'),
+(3, 40, '2', 'Manos a la tierra'),
+(5, 40, '3', 'Recreo'),
+(12, 46, '1', 'Recreo'),
+(13, 46, '2', 'Manos a la tierra');
 
 -- --------------------------------------------------------
 
@@ -3450,6 +3513,15 @@ ALTER TABLE `grado`
   ADD UNIQUE KEY `grado` (`grado`);
 
 --
+-- Indices de la tabla `indicador`
+--
+ALTER TABLE `indicador`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idplanificacion` (`idplanificacion`),
+  ADD KEY `idlapso_academico` (`idlapso_academico`),
+  ADD KEY `idmateria` (`idmateria`);
+
+--
 -- Indices de la tabla `inscripcion`
 --
 ALTER TABLE `inscripcion`
@@ -3473,6 +3545,13 @@ ALTER TABLE `institucion`
 --
 ALTER TABLE `lapso`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `lapso_academico`
+--
+ALTER TABLE `lapso_academico`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idperiodo_escolar` (`idperiodo_escolar`);
 
 --
 -- Indices de la tabla `lugar_nacimiento`
@@ -3560,6 +3639,13 @@ ALTER TABLE `planificacion`
   ADD KEY `idgrado_grado` (`idgrado`),
   ADD KEY `idseccion_seccion` (`idseccion`),
   ADD KEY `iddocente_personal` (`iddocente`);
+
+--
+-- Indices de la tabla `proyecto_aprendizaje`
+--
+ALTER TABLE `proyecto_aprendizaje`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idplanificacion` (`idplanificacion`);
 
 --
 -- Indices de la tabla `p_seguridad`
@@ -3696,6 +3782,12 @@ ALTER TABLE `grado`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT de la tabla `indicador`
+--
+ALTER TABLE `indicador`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `inscripcion`
 --
 ALTER TABLE `inscripcion`
@@ -3712,6 +3804,12 @@ ALTER TABLE `institucion`
 --
 ALTER TABLE `lapso`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT de la tabla `lapso_academico`
+--
+ALTER TABLE `lapso_academico`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `lugar_nacimiento`
@@ -3747,7 +3845,7 @@ ALTER TABLE `parroquia`
 -- AUTO_INCREMENT de la tabla `periodo_escolar`
 --
 ALTER TABLE `periodo_escolar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `permiso`
@@ -3777,13 +3875,19 @@ ALTER TABLE `personal_directivo`
 -- AUTO_INCREMENT de la tabla `pic`
 --
 ALTER TABLE `pic`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `planificacion`
 --
 ALTER TABLE `planificacion`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+
+--
+-- AUTO_INCREMENT de la tabla `proyecto_aprendizaje`
+--
+ALTER TABLE `proyecto_aprendizaje`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `p_seguridad`
@@ -3919,6 +4023,12 @@ ALTER TABLE `institucion`
   ADD CONSTRAINT `idparroquia_parroquia` FOREIGN KEY (`idparroquia`) REFERENCES `parroquia` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `lapso_academico`
+--
+ALTER TABLE `lapso_academico`
+  ADD CONSTRAINT `lapso_academico_ibfk_1` FOREIGN KEY (`idperiodo_escolar`) REFERENCES `periodo_escolar` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `lugar_nacimiento`
 --
 ALTER TABLE `lugar_nacimiento`
@@ -3965,6 +4075,12 @@ ALTER TABLE `planificacion`
   ADD CONSTRAINT `idgrado_grado` FOREIGN KEY (`idgrado`) REFERENCES `grado` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `idperiodo_escolar_periodo_escolar` FOREIGN KEY (`idperiodo_escolar`) REFERENCES `periodo_escolar` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `idseccion_seccion` FOREIGN KEY (`idseccion`) REFERENCES `seccion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `proyecto_aprendizaje`
+--
+ALTER TABLE `proyecto_aprendizaje`
+  ADD CONSTRAINT `proyecto_aprendizaje_ibfk_1` FOREIGN KEY (`idplanificacion`) REFERENCES `planificacion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `representante`
