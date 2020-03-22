@@ -15,30 +15,47 @@ class GestionarIndicador
 		
 	}
 
-	#Método para insertar registros
+	#Método para insertar proyecto de aprendizaje
 	function insertar_proyecto_aprendizaje($idplanificacion, $lapso, $proyecto_aprendizaje)
 	{
     $sql = "INSERT INTO proyecto_aprendizaje (idplanificacion, lapso_academico, proyecto_aprendizaje) VALUES('$idplanificacion', '$lapso', '$proyecto_aprendizaje')";
     
 		return ejecutarConsulta($sql);
+  }
+  
+	#Método para insertar indicador
+	function insertar_indicador($idplanificacion_indicador, $idmateria_indicador, $lapso_indicador,  $indicador)
+	{
+    $sql = "INSERT INTO indicador (idplanificacion, idmateria, lapso_academico, indicador) VALUES('$idplanificacion_indicador', '$idmateria_indicador', '$lapso_indicador', '$indicador')";
+    
+		return ejecutarConsulta($sql);
 	}
 
 	#Método para editar registros
-	function editar($id, $idgrado, $idseccion, $idambiente, $iddocente, $cupo, $cupo_disponible)
+	function editar($idindicador, $idplanificacion_indicador, $idmateria_indicador, $lapso_indicador, $indicador)
 	{
-		$sql = "UPDATE planificacion SET idgrado = '$idgrado', idseccion = '$idseccion', idambiente = '$idambiente', iddocente = '$iddocente', cupo = '$cupo', cupo_disponible = '$cupo_disponible' WHERE id = '$id'";
+		$sql = "UPDATE indicador SET indicador = '$indicador' WHERE id = '$idindicador'";
+
+		return ejecutarConsulta($sql);
+
+  }
+  
+  #Método para editar registros
+	function editar_proyecto_aprendizaje($idproyecto_aprendizaje, $proyecto_aprendizaje)
+	{
+		$sql = "UPDATE proyecto_aprendizaje SET proyecto_aprendizaje = '$proyecto_aprendizaje' WHERE id = '$idproyecto_aprendizaje'";
 
 		return ejecutarConsulta($sql);
 
 	}
 
 	#Método para listar 
-	function listar($idperiodo)
+	function listar($idplanificaciones, $lapsos)
 	{
-    if ($idperiodo == 'null') 
-      $sql = "SELECT p.*, pe.periodo, g.grado, s.seccion, a.ambiente, per.idpersona, persona.p_nombre, persona.p_apellido FROM planificacion p INNER JOIN periodo_escolar pe ON p.idperiodo_escolar = pe.id INNER JOIN grado g ON p.idgrado = g.id INNER JOIN seccion s ON s.id = p.idseccion INNER JOIN ambiente a ON a.id = p.idambiente INNER JOIN personal per ON per.id = p.iddocente INNER JOIN persona persona ON persona.id = per.idpersona WHERE p.estatus = 'Activo' ORDER BY g.grado, s.seccion";
+    if (!empty($lapsos)) 
+      $sql = "SELECT ind.*, ma.materia FROM indicador ind INNER JOIN materia ma ON ind.idmateria = ma.id WHERE ind.idplanificacion = '$idplanificaciones' AND ind.lapso_academico = '$lapsos' ORDER BY lapso_academico, ma.materia ASC";
     else 
-      $sql = "SELECT p.*, pe.periodo, g.grado, s.seccion, a.ambiente, per.idpersona, persona.p_nombre, persona.p_apellido FROM planificacion p INNER JOIN periodo_escolar pe ON p.idperiodo_escolar = pe.id INNER JOIN grado g ON p.idgrado = g.id INNER JOIN seccion s ON s.id = p.idseccion INNER JOIN ambiente a ON a.id = p.idambiente INNER JOIN personal per ON per.id = p.iddocente INNER JOIN persona persona ON persona.id = per.idpersona WHERE p.idperiodo_escolar = '$idperiodo' ORDER BY g.grado, s.seccion";
+      $sql = "SELECT ind.*, ma.materia FROM indicador ind INNER JOIN materia ma ON ind.idmateria = ma.id WHERE ind.idplanificacion = '$idplanificaciones' ORDER BY lapso_academico ASC";
 
 		return ejecutarConsulta($sql);
   }
@@ -51,19 +68,22 @@ class GestionarIndicador
 		return ejecutarConsulta($sql);
 	}
 
-	#Método para mostrar una planificación
-	function mostrar($idplanificacion)
+	#Método para mostrar un indicador
+	function mostrar($idindicador)
 	{
-		$sql = "SELECT p.*, g.grado, s.seccion, a.ambiente, pe.p_nombre, pe.p_apellido, per_es.periodo FROM planificacion p  INNER JOIN periodo_escolar per_es ON p.idperiodo_escolar = per_es.id INNER JOIN grado g ON p.idgrado = g.id INNER JOIN seccion s ON p.idseccion = s.id INNER JOIN ambiente a ON p.idambiente = a.id INNER JOIN personal per ON p.iddocente = per.id INNER JOIN persona pe ON per.idpersona = pe.id WHERE p.id = '$idplanificacion'";
+		$sql = "SELECT ind.*, g.grado, s.seccion, ma.materia, pe.p_nombre, pe.p_apellido FROM indicador ind  INNER JOIN planificacion pla ON ind.idplanificacion = pla.id INNER JOIN grado g ON pla.idgrado = g.id INNER JOIN seccion s ON pla.idseccion = s.id INNER JOIN materia ma ON ind.idmateria = ma.id INNER JOIN personal per ON pla.iddocente = per.id INNER JOIN persona pe ON per.idpersona = pe.id WHERE ind.id = '$idindicador'";
+
+		return ejecutarConsultaSimpleFila($sql);
+  }
+  
+  #Método para mostrar un proyecto de aprendizaje
+	function mostrarproyectoaprendizaje($idproyecto_aprendizaje)
+	{
+		$sql = "SELECT pa.*, g.grado, s.seccion, pe.p_nombre, pe.p_apellido FROM proyecto_aprendizaje pa  INNER JOIN planificacion pla ON pa.idplanificacion = pla.id INNER JOIN grado g ON pla.idgrado = g.id INNER JOIN seccion s ON pla.idseccion = s.id INNER JOIN personal per ON pla.iddocente = per.id INNER JOIN persona pe ON per.idpersona = pe.id WHERE pa.id = '$idproyecto_aprendizaje'";
 
 		return ejecutarConsultaSimpleFila($sql);
 	}
 
-	function seleccionar_inscripciones_por_idplanificacion($idplanificacion)
-  {
-    $sql = "SELECT id, idplanificacion FROM inscripcion WHERE idplanificacion = '$idplanificacion'";
-		return ejecutarConsulta($sql);
-  }
 
 	function seleccionar_lapsos_finalizados($idperiodo_escolar)
   {
@@ -71,70 +91,10 @@ class GestionarIndicador
 		return ejecutarConsulta($sql);
   }
 
-	#Método para eliminar planificación
-	function eliminar($idplanificacion)
+	#Método para eliminar un indicador
+	function eliminar($idindicador)
 	{
-		$sql = "DELETE FROM planificacion WHERE id = $idplanificacion";
-
-		return ejecutarConsulta($sql);
-
-	}
-
-	#Método para traer los grados que estén disponibles
-	function traergrados()
-	{
-		$sql = "SELECT * FROM grado WHERE estatus = 1";
-		return ejecutarConsulta($sql);
-	}
-
-	#Método para traer las secciones que estén disponibles
-	function traersecciones($idgrado, $idplanificacion, $idperiodo_escolar)
-	{
-		if ($idplanificacion != NULL) {
-			$sql = "SELECT s.* FROM seccion s WHERE s.estatus = 1 AND s.id NOT IN(SELECT idseccion FROM planificacion WHERE idgrado = '$idgrado' AND id != '$idplanificacion' AND idperiodo_escolar = '$idperiodo_escolar') ORDER BY s.seccion";
-		}
-		else {
-			$sql = "SELECT s.* FROM seccion s WHERE s.estatus = 1 AND s.id NOT IN(SELECT idseccion FROM planificacion WHERE idgrado = '$idgrado' AND idperiodo_escolar = '$idperiodo_escolar') ORDER BY s.seccion";
-		}
-
-		return ejecutarConsulta($sql);
-	}
-
-	#Método para traer los ambientes que estén disponibles
-	function traerambientes($idambiente, $idperiodo_escolar)
-	{
-		if ($idambiente != NULL) {
-      if (empty($idperiodo_escolar)) 
-        $sql = "SELECT a.* FROM ambiente a WHERE a.estatus = 1 AND a.id NOT IN(SELECT idambiente FROM planificacion WHERE idambiente != $idambiente AND estatus = 'Activo') ORDER BY a.ambiente";
-      else
-			  $sql = "SELECT a.* FROM ambiente a WHERE a.estatus = 1 AND a.id NOT IN(SELECT idambiente FROM planificacion WHERE idambiente != $idambiente AND idperiodo_escolar = '$idperiodo_escolar') ORDER BY a.ambiente";
-		}
-		else {	
-      if (empty($idperiodo_escolar)) 
-        $sql = "SELECT a.* FROM ambiente a WHERE a.estatus = 1 AND a.id NOT IN(SELECT idambiente FROM planificacion WHERE estatus = 'Activo') ORDER BY a.ambiente";
-      else
-        $sql = "SELECT a.* FROM ambiente a WHERE a.estatus = 1 AND a.id NOT IN(SELECT idambiente FROM planificacion WHERE idperiodo_escolar = '$idperiodo_escolar') ORDER BY a.ambiente";
-		}
-
-		return ejecutarConsulta($sql);
-	}
-
-	#Método para traer los docentes
-	function traerdocentes($iddocente, $idperiodo_escolar)
-	{
-		if ($iddocente != NULL) {
-      if (empty($idperiodo_escolar)) 
-        $sql = "SELECT DISTINCT per.id, p.p_nombre, p.p_apellido FROM persona p INNER JOIN personal per ON p.id = per.idpersona WHERE per.cargo LIKE '%Docente%' AND per.estatus = 1 AND per.id NOT IN (SELECT iddocente FROM planificacion WHERE iddocente != $iddocente AND estatus = 'Activo')";
-      else {
-        $sql = "SELECT DISTINCT per.id, p.p_nombre, p.p_apellido FROM persona p INNER JOIN personal per ON p.id = per.idpersona WHERE per.cargo LIKE '%Docente%' AND per.estatus = 1 AND per.id NOT IN (SELECT iddocente FROM planificacion WHERE iddocente != $iddocente AND idperiodo_escolar = '$idperiodo_escolar')";
-      }
-		}
-		else{	
-      if (empty($idperiodo_escolar)) 
-        $sql = "SELECT DISTINCT per.id, p.p_nombre, p.p_apellido FROM persona p INNER JOIN personal per ON p.id = per.idpersona WHERE per.cargo LIKE '%Docente%' AND per.estatus = 1 AND per.id NOT IN (SELECT iddocente FROM planificacion WHERE estatus = 'Activo')";
-      else
-			  $sql = "SELECT DISTINCT per.id, p.p_nombre, p.p_apellido FROM persona p INNER JOIN personal per ON p.id = per.idpersona WHERE per.cargo LIKE '%Docente%' AND per.estatus = 1 AND per.id NOT IN (SELECT iddocente FROM planificacion WHERE idperiodo_escolar = '$idperiodo_escolar')";
-		}
+		$sql = "DELETE FROM indicador WHERE id = $idindicador";
 
 		return ejecutarConsulta($sql);
 	}
@@ -146,25 +106,6 @@ class GestionarIndicador
 		return ejecutarConsultaSimpleFila($sql);
 	}
 
-	#Método para consultar los cupos de una planificación
-	function verificarcupo($idplanificacion, $tipo)
-	{
-		$sql = "SELECT $tipo FROM planificacion WHERE id = '$idplanificacion'";
-		return ejecutarConsultaSimpleFila($sql);
-  }
-  
-  function traer_periodos_escolares()
-  {
-		$sql = "SELECT * FROM periodo_escolar ORDER BY id DESC";
-		return ejecutarConsulta($sql);
-  }
-
-  function traer_periodos_activo_planificados()
-  {
-		$sql = "SELECT * FROM periodo_escolar WHERE estatus = 'Activo' OR estatus = 'Planificado'";
-		return ejecutarConsulta($sql);
-  }
-
   #Método para mostrar las planificaciones activas
   public function traerplanificaciones()
   {
@@ -172,11 +113,35 @@ class GestionarIndicador
       return ejecutarConsulta($sql);
   }
 
-  #Método para mostrar los lapsos activos y que no tengan ya un proyecto en la planificacion
+  #Método para mostrar las materias activas
+  public function traermaterias()
+  {
+      $sql = "SELECT * FROM materia WHERE estatus = 1";
+      return ejecutarConsulta($sql);
+  }
+
+  #Método para mostrar los lapsos activos y que no tengan ya un proyecto en la planificacion si idplanificación no está vacío
   public function traerlapsos($idperiodo_escolar, $idplanificacion)
   {
+    if (!empty($idplanificacion)) 
       $sql = "SELECT * FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo_escolar' AND estatus != 'Finalizado' AND lapso NOT IN (SELECT lapso_academico FROM proyecto_aprendizaje WHERE idplanificacion = '$idplanificacion') ORDER BY lapso ASC";
-      return ejecutarConsulta($sql);
+    else 
+      $sql = "SELECT * FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo_escolar' AND estatus != 'Finalizado' ORDER BY lapso ASC";
+    
+    return ejecutarConsulta($sql);
+  }
+
+  #Método para mostrar los lapsos para el select que actualiza la tabla
+  public function traerlapsosgeneral($idperiodo_escolar)
+  {
+    $sql = "SELECT * FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo_escolar' ORDER BY lapso ASC";
+    return ejecutarConsulta($sql);
+  }
+
+  function comprobar_proyecto_aprendizaje($idplanificacion_indicador, $lapso_indicador)
+  {
+    $sql = "SELECT proyecto_aprendizaje FROM proyecto_aprendizaje WHERE idplanificacion = '$idplanificacion_indicador' AND lapso_academico =  '$lapso_indicador'";
+    return ejecutarConsultaSimpleFila($sql);
   }
 	
 }

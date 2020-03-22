@@ -31,7 +31,7 @@ if (!isset($_SESSION['usuario'])) {
 
                 <!-- Botón para mostrar modal proyecto aprendizaje -->
                 <h1 class="font-weight-normal h5 pl-3">Proyecto aprendizaje
-                  <button class="btn btn-outline-danger btn-pill shadow-sm" data-toggle="modal" data-target="#proyectoAprendizajeModal" id="btnAgregarProyectoAprendizaje">
+                  <button class="btn btn-outline-warning btn-pill shadow-sm" data-toggle="modal" data-target="#proyectoAprendizajeModal" id="btnAgregarProyectoAprendizaje">
                     <i class="fa fa-plus-circle"></i> Agregar
                   </button>
                 </h1>
@@ -39,7 +39,7 @@ if (!isset($_SESSION['usuario'])) {
               
               <div class="d-flex justify-content-end col-md-4">
                 <p class="h5 font-weight-normal mt-1 mr-0">Planificación</p>
-                <select name="periodos" id="periodos" class="form-control selectpicker col-8">
+                <select name="planificaciones" id="planificaciones" class="form-control selectpicker col-8">
 
                 </select>
               
@@ -65,13 +65,9 @@ if (!isset($_SESSION['usuario'])) {
                   <thead class="fondo-degradado text-white">
                     <tr>
                       <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Opciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                      <th scope="col">Grado</th>
-                      <th scope="col">Sección</th>
-                      <th scope="col">Ambiente</th>
-                      <th scope="col">Docente</th>
-                      <th scope="col">Cupo</th>
-                      <th scope="col">Período Escolar</th>
-                      <th scope="col">Estatus</th>
+                      <th scope="col">Lapso</th>
+                      <th scope="col">Materia</th>
+                      <th scope="col">Indicador</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -82,16 +78,16 @@ if (!isset($_SESSION['usuario'])) {
             </div>
           </div>
 
-          <!-- Modal para crear planificación -->
+          <!-- Modal para crear indicador -->
           <div class="modal fade" id="gestionarIndicadoresModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog rounded modal-xl" role="document">
               <div class="modal-content">
 
-                <form class="needs-validation" novalidate name="formularioPlanificacion" id="formularioregistros">
-                  <!-- Formulario de planificación -->
+                <form class="needs-validation" novalidate name="formularioGestionarIndicador" id="formularioGestionarIndicador">
+                  <!-- Formulario de indicador -->
 
                   <div class="modal-header fondo-degradado rounded">
-                    <h5 class="modal-title text-white" id="tituloModal">Crear planificación</h5>
+                    <h5 class="modal-title text-white" id="tituloModalIndicador">Crear indicador para proyecto: </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -100,11 +96,13 @@ if (!isset($_SESSION['usuario'])) {
                   <div class="modal-body">
 
                     <div class="row">
+                      <!-- guarda el id del indicador cuando es necesario -->
+                      <input type="hidden" value="" id="idindicador" name="idindicador">
                       
-                      <div class="form-group col-md-2">
-                        <label for="periodo_escolar">Período escolar (*)</label>
+                      <div class="form-group col-md-3">
+                        <label for="planificacion_indicador">Planificación (*)</label>
                         <div class="input-group ">
-                          <select name="idperiodo_escolar" id="periodo_escolar" class="form-control selectpicker" required="true">
+                          <select name="idplanificacion_indicador" id="planificacion_indicador" class="form-control selectpicker" required="true">
 
                           </select>
                           <div class="invalid-feedback">
@@ -113,14 +111,11 @@ if (!isset($_SESSION['usuario'])) {
                         </div>
                       </div>
 
-                      <!-- guarda el id de la planificación cuando es necesario -->
-                      <input type="hidden" value="" id="idplanificacion" name="idplanificacion">
                       <div class="form-group col-md-2">
-                        <label for="grado">Grado (*)</label>
+                        <label for="lapso_indicador">Lapso (*)</label>
                         <div class="input-group ">
-                          <select name="idgrado" id="grado" class="form-control selectpicker" required="true">
+                          <select name="lapso_indicador" id="lapso_indicador" class="form-control selectpicker" required="true" disabled>
                             <option value="">Seleccione</option>
-
                           </select>
                           <div class="invalid-feedback">
                             Campo Obligatorio
@@ -129,11 +124,10 @@ if (!isset($_SESSION['usuario'])) {
                       </div>
 
                       <div class="form-group col-md-2">
-                        <label for="seccion">Sección (*)</label>
+                        <label for="materia_indicador">Materia (*)</label>
                         <div class="input-group ">
-                          <select name="idseccion" id="seccion" class="form-control selectpicker" required="true" disabled>
+                          <select name="idmateria_indicador" id="materia_indicador" class="form-control selectpicker" required="true">
                             <option value="">Seleccione</option>
-
                           </select>
                           <div class="invalid-feedback">
                             Campo Obligatorio
@@ -141,43 +135,18 @@ if (!isset($_SESSION['usuario'])) {
                         </div>
                       </div>
 
-                      <div class="form-group col-md-2">
-                        <label for="ambiente">Ambiente (*)</label>
-                        <div class="input-group ">
-                          <select name="idambiente" id="ambiente" class="form-control selectpicker" required="true">
-                            <option value="">Seleccione</option>
-
-                          </select>
-                          <div class="invalid-feedback">
-                            Campo Obligatorio
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="form-group col-md-2">
-                        <label for="docente">Docente (*)</label>
-                        <div class="input-group ">
-                          <select name="iddocente" id="docente" class="form-control selectpicker " required="true" data-live-search="true">
-                            <option value="">Seleccione</option>
-
-                          </select>
-                          <div class="invalid-feedback">
-                            Campo Obligatorio
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="form-group col-md-2">
-                        <label for="cupo">Cupo (*)</label>
+                      <div class="form-group col-md-5">
+                        <label for="indicador">Indicador (*)</label>
                         <div class="input-group">
 
-                          <input type="text" class="form-control solo_numeros" placeholder="Ej: 30" name="cupo" id="cupo" maxlength="2" required>
+                          <input type="text" class="form-control" name="indicador" id="indicador" required>
 
                           <div class="invalid-feedback">
                             Campo Obligatorio
                           </div>
                         </div>
                       </div>
+                    
 
                     </div> <!-- Fin row -->
 
@@ -274,7 +243,7 @@ if (!isset($_SESSION['usuario'])) {
                   </div>
 
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelarFormProyectoAprendizaje()">Cancelar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelarProyectoAprendizaje()">Cancelar</button>
                     <button type="submit" id="btnGuardarProyectoAprendizaje" class="btn btn-primary">Guardar</button>
                   </div>
 
@@ -301,6 +270,7 @@ if (!isset($_SESSION['usuario'])) {
                   <div class="modal-body">
 
                     <div class="row">
+
                       <!-- guarda el id del proyecto de aprendizaje cuando es necesario -->
                       <input type="hidden" value="" id="idproyecto_aprendizaje" name="idproyecto_aprendizaje">
                       
@@ -345,7 +315,7 @@ if (!isset($_SESSION['usuario'])) {
                   </div>
 
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelarEditarProyectoAprendizaje()">Cancelar</button>
                     <button type="submit" id="btnEditarProyectoAprendizaje" class="btn btn-primary">Guardar</button>
                   </div>
 

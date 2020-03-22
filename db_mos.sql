@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-03-2020 a las 04:34:40
+-- Tiempo de generación: 22-03-2020 a las 02:28:59
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -602,10 +602,23 @@ INSERT INTO `grado` (`id`, `grado`, `estatus`) VALUES
 CREATE TABLE `indicador` (
   `id` int(11) NOT NULL,
   `idplanificacion` int(11) NOT NULL,
-  `idlapso_academico` int(11) NOT NULL,
   `idmateria` int(11) NOT NULL,
+  `lapso_academico` char(1) NOT NULL,
   `indicador` char(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `indicador`
+--
+
+INSERT INTO `indicador` (`id`, `idplanificacion`, `idmateria`, `lapso_academico`, `indicador`) VALUES
+(1, 40, 3, '1', 'Identifica párrafos como unidades organizadas del texto'),
+(2, 40, 4, '1', 'Realiza multiplicaciones de dos cifras'),
+(3, 40, 4, '2', 'Realiza multiplicaciones de dos cifras'),
+(4, 40, 6, '1', 'Socializa con sus compañeros'),
+(5, 40, 3, '1', 'Lee corrido y sin detenerse'),
+(7, 56, 7, '2', 'Corre duro'),
+(8, 46, 3, '2', 'Lee corrido y sin detenerse');
 
 -- --------------------------------------------------------
 
@@ -714,7 +727,7 @@ CREATE TABLE `lapso_academico` (
 --
 
 INSERT INTO `lapso_academico` (`id`, `idperiodo_escolar`, `lapso`, `fecha_inicio`, `fecha_fin`, `estatus`) VALUES
-(4, 45, '1', '2021-08-25', '2021-12-10', 'Planificado'),
+(4, 45, '1', '2021-08-25', '2021-12-10', 'Finalizado'),
 (5, 45, '2', '2021-12-11', '2022-03-30', 'Planificado'),
 (7, 45, '3', '2022-04-01', '2022-06-30', 'Planificado');
 
@@ -3218,11 +3231,14 @@ CREATE TABLE `proyecto_aprendizaje` (
 --
 
 INSERT INTO `proyecto_aprendizaje` (`id`, `idplanificacion`, `lapso_academico`, `proyecto_aprendizaje`) VALUES
-(1, 40, '1', 'El reciclaje socioproductivo integrador comunitario 3D'),
-(3, 40, '2', 'Manos a la tierra'),
+(1, 40, '1', 'El reciclaje en la escuela'),
+(3, 40, '2', 'Manos a la tierrita'),
 (5, 40, '3', 'Recreo'),
 (12, 46, '1', 'Recreo'),
-(13, 46, '2', 'Manos a la tierra');
+(13, 46, '2', 'Manos a la tierra'),
+(20, 46, '3', 'Trompo de los alimentos'),
+(21, 56, '1', 'Recreo'),
+(22, 56, '2', 'Trompo alimenticio');
 
 -- --------------------------------------------------------
 
@@ -3518,7 +3534,6 @@ ALTER TABLE `grado`
 ALTER TABLE `indicador`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idplanificacion` (`idplanificacion`),
-  ADD KEY `idlapso_academico` (`idlapso_academico`),
   ADD KEY `idmateria` (`idmateria`);
 
 --
@@ -3785,7 +3800,7 @@ ALTER TABLE `grado`
 -- AUTO_INCREMENT de la tabla `indicador`
 --
 ALTER TABLE `indicador`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `inscripcion`
@@ -3887,7 +3902,7 @@ ALTER TABLE `planificacion`
 -- AUTO_INCREMENT de la tabla `proyecto_aprendizaje`
 --
 ALTER TABLE `proyecto_aprendizaje`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `p_seguridad`
@@ -4004,6 +4019,13 @@ ALTER TABLE `estudiante`
   ADD CONSTRAINT `fk_idmadre_estudiante_rf_id_persona` FOREIGN KEY (`idmadre`) REFERENCES `persona` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_idpadre_estudiante_rf_id_persona` FOREIGN KEY (`idpadre`) REFERENCES `persona` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_idpersona_estudiante_rf_id_persona` FOREIGN KEY (`idpersona`) REFERENCES `persona` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `indicador`
+--
+ALTER TABLE `indicador`
+  ADD CONSTRAINT `indicador_ibfk_1` FOREIGN KEY (`idplanificacion`) REFERENCES `planificacion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `indicador_ibfk_2` FOREIGN KEY (`idmateria`) REFERENCES `materia` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `inscripcion`

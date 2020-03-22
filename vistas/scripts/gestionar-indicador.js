@@ -3,11 +3,49 @@
   //Muestra la lista de planificaciones
   listar();
 
-  traerPeriodosEscolares();
+  let planificaciones = traerPlanificaciones();
+  planificaciones
+  .then((data) => {
+    data = JSON.parse(data);
+    let planificacion = '';
+    if (data.length != 0) {
+      data.forEach(function (indice) {
+        planificacion += '<option value="' + indice.id + '">' + indice.grado + ' º - "' + indice.seccion + '" - ' + indice.nombre_docente + ' ' + indice.apellido_docente + '</option>';
+      });
+    }
+    else {
+      planificacion = '<option value="">No hay planificaciones</option>';
+    }
+    $('#planificaciones').html('<option value="">Seleccione</option>');
+    $('#planificaciones').append(planificacion);
+    $('#planificaciones').selectpicker('refresh');
+  });
+
+  let lapsos = traerLapsosGeneral();
+  lapsos
+  .then((data) => {
+    data = JSON.parse(data);
+    let lapso = '';
+    $('#lapsos').prop('disabled', false);
+    if (data.length != 0) {
+      data.forEach(function (indice) {
+        lapso += '<option value="' + indice.lapso + '">' + indice.lapso + 'º Lapso' + '</option>';
+      });
+
+      $('#lapsos').html('<option value="">Seleccione</option>');
+      $('#lapsos').append(lapso);
+      $('#lapsos').selectpicker('refresh');
+    }
+    else {
+      lapso = '<option value="">No hay lapsos</option>';
+      $('#lapsos').html(lapso);
+      $('#lapsos').selectpicker('refresh');
+    }
+  });
 
   //Se ejecuta cuando se envia el formulario
-  $([formularioPlanificacion]).on('submit', function (event) {
-    if ($([formularioPlanificacion])[0].checkValidity()) {
+  $([formularioGestionarIndicador]).on('submit', function (event) {
+    if ($([formularioGestionarIndicador])[0].checkValidity()) {
       guardaryeditar(event);
     }
     else {
@@ -18,7 +56,7 @@
   //Se ejecuta cuando se envia el formulario de proyecto de aprendizaje
   $([formularioProyectoAprendizaje]).on('submit', function (event) {
     if ($([formularioProyectoAprendizaje])[0].checkValidity()) {
-      guardaryEditarProyectoAprendizaje(event);
+      guardarProyectoAprendizaje(event);
     }
     else {
       scrollTo(0, 100);
@@ -26,9 +64,9 @@
   });
 
   //Se ejecuta cuando se envia el formulario de editar proyecto de aprendizaje
-  $([formularioProyectoAprendizaje]).on('submit', function (event) {
+  $([formularioEditarProyectoAprendizaje]).on('submit', function (event) {
     if ($([formularioEditarProyectoAprendizaje])[0].checkValidity()) {
-      guardaryEditarProyectoAprendizaje(event);
+      editarProyectoAprendizaje(event);
     }
     else {
       scrollTo(0, 100);
@@ -36,241 +74,215 @@
   });
 
   $('#btnAgregar').on('click', function () {
-    $('#tituloModal').html('Crear planificación');
-    traerPeriodosActivoPlanificados();
-    traerGrados();
-    traerAmbientes();
-    traerDocentes();
+    $('#tituloModalIndicador').html('Crear indicador para proyecto: ');
+
+    let planificaciones = traerPlanificaciones();
+    planificaciones
+    .then((data) => {
+      data = JSON.parse(data);
+      let planificacion = '';
+      if (data.length != 0) {
+        data.forEach(function (indice) {
+          planificacion += '<option value="' + indice.id + '">' + indice.grado + ' º - "' + indice.seccion + '" - ' + indice.nombre_docente + ' ' + indice.apellido_docente + '</option>';
+        });
+      }
+      else {
+        planificacion = '<option value="">No hay planificaciones</option>';
+      }
+      $('#planificacion_indicador').html('<option value="">Seleccione</option>');
+      $('#planificacion_indicador').append(planificacion);
+      $('#planificacion_indicador').selectpicker('refresh');
+    });
+
+    let lapsos = traerLapsos();
+    lapsos
+    .then((data) => {
+      data = JSON.parse(data);
+
+      let lapso = '';
+      $('#lapso_indicador').prop('disabled', false);
+      if (data.length != 0) {
+        data.forEach(function (indice) {
+          lapso += '<option value="' + indice.lapso + '">' + indice.lapso + 'º Lapso' + '</option>';
+        });
+
+        $('#lapso_indicador').html('<option value="">Seleccione</option>');
+        $('#lapso_indicador').append(lapso);
+        $('#lapso_indicador').selectpicker('refresh');
+      }
+      else {
+        lapso = '<option value="">No hay lapsos</option>';
+        $('#lapso_indicador').html(lapso);
+        $('#lapso_indicador').selectpicker('refresh');
+      }
+    });
+
+    let materias = traerMaterias();
+    materias
+    .then((data) => {
+      data = JSON.parse(data);
+
+      let materia = '';
+      if (data.length != 0) {
+        data.forEach(function (indice) {
+          materia += '<option value="' + indice.id + '">' + indice.materia + '</option>';
+        });
+
+        $('#materia_indicador').html('<option value="">Seleccione</option>');
+        $('#materia_indicador').append(materia);
+        $('#materia_indicador').selectpicker('refresh');
+      }
+      else {
+        materia = '<option value="">No hay materias</option>';
+        $('#materia_indicador').html(materia);
+        $('#materia_indicador').selectpicker('refresh');
+      }
+    });
   });
 
   $('#btnAgregarProyectoAprendizaje').on('click', function () {
-    traerPlanificaciones();
+    let planificaciones = traerPlanificaciones();
+    planificaciones
+    .then((data) => {
+      data = JSON.parse(data);
+      let planificacion = '';
+      if (data.length != 0) {
+        data.forEach(function (indice) {
+          planificacion += '<option value="' + indice.id + '">' + indice.grado + ' º - "' + indice.seccion + '" - ' + indice.nombre_docente + ' ' +indice.apellido_docente + '</option>';
+        });
+      }
+      else {
+        planificacion = '<option value="">No hay planificaciones</option>';
+      }
+      $('#planificacion').html('<option value="">Seleccione</option>');
+      $('#planificacion').append(planificacion);
+      $('#planificacion').selectpicker('refresh');
+    });
+
     listarProyectoAprendizaje();
   });
 
-  //Comprueba cada cambio en el select de grado
+  //Comprueba cada cambio en el select de planificacion proyecto aprendizaje
   $('#planificacion').on('change', function () {
-    idplanificacion = $('#planificacion')[0].value;
-    listarProyectoAprendizaje(idplanificacion);
+    let idplanificacion = $('#planificacion')[0].value;   
     if (idplanificacion != '') {
-      $('#lapso').prop('disabled', false);
-      traerLapsos(idplanificacion);
+      let lapsos = traerLapsos(idplanificacion);
+      lapsos
+      .then((data) => {
+        data = JSON.parse(data);
+        
+        let lapso = '';
+        $('#lapso').prop('disabled', false);
+        if (data.length != 0) {
+          data.forEach(function (indice) {
+            lapso += '<option value="' + indice.lapso + '">' + indice.lapso + 'º Lapso' +'</option>';
+          });
+          
+          $('#lapso').html('<option value="">Seleccione</option>');
+          $('#lapso').append(lapso);
+          $('#lapso').selectpicker('refresh');
+        }
+        else {
+          lapso = '<option value="">No hay lapsos</option>';
+          $('#lapso').html(lapso);
+          $('#lapso').selectpicker('refresh');
+        }
+      });
     }
     else {
       $('#lapso').html('<option value="">Seleccione</option>');
       $('#lapso').prop('disabled', true);
       $('#lapso').selectpicker('refresh');
     }
+    
+    listarProyectoAprendizaje(idplanificacion);
   });
 
-  //Comprueba cada cambio en el select de grado
-  $('#grado').on('change', function () {
-    idgrado = $('#grado')[0].value;
-    idPeriodoEscolar = $('#periodo_escolar')[0].value;
-    if (idgrado != '') {
-      $('#seccion').prop('disabled', false);
-      traerSecciones(idgrado, '', idPeriodoEscolar);
-    }
-    else {
-      $('#seccion').html('<option value="">Seleccione</option>');
-      $('#seccion').prop('disabled', true);
-      $('#seccion').selectpicker('refresh');
-    }
+  //Comprueba cada cambio en el select de planificaciones
+  $('#planificaciones').on('change', function () {
+    listar();
   });
 
-  $('#periodo_escolar').on('change', function () {
-    idPeriodoEscolar = $('#periodo_escolar')[0].value;
-    $('#grado').val('');
-    $('#grado').selectpicker('refresh');
-    $('#seccion').html('<option value="">Seleccione</option>');
-    $('#seccion').prop('disabled', true);
-    $('#seccion').selectpicker('refresh');
-    traerAmbientes('', idPeriodoEscolar);
-    traerDocentes('', idPeriodoEscolar);
-    $('#cupo').val('');
+  //Comprueba cada cambio en el select de lapsos
+  $('#lapsos').on('change', function () {
+    listar();
   });
 
-  $('#periodos').on('change', function () {
-    let idperiodo = $('#periodos')[0].value;
-    listar(idperiodo);
+  //Comprueba cada cambio en el select de planificacion indicador
+  $('#planificacion_indicador').on('change', function () {
+    $('#lapso_indicador').val('');
+    $('#lapso_indicador').selectpicker('refresh');
+    comprobarProyectoAprendizaje();
   });
 
-  $('#ambiente').on('change', function () {
-    let capacidad = $('option:selected', this).attr('capacidad');
-    $('#cupo').val(capacidad);
+  //Comprueba cada cambio en el select de lapso indicador
+  $('#lapso_indicador').on('change', function () {
+    comprobarProyectoAprendizaje();
   });
 
   tabla.ajax.reload();
 })();
 
+function comprobarProyectoAprendizaje() {  
+  let idplanificacion_indicador = $('#planificacion_indicador')[0].value;
+  let lapso_indicador = $('#lapso_indicador')[0].value;
+
+  if (idplanificacion_indicador && lapso_indicador != '') {
+
+    $.post('../controladores/gestionar-indicador.php?op=comprobarproyectoaprendizaje', { idplanificacion_indicador: idplanificacion_indicador, lapso_indicador: lapso_indicador}, function (data) {
+      // console.log(data);
+      // return;
+      if (data != '') {
+        let proyectoMayuscula = data.charAt(0).toUpperCase() + data.slice(1);
+        $('#tituloModalIndicador').html('Crear indicador para proyecto: ' + proyectoMayuscula);
+      }
+      else {
+        $('#tituloModalIndicador').html('Crear indicador para proyecto: ');
+        $('#lapso_indicador').val('');
+        $('#lapso_indicador').selectpicker('refresh');
+
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
+
+        Toast.fire({
+          type: 'error',
+          title: 'Primero debe crear un proyecto de aprendizaje'
+        });
+      }
+
+    });
+  }
+  else {
+    $('#tituloModalIndicador').html('Crear indicador para proyecto: ');
+  }
+}
+
 function traerPlanificaciones() {  
 
-  $.post('../controladores/gestionar-indicador.php?op=traerplanificaciones', function (data) {
-    data = JSON.parse(data);
+  let planificaciones = $.post('../controladores/gestionar-indicador.php?op=traerplanificaciones');
 
-    let planificacion = '';
-    if (data.length != 0) {
-      data.forEach(function (indice) {
-        planificacion += '<option value="' + indice.id + '">' + indice.grado + ' º - "' + indice.seccion + '" - ' + indice.nombre_docente + ' ' +indice.apellido_docente + '</option>';
-      });
-    }
-    else {
-      planificacion = '<option value="">No hay planificaciones</option>';
-    }
-    $('#planificacion').html('<option value="">Seleccione</option>');
-    $('#planificacion').append(planificacion);
-    $('#planificacion').selectpicker('refresh');
-  });
+  return planificaciones;
+}
+
+function traerMaterias() {
+
+  let materias = $.post('../controladores/gestionar-indicador.php?op=traermaterias');
+  return materias;
 }
 
 function traerLapsos(idplanificacion = null) {
-  $.post('../controladores/gestionar-indicador.php?op=traerlapsos', {idplanificacion: idplanificacion}, function (data) {
-    data = JSON.parse(data);
+  let lapsos = $.post('../controladores/gestionar-indicador.php?op=traerlapsos', { idplanificacion: idplanificacion });
 
-    let lapso = '';
-    if (data.length != 0) {
-      data.forEach(function (indice) {
-        lapso += '<option value="' + indice.lapso + '">' + indice.lapso + 'º Lapso' +'</option>';
-      });
-
-      $('#lapso').html('<option value="">Seleccione</option>');
-      $('#lapso').append(lapso);
-      $('#lapso').selectpicker('refresh');
-    }
-    else {
-      lapso = '<option value="">No hay lapsos</option>';
-      $('#lapso').html(lapso);
-      $('#lapso').selectpicker('refresh');
-    }
-  });
+  return lapsos;
 }
 
-function traerPeriodosEscolares() {
-
-  $.post('../controladores/planificacion.php?op=consultarperiodo')
-    .then(function (periodoActual) {
-      $.post('../controladores/planificacion.php?op=traerperiodosescolares')
-        .then(function (periodos) {
-          data = JSON.parse(periodos);
-          periodos = '';
-          if (data.length != 0) {
-            let selected = '';
-            data.forEach(function (indice) {
-              if (indice.id == periodoActual)
-                selected = 'selected';
-              else
-                selected = '';
-              periodos += '<option value="' + indice.id + '"' + selected + '>' + indice.periodo + '</option>';
-            });
-          }
-          else {
-            periodos = '<option value="">Debe crear un período escolar</option>';
-          }
-          $('#periodos').append(periodos);
-          $('#periodos').selectpicker('refresh');
-        });
-    });
-}
-
-function traerPeriodosActivoPlanificados() {
-
-  $.post('../controladores/planificacion.php?op=consultarperiodo')
-    .then(function (periodoActual) {
-      $.post('../controladores/planificacion.php?op=traerperiodosactivoplanificados')
-        .then(function (periodos) {
-          data = JSON.parse(periodos);
-          periodos = '';
-          if (data.length != 0) {
-            let selected = '';
-            data.forEach(function (indice) {
-              if (indice.id == periodoActual)
-                selected = 'selected';
-              else
-                selected = '';
-              periodos += '<option value="' + indice.id + '"' + selected + '>' + indice.periodo + '</option>';
-            });
-          }
-          else {
-            periodos = '<option value="">Debe crear un período escolar</option>';
-          }
-          $('#periodo_escolar').html(periodos);
-          $('#periodo_escolar').selectpicker('refresh');
-        });
-    });
-}
-
-function traerGrados() {
-  $.post('../controladores/planificacion.php?op=traergrados', function (data) {
-    data = JSON.parse(data);
-    let grado = '';
-    if (data.length != 0) {
-      data.forEach(function (indice) {
-        grado += '<option value="' + indice.id + '">' + indice.grado + ' º</option>';
-      });
-    }
-    else {
-      grado = '<option value="">Debe Ingresar grados en configuración</option>';
-    }
-    $('#grado').html('<option value="">Seleccione</option>');
-    $('#grado').append(grado);
-    $('#grado').selectpicker('refresh');
-  });
-}
-
-function traerSecciones(idgrado, idplanificacion, idPeriodoEscolar) {
-  $.post('../controladores/planificacion.php?op=traersecciones', { idgrado: idgrado, idplanificacion: idplanificacion, idperiodo_escolar: idPeriodoEscolar }, function (data) {
-
-    data = JSON.parse(data);
-    let seccion = '';
-    if (data.length != 0) {
-      data.forEach(function (indice, valor) {
-        seccion += '<option value="' + indice.id + '">' + indice.seccion + '</option>';
-      });
-    }
-    else {
-      seccion = '<option value="">Debe Ingresar secciones en configuración</option>';
-    }
-    $('#seccion').html('<option value="">Seleccione</option>');
-    $('#seccion').append(seccion);
-    $('#seccion').selectpicker('refresh');
-  });
-}
-
-function traerAmbientes(idambiente = null, idPeriodoEscolar) {
-  $.post('../controladores/planificacion.php?op=traerambientes', { idambiente: idambiente, idperiodo_escolar: idPeriodoEscolar }, function (data) {
-    data = JSON.parse(data);
-    let ambiente = '';
-    if (data.length != 0) {
-      data.forEach(function (indice, valor) {
-        ambiente += '<option value="' + indice.id + '" capacidad="' + indice.capacidad + '">' + indice.ambiente + '</option>';
-      });
-    }
-    else {
-      ambiente = '<option value="">Debe ingresar ambientes en configuración</option>';
-    }
-    $('#ambiente').html('<option value="">Seleccione</option>');
-    $('#ambiente').append(ambiente);
-    $('#ambiente').selectpicker('refresh');
-  });
-}
-
-function traerDocentes(iddocente = null, idPeriodoEscolar) {
-  $.post('../controladores/planificacion.php?op=traerdocentes', { iddocente: iddocente, idperiodo_escolar: idPeriodoEscolar }, function (data) {
-
-    data = JSON.parse(data);
-    let docente = '';
-    if (data.length != 0) {
-      data.forEach(function (indice, valor) {
-        docente += '<option value="' + indice.id + '">' + indice.p_nombre + ' ' + indice.p_apellido + '</option>';
-      });
-    }
-    else {
-      docente = '<option value="">Debe Ingresar docentes en configuración</option>';
-    }
-    $('#docente').html('<option value="">Seleccione</option>');
-    $('#docente').append(docente);
-    $('#docente').selectpicker('refresh');
-  });
+function traerLapsosGeneral() {
+  let lapsos = $.post('../controladores/gestionar-indicador.php?op=traerlapsosgeneral');
+  return lapsos;
 }
 
 //Función cancelarform
@@ -278,15 +290,25 @@ function cancelarform() {
   limpiar();
 }
 
+//Función cancelarProyectoAprendizaje 
+function cancelarProyectoAprendizaje() {
+  limpiarProyectoAprendizaje();
+}
+
+//Función cancelarEditarProyectoAprendizaje
+function cancelarEditarProyectoAprendizaje() {
+  limpiarEditarProyectoAprendizaje();
+}
+
 //Función para guardar y editar 
 function guardaryeditar(event) {
   event.preventDefault(); //Evita que se envíe el formulario automaticamente
   // 
   $('#btnGuardar').prop('disabled', true);
-  var formData = new FormData($([formularioPlanificacion])[0]); //Se obtienen los datos del formulario
+  var formData = new FormData($([formularioGestionarIndicador])[0]); //Se obtienen los datos del formulario
 
   $.ajax({
-    url: '../controladores/planificacion.php?op=guardaryeditar', //Dirección a donde se envían los datos
+    url: '../controladores/gestionar-indicador.php?op=guardaryeditar', //Dirección a donde se envían los datos
     type: 'POST', //Método por el cual se envían los datos
     data: formData, //Datos
     contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
@@ -304,7 +326,7 @@ function guardaryeditar(event) {
 
         Toast.fire({
           type: 'success',
-          title: 'Planificación registrada exitosamente :)'
+          title: 'Indicador registrado exitosamente :)'
         });
       }
       else if (datos == 'update') {
@@ -317,7 +339,7 @@ function guardaryeditar(event) {
 
         Toast.fire({
           type: 'success',
-          title: 'Planificación modificada exitosamente :)'
+          title: 'Indicador modificado exitosamente :)'
         });
 
         $('#planificacionModal').modal('hide');
@@ -338,29 +360,15 @@ function guardaryeditar(event) {
 
       limpiar();
       tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
-      traerAmbientes();
-      traerDocentes();
-      $('#planificacionModal').modal('hide');
-      idgrado = $('#grado')[0].value;
-      if (idgrado != '') {
-        $('#seccion').prop('disabled', false);
-        traerSecciones(idgrado);
-      }
-      else {
-        $('#seccion').html('<option value="">Seleccione</option>');
-        $('#seccion').prop('disabled', true);
-        $('#seccion').selectpicker('refresh');
-      }
     }
 
   });
 }
 
-function guardaryEditarProyectoAprendizaje(event) {
+function guardarProyectoAprendizaje(event) {
   event.preventDefault(); //Evita que se envíe el formulario automaticamente
   // 
   $('#btnGuardarProyectoAprendizaje').prop('disabled', true);
-  $('#btnEditarProyectoAprendizaje').prop('disabled', true);
   var formData = new FormData($([formularioProyectoAprendizaje])[0]); //Se obtienen los datos del formulario
 
   $.ajax({
@@ -370,10 +378,7 @@ function guardaryEditarProyectoAprendizaje(event) {
     contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
     processData: false, //Evita que jquery transforme la data en un string
     success: function (datos) {
-      // console.log(datos);
-      // return;
       $('#btnGuardarProyectoAprendizaje').prop('disabled', false);
-      $('#btnEditarProyectoAprendizaje').prop('disabled', false);
       if (datos == 'true') {
         const Toast = Swal.mixin({
           toast: true,
@@ -423,8 +428,60 @@ function guardaryEditarProyectoAprendizaje(event) {
   });
 }
 
+function editarProyectoAprendizaje(event) {
+  event.preventDefault(); //Evita que se envíe el formulario automaticamente
+  // 
+  $('#btnEditarProyectoAprendizaje').prop('disabled', true);
+  var formData = new FormData($([formularioEditarProyectoAprendizaje])[0]); //Se obtienen los datos del formulario
+
+  $.ajax({
+    url: '../controladores/gestionar-indicador.php?op=guardaryeditarproyectoaprendizaje', //Dirección a donde se envían los datos
+    type: 'POST', //Método por el cual se envían los datos
+    data: formData, //Datos
+    contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
+    processData: false, //Evita que jquery transforme la data en un string
+    success: function (datos) {
+      $('#btnEditarProyectoAprendizaje').prop('disabled', false);
+      if (datos == 'update') {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
+
+        Toast.fire({
+          type: 'success',
+          title: 'Proyecto modificado exitosamente :)'
+        });
+
+        $('#editarProyectoAprendizajeModal').modal('hide');
+      }
+      else {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
+
+        Toast.fire({
+          type: 'error',
+          title: 'Ocurrió un error y no se pudo editar :('
+        });
+      }
+
+      limpiarEditarProyectoAprendizaje();
+      tablaProyectoAprendizaje.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
+    }
+
+  });
+}
+
 //Función para listar los registros
-function listar(idperiodo = null) {
+function listar() {
+  let idplanificaciones = $('#planificaciones')[0].value;
+  let lapsos = $('#lapsos')[0].value;
   tabla = $('#tblistado').DataTable({
     "processing": true,
     pagingType: "first_last_numbers",
@@ -444,11 +501,11 @@ function listar(idperiodo = null) {
     dom: 'lfrtip',
     "destroy": true, //Elimina cualquier elemente que se encuentre en la tabla
     "ajax": {
-      url: '../controladores/planificacion.php?op=listar&idperiodo=' + idperiodo,
+      url: '../controladores/gestionar-indicador.php?op=listar&idplanificaciones=' + idplanificaciones + '&lapsos=' +lapsos,
       type: 'GET',
       dataType: 'json'
     },
-    'order': [[1, 'asc']]
+    'order': [[1, 'asc'], [2, 'asc']]
   });
 }
 
@@ -475,194 +532,54 @@ function listarProyectoAprendizaje(idplanificacion = null) {
     "ajax": {
       url: '../controladores/gestionar-indicador.php?op=listarproyectoaprendizaje&idplanificacion=' + idplanificacion,
       type: 'GET',
-      dataType: 'json',
-      error: (e) => {
-        console.log(e.responseText);
-        
-      }
+      dataType: 'json'
     },
     'order': [[1, 'asc']]
   });
 }
 
 //Función para mostrar un registro para editar
-function mostrar(idplanificacion) {
-  $('#tituloModal').html('Modificar planificación');
-  $.post('../controladores/planificacion.php?op=mostrar', { idplanificacion: idplanificacion }, function (planificacion) {
-    planificacion = JSON.parse(planificacion);
+function mostrar(idindicador) {
+  $('#tituloModal').html('Modificar indicador');
+  $.post('../controladores/gestionar-indicador.php?op=mostrar', { idindicador: idindicador }, function (indicador) {
 
-    $('#periodo_escolar').html('<option value="' + planificacion.idperiodo_escolar + '">' + planificacion.periodo + '</option>');
-    $('#periodo_escolar').prop('readonly', true);
-    $('#periodo_escolar').selectpicker('refresh');
+    indicador = JSON.parse(indicador);
+    $('#planificacion_indicador').html('<option value="' + indicador.idplanificacion + '">' + indicador.grado + 'º - "' + indicador.seccion + '" - ' + indicador.p_nombre + ' ' + indicador.p_apellido + '</option>');
+    $('#planificacion_indicador').prop('disabled', true);
+    $('#planificacion_indicador').selectpicker('refresh');
 
-    $.post('../controladores/planificacion.php?op=traergrados', function (grados) {
-      grados = JSON.parse(grados);
-      let grado = '';
-      if (grados.length != 0) {
-        grados.forEach(function (indice, valor) {
-          grado += '<option value="' + indice.id + '">' + indice.grado + ' º</option>';
-        });
-      }
-      else {
-        grado = '<option value="">Debe Ingresar grados en configuración</option>';
-      }
-      $('#grado').html('<option value="">Seleccione</option>');
-      $('#grado').append(grado);
-      $('#grado').selectpicker('refresh');
-    }).then(function () {
-      $('#grado').selectpicker('val', planificacion.idgrado);
-    });
+    $('#lapso_indicador').html('<option value="' + indicador.lapso_academico + '">' + indicador.lapso_academico + '</option>');
+    $('#lapso_indicador').prop('readonly', true);
+    $('#lapso_indicador').selectpicker('refresh');
 
-    $.post('../controladores/planificacion.php?op=traersecciones', { idgrado: planificacion.idgrado, idplanificacion: planificacion.id, idperiodo_escolar: planificacion.idperiodo_escolar }, function (data) {
-      data = JSON.parse(data);
-      let seccion = '';
-      if (data.length != 0) {
-        data.forEach(function (indice, valor) {
-          seccion += '<option value="' + indice.id + '">' + indice.seccion + '</option>';
-        });
-      }
-      else {
-        seccion = '<option value="">Debe Ingresar secciones en configuración</option>';
-      }
-      $('#seccion').prop('disabled', false);
-      $('#seccion').html('<option value="">Seleccione</option>');
-      $('#seccion').append(seccion);
-      $('#seccion').selectpicker('refresh');
-    })
-      .then(() => {
-        $('#seccion').selectpicker('val', planificacion.idseccion);
-      });
+    $('#materia_indicador').html('<option value="' + indicador.idmateria + '">' + indicador.materia + '</option>');
+    $('#materia_indicador').prop('disabled', true);
+    $('#materia_indicador').selectpicker('refresh');
 
-    $.post('../controladores/planificacion.php?op=traerambientes', { idambiente: planificacion.idambiente, idperiodo_escolar: planificacion.idperiodo_escolar }, function (data) {
-      data = JSON.parse(data);
-      let ambiente = '';
-      if (data.length != 0) {
-        data.forEach(function (indice, valor) {
-          ambiente += '<option value="' + indice.id + '" capacidad="' + indice.capacidad + '">' + indice.ambiente + '</option>';
-        });
-      }
-      else {
-        ambiente = '<option value="">Debe ingresar ambientes en configuración</option>';
-      }
-      $('#ambiente').html('<option value="">Seleccione</option>');
-      $('#ambiente').append(ambiente);
-      $('#ambiente').selectpicker('refresh');
-    }).then(() => {
-      $('#ambiente').selectpicker('val', planificacion.idambiente);
-    });
-
-    $.post('../controladores/planificacion.php?op=traerdocentes', { iddocente: planificacion.iddocente, idperiodo_escolar: planificacion.idperiodo_escolar }, function (data) {
-      data = JSON.parse(data);
-      let docente = '';
-      if (data.length != 0) {
-        data.forEach(function (indice, valor) {
-          docente += '<option value="' + indice.id + '">' + indice.p_nombre + ' ' + indice.p_apellido + '</option>';
-        });
-      }
-      else {
-        docente = '<option value="">Debe Ingresar docentes en configuración</option>';
-      }
-      $('#docente').html('<option value="">Seleccione</option>');
-      $('#docente').append(docente);
-      $('#docente').selectpicker('refresh');
-    }).then(() => {
-      $('#docente').selectpicker('val', planificacion.iddocente);
-    });
-
-    $('#cupo').val(planificacion.cupo);
-    $('#idplanificacion').val(planificacion.id);
+    $('#indicador').val(indicador.indicador);
+    $('#idindicador').val(indicador.id);
+ 
   });
 }
 
-function mostrarProyectoAprendizaje(idproyectoaprendizaje) {    
-  $.post('../controladores/gestionar-indicador.php?op=mostrarproyectoaprendizaje', { idproyectoaprendizaje: idproyectoaprendizaje }, function (proyecto) {
+function mostrarProyectoAprendizaje(idproyecto_aprendizaje) {    
+  $.post('../controladores/gestionar-indicador.php?op=mostrarproyectoaprendizaje', { idproyecto_aprendizaje: idproyecto_aprendizaje }, function (proyecto) {
     proyecto = JSON.parse(proyecto);
+    $('#editar_planificacion').html('<option value="' + proyecto.idplanificacion + '">' + proyecto.grado + 'º - "'+ proyecto.seccion +'" - '+ proyecto.p_nombre+ ' ' + proyecto.p_apellido+ '</option>');
+    $('#editar_planificacion').prop('disabled', true);
+    $('#editar_planificacion').selectpicker('refresh');
 
-    $('#editar_planificacion').html('<option value="' + proyecto.idplanificacion + '">' + proyecto.planificacion + '</option>');
-    $('#periodo_escolar').prop('readonly', true);
-    $('#periodo_escolar').selectpicker('refresh');
+    $('#editar_lapso').html('<option value="' + proyecto.lapso_academico + '">' + proyecto.lapso_academico + '</option>');
+    $('#editar_lapso').prop('readonly', true);
+    $('#editar_lapso').selectpicker('refresh');
 
-    $.post('../controladores/planificacion.php?op=traergrados', function (grados) {
-      grados = JSON.parse(grados);
-      let grado = '';
-      if (grados.length != 0) {
-        grados.forEach(function (indice, valor) {
-          grado += '<option value="' + indice.id + '">' + indice.grado + ' º</option>';
-        });
-      }
-      else {
-        grado = '<option value="">Debe Ingresar grados en configuración</option>';
-      }
-      $('#grado').html('<option value="">Seleccione</option>');
-      $('#grado').append(grado);
-      $('#grado').selectpicker('refresh');
-    }).then(function () {
-      $('#grado').selectpicker('val', planificacion.idgrado);
-    });
-
-    $.post('../controladores/planificacion.php?op=traersecciones', { idgrado: planificacion.idgrado, idplanificacion: planificacion.id, idperiodo_escolar: planificacion.idperiodo_escolar }, function (data) {
-      data = JSON.parse(data);
-      let seccion = '';
-      if (data.length != 0) {
-        data.forEach(function (indice, valor) {
-          seccion += '<option value="' + indice.id + '">' + indice.seccion + '</option>';
-        });
-      }
-      else {
-        seccion = '<option value="">Debe Ingresar secciones en configuración</option>';
-      }
-      $('#seccion').prop('disabled', false);
-      $('#seccion').html('<option value="">Seleccione</option>');
-      $('#seccion').append(seccion);
-      $('#seccion').selectpicker('refresh');
-    })
-      .then(() => {
-        $('#seccion').selectpicker('val', planificacion.idseccion);
-      });
-
-    $.post('../controladores/planificacion.php?op=traerambientes', { idambiente: planificacion.idambiente, idperiodo_escolar: planificacion.idperiodo_escolar }, function (data) {
-      data = JSON.parse(data);
-      let ambiente = '';
-      if (data.length != 0) {
-        data.forEach(function (indice, valor) {
-          ambiente += '<option value="' + indice.id + '" capacidad="' + indice.capacidad + '">' + indice.ambiente + '</option>';
-        });
-      }
-      else {
-        ambiente = '<option value="">Debe ingresar ambientes en configuración</option>';
-      }
-      $('#ambiente').html('<option value="">Seleccione</option>');
-      $('#ambiente').append(ambiente);
-      $('#ambiente').selectpicker('refresh');
-    }).then(() => {
-      $('#ambiente').selectpicker('val', planificacion.idambiente);
-    });
-
-    $.post('../controladores/planificacion.php?op=traerdocentes', { iddocente: planificacion.iddocente, idperiodo_escolar: planificacion.idperiodo_escolar }, function (data) {
-      data = JSON.parse(data);
-      let docente = '';
-      if (data.length != 0) {
-        data.forEach(function (indice, valor) {
-          docente += '<option value="' + indice.id + '">' + indice.p_nombre + ' ' + indice.p_apellido + '</option>';
-        });
-      }
-      else {
-        docente = '<option value="">Debe Ingresar docentes en configuración</option>';
-      }
-      $('#docente').html('<option value="">Seleccione</option>');
-      $('#docente').append(docente);
-      $('#docente').selectpicker('refresh');
-    }).then(() => {
-      $('#docente').selectpicker('val', planificacion.iddocente);
-    });
-
-    $('#cupo').val(planificacion.cupo);
-    $('#idplanificacion').val(planificacion.id);
+    $('#editar_proyecto_aprendizaje').val(proyecto.proyecto_aprendizaje);
+    $('#idproyecto_aprendizaje').val(proyecto.id);
   });
 }
 
-//Función para eliminar una planificación
-function eliminar(idplanificacion) {
+//Función para eliminar un indicador
+function eliminar(idindicador) {
 
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -674,7 +591,7 @@ function eliminar(idplanificacion) {
 
   swalWithBootstrapButtons.fire({
     title: '¿Estas seguro?',
-    text: "¿Quieres eliminar esta planificación?",
+    text: "¿Quieres eliminar este indicador?",
     type: 'warning',
     showCancelButton: true,
     confirmButtonText: 'Eliminar',
@@ -682,7 +599,7 @@ function eliminar(idplanificacion) {
     reverseButtons: true
   }).then((result) => {
     if (result.value) {
-      $.post('../controladores/planificacion.php?op=eliminar', { idplanificacion: idplanificacion }, function (e) {
+      $.post('../controladores/gestionar-indicador.php?op=eliminar', { idindicador: idindicador }, function (e) {
 
         if (e == 'true') {
           const Toast = Swal.mixin({
@@ -694,22 +611,22 @@ function eliminar(idplanificacion) {
 
           Toast.fire({
             type: 'success',
-            title: 'La planificación ha sido eliminada :)'
+            title: 'El indicador ha sido eliminado :)'
           });
         }
-        else if (e == 'inscritos') {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000
-          });
+        // else if (e == 'inscritos') {
+        //   const Toast = Swal.mixin({
+        //     toast: true,
+        //     position: 'top-end',
+        //     showConfirmButton: false,
+        //     timer: 3000
+        //   });
 
-          Toast.fire({
-            type: 'error',
-            title: 'Hay estudiantes inscritos en ésta planificación y no se puede eliminar'
-          });
-        }
+        //   Toast.fire({
+        //     type: 'error',
+        //     title: 'Hay estudiantes inscritos en ésta planificación y no se puede eliminar'
+        //   });
+        // }
         else {
           const Toast = Swal.mixin({
             toast: true,
@@ -720,7 +637,7 @@ function eliminar(idplanificacion) {
 
           Toast.fire({
             type: 'error',
-            title: 'Ups! No se pudo eliminar la planificación'
+            title: 'Ups! No se pudo eliminar el indicador'
           });
         }
         tabla.ajax.reload();
@@ -731,14 +648,12 @@ function eliminar(idplanificacion) {
 
 //Función para limpiar el formulario
 function limpiar() {
-  // $('#periodo_escolar').val('');
-  $('#periodo_escolar').selectpicker('refresh');
-  $('#seccion').val('');
-  $('#seccion').prop('disabled', true);
-  $('#seccion').selectpicker('refresh');
-  $('#cupo').val('');
-  $('#idplanificacion').val('');
-  $('#formularioregistros').removeClass('was-validated');
+  $([formularioGestionarIndicador])[0].reset();
+  $('#planificacion_indicador').selectpicker('refresh');
+  $('#lapso_indicador').selectpicker('refresh');
+  $('#materia_indicador').selectpicker('refresh');
+  $('#idindicador').val('');
+  $('#formularioGestionarIndicador').removeClass('was-validated');
 }
 
 //Función para limpiar el formulario proyecto de aprendizaje
@@ -747,6 +662,15 @@ function limpiarProyectoAprendizaje() {
   $('#planificacion').selectpicker('refresh');
   $('#lapso').prop('disabled', true);
   $('#lapso').selectpicker('refresh');
+  $('#formularioProyectoAprendizaje').removeClass('was-validated');
+}
+
+//Función para limpiar el formulario proyecto de aprendizaje
+function limpiarEditarProyectoAprendizaje() {
+  $([formularioEditarProyectoAprendizaje])[0].reset();
+  $('#editar_planificacion').selectpicker('refresh');
+  $('#editar_lapso').selectpicker('refresh');
+  $('#idproyecto_aprendizaje').val('');
   $('#formularioProyectoAprendizaje').removeClass('was-validated');
 }
 

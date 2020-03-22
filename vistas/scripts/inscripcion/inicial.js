@@ -510,7 +510,7 @@ function traerPlanificaciones() {
         
         let planificacion = '';
         if (data.length != 0) {
-            data.forEach(function (indice) {
+            data.forEach(function (indic e) {
                 planificacion += '<option value="' + indice.id + '">' + indice.grado + ' º - "' + indice.seccion + '" - Cupo disponible: '+indice.cupo_disponible+'</option>';
             });
         }
