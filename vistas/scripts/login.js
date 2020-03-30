@@ -85,9 +85,7 @@ fraseAleatoria();
 $('#frmAcceso').on('submit', function (e) {
 	e.preventDefault();
 	
-	var documento = $('#documento').val();
-	var cedula = $('#user').val();
-	var user = documento+cedula;
+  var user = $('#user').val();
 	var pass = $('#pass').val();
 
 	$.post('../controladores/usuario.php?op=verificar', {'user': user, 'pass': pass}, function (data) {

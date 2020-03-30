@@ -505,12 +505,12 @@ function parroquias(idmunicipio) {
 }
 
 function traerPlanificaciones() {
-    $.post('../../controladores/inscripcion/inicial.php?op=traerplanificaciones', function (data) {        
+    $.post('../../controladores/inscripcion/inicial.php?op=traerplanificaciones', function (data) {  
         data = JSON.parse(data);
         
         let planificacion = '';
         if (data.length != 0) {
-            data.forEach(function (indic e) {
+            data.forEach(function (indice) {
                 planificacion += '<option value="' + indice.id + '">' + indice.grado + ' º - "' + indice.seccion + '" - Cupo disponible: '+indice.cupo_disponible+'</option>';
             });
         }

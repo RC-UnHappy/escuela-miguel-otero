@@ -3,9 +3,6 @@
 #Se incluye la conexión a la base de datos
 require_once '../config/conexion.php';
 
-#Se incluye la clase Persona
-require_once 'Persona.php';
-
 /**
  * Modelo de Usuario
  */
@@ -19,36 +16,60 @@ class Usuario //extends Persona
 	}
 
 	#Método para insertar registros
-	function insertar($idpersona, $usuario, $clave, $rol, $img, $i_fallidos, $estatus, $permisos)
+	function insertar($idpersona, $usuario, $clave, $rol, $intentos_fallidos, $estatus, $permisos)
 	{
-		$sql = "INSERT INTO usuario (idpersona, usuario, clave, rol, img, i_fallidos, estatus) VALUES('$idpersona', '$usuario', '$clave', '$rol', '$img', '$i_fallidos', '$estatus')";
+		$sql = "INSERT INTO usuario (idpersona, usuario, clave, rol, intentos_fallidos, estatus) VALUES('$idpersona', '$usuario', '$clave', '$rol', '$intentos_fallidos', '$estatus')";
 
 		$idusuarionew = ejecutarConsulta_retornarID($sql);
 
-		$num_elementos = 0;
 		$sw = true;
 
-		while ($num_elementos < count($permisos)) {
-			$sql_detalle = "INSERT INTO usuario_permiso (idusuario, idpermiso) VALUES('$idusuarionew', '$permisos[$num_elementos]')";
-			ejecutarConsulta($sql_detalle) or $sw = false;
-			$num_elementos = $num_elementos + 1;
-		}
+    foreach ($permisos as $key => $value) {
+      list($idmodulo, $idaccion) = explode('-', $value);
+
+      $sql_detalle = "INSERT INTO usuario_modulo_accion (idusuario, idmodulo, idaccion) VALUES('$idusuarionew', '$idmodulo', '$idaccion')";
+
+      ejecutarConsulta($sql_detalle) or $sw = false;
+    }
 
 		return $sw;
 	}
 
 	#Método para editar registros
-	function editar($id, $cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac)
+	function editar($idusuario, $rol, $permisos)
 	{
-		$sql = "UPDATE persona SET cedula='$cedula', p_nombre = '$p_nombre', s_nombre = '$s_nombre', p_apellido = '$p_apellido', s_apellido = '$s_apellido', genero = '$genero', f_nac = '$f_nac'  WHERE id = '$id'";
+    $sw = true;
 
-		return ejecutarConsulta($sql);
+    $sql = "UPDATE usuario SET rol='$rol' WHERE id = '$idusuario'";
 
-	}
+    ejecutarConsulta($sql) or $sw = FALSE;
+
+    foreach ($permisos as $key => $value) {
+      list($idmodulo, $idaccion) = explode('-', $value);
+
+      $sql_detalle = "INSERT INTO usuario_modulo_accion (idusuario, idmodulo, idaccion) VALUES('$idusuario', '$idmodulo', '$idaccion')";
+
+      ejecutarConsulta($sql_detalle) or $sw = false;
+    }
+    return $sw;
+  }
+  
+  function eliminar_permisos_usuario($idusuario)
+  {
+    $sql = "DELETE FROM usuario_modulo_accion WHERE idusuario = '$idusuario'";
+    return ejecutarConsulta($sql);
+  }
 
 	#Método para obtener los permisos de un usuario
-	function listarmarcados($idusuario) {
-		$sql = "SELECT * FROM usuario_permiso WHERE idusuario = '$idusuario'";
+	function traer_permisos_usuario($idusuario) {
+		$sql = "SELECT * FROM usuario_modulo_accion WHERE idusuario = '$idusuario'";
+
+		return ejecutarConsulta($sql);
+  }
+  
+	#Método para obtener los permisos de un usuario pero en lugar del id el nombre del modulo y de la acción
+	function traer_permisos_usuario_nombre($idusuario) {
+		$sql = "SELECT uma.*, m.modulo, a.accion FROM usuario_modulo_accion uma INNER JOIN modulo m ON uma.idmodulo = m.id INNER JOIN accion a ON uma.idaccion = a.id WHERE idusuario = '$idusuario'";
 
 		return ejecutarConsulta($sql);
 	}
@@ -56,25 +77,22 @@ class Usuario //extends Persona
 	#Método para listar todos los usuarios
 	function listar()
 	{
-		$sql = "SELECT p.p_nombre, p.p_apellido, p.email, u.usuario, u.rol, u.estatus, u.id FROM persona as p INNER JOIN usuario as u ON p.id = u.idpersona";
+		$sql = "SELECT u.id, u.usuario, u.rol, u.intentos_fallidos, p.p_nombre, p.p_apellido, u.estatus FROM usuario as u INNER JOIN persona as p ON u.idpersona = p.id";
 
 		return ejecutarConsulta($sql);
 	}
 
 	function mostrar($idusuario)
 	{
-		$sql = "SELECT * FROM usuario WHERE idusuario = '$idusuario'";
-
+		$sql = "SELECT usu.id as idusuario, usu.usuario, usu.rol as rol_usuario, per.* FROM usuario usu INNER JOIN persona per ON usu.idpersona = per.id WHERE usu.id = '$idusuario'";
 		return ejecutarConsultaSimpleFila($sql);
 	}
 
 	#Método para vefiricar el acceso al sistema
 	function verificar($usuario, $clave)
 	{
-		$sql = "SELECT u.id, u.usuario, u.rol, u.img, p.p_nombre, p.p_apellido, p.genero, p.email FROM usuario as u INNER JOIN persona as p ON u.idpersona = p.id WHERE u.usuario = '$usuario' AND u.clave = '$clave' AND u.estatus = '1'";
-
+		$sql = "SELECT u.id, u.usuario, u.rol, p.p_nombre, p.p_apellido, p.genero FROM usuario as u INNER JOIN persona as p ON u.idpersona = p.id WHERE u.usuario = '$usuario' AND u.clave = '$clave' AND u.estatus = '1'";
 		return ejecutarConsulta($sql);
-
 	}
 
 	#Método para desactivar usuarios
@@ -93,68 +111,35 @@ class Usuario //extends Persona
 
 		return ejecutarConsulta($sql);
 
+  }
+  
+  #Método para desactivar usuarios
+	function resetear($idusuario, $cedula, $clavehash)
+	{
+		$sql = "UPDATE usuario SET usuario = '$cedula', clave = '$clavehash', intentos_fallidos = 0 WHERE id = '$idusuario'";
+
+		return ejecutarConsulta($sql);
+
 	}
 
-	#Método para comprobar si existe el usuario
-	function comprobarusuario($cedula)
+	#Método para comprobar si existe la persona
+	function comprobarpersona($cedula)
 	{
-		$sql = "SELECT usuario FROM usuario WHERE usuario = '$cedula'";
+    $sql = "SELECT * FROM persona WHERE cedula = '$cedula'";
 		return ejecutarConsulta($sql);
 	}
 
-
-
-	/*===========================================================
-	=            Funciones relacionadas con Director            =
-	===========================================================*/
-
-	#Método para comprobar si hay un director asignado
-	function comprobardirector()
+	#Método para traer los módulos
+	function traermodulos()
 	{
-		$sql = "SELECT * FROM usuario WHERE rol = 'Director(a)'";
+		$sql = "SELECT * FROM modulo ORDER BY modulo ASC";
 		return ejecutarConsulta($sql);
-	}
-
-	#Método para promover a un docente o personal a director
-	function promoverdirector($idusuario)
+  }
+  
+  #Método para traer las acciones
+	function traeracciones()
 	{
-		$sql = "UPDATE usuario SET rol = 'Director(a)' WHERE id = '$idusuario'";
-		return ejecutarConsulta($sql);
-	}
-
-	#Método para degradar a un director a docente o personal
-	function degradardirector($idusuario)
-	{
-		$sql = "UPDATE usuario SET rol = 'Docente' WHERE id = '$idusuario'";
-		return ejecutarConsulta($sql);
-	}
-
-	/*=====  End of Funciones relacionadas con Director  ======*/
-	
-
-
-	/*==============================================================
-	=            Funciones relacionadas con Subdirector            =
-	==============================================================*/
-	
-	#Método para comprobar si hay un director asignado
-	function comprobarsubdirector()
-	{
-		$sql = "SELECT * FROM usuario WHERE rol = 'Subdirector(a)'";
-		return ejecutarConsulta($sql);
-	}
-
-	#Método para promover a un docente o personal a director
-	function promoversubdirector($idusuario)
-	{
-		$sql = "UPDATE usuario SET rol = 'Subdirector(a)' WHERE id = '$idusuario'";
-		return ejecutarConsulta($sql);
-	}
-
-	#Método para degradar a un director a docente o personal
-	function degradarsubdirector($idusuario)
-	{
-		$sql = "UPDATE usuario SET rol = 'Docente' WHERE id = '$idusuario'";
+		$sql = "SELECT * FROM accion";
 		return ejecutarConsulta($sql);
 	}
 	

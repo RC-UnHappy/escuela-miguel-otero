@@ -3,6 +3,9 @@
 ob_start();
 session_start();
 
+if (!isset($_SESSION['idusuario'])) {
+  header('location: login.html');
+}
 require_once 'modules/header.php';
 
 ?>

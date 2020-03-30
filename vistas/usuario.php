@@ -8,7 +8,7 @@ if (!isset($_SESSION['usuario'])) {
 }
 else {
 require_once 'modules/header.php';
-if ($_SESSION['usuario'] == 1) {
+if (isset($_SESSION['permisos']['usuario']) && in_array('ver' , $_SESSION['permisos']['usuario'])) {
 ?>
 
 <!-- Contenido -->
@@ -21,7 +21,7 @@ if ($_SESSION['usuario'] == 1) {
 
               <div class="card-header pt-0 pb-1 bg-white mb-3"> <!-- Botonera del panel -->
               
-                <h1 class="font-weight-normal h5">Personal
+                <h1 class="font-weight-normal h5">Usuario
                   <button class="btn btn-outline-primary btn-pill shadow-sm" onclick="mostrarform(true)" id="btnagregar">
                     <i class="fa fa-plus-circle"></i> Agregar
                   </button>
@@ -39,8 +39,9 @@ if ($_SESSION['usuario'] == 1) {
                           <th scope="col">Usuario</th>
                           <th scope="col">Nombre</th>
                           <th scope="col">Apellido</th>
-                          <th scope="col">Correo</th>
                           <th scope="col">Rol</th>
+                          <th scope="col">Intentos Fallidos</th>
+                          <th scope="col">Estatus</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -57,7 +58,7 @@ if ($_SESSION['usuario'] == 1) {
                   <div class="col-sm-6">
                     <div class="card border-right-0 border-bottom-0 border-left-0  border-top-0 shadow mb-5 bg-white rounded">
                       <div class="card-header bg-white  shadow border-bottom-0 fondo-degradado">
-                        <h5 class="m-0 p-0  font-italic font-weight-bold text-white" ><i class="fas fa-user-edit"></i>  Personales
+                        <h5 class="m-0 p-0  font-italic font-weight-bold text-white" ><i class="fas fa-user-edit"></i>  Usuario
                           <small class="text-dark">(Requerido)</small>
                         </h5>
                       </div>
@@ -70,9 +71,10 @@ if ($_SESSION['usuario'] == 1) {
                               <div class="input-group ">
                                 <select name="documento" id="documento" class="form-control selectpicker" required="true">
                                   <option value="">Seleccione</option>
-                                  <option value="venezolano">Venezolano</option>
-                                  <option value="extranjero">Extranjero</option>
-                                  <option value="pasaporte">Pasaporte</option>
+                                  <option value="V">Venezolano</option>
+                                  <option value="E">Extranjero</option>
+                                  <option value="P">Pasaporte</option>
+                                  <option value="CE">Cédula Estudiantil</option>
                                 </select>
                                 <div class="invalid-feedback">
                                   Campo Obligatorio
@@ -84,9 +86,9 @@ if ($_SESSION['usuario'] == 1) {
                             <label for="cedula">Cédula (*)</label>
                             <div class="input-group">
 
-                              <input type="hidden" name="idusuario" id="idusuario"> <!-- Input oculto que guardará el id del usuario cuando sea necesario -->
+                              <input type="hidden" name="idpersona" id="idpersona"> <!-- Input oculto que guardará el id de la persona cuando sea necesario -->
+                              <input type="hidden" name="idusuario" id="idusuario"> <!-- Input oculto que guardará el id de la persona cuando sea necesario -->
                               
-
                               <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula"  id="cedula"  maxlength="8" minlength="7" required>
                               
                               <div class="invalid-feedback" id="mensajeCedula">
@@ -96,9 +98,9 @@ if ($_SESSION['usuario'] == 1) {
                           </div>
 
                           <div class="form-group col-md-6">
-                            <label for="p_nombre">Primer Nombre (*)</label>
+                            <label for="p_nombre">Primer nombre</label>
                             <div class="input-group">
-                              <input type="text" class="form-control solo_letras" name="p_nombre" id="p_nombre" required >
+                              <input type="text" class="form-control solo_letras" name="p_nombre" id="p_nombre" readonly>
                               <div class="invalid-feedback">
                                   Campo Obligatorio
                               </div>
@@ -106,16 +108,16 @@ if ($_SESSION['usuario'] == 1) {
                           </div>
 
                           <div class="form-group col-md-6">
-                            <label for="s_nombre">Segundo Nombre</label>
+                            <label for="s_nombre">Segundo nombre</label>
                             <div class="input-group">
-                              <input type="text" class="form-control solo_letras" name="s_nombre" id="s_nombre">
+                              <input type="text" class="form-control solo_letras" name="s_nombre" id="s_nombre" readonly>
                             </div>
                           </div>
 
                           <div class="form-group col-md-6">
-                            <label for="p_apellido">Primer Apellido (*)</label>
+                            <label for="p_apellido">Primer apellido (*)</label>
                             <div class="input-group">
-                              <input type="text" class="form-control solo_letras" name="p_apellido" id="p_apellido" required>
+                              <input type="text" class="form-control solo_letras" name="p_apellido" id="p_apellido" readonly>
                               <div class="invalid-feedback">
                                   Campo Obligatorio
                               </div>
@@ -123,9 +125,9 @@ if ($_SESSION['usuario'] == 1) {
                           </div>
 
                           <div class="form-group col-md-6">
-                            <label for="s_apellido">Segundo Apellido</label>
+                            <label for="s_apellido">Segundo apellido</label>
                             <div class="input-group">
-                              <input type="text" class="form-control solo_letras" name="s_apellido" id="s_apellido">
+                              <input type="text" class="form-control solo_letras" name="s_apellido" id="s_apellido" readonly>
                             </div>
                           </div>
 
@@ -137,7 +139,7 @@ if ($_SESSION['usuario'] == 1) {
                                   <i class="fas fa-venus-mars"></i>
                                 </div>
                               </div>
-                              <select name="genero" class="form-control selectpicker genero" id="genero" required>
+                              <select name="genero" class="form-control selectpicker genero" id="genero" disabled="true">
                                 <option value="">Seleccione</option>
                                 <option value="M">Masculino</option>
                                 <option value="F">Femenino</option>
@@ -149,14 +151,14 @@ if ($_SESSION['usuario'] == 1) {
                           </div>
 
                           <div class="form-group col-md-6">
-                            <label for="f_nac">Fecha Nacimiento (*)</label>
+                            <label for="f_nac">Fecha nacimiento (*)</label>
                             <div class="input-group">
                               <div class="input-group-prepend">
                                 <div class="input-group-text">
                                   <i class="fas fa-calendar-alt"></i>
                                 </div>
                               </div>
-                              <input type="date" name="f_nac" id="f_nac" class="form-control" required>
+                              <input type="date" name="f_nac" id="f_nac" class="form-control" readonly>
                               <div class="invalid-feedback">
                                   Campo Obligatorio
                               </div>
@@ -171,37 +173,20 @@ if ($_SESSION['usuario'] == 1) {
                                   <i class="far fa-envelope"></i>
                                 </div>
                               </div>
-                              <input type="email" name="email" id="email" class="form-control" required>
+                              <input type="email" name="email" id="email" class="form-control" readonly>
                               <div class="invalid-feedback">
                                   Campo Obligatorio
                               </div>
                             </div>
                           </div>
 
-                          <div class="form-group col-md-6">
-                            <label for="celular">Teléfono Celular</label>
+                          <div class="form-group col-md-12">
+                            <label for="usuario_sistema">Usuario</label>
                             <div class="input-group">
-                              <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                  <i class="fas fa-mobile-alt"></i>
-                                </div>
-                              </div>
-                              <input type="text" name="celular" id="celular" class="form-control solo_numeros guion_telefonico"  maxlength="12">
+                              <input type="text" class="form-control solo_letras" name="usuario_sistema" id="usuario_sistema" readonly>
                               <div class="invalid-feedback">
                                   Campo Obligatorio
                               </div>
-                            </div>
-                          </div>
-
-                          <div class="form-group col-md-6">
-                            <label for="fijo">Teléfono Fijo</label>
-                            <div class="input-group">
-                              <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                  <i class="fas fa-phone-alt"></i>
-                                </div>
-                              </div>
-                              <input type="text" name="fijo" id="fijo" class="form-control solo_numeros guion_telefonico" maxlength="12">
                             </div>
                           </div>
 
@@ -213,7 +198,7 @@ if ($_SESSION['usuario'] == 1) {
                   <div class="col-sm-6">
                     <div class="card border-right-0 border-bottom-0 border-left-0  shadow mb-5 bg-white border-top-0 rounded">
                       <div class="card-header bg-white  shadow border-bottom-0 fondo-degradado">
-                        <h5 class="m-0 p-0 lead font-italic font-weight-bold text-white" ><i class="far fa-id-card "></i> Usuario
+                        <h5 class="m-0 p-0 lead font-italic font-weight-bold text-white" ><i class="far fa-id-card "></i> Permisos
                           <small class="text-dark">(Requerido)</small>
                         </h5>
                       </div>
@@ -231,8 +216,8 @@ if ($_SESSION['usuario'] == 1) {
                               </div>
                               <select id="rol" name="rol" class="form-control selectpicker" required>
                                 <option value="">Seleccione</option>
-                                <option value="Personal">Personal Administrativo</option>
-                                <option value="Docente">Docente</option>
+                                <option value="Usuario">Usuario</option>
+                                <option value="Administrador">Administrador</option>
                               </select>
                               <div class="invalid-feedback">
                                   Campo Obligatorio
@@ -240,11 +225,18 @@ if ($_SESSION['usuario'] == 1) {
                             </div>
                           </div>
 
-                          <div class="form-group col-md-12">
+                          <div class="form-group col-md-12 pt-2">
+
                             <div class="input-group-prepend">
                               <div>
                                 <i class="fa fa-key"></i>
                                 <label for="permisos">Permisos (*)</label>
+
+                                <div class="custom-control custom-checkbox pr-2 custom-control-inline">
+                                  <input type="checkbox" class="custom-control-input" id="seleccionarTodos" name="" value="" >
+                                  <label class="custom-control-label" for="seleccionarTodos">Seleccionar todos</label>
+                                </div>
+
                               </div>
                             </div>
                             <div class="input-group" id="permisos">
@@ -253,6 +245,7 @@ if ($_SESSION['usuario'] == 1) {
                                   Campo Obligatorio
                               </div>
                             </div>
+
                           </div>
                           
                         </div>

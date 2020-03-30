@@ -70,12 +70,7 @@ if (strlen(session_id()) < 1)
       <li class="nav-item px-3">
         <a class="nav-link" href="/escuela-miguel-otero/vistas/escritorio.php">Escritorio</a>
       </li>
-      <li class="nav-item px-3">
-        <a class="nav-link" href="#">Users</a>
-      </li>
-      <li class="nav-item px-3">
-        <a class="nav-link" href="#">Settings</a>
-      </li>
+      
     </ul>
 
     <ul class="nav navbar-nav ml-auto">
@@ -99,16 +94,14 @@ if (strlen(session_id()) < 1)
         <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" id="dropdownMenuLink">
 
           <img class="img-avatar" src="<?php
-                                        if (empty($_SESSION['img']) && $_SESSION['genero'] == 'M') {
-                                          echo '/escuela-miguel-otero/files/perfil/hombre.jpg';
-                                        } elseif (empty($_SESSION['img']) && $_SESSION['genero'] == 'F') {
-                                          echo '/escuela-miguel-otero/files/perfil/mujer.jpg';
-                                        } else {
-                                          echo $_SESSION['img'];
-                                        } ?>" alt="Imagen">
+            if ($_SESSION['genero'] == 'M') {
+              echo '/escuela-miguel-otero/files/perfil/hombre.jpg';
+            } elseif ($_SESSION['genero'] == 'F') {
+              echo '/escuela-miguel-otero/files/perfil/mujer.jpg';
+            }?>" alt="Imagen">
 
 
-          <span class="hidden-xs"><?php echo ucfirst($_SESSION['p_nombre']) . ' ' . ucfirst($_SESSION['p_apellido']); ?></span>
+          <span class="hidden-xs"><?php echo ucfirst($_SESSION['usuario'])?></span>
 
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
@@ -156,7 +149,7 @@ if (strlen(session_id()) < 1)
         <ul class="nav">
 
           <?php
-          if ($_SESSION['escritorio'] == 1) {
+          if (isset($_SESSION['permisos']['escritorio']) && in_array('ver' , $_SESSION['permisos']['escritorio'])) {
             echo '<li class="nav-item">
                         <a class="nav-link" href="/escuela-miguel-otero/vistas/escritorio.php">
                           <i class="nav-icon fas fa-tachometer-alt"></i> Escritorio
@@ -170,20 +163,32 @@ if (strlen(session_id()) < 1)
 
           <li class="nav-title">Institución</li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="/escuela-miguel-otero/vistas/estudiante.php">
+          <?php
+          echo  (isset($_SESSION['permisos']['estudiante']) && in_array('ver' , $_SESSION['permisos']['estudiante'])) ? 
+            '<li class="nav-item">
+              <a class="nav-link" href="/escuela-miguel-otero/vistas/estudiante.php">
               <i class="nav-icon fas fa-user-graduate"></i> Estudiante</a>
-          </li>
+            </li>' 
+            :
+            '';
 
-          <li class="nav-item">
-            <a class="nav-link" href="/escuela-miguel-otero/vistas/representante.php">
+          echo  (isset($_SESSION['permisos']['representante']) && in_array('ver' , $_SESSION['permisos']['representante'])) ? 
+            '<li class="nav-item">
+              <a class="nav-link" href="/escuela-miguel-otero/vistas/representante.php">
               <i class="nav-icon fas fa-user-tie"></i> Padres y representantes</a>
-          </li>
+            </li>' 
+            :
+            '';
 
-          <li class="nav-item">
-            <a class="nav-link" href="/escuela-miguel-otero/vistas/personal.php">
+            echo  (isset($_SESSION['permisos']['personal']) && in_array('ver' , $_SESSION['permisos']['personal'])) ? 
+            '<li class="nav-item">
+              <a class="nav-link" href="/escuela-miguel-otero/vistas/personal.php">
               <i class="nav-icon fas fa-chalkboard-teacher"></i> Personal</a>
-          </li>
+            </li>' 
+            :
+            '';
+
+          ?>
 
           <li class="nav-item nav-dropdown">
             <a class="nav-link nav-dropdown-toggle" href="#">
@@ -192,44 +197,70 @@ if (strlen(session_id()) < 1)
 
             <ul class="nav-dropdown-items">
 
-              <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/gestionar-indicador.php">
-                  <i class="nav-icon fas fa-tasks"></i> Gestionar Indicador
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/inscripcion/inicial.php">
-                  <i class="nav-icon fas fa-check"></i> Inscripción inicial
-                </a>
-              </li>
+              <?php
+                echo  (isset($_SESSION['permisos']['boletin-parcial']) && in_array('ver' , $_SESSION['permisos']['boletin-parcial'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/boletin-parcial.php">
+                    <i class="nav-icon fas fa-columns"></i> Boletín parcial
+                  </a>
+                </li>' 
+                :
+                '';
 
-              <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/lapso-academico.php">
-                  <i class="nav-icon fas fa-cut"></i> Lapso académico
-                </a>
-              </li>
+                echo  (isset($_SESSION['permisos']['gestionar-indicador']) && in_array('ver' , $_SESSION['permisos']['gestionar-indicador'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/gestionar-indicador.php">
+                    <i class="nav-icon fas fa-tasks"></i> Gestionar indicador
+                  </a>
+                </li>' 
+                :
+                '';
 
+                echo  (isset($_SESSION['permisos']['inicial']) && in_array('ver' , $_SESSION['permisos']['inicial'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/inscripcion/inicial.php">
+                    <i class="nav-icon fas fa-check"></i> Inscripción inicial
+                  </a>
+                </li>' 
+                :
+                '';
 
-              <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/periodo-escolar.php">
-                  <i class="nav-icon fas fa-calendar-alt"></i> Período Escolar
-                </a>
-              </li>
+                echo  (isset($_SESSION['permisos']['lapso-academico']) && in_array('ver' , $_SESSION['permisos']['lapso-academico'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/lapso-academico.php">
+                    <i class="nav-icon fas fa-cut"></i> Lapso académico
+                  </a>
+                </li>' 
+                :
+                '';
 
-              <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/pic.php">
-                  <i class="nav-icon fas fa-tasks"></i> PIC
-                </a>
-              </li>
+                echo  (isset($_SESSION['permisos']['periodo-escolar']) && in_array('ver' , $_SESSION['permisos']['periodo-escolar'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/periodo-escolar.php">
+                    <i class="nav-icon fas fa-calendar-alt"></i> Período escolar
+                  </a>
+                </li>' 
+                :
+                '';
 
-              <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/planificacion.php">
-                  <i class="nav-icon fas fa-tasks"></i> Planificación
-                </a>
-              </li>
+                echo  (isset($_SESSION['permisos']['pic']) && in_array('ver' , $_SESSION['permisos']['pic'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/pic.php">
+                    <i class="nav-icon fas fa-tasks"></i> PIC
+                  </a>
+                </li>' 
+                :
+                '';
 
-
+                echo  (isset($_SESSION['permisos']['planificacion']) && in_array('ver' , $_SESSION['permisos']['planificacion'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/planificacion.php">
+                    <i class="nav-icon fas fa-tasks"></i> Planificación
+                  </a>
+                </li>' 
+                :
+                '';
+              ?>
 
             </ul>
           </li>
@@ -238,7 +269,7 @@ if (strlen(session_id()) < 1)
 
 
           <?php
-          if ($_SESSION['usuario'] == 1) {
+          if (isset($_SESSION['permisos']['usuario']) && in_array('ver' , $_SESSION['permisos']['usuario'])) {
             echo '<li class="nav-item nav-dropdown">
                         <a class="nav-link nav-dropdown-toggle" href="#">
                           <i class="nav-icon fas fa-users-cog"></i> Usuarios
@@ -259,71 +290,81 @@ if (strlen(session_id()) < 1)
             </a>
 
             <ul class="nav-dropdown-items">
+              <?php
+                echo  (isset($_SESSION['permisos']['ambiente']) && in_array('ver' , $_SESSION['permisos']['ambiente'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/ambiente.php">
+                    <i class="nav-icon fas fa-ruler-vertical"></i> Ambiente
+                  </a>
+                </li>' 
+                :
+                '';
 
+                echo  (isset($_SESSION['permisos']['seccion']) && in_array('ver' , $_SESSION['permisos']['seccion'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/seccion.php">
+                    <i class="nav-icon fas fa-apple-alt"></i> Sección
+                  </a>
+                </li>' 
+                :
+                '';
 
-              <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/ambiente.php">
-                  <i class="nav-icon fas fa-ruler-vertical"></i> Ambiente
-                </a>
-              </li>
+                echo  (isset($_SESSION['permisos']['institucion']) && in_array('ver' , $_SESSION['permisos']['institucion'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/institucion.php">
+                    <i class="nav-icon fas fa-school"></i> Institución
+                  </a>
+                </li>' 
+                :
+                '';
 
-              <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/seccion.php">
-                  <i class="nav-icon fas fa-apple-alt"></i> Sección
-                </a>
-              </li>
+                echo  (isset($_SESSION['permisos']['grado']) && in_array('ver' , $_SESSION['permisos']['grado'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/grado.php">
+                    <i class="nav-icon fas fa-pencil-ruler"></i> Grado
+                  </a>
+                </li>' 
+                :
+                '';
 
-              <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/institucion.php">
-                  <i class="nav-icon fas fa-school"></i> Institución
-                </a>
-              </li>
+                echo  (isset($_SESSION['permisos']['lapso']) && in_array('ver' , $_SESSION['permisos']['lapso'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/lapso.php">
+                    <i class="nav-icon fas fa-cut"></i> Lapso
+                  </a>
+                </li>' 
+                :
+                '';
 
-              <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/grado.php">
-                  <i class="nav-icon fas fa-pencil-ruler"></i> Grado
-                </a>
-              </li>
+                echo  (isset($_SESSION['permisos']['materia']) && in_array('ver' , $_SESSION['permisos']['materia'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/materia.php">
+                    <i class="nav-icon fas fa-book"></i> Materia
+                  </a>
+                </li>' 
+                :
+                '';
 
-              <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/lapso.php">
-                  <i class="nav-icon fas fa-cut"></i> Lapso
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/escuela-miguel-otero/vistas/materia.php">
-                  <i class="nav-icon fas fa-book"></i> Materia
-                </a>
-              </li>
+                echo  (isset($_SESSION['permisos']['modulo']) && in_array('ver' , $_SESSION['permisos']['modulo'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/modulo.php">
+                    <i class="nav-icon fas fa-check"></i> Módulo
+                  </a>
+                </li>' 
+                :
+                '';
 
-            </ul>
-          </li>
+                echo  (isset($_SESSION['permisos']['accion']) && in_array('ver' , $_SESSION['permisos']['accion'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/accion.php">
+                    <i class="nav-icon fas fa-check"></i> Acción
+                  </a>
+                </li>' 
+                :
+                '';
 
-
-          <li class="nav-item nav-dropdown">
-            <a class="nav-link nav-dropdown-toggle" href="#">
-              <i class="nav-icon fas fa-user"></i> Icons</a>
-            <ul class="nav-dropdown-items">
-              <li class="nav-item">
-                <a class="nav-link" href="icons/coreui-icons.html">
-                  <i class="nav-icon icon-star"></i> CoreUI Icons
-                  <span class="badge badge-success">NEW</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="icons/flags.html">
-                  <i class="nav-icon icon-star"></i> Flags</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="icons/font-awesome.html">
-                  <i class="nav-icon icon-star"></i> Font Awesome
-                  <span class="badge badge-secondary">4.7</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="icons/simple-line-icons.html">
-                  <i class="nav-icon icon-star"></i> Simple Line Icons</a>
-              </li>
+              ?>
+                  
             </ul>
           </li>
 
