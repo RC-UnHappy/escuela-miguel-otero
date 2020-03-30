@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-03-2020 a las 02:28:59
+-- Tiempo de generación: 30-03-2020 a las 21:07:30
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -21,6 +21,27 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `db_mos`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `accion`
+--
+
+CREATE TABLE `accion` (
+  `id` int(11) NOT NULL,
+  `accion` char(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `accion`
+--
+
+INSERT INTO `accion` (`id`, `accion`) VALUES
+(1, 'ver'),
+(2, 'agregar'),
+(3, 'editar'),
+(4, 'eliminar');
 
 -- --------------------------------------------------------
 
@@ -618,7 +639,48 @@ INSERT INTO `indicador` (`id`, `idplanificacion`, `idmateria`, `lapso_academico`
 (4, 40, 6, '1', 'Socializa con sus compañeros'),
 (5, 40, 3, '1', 'Lee corrido y sin detenerse'),
 (7, 56, 7, '2', 'Corre duro'),
-(8, 46, 3, '2', 'Lee corrido y sin detenerse');
+(8, 46, 3, '2', 'Lee corrido y sin detenerse'),
+(9, 40, 4, '1', 'dddddddddddddddddddddddddddddd'),
+(10, 40, 3, '1', 'asdasdsaccasdasdsa'),
+(11, 40, 4, '1', 'ddddasdsadsadmasmcklamckamlkcmaklcascasc'),
+(12, 40, 3, '1', 'y esto y lo otro'),
+(13, 40, 4, '1', 'Lee corrido y sin detenerse los numeros'),
+(14, 40, 7, '1', 'Corre durango'),
+(15, 40, 5, '1', 'Ve los arboles con atención'),
+(16, 40, 3, '1', 'No se le enreda la lengua al leer');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `indicador_nota`
+--
+
+CREATE TABLE `indicador_nota` (
+  `id` int(11) NOT NULL,
+  `idplanificacion` int(11) NOT NULL,
+  `idindicador` int(11) NOT NULL,
+  `idestudiante` int(11) NOT NULL,
+  `lapso_academico` int(11) NOT NULL,
+  `nota` char(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `indicador_nota`
+--
+
+INSERT INTO `indicador_nota` (`id`, `idplanificacion`, `idindicador`, `idestudiante`, `lapso_academico`, `nota`) VALUES
+(13, 40, 15, 144, 1, 'AV'),
+(14, 40, 4, 144, 1, 'EP'),
+(15, 40, 14, 144, 1, 'AV'),
+(16, 40, 1, 144, 1, 'EP'),
+(17, 40, 5, 144, 1, 'EP'),
+(18, 40, 10, 144, 1, 'C'),
+(19, 40, 12, 144, 1, 'AV'),
+(20, 40, 16, 144, 1, 'AV'),
+(21, 40, 2, 144, 1, 'AV'),
+(22, 40, 9, 144, 1, 'AV'),
+(23, 40, 11, 144, 1, 'AV'),
+(24, 40, 13, 144, 1, 'AV');
 
 -- --------------------------------------------------------
 
@@ -727,7 +789,7 @@ CREATE TABLE `lapso_academico` (
 --
 
 INSERT INTO `lapso_academico` (`id`, `idperiodo_escolar`, `lapso`, `fecha_inicio`, `fecha_fin`, `estatus`) VALUES
-(4, 45, '1', '2021-08-25', '2021-12-10', 'Finalizado'),
+(4, 45, '1', '2021-08-25', '2021-12-10', 'Activo'),
 (5, 45, '2', '2021-12-11', '2022-03-30', 'Planificado'),
 (7, 45, '3', '2022-04-01', '2022-06-30', 'Planificado');
 
@@ -780,6 +842,43 @@ INSERT INTO `materia` (`id`, `materia`, `estatus`) VALUES
 (6, 'CIENCIAS SOCIALES', 1),
 (7, 'EDUCACIÓN FÍSICA', 1),
 (8, 'CULTURA', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `modulo`
+--
+
+CREATE TABLE `modulo` (
+  `id` int(11) NOT NULL,
+  `modulo` char(70) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `modulo`
+--
+
+INSERT INTO `modulo` (`id`, `modulo`) VALUES
+(1, 'ambiente'),
+(2, 'escritorio'),
+(3, 'estudiante'),
+(4, 'gestionar-indicador'),
+(5, 'grado'),
+(6, 'institucion'),
+(7, 'lapso'),
+(8, 'lapso-academico'),
+(9, 'materia'),
+(10, 'modulo'),
+(11, 'periodo-escolar'),
+(12, 'personal'),
+(13, 'pic'),
+(14, 'planificacion'),
+(15, 'representante'),
+(16, 'seccion'),
+(17, 'usuario'),
+(18, 'accion'),
+(19, 'inicial'),
+(20, 'boletin-parcial');
 
 -- --------------------------------------------------------
 
@@ -3054,25 +3153,6 @@ INSERT INTO `periodo_escolar` (`id`, `periodo`, `fecha_creacion`, `fecha_finaliz
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `permiso`
---
-
-CREATE TABLE `permiso` (
-  `id` int(11) NOT NULL,
-  `permiso` varchar(30) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `permiso`
---
-
-INSERT INTO `permiso` (`id`, `permiso`) VALUES
-(1, 'Escritorio'),
-(2, 'Usuario');
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `persona`
 --
 
@@ -3119,7 +3199,8 @@ INSERT INTO `persona` (`id`, `cedula`, `p_nombre`, `s_nombre`, `p_apellido`, `s_
 (204, 'V-37693822', 'asdad', '', 'sadsad', '', 'M', '0000-00-00', NULL, '2020-03-09 22:28:42'),
 (208, 'CE-11411693822', 'juan', '', 'cáceres', '', 'M', '0000-00-00', NULL, '2020-03-16 11:27:11'),
 (209, 'CE-11511693822', 'pedro', '', 'cáceres', '', 'M', '0000-00-00', NULL, '2020-03-16 15:41:34'),
-(210, 'CE-11011693822', 'carmelo', '', 'caramelo', '', 'M', '0000-00-00', NULL, '2020-03-16 16:30:14');
+(210, 'CE-11011693822', 'carmelo', '', 'caramelo', '', 'M', '0000-00-00', NULL, '2020-03-16 16:30:14'),
+(211, 'V-00000000', 'ADMINISTRADOR', 'ADMINISTRADOR', 'ADMINISTRADOR', 'ADMINISTRADOR', 'M', '2020-03-24', 'mastercaceresxt12@gmail.com', '2020-03-24 20:33:10');
 
 -- --------------------------------------------------------
 
@@ -3243,13 +3324,25 @@ INSERT INTO `proyecto_aprendizaje` (`id`, `idplanificacion`, `lapso_academico`, 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `p_seguridad`
+-- Estructura de tabla para la tabla `recomendacion`
 --
 
-CREATE TABLE `p_seguridad` (
+CREATE TABLE `recomendacion` (
   `id` int(11) NOT NULL,
-  `pregunta` varchar(100) NOT NULL
+  `idplanificacion` int(11) NOT NULL,
+  `idestudiante` int(11) NOT NULL,
+  `lapso_academico` char(1) NOT NULL,
+  `recomendacion` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `recomendacion`
+--
+
+INSERT INTO `recomendacion` (`id`, `idplanificacion`, `idestudiante`, `lapso_academico`, `recomendacion`) VALUES
+(1, 40, 144, '1', 'xsadsadasdsadsadsad'),
+(2, 40, 144, '1', 'dasasdasdafafafafasdsadsad'),
+(3, 40, 144, '1', 'Esto y lo otro');
 
 -- --------------------------------------------------------
 
@@ -3381,11 +3474,10 @@ INSERT INTO `telefono` (`id`, `idpersona`, `telefono`, `tipo`) VALUES
 CREATE TABLE `usuario` (
   `id` int(11) NOT NULL,
   `idpersona` int(11) NOT NULL,
-  `usuario` varchar(30) NOT NULL,
-  `clave` varchar(64) NOT NULL,
-  `rol` varchar(30) NOT NULL,
-  `img` varchar(45) DEFAULT NULL,
-  `i_fallidos` int(1) NOT NULL,
+  `usuario` char(50) NOT NULL,
+  `clave` char(64) NOT NULL,
+  `rol` char(13) NOT NULL,
+  `intentos_fallidos` char(1) NOT NULL,
   `estatus` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -3393,52 +3485,127 @@ CREATE TABLE `usuario` (
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `idpersona`, `usuario`, `clave`, `rol`, `img`, `i_fallidos`, `estatus`) VALUES
-(32, 32, 'V-27693822', '12c982f01a06faab4cee68edf173444ca07b1b47971aa75ca677e4e3f3678612', 'Docente', '', 0, 1),
-(34, 34, 'V-11693822', '7e5d343ee1bddc34b4d237acb45c389c46fbb07fb432c1625115a19b1d819b6c', 'Docente', '', 0, 1),
-(35, 35, 'V-27693821', '2ca5cb85ebe30a4dea810c6721609b8419169246f438e39b0a790a3813abbf01', 'Docente', '', 0, 1),
-(36, 36, 'V-10636774', '08003141207df43a59548eeef14c384aa46f45d8ca208fbd56aa64b3f422d297', 'Docente', '', 0, 1);
+INSERT INTO `usuario` (`id`, `idpersona`, `usuario`, `clave`, `rol`, `intentos_fallidos`, `estatus`) VALUES
+(3, 84, '18693822', 'e940f96859170181f8fb66dce65d8d8843eedc4c172d33210723a868fe289da7', 'Usuario', '0', 1),
+(5, 211, 'Administrador', 'b20b0f63ce2ed361e8845d6bf2e59811aaa06ec96bcdb92f9bc0c5a25e83c9a6', 'Administrador', '0', 1);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuario_permiso`
+-- Estructura de tabla para la tabla `usuario_modulo_accion`
 --
 
-CREATE TABLE `usuario_permiso` (
-  `id` int(11) NOT NULL,
-  `idusuario` int(11) DEFAULT NULL,
-  `idpermiso` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `usuario_permiso`
---
-
-INSERT INTO `usuario_permiso` (`id`, `idusuario`, `idpermiso`) VALUES
-(35, 32, 1),
-(36, 32, 2),
-(39, 34, 1),
-(40, 34, 2),
-(41, 35, 1),
-(42, 36, 1);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `u_respuesta`
---
-
-CREATE TABLE `u_respuesta` (
+CREATE TABLE `usuario_modulo_accion` (
   `id` int(11) NOT NULL,
   `idusuario` int(11) NOT NULL,
-  `idpregunta` int(11) NOT NULL,
-  `respuesta` varchar(100) NOT NULL
+  `idmodulo` int(11) NOT NULL,
+  `idaccion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `usuario_modulo_accion`
+--
+
+INSERT INTO `usuario_modulo_accion` (`id`, `idusuario`, `idmodulo`, `idaccion`) VALUES
+(691, 3, 2, 1),
+(692, 3, 3, 1),
+(693, 3, 3, 2),
+(694, 3, 3, 3),
+(695, 3, 3, 4),
+(696, 3, 4, 1),
+(697, 3, 4, 2),
+(698, 3, 4, 3),
+(699, 3, 4, 4),
+(700, 3, 6, 1),
+(701, 3, 6, 2),
+(702, 3, 6, 3),
+(703, 3, 6, 4),
+(704, 3, 12, 1),
+(705, 3, 12, 2),
+(706, 3, 12, 3),
+(707, 3, 12, 4),
+(708, 3, 15, 1),
+(709, 3, 15, 2),
+(710, 3, 15, 3),
+(711, 3, 15, 4),
+(998, 5, 18, 1),
+(999, 5, 1, 1),
+(1000, 5, 1, 2),
+(1001, 5, 1, 3),
+(1002, 5, 1, 4),
+(1003, 5, 2, 1),
+(1004, 5, 3, 1),
+(1005, 5, 3, 2),
+(1006, 5, 3, 3),
+(1007, 5, 3, 4),
+(1008, 5, 4, 1),
+(1009, 5, 4, 2),
+(1010, 5, 4, 3),
+(1011, 5, 4, 4),
+(1012, 5, 5, 1),
+(1013, 5, 5, 2),
+(1014, 5, 5, 3),
+(1015, 5, 5, 4),
+(1016, 5, 19, 1),
+(1017, 5, 19, 2),
+(1018, 5, 19, 3),
+(1019, 5, 19, 4),
+(1020, 5, 6, 1),
+(1021, 5, 6, 2),
+(1022, 5, 6, 3),
+(1023, 5, 6, 4),
+(1024, 5, 7, 1),
+(1025, 5, 7, 2),
+(1026, 5, 7, 3),
+(1027, 5, 7, 4),
+(1028, 5, 8, 1),
+(1029, 5, 8, 2),
+(1030, 5, 8, 3),
+(1031, 5, 8, 4),
+(1032, 5, 9, 1),
+(1033, 5, 9, 2),
+(1034, 5, 9, 3),
+(1035, 5, 9, 4),
+(1036, 5, 10, 1),
+(1037, 5, 11, 1),
+(1038, 5, 11, 2),
+(1039, 5, 11, 3),
+(1040, 5, 11, 4),
+(1041, 5, 12, 1),
+(1042, 5, 12, 2),
+(1043, 5, 12, 3),
+(1044, 5, 12, 4),
+(1045, 5, 13, 1),
+(1046, 5, 13, 2),
+(1047, 5, 13, 3),
+(1048, 5, 13, 4),
+(1049, 5, 14, 1),
+(1050, 5, 14, 2),
+(1051, 5, 14, 3),
+(1052, 5, 14, 4),
+(1053, 5, 15, 1),
+(1054, 5, 15, 2),
+(1055, 5, 15, 3),
+(1056, 5, 15, 4),
+(1057, 5, 16, 1),
+(1058, 5, 16, 2),
+(1059, 5, 16, 3),
+(1060, 5, 16, 4),
+(1061, 5, 17, 1),
+(1062, 5, 17, 2),
+(1063, 5, 17, 3),
+(1064, 5, 17, 4),
+(1065, 5, 20, 1);
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `accion`
+--
+ALTER TABLE `accion`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `ambiente`
@@ -3537,6 +3704,16 @@ ALTER TABLE `indicador`
   ADD KEY `idmateria` (`idmateria`);
 
 --
+-- Indices de la tabla `indicador_nota`
+--
+ALTER TABLE `indicador_nota`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idindicador` (`idindicador`),
+  ADD KEY `idestudiante` (`idestudiante`),
+  ADD KEY `idplanificacion` (`idplanificacion`),
+  ADD KEY `lapso` (`lapso_academico`);
+
+--
 -- Indices de la tabla `inscripcion`
 --
 ALTER TABLE `inscripcion`
@@ -3583,6 +3760,12 @@ ALTER TABLE `materia`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `modulo`
+--
+ALTER TABLE `modulo`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `municipio`
 --
 ALTER TABLE `municipio`
@@ -3607,12 +3790,6 @@ ALTER TABLE `parroquia`
 -- Indices de la tabla `periodo_escolar`
 --
 ALTER TABLE `periodo_escolar`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `permiso`
---
-ALTER TABLE `permiso`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -3663,10 +3840,12 @@ ALTER TABLE `proyecto_aprendizaje`
   ADD KEY `idplanificacion` (`idplanificacion`);
 
 --
--- Indices de la tabla `p_seguridad`
+-- Indices de la tabla `recomendacion`
 --
-ALTER TABLE `p_seguridad`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `recomendacion`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idplanificacion` (`idplanificacion`),
+  ADD KEY `idestudiante` (`idestudiante`);
 
 --
 -- Indices de la tabla `representante`
@@ -3701,28 +3880,26 @@ ALTER TABLE `telefono`
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `usuario_UNIQUE` (`usuario`),
-  ADD KEY `usuario_persona_idx` (`idpersona`);
+  ADD KEY `idpersona` (`idpersona`);
 
 --
--- Indices de la tabla `usuario_permiso`
+-- Indices de la tabla `usuario_modulo_accion`
 --
-ALTER TABLE `usuario_permiso`
+ALTER TABLE `usuario_modulo_accion`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `usuario_idx` (`idusuario`),
-  ADD KEY `permiso_idx` (`idpermiso`);
-
---
--- Indices de la tabla `u_respuesta`
---
-ALTER TABLE `u_respuesta`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `respuesta_usuario_idx` (`idusuario`),
-  ADD KEY `rusuario_pregunta_idx` (`idpregunta`);
+  ADD KEY `idusuario` (`idusuario`),
+  ADD KEY `idmodulo` (`idmodulo`),
+  ADD KEY `idaccion` (`idaccion`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `accion`
+--
+ALTER TABLE `accion`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `ambiente`
@@ -3800,7 +3977,13 @@ ALTER TABLE `grado`
 -- AUTO_INCREMENT de la tabla `indicador`
 --
 ALTER TABLE `indicador`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT de la tabla `indicador_nota`
+--
+ALTER TABLE `indicador_nota`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `inscripcion`
@@ -3839,6 +4022,12 @@ ALTER TABLE `materia`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
+-- AUTO_INCREMENT de la tabla `modulo`
+--
+ALTER TABLE `modulo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
 -- AUTO_INCREMENT de la tabla `municipio`
 --
 ALTER TABLE `municipio`
@@ -3863,16 +4052,10 @@ ALTER TABLE `periodo_escolar`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
--- AUTO_INCREMENT de la tabla `permiso`
---
-ALTER TABLE `permiso`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
 -- AUTO_INCREMENT de la tabla `persona`
 --
 ALTER TABLE `persona`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=212;
 
 --
 -- AUTO_INCREMENT de la tabla `personal`
@@ -3905,10 +4088,10 @@ ALTER TABLE `proyecto_aprendizaje`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- AUTO_INCREMENT de la tabla `p_seguridad`
+-- AUTO_INCREMENT de la tabla `recomendacion`
 --
-ALTER TABLE `p_seguridad`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `recomendacion`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `representante`
@@ -3938,19 +4121,13 @@ ALTER TABLE `telefono`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT de la tabla `usuario_permiso`
+-- AUTO_INCREMENT de la tabla `usuario_modulo_accion`
 --
-ALTER TABLE `usuario_permiso`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
-
---
--- AUTO_INCREMENT de la tabla `u_respuesta`
---
-ALTER TABLE `u_respuesta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `usuario_modulo_accion`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1066;
 
 --
 -- Restricciones para tablas volcadas
@@ -4026,6 +4203,14 @@ ALTER TABLE `estudiante`
 ALTER TABLE `indicador`
   ADD CONSTRAINT `indicador_ibfk_1` FOREIGN KEY (`idplanificacion`) REFERENCES `planificacion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `indicador_ibfk_2` FOREIGN KEY (`idmateria`) REFERENCES `materia` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `indicador_nota`
+--
+ALTER TABLE `indicador_nota`
+  ADD CONSTRAINT `indicador_nota_ibfk_1` FOREIGN KEY (`idindicador`) REFERENCES `indicador` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `indicador_nota_ibfk_2` FOREIGN KEY (`idestudiante`) REFERENCES `estudiante` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `indicador_nota_ibfk_3` FOREIGN KEY (`idplanificacion`) REFERENCES `planificacion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `inscripcion`
@@ -4105,6 +4290,13 @@ ALTER TABLE `proyecto_aprendizaje`
   ADD CONSTRAINT `proyecto_aprendizaje_ibfk_1` FOREIGN KEY (`idplanificacion`) REFERENCES `planificacion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `recomendacion`
+--
+ALTER TABLE `recomendacion`
+  ADD CONSTRAINT `recomendacion_ibfk_1` FOREIGN KEY (`idplanificacion`) REFERENCES `planificacion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `recomendacion_ibfk_2` FOREIGN KEY (`idestudiante`) REFERENCES `estudiante` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `representante`
 --
 ALTER TABLE `representante`
@@ -4126,21 +4318,15 @@ ALTER TABLE `telefono`
 -- Filtros para la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD CONSTRAINT `usuario_persona` FOREIGN KEY (`idpersona`) REFERENCES `persona` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`idpersona`) REFERENCES `persona` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `usuario_permiso`
+-- Filtros para la tabla `usuario_modulo_accion`
 --
-ALTER TABLE `usuario_permiso`
-  ADD CONSTRAINT `permiso` FOREIGN KEY (`idpermiso`) REFERENCES `permiso` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `usuario` FOREIGN KEY (`idusuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `u_respuesta`
---
-ALTER TABLE `u_respuesta`
-  ADD CONSTRAINT `rusuario_pregunta` FOREIGN KEY (`idpregunta`) REFERENCES `p_seguridad` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `rusuario_usuario` FOREIGN KEY (`idusuario`) REFERENCES `usuario` (`id`) ON UPDATE CASCADE;
+ALTER TABLE `usuario_modulo_accion`
+  ADD CONSTRAINT `usuario_modulo_accion_ibfk_1` FOREIGN KEY (`idusuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `usuario_modulo_accion_ibfk_2` FOREIGN KEY (`idmodulo`) REFERENCES `modulo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `usuario_modulo_accion_ibfk_3` FOREIGN KEY (`idaccion`) REFERENCES `accion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
