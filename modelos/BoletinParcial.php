@@ -24,8 +24,19 @@ class BoletinParcial
         $sql = "INSERT INTO indicador_nota (idplanificacion, idindicador, idestudiante, lapso_academico, nota) VALUES('$idplanificacion', '$key', '$idestudiantes', '$lapso_academico', '$value')" or $sw = FALSE;   
         ejecutarConsulta($sql);   
       }
-    }  
+    }
+    else {
+      $sw = FALSE;
+    } 
 		return $sw;
+  }
+  
+  #Método para eliminar todos los indicadores de un estudiante
+	function eliminar_indicadores($idplanificacion, $idestudiantes, $lapso_academico)
+	{  
+    $sql = "DELETE FROM indicador_nota WHERE idplanificacion = '$idplanificacion' AND idestudiante = '$idestudiantes' AND lapso_academico = '$lapso_academico'";            
+
+		return ejecutarConsulta($sql); 
 	}
   
   #Método para insertar la recomendación 
@@ -36,55 +47,26 @@ class BoletinParcial
     return ejecutarConsulta($sql);
   }
 
-	#Método para editar registros
-	function editar($idindicador, $idplanificacion_indicador, $idmateria_indicador, $lapso_indicador, $indicador)
-	{
-		$sql = "UPDATE indicador SET indicador = '$indicador' WHERE id = '$idindicador'";
-
-		return ejecutarConsulta($sql);
-
+  #Método para insertar la recomendación 
+  function editar_recomendacion($idrecomendacion, $recomendacion)
+  {
+    $sql = "UPDATE recomendacion SET recomendacion = '$recomendacion' WHERE id = '$idrecomendacion'";
+    
+    return ejecutarConsulta($sql);
   }
-  
-  #Método para editar registros
-	function editar_proyecto_aprendizaje($idproyecto_aprendizaje, $proyecto_aprendizaje)
-	{
-		$sql = "UPDATE proyecto_aprendizaje SET proyecto_aprendizaje = '$proyecto_aprendizaje' WHERE id = '$idproyecto_aprendizaje'";
-
-		return ejecutarConsulta($sql);
-
-	}
 
 	#Método para listar 
-	function listar($idplanificaciones, $lapsos)
+	function listar($idplanificacion, $lapso, $idestudiantes)
 	{
-    if (!empty($lapsos)) 
-      $sql = "SELECT ind.*, ma.materia FROM indicador ind INNER JOIN materia ma ON ind.idmateria = ma.id WHERE ind.idplanificacion = '$idplanificaciones' AND ind.lapso_academico = '$lapsos' ORDER BY lapso_academico, ma.materia ASC";
-    else 
-      $sql = "SELECT ind.*, ma.materia FROM indicador ind INNER JOIN materia ma ON ind.idmateria = ma.id WHERE ind.idplanificacion = '$idplanificaciones' ORDER BY lapso_academico ASC";
+      $sql = "SELECT in_no.*, ma.materia, ind.indicador FROM indicador_nota in_no INNER JOIN indicador ind ON in_no.idindicador = ind.id INNER JOIN materia ma ON ind.idmateria = ma.id WHERE in_no.idplanificacion = '$idplanificacion' AND in_no.lapso_academico = '$lapso' AND in_no.idestudiante = '$idestudiantes'";
 
 		return ejecutarConsulta($sql);
   }
   
-	#Método para listar los proyectos de aprendizaje
-	function listarproyectoaprendizaje($idplanificacion)
+  #Método para traer la recomendación de un estudiante
+	function traerrecomendacion($idplanificacion, $idestudiantes, $lapso_en_curso)
 	{
-    $sql = "SELECT * FROM proyecto_aprendizaje WHERE idplanificacion = '$idplanificacion'";
-
-		return ejecutarConsulta($sql);
-	}
-
-	#Método para mostrar un indicador
-	function mostrar($idindicador)
-	{
-		$sql = "SELECT ind.*, g.grado, s.seccion, ma.materia, pe.p_nombre, pe.p_apellido FROM indicador ind  INNER JOIN planificacion pla ON ind.idplanificacion = pla.id INNER JOIN grado g ON pla.idgrado = g.id INNER JOIN seccion s ON pla.idseccion = s.id INNER JOIN materia ma ON ind.idmateria = ma.id INNER JOIN personal per ON pla.iddocente = per.id INNER JOIN persona pe ON per.idpersona = pe.id WHERE ind.id = '$idindicador'";
-
-		return ejecutarConsultaSimpleFila($sql);
-  }
-  
-  #Método para mostrar un proyecto de aprendizaje
-	function mostrarproyectoaprendizaje($idproyecto_aprendizaje)
-	{
-		$sql = "SELECT pa.*, g.grado, s.seccion, pe.p_nombre, pe.p_apellido FROM proyecto_aprendizaje pa  INNER JOIN planificacion pla ON pa.idplanificacion = pla.id INNER JOIN grado g ON pla.idgrado = g.id INNER JOIN seccion s ON pla.idseccion = s.id INNER JOIN personal per ON pla.iddocente = per.id INNER JOIN persona pe ON per.idpersona = pe.id WHERE pa.id = '$idproyecto_aprendizaje'";
+		$sql = "SELECT * FROM recomendacion WHERE idplanificacion = '$idplanificacion' AND idestudiante = '$idestudiantes' AND lapso_academico = '$lapso_en_curso'";
 
 		return ejecutarConsultaSimpleFila($sql);
 	}
@@ -95,14 +77,6 @@ class BoletinParcial
     $sql = "SELECT * FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo_escolar' AND estatus = 'Finalizado'";
 		return ejecutarConsulta($sql);
   }
-
-	#Método para eliminar un indicador
-	function eliminar($idindicador)
-	{
-		$sql = "DELETE FROM indicador WHERE id = $idindicador";
-
-		return ejecutarConsulta($sql);
-	}
 
 	#Método para traer el id del período escolar activo
 	function consultarperiodo()
@@ -146,12 +120,6 @@ class BoletinParcial
     $sql = "SELECT * FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo_escolar' ORDER BY lapso ASC";
     return ejecutarConsulta($sql);
   }
-
-  // function comprobar_proyecto_aprendizaje($idplanificacion_indicador, $lapso_indicador)
-  // {
-  //   $sql = "SELECT proyecto_aprendizaje FROM proyecto_aprendizaje WHERE idplanificacion = '$idplanificacion_indicador' AND lapso_academico =  '$lapso_indicador'";
-  //   return ejecutarConsultaSimpleFila($sql);
-  // }
 
   public function seleccionar_notas_estudiante($idestudiantes, $idplanificacion, $lapso_en_curso)
   {

@@ -18,9 +18,9 @@
       else {
         planificacion = '<option value="">No hay planificaciones</option>';
       }
-      $('#planificaciones').html('<option value="">Seleccione</option>');
-      $('#planificaciones').append(planificacion);
-      $('#planificaciones').selectpicker('refresh');
+      $('#planificaciones_general').html('<option value="">Seleccione</option>');
+      $('#planificaciones_general').append(planificacion);
+      $('#planificaciones_general').selectpicker('refresh');
     });
 
   let lapsos = traerLapsosGeneral();
@@ -28,20 +28,20 @@
     .then((data) => {
       data = JSON.parse(data);
       let lapso = '';
-      $('#lapsos').prop('disabled', false);
+      $('#lapsos_general').prop('disabled', false);
       if (data.length != 0) {
         data.forEach(function (indice) {
           lapso += '<option value="' + indice.lapso + '">' + indice.lapso + 'º Lapso' + '</option>';
         });
 
-        $('#lapsos').html('<option value="">Seleccione</option>');
-        $('#lapsos').append(lapso);
-        $('#lapsos').selectpicker('refresh');
+        $('#lapsos_general').html('<option value="">Seleccione</option>');
+        $('#lapsos_general').append(lapso);
+        $('#lapsos_general').selectpicker('refresh');
       }
       else {
         lapso = '<option value="">No hay lapsos</option>';
-        $('#lapsos').html(lapso);
-        $('#lapsos').selectpicker('refresh');
+        $('#lapsos_general').html(lapso);
+        $('#lapsos_general').selectpicker('refresh');
       }
     });
 
@@ -107,11 +107,7 @@
       let estidiantes = traerEstudiantes(idplanificacion);
       estidiantes
         .then((data) => {
-          // console.log(data);
-          // return;
           data = JSON.parse(data);
-          // console.log(data);
-          // return;
 
           let estudiante = '';
           $('#estudiantes').prop('disabled', false);
@@ -140,37 +136,87 @@
       $('#estudiantes').prop('disabled', true);
       $('#estudiantes').selectpicker('refresh');
     }
+    listarindicadores(); 
+  });
+
+  //Comprueba cada cambio en el select de estudiante de boletin parcial
+  $('#estudiantes').on('change', function () {
+    let lapso_en_curso = $('#lapso_en_curso')[0].value; 
+    let idplanificacion = $('#planificacion')[0].value;   
+    let idestudiantes = $('#estudiantes')[0].value;   
+    listarindicadores(idestudiantes); 
+    let recomendacion = traerRecomendacion(idplanificacion, idestudiantes, lapso_en_curso);
+    recomendacion
+    .then((data) => {
+      data = JSON.parse(data);
+      if (data != null) {
+        $('#recomendacion').val(data.recomendacion);
+        $('#idrecomendacion').val(data.id);
+
+      }
+      else {
+        $('#recomendacion').val('');
+      }
+    });
     
   });
 
-  //Comprueba cada cambio en el select de planificacion de boletin parcial
-  $('#estudiantes').on('change', function () {
-    let idestudiantes = $('#estudiantes')[0].value;
-    if (idestudiantes != '') {
-      listarindicadores(idestudiantes);
-    }  
-  });
-
   //Comprueba cada cambio en el select de planificaciones
-  $('#planificaciones').on('change', function () {
-    listar();
+  $('#planificaciones_general').on('change', function () {
+    let idplanificacion = $('#planificaciones_general')[0].value;
+    let lapso_en_curso = $('#lapso_en_curso')[0].value;
+    
+    if (idplanificacion != '') {
+      let estudiante = traerEstudiantes(idplanificacion, lapso_en_curso);
+      estudiante
+      .then((data) => {
+        data = JSON.parse(data);
+        let estudiante = '';
+        $('#estudiantes_general').prop('disabled', false);
+        if (data.length != 0) {
+          data.forEach(function (indice) {
+            estudiante += '<option value="' + indice.id + '">' + indice.p_nombre + ' ' + indice.s_nombre + ' ' + indice.p_apellido + ' ' + indice.s_apellido + ' </option>';
+          });
+
+          $('#estudiantes_general').html('<option value="">Seleccione</option>');
+          $('#estudiantes_general').append(estudiante);
+          $('#estudiantes_general').selectpicker('refresh');
+        }
+        else {
+          estudiante = '<option value="">No hay estudiantes</option>';
+          $('#estudiantes_general').html(estudiante);
+          $('#estudiantes_general').selectpicker('refresh');
+        }
+      });
+    }
+    else {
+      $('#estudiantes_general').prop('disabled', true);
+      $('#estudiantes_general').html('<option value="">Seleccione</option>');
+      $('#estudiantes_general').selectpicker('refresh');
+      $('#lapsos_general').val('');
+      $('#lapsos_general').selectpicker('refresh');
+      listar();
+    }
   });
 
-  //Comprueba cada cambio en el select de lapsos
-  $('#lapsos').on('change', function () {
-    listar();
-  });
-
-  //Comprueba cada cambio en el select de planificacion indicador
-  $('#planificacion_indicador').on('change', function () {
-    $('#lapso_indicador').val('');
-    $('#lapso_indicador').selectpicker('refresh');
-    comprobarProyectoAprendizaje();
+  //Comprueba cada cambio en el select de estudiantes_general
+  $('#estudiantes_general').on('change', function () {
+    let idestudiantes = $('#estudiantes_general')[0].value;
+    let idplanificacion = $('#planificaciones_general')[0].value;
+    let lapso = $('#lapsos_general')[0].value;
+    if (idestudiantes != '' && idplanificacion != '' && lapso != '') {
+      listar(idestudiantes, idplanificacion, lapso);     
+    }
+    else {
+      listar();
+    }
   });
 
   //Comprueba cada cambio en el select de lapso indicador
-  $('#lapso_indicador').on('change', function () {
-    comprobarProyectoAprendizaje();
+  $('#lapsos_general').on('change', function () {
+    $('#estudiantes_general').val('');
+    $('#estudiantes_general').selectpicker('refresh');
+    listar();
   });
 
   tabla.ajax.reload();
@@ -203,24 +249,19 @@ function traerLapsoEnCurso() {
   return lapsos;
 }
 
+function traerRecomendacion(idplanificacion, idestudiantes, lapso_en_curso) {
+  let recomendacion = $.post('../controladores/boletin-parcial.php?op=traerrecomendacion', {idplanificacion: idplanificacion, idestudiantes: idestudiantes, lapso_en_curso: lapso_en_curso});
+  return recomendacion;
+}
+
 function traerLapsosGeneral() {
-  let lapsos = $.post('../controladores/gestionar-indicador.php?op=traerlapsosgeneral');
+  let lapsos = $.post('../controladores/boletin-parcial.php?op=traerlapsosgeneral');
   return lapsos;
 }
 
 //Función cancelarform
 function cancelarform() {
   limpiar();
-}
-
-//Función cancelarProyectoAprendizaje 
-function cancelarProyectoAprendizaje() {
-  limpiarProyectoAprendizaje();
-}
-
-//Función cancelarEditarProyectoAprendizaje
-function cancelarEditarProyectoAprendizaje() {
-  limpiarEditarProyectoAprendizaje();
 }
 
 //Función para guardar y editar 
@@ -237,8 +278,6 @@ function guardaryeditar(event) {
     contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
     processData: false, //Evita que jquery transforme la data en un string
     success: function (datos) {
-      console.log(datos);
-      return;
       $('#btnGuardar').prop('disabled', false);
       if (datos == 'true') {
         const Toast = Swal.mixin({
@@ -250,7 +289,7 @@ function guardaryeditar(event) {
 
         Toast.fire({
           type: 'success',
-          title: 'Indicador registrado exitosamente :)'
+          title: 'Notas registradas exitosamente :)'
         });
       }
       else if (datos == 'update') {
@@ -263,7 +302,7 @@ function guardaryeditar(event) {
 
         Toast.fire({
           type: 'success',
-          title: 'Indicador modificado exitosamente :)'
+          title: 'Notas modificadas exitosamente :)'
         });
 
         $('#planificacionModal').modal('hide');
@@ -282,130 +321,14 @@ function guardaryeditar(event) {
         });
       }
 
-      limpiar();
       tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
     }
 
   });
 }
 
-// function guardarProyectoAprendizaje(event) {
-//   event.preventDefault(); //Evita que se envíe el formulario automaticamente
-//   // 
-//   $('#btnGuardarProyectoAprendizaje').prop('disabled', true);
-//   var formData = new FormData($([formularioProyectoAprendizaje])[0]); //Se obtienen los datos del formulario
-
-//   $.ajax({
-//     url: '../controladores/gestionar-indicador.php?op=guardaryeditarproyectoaprendizaje', //Dirección a donde se envían los datos
-//     type: 'POST', //Método por el cual se envían los datos
-//     data: formData, //Datos
-//     contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
-//     processData: false, //Evita que jquery transforme la data en un string
-//     success: function (datos) {
-//       $('#btnGuardarProyectoAprendizaje').prop('disabled', false);
-//       if (datos == 'true') {
-//         const Toast = Swal.mixin({
-//           toast: true,
-//           position: 'top-end',
-//           showConfirmButton: false,
-//           timer: 3000
-//         });
-
-//         Toast.fire({
-//           type: 'success',
-//           title: 'Proyecto registrado exitosamente :)'
-//         });
-//       }
-//       else if (datos == 'update') {
-//         const Toast = Swal.mixin({
-//           toast: true,
-//           position: 'top-end',
-//           showConfirmButton: false,
-//           timer: 3000
-//         });
-
-//         Toast.fire({
-//           type: 'success',
-//           title: 'Proyecto modificado exitosamente :)'
-//         });
-
-//         $('#proyectoAprendizajeModal').modal('hide');
-//       }
-//       else {
-//         const Toast = Swal.mixin({
-//           toast: true,
-//           position: 'top-end',
-//           showConfirmButton: false,
-//           timer: 3000
-//         });
-
-//         Toast.fire({
-//           type: 'error',
-//           title: 'Ocurrió un error y no se pudo registrar :('
-//         });
-//       }
-
-//       limpiarProyectoAprendizaje();
-//       tablaProyectoAprendizaje.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
-//     }
-
-//   });
-// }
-
-// function editarProyectoAprendizaje(event) {
-//   event.preventDefault(); //Evita que se envíe el formulario automaticamente
-//   // 
-//   $('#btnEditarProyectoAprendizaje').prop('disabled', true);
-//   var formData = new FormData($([formularioEditarProyectoAprendizaje])[0]); //Se obtienen los datos del formulario
-
-//   $.ajax({
-//     url: '../controladores/gestionar-indicador.php?op=guardaryeditarproyectoaprendizaje', //Dirección a donde se envían los datos
-//     type: 'POST', //Método por el cual se envían los datos
-//     data: formData, //Datos
-//     contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
-//     processData: false, //Evita que jquery transforme la data en un string
-//     success: function (datos) {
-//       $('#btnEditarProyectoAprendizaje').prop('disabled', false);
-//       if (datos == 'update') {
-//         const Toast = Swal.mixin({
-//           toast: true,
-//           position: 'top-end',
-//           showConfirmButton: false,
-//           timer: 3000
-//         });
-
-//         Toast.fire({
-//           type: 'success',
-//           title: 'Proyecto modificado exitosamente :)'
-//         });
-
-//         $('#editarProyectoAprendizajeModal').modal('hide');
-//       }
-//       else {
-//         const Toast = Swal.mixin({
-//           toast: true,
-//           position: 'top-end',
-//           showConfirmButton: false,
-//           timer: 3000
-//         });
-
-//         Toast.fire({
-//           type: 'error',
-//           title: 'Ocurrió un error y no se pudo editar :('
-//         });
-//       }
-
-//       limpiarEditarProyectoAprendizaje();
-//       tablaProyectoAprendizaje.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
-//     }
-
-//   });
-// }
-
 //Función para listar los registros
-function listar() {
-  let idplanificaciones = $('#planificaciones_general')[0].value;
-  let lapsos = $('#lapsos_general')[0].value;
+function listar(idestudiantes, idplanificacion, lapso) {
   tabla = $('#tblistado').DataTable({
     "processing": true,
     pagingType: "first_last_numbers",
@@ -422,14 +345,16 @@ function listar() {
         "last": "Último"
       },
     },
+    "pageLength": 25,
     dom: 'lfrtip',
     "destroy": true, //Elimina cualquier elemente que se encuentre en la tabla
     "ajax": {
-      url: '../controladores/gestionar-indicador.php?op=listar&idplanificaciones=' + idplanificaciones + '&lapsos=' + lapsos,
-      type: 'GET',
-      dataType: 'json'
+      url: '../controladores/boletin-parcial.php?op=listar',
+      type: 'POST',
+      dataType: 'json',
+      data: {idestudiantes: idestudiantes, idplanificacion: idplanificacion, lapso: lapso}
     },
-    'order': [[1, 'asc'], [2, 'asc']]
+    'order': [[1, 'asc']]
   });
 }
 
@@ -460,150 +385,19 @@ function listarindicadores(idestudiantes) {
       url: '../controladores/boletin-parcial.php?op=listarindicadores',
       data: { idplanificacion: idplanificacion, lapso_en_curso: lapso_en_curso, idestudiantes:idestudiantes },
       type: 'POST',
-      dataType: 'json',
-      error: (e) => {
-        console.log(e.responseText);
-        
-      }
+      dataType: 'json'
     },
     'order': [[0, 'asc']]
-  });
-}
-
-//Función para mostrar un registro para editar
-function mostrar(idindicador) {
-  $('#tituloModal').html('Modificar indicador');
-  $.post('../controladores/gestionar-indicador.php?op=mostrar', { idindicador: idindicador }, function (indicador) {
-
-    indicador = JSON.parse(indicador);
-    $('#planificacion_indicador').html('<option value="' + indicador.idplanificacion + '">' + indicador.grado + 'º - "' + indicador.seccion + '" - ' + indicador.p_nombre + ' ' + indicador.p_apellido + '</option>');
-    $('#planificacion_indicador').prop('disabled', true);
-    $('#planificacion_indicador').selectpicker('refresh');
-
-    $('#lapso_indicador').html('<option value="' + indicador.lapso_academico + '">' + indicador.lapso_academico + '</option>');
-    $('#lapso_indicador').prop('readonly', true);
-    $('#lapso_indicador').selectpicker('refresh');
-
-    $('#materia_indicador').html('<option value="' + indicador.idmateria + '">' + indicador.materia + '</option>');
-    $('#materia_indicador').prop('disabled', true);
-    $('#materia_indicador').selectpicker('refresh');
-
-    $('#indicador').val(indicador.indicador);
-    $('#idindicador').val(indicador.id);
-
-  });
-}
-
-function mostrarProyectoAprendizaje(idproyecto_aprendizaje) {
-  $.post('../controladores/gestionar-indicador.php?op=mostrarproyectoaprendizaje', { idproyecto_aprendizaje: idproyecto_aprendizaje }, function (proyecto) {
-    proyecto = JSON.parse(proyecto);
-    $('#editar_planificacion').html('<option value="' + proyecto.idplanificacion + '">' + proyecto.grado + 'º - "' + proyecto.seccion + '" - ' + proyecto.p_nombre + ' ' + proyecto.p_apellido + '</option>');
-    $('#editar_planificacion').prop('disabled', true);
-    $('#editar_planificacion').selectpicker('refresh');
-
-    $('#editar_lapso').html('<option value="' + proyecto.lapso_academico + '">' + proyecto.lapso_academico + '</option>');
-    $('#editar_lapso').prop('readonly', true);
-    $('#editar_lapso').selectpicker('refresh');
-
-    $('#editar_proyecto_aprendizaje').val(proyecto.proyecto_aprendizaje);
-    $('#idproyecto_aprendizaje').val(proyecto.id);
-  });
-}
-
-//Función para eliminar un indicador
-function eliminar(idindicador) {
-
-  const swalWithBootstrapButtons = Swal.mixin({
-    customClass: {
-      confirmButton: 'btn btn-primary  mx-1 p-2',
-      cancelButton: 'btn btn-danger  mx-1 p-2'
-    },
-    buttonsStyling: false
-  })
-
-  swalWithBootstrapButtons.fire({
-    title: '¿Estas seguro?',
-    text: "¿Quieres eliminar este indicador?",
-    type: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Eliminar',
-    cancelButtonText: 'Cancelar',
-    reverseButtons: true
-  }).then((result) => {
-    if (result.value) {
-      $.post('../controladores/gestionar-indicador.php?op=eliminar', { idindicador: idindicador }, function (e) {
-
-        if (e == 'true') {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000
-          });
-
-          Toast.fire({
-            type: 'success',
-            title: 'El indicador ha sido eliminado :)'
-          });
-        }
-        // else if (e == 'inscritos') {
-        //   const Toast = Swal.mixin({
-        //     toast: true,
-        //     position: 'top-end',
-        //     showConfirmButton: false,
-        //     timer: 3000
-        //   });
-
-        //   Toast.fire({
-        //     type: 'error',
-        //     title: 'Hay estudiantes inscritos en ésta planificación y no se puede eliminar'
-        //   });
-        // }
-        else {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000
-          });
-
-          Toast.fire({
-            type: 'error',
-            title: 'Ups! No se pudo eliminar el indicador'
-          });
-        }
-        tabla.ajax.reload();
-      });
-    }
   });
 }
 
 //Función para limpiar el formulario
 function limpiar() {
   $([formularioBoletinParcial])[0].reset();
-  $('#planificacion_indicador').selectpicker('refresh');
-  $('#lapso_indicador').selectpicker('refresh');
-  $('#materia_indicador').selectpicker('refresh');
-  $('#idindicador').val('');
+  $('.selectpicker').selectpicker('refresh');
   $('#formularioBoletinParcial').removeClass('was-validated');
+  listarindicadores();
 }
 
-//Función para limpiar el formulario proyecto de aprendizaje
-function limpiarProyectoAprendizaje() {
-  $([formularioProyectoAprendizaje])[0].reset();
-  $('#planificacion').selectpicker('refresh');
-  $('#lapso').prop('disabled', true);
-  $('#lapso').selectpicker('refresh');
-  $('#formularioProyectoAprendizaje').removeClass('was-validated');
-}
-
-//Función para limpiar el formulario proyecto de aprendizaje
-function limpiarEditarProyectoAprendizaje() {
-  $([formularioEditarProyectoAprendizaje])[0].reset();
-  $('#editar_planificacion').selectpicker('refresh');
-  $('#editar_lapso').selectpicker('refresh');
-  $('#idproyecto_aprendizaje').val('');
-  $('#formularioProyectoAprendizaje').removeClass('was-validated');
-}
 
 

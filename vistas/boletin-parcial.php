@@ -33,16 +33,8 @@ if (isset($_SESSION['permisos']['boletin-parcial']) && in_array('ver' , $_SESSIO
             </div>
             
             <div class="d-flex justify-content-end col-md-3">
-              <p class="h5 font-weight-normal mt-1 mr-0">Planificación</p>
+              <p class="h5 font-weight-normal mt-1 mr-2">Planificación</p>
               <select name="planificaciones_general" id="planificaciones_general" class="form-control selectpicker col-8">
-
-              </select>
-            
-            </div>
-
-            <div class="d-flex justify-content-end col-md-3">
-              <p class="h5 font-weight-normal mt-1 mr-0">Estudiante</p>
-              <select name="estudiantes_general" id="estudiantes_general" class="form-control selectpicker col-8">
 
               </select>
             
@@ -50,8 +42,16 @@ if (isset($_SESSION['permisos']['boletin-parcial']) && in_array('ver' , $_SESSIO
 
             <div class="d-flex justify-content-end col-md-2">
               <p class="h5 font-weight-normal mt-1 mr-2">Lapso</p>
-              <select name="lapsos_general" id="lapsos_general" class="form-control selectpicker col-8">
+              <select name="lapsos_general" id="lapsos_general" class="form-control selectpicker col-8" disabled>
 
+              </select>
+            
+            </div>
+
+            <div class="d-flex justify-content-end col-md-3">
+              <p class="h5 font-weight-normal mt-1 mr-2">Estudiante</p>
+              <select name="estudiantes_general" id="estudiantes_general" class="form-control selectpicker col-8" disabled>
+                <option value="">Seleccione</option>
               </select>
             
             </div>
@@ -67,10 +67,9 @@ if (isset($_SESSION['permisos']['boletin-parcial']) && in_array('ver' , $_SESSIO
                 <caption>Lista de boletín parcial</caption>
                 <thead class="fondo-degradado text-white">
                   <tr>
-                    <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Opciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                    <th scope="col">Lapso</th>
                     <th scope="col">Materia</th>
                     <th scope="col">Indicador</th>
+                    <th scope="col">Nota</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -100,8 +99,8 @@ if (isset($_SESSION['permisos']['boletin-parcial']) && in_array('ver' , $_SESSIO
 
                   <div class="row">
 
-                    <!-- guarda el id del indicador cuando es necesario -->
-                    <input type="hidden" value="" id="idboletinparcial" name="idboletinparcial">
+                    <!-- guarda el id de la recomendación cuando es necesario -->
+                    <input type="hidden" value="" id="idrecomendacion" name="idrecomendacion">
                     
                     <div class="form-group col-md-2">
                       <label for="lapso_en_curso">Lapso (*)</label>

@@ -394,7 +394,7 @@ function finalizar(idlapsoacademico) {
   }).then((result) => {
     if (result.value) {
       $.post('../controladores/lapso-academico.php?op=finalizar', { idlapsoacademico: idlapsoacademico }, function (e) {
-
+        
         if (e == 'true') {
           const Toast = Swal.mixin({
             toast: true,
@@ -407,8 +407,9 @@ function finalizar(idlapsoacademico) {
             type: 'success',
             title: 'Lapso académico finalizado :)'
           });
+          tabla.ajax.reload();
         }
-        else {
+        else if (e == 'false'){
           const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -420,8 +421,12 @@ function finalizar(idlapsoacademico) {
             type: 'error',
             title: 'Ups! No se pudo finalizar el lapso académico'
           });
+          tabla.ajax.reload();
         }
-        tabla.ajax.reload();
+        else {
+          $('#estudiantesSinNotas').html(e);
+          $('#noCompletaModal').modal('show');
+        }
       });
     }
   });

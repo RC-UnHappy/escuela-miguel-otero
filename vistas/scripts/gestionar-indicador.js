@@ -358,7 +358,8 @@ function guardaryeditar(event) {
         });
       }
 
-      limpiar();
+      $('#indicador').val('');
+      $('#formularioGestionarIndicador').removeClass('was-validated');
       tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
     }
 

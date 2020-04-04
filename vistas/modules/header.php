@@ -336,6 +336,15 @@ if (strlen(session_id()) < 1)
                 :
                 '';
 
+                echo  (isset($_SESSION['permisos']['expresion-literal']) && in_array('ver' , $_SESSION['permisos']['expresion-literal'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/expresion-literal.php">
+                    <i class="nav-icon fas fa-ad"></i> Literal
+                  </a>
+                </li>' 
+                :
+                '';
+
                 echo  (isset($_SESSION['permisos']['materia']) && in_array('ver' , $_SESSION['permisos']['materia'])) ? 
                 '<li class="nav-item">
                   <a class="nav-link" href="/escuela-miguel-otero/vistas/materia.php">

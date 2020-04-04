@@ -104,5 +104,46 @@ class LapsoAcademico
     $sql = "SELECT * FROM lapso_academico WHERE estatus = 'Activo'";
     return ejecutarConsultaSimpleFila($sql);
   }
+
+  function traer_planificaciones_activas()
+  {
+    $sql = "SELECT * FROM planificacion WHERE estatus = 'Activo'";
+
+    return ejecutarConsulta($sql);
+  }
+
+  function traer_total_indicadores($idplanificacion, $lapso)
+  {
+    $sql = "SELECT COUNT(id) as total FROM indicador WHERE idplanificacion = '$idplanificacion' AND lapso_academico = '$lapso'";
+
+    return ejecutarConsultaSimpleFila($sql);
+  }
+
+  
+  function traer_inscripciones_planificacion($idplanificacion, $idperiodo_escolar)
+  {
+    $sql = "SELECT * FROM inscripcion WHERE idplanificacion = '$idplanificacion' AND idperiodo_escolar = '$idperiodo_escolar'";
+
+    return ejecutarConsulta($sql);
+  }
+
+  function comprobar_cantidad_indicadores_estudiante($idplanificacion, $idestudiante)
+  {
+    $sql = "SELECT COUNT(id) as cantidad_notas FROM indicador_nota WHERE idplanificacion = '$idplanificacion' AND idestudiante = '$idestudiante'";
+
+    return ejecutarConsultaSimpleFila($sql);
+  }
+
+ public function traerplanificacion($idplanificacion)
+  {
+      $sql = "SELECT pla.id, gra.grado, sec.seccion, p.p_nombre, p.p_apellido FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion INNER JOIN personal per ON pla.iddocente = per.id INNER JOIN persona p ON per.idpersona = p.id WHERE pla.id = '$idplanificacion'";
+      return ejecutarConsultaSimpleFila($sql);
+  }
+
+ public function traerestudiante($idestudiante)
+  {
+      $sql = "SELECT per.cedula, per.p_nombre, per.p_apellido FROM estudiante est INNER JOIN persona per ON est.idpersona = per.id WHERE est.id = '$idestudiante'";
+      return ejecutarConsultaSimpleFila($sql);
+  }
 	
 }

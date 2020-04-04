@@ -216,19 +216,112 @@ switch ($_GET['op']) {
 		autocommit(FALSE);
 
 		#Variable para comprobar que todo salió bien al final
-		$sw = TRUE;
-		
-		$rspta = $LapsoAcademico->finalizar($idlapsoacademico) or $sw = FALSE;
+    $sw = TRUE;
 
-		#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
-		if ($sw) {
-			commit();
-			echo 'true';
-		}
-		else {
-			rollback();
-			echo 'false';
-		}
+    $periodo_activo = $LapsoAcademico->verificar_periodo_activo();
+    $idperiodo_activo = !empty($periodo_activo) ? $periodo_activo['id'] : '';
+
+    $lapso_activo = $LapsoAcademico->verificar_lapso_activo();
+    $lapso_activo = !empty($lapso_activo) ? $lapso_activo['lapso'] : '';
+    
+    // Se traen las planificaciones activas
+    $planificaciones = $LapsoAcademico->traer_planificaciones_activas();
+
+    // Aquí se almacenan los id de todas las planificaciones activas
+    $arreglo_planificaciones = [];
+    if ($planificaciones->num_rows != 0) {
+      while ($reg = $planificaciones->fetch_object()) {
+        array_push($arreglo_planificaciones, $reg->id);
+      }
+    }
+
+    // Aquí consulto cuantos indicadores a creado cada planificación (profesor), y la cantidad de indicadores la ingreso en un arreglo que tiene por indice el id de la planificación
+    $total_indicadores_planificacion = [];
+    foreach ($arreglo_planificaciones as $key => $value) {
+      $total_indicadores = $LapsoAcademico->traer_total_indicadores($value, $lapso_activo);
+      $total_indicadores_planificacion[$value] = $total_indicadores['total'];
+    }
+
+
+    $estudiantes_planificacion = [];
+    /**
+     * Aquí traigo todas la inscripciones de cada planificación, y luego en un arreglo ingreso todos los id de todos los estudiantes agrupados por el id de la planificación
+     */
+    foreach ($arreglo_planificaciones as $key => $value) {
+      $idestudiantes = $LapsoAcademico->traer_inscripciones_planificacion($value, $idperiodo_activo);
+
+      if ($idestudiantes->num_rows != 0) {
+        while ($reg = $idestudiantes->fetch_object()) {
+          $estudiantes_planificacion[$value][] = $reg->idestudiante;
+        }
+      }
+    }
+
+    $estudiantes_sin_notas_completas = [];
+    foreach ($estudiantes_planificacion as $key => $value) {
+      $cantidad_indicadores = $total_indicadores_planificacion[$key];
+
+      foreach ($value as $key1 => $value1) {
+        $cantidad_indicadores_estudiante = $LapsoAcademico->comprobar_cantidad_indicadores_estudiante($key, $value1);
+        $cantidad_indicadores_estudiante = !empty($cantidad_indicadores_estudiante) ? $cantidad_indicadores_estudiante['cantidad_notas'] : '';
+
+        if ($cantidad_indicadores != $cantidad_indicadores_estudiante) {
+          $estudiantes_sin_notas_completas[$key][] = $value1;
+        }
+      }
+    }
+
+
+    if (!empty($estudiantes_sin_notas_completas)) {
+      $collapse = '<div class="accordion" id="accordionExample">';
+      foreach ($estudiantes_sin_notas_completas as $key => $value) {
+        $datos_planificacion = $LapsoAcademico->traerplanificacion($key);
+        
+        $collapse .= '
+          
+            <div class="card">
+              <div class="card-header" id="heading'.$key.'">
+                <h2 class="mb-0">
+                  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse'.$key.'" aria-expanded="true" aria-controls="collapse'.$key.'">
+                    '.$datos_planificacion['grado'].'º "'.$datos_planificacion['seccion'].'" - '.$datos_planificacion['p_nombre'].' '.$datos_planificacion['p_apellido'].'
+                  </button>
+                </h2>
+              </div>
+
+              <div id="collapse'.$key.'" class="collapse show" aria-labelledby="heading'.$key.'" data-parent="#accordionExample">
+                <div class="card-body">
+                  <ul class="list-group">';
+                    foreach ($value as $key2 => $value2) {
+                      $datos_estudiante = $LapsoAcademico->traerestudiante($value2);
+                      $collapse .= '<li class="list-group-item">'.$datos_estudiante['cedula'].' - '.ucfirst($datos_estudiante['p_nombre']).' '.ucfirst($datos_estudiante['p_apellido']).'</li>';
+                    }
+
+        $collapse .= 
+                '</ul>
+              </div>
+            </div>
+          </div>';
+        // var_dump($collapse);
+        // die;
+      }
+      $collapse .= '</div>';
+
+      echo $collapse;
+    }
+    else {
+      $rspta = $LapsoAcademico->finalizar($idlapsoacademico) or $sw = FALSE;
+  
+      #Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
+      if ($sw) {
+        commit();
+        echo 'true';
+      }
+      else {
+        rollback();
+        echo 'false';
+      }
+    }
+		
 
     break;
     
