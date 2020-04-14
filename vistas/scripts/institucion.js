@@ -202,6 +202,7 @@ function mostrar() {
 		$('#cod_estadistico').val(data.cod_estadistico);
 		$('#cod_dependencia').val(data.cod_dependencia);
 		$('#cod_electoral').val(data.cod_electoral);
+		$('#cod_smee').val(data.cod_smee);
 		$('#fecha_fundada').val(data.fecha_fundada);
 		$('#fecha_bolivariana').val(data.fecha_bolivariana);
 		$('#clase_plantel').val(data.clase_plantel);

@@ -18,6 +18,7 @@ $cod_dea = isset($_POST['cod_dea']) ? limpiarCadena($_POST['cod_dea']) : '';
 $cod_estadistico = isset($_POST['cod_estadistico']) ? limpiarCadena($_POST['cod_estadistico']) : '';
 $cod_dependencia = isset($_POST['cod_dependencia']) ? limpiarCadena($_POST['cod_dependencia']) : '';
 $cod_electoral = isset($_POST['cod_electoral']) ? limpiarCadena($_POST['cod_electoral']) : '';
+$cod_smee = isset($_POST['cod_smee']) ? limpiarCadena($_POST['cod_smee']) : '';
 $idestado = isset($_POST['idestado']) ? limpiarCadena($_POST['idestado']) : '';
 $idmunicipio = isset($_POST['idmunicipio']) ? limpiarCadena($_POST['idmunicipio']) : '';
 $idparroquia = isset($_POST['idparroquia']) ? limpiarCadena($_POST['idparroquia']) : '';
@@ -46,7 +47,7 @@ switch ($_GET['op']) {
 		if (empty($idinstitucion)) {
 			
 			#Se registra los datos de la institución
-			$Institucion->insertar($nombre, $telefono, $correo, $dependencia, $cod_dea, $cod_estadistico, $cod_dependencia, $cod_electoral, $idestado, $idmunicipio, $idparroquia, $direccion, $fecha_fundada, $fecha_bolivariana, $clase_plantel, $categoria, $condicion_estudio, $tipo_matricula, $turno, $horario) or $sw = FALSE;
+			$Institucion->insertar($nombre, $telefono, $correo, $dependencia, $cod_dea, $cod_estadistico, $cod_dependencia, $cod_electoral, $cod_smee, $idestado, $idmunicipio, $idparroquia, $direccion, $fecha_fundada, $fecha_bolivariana, $clase_plantel, $categoria, $condicion_estudio, $tipo_matricula, $turno, $horario) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
@@ -61,7 +62,7 @@ switch ($_GET['op']) {
 		else{
 
 			#Se editan los datos de la institución
-			$Institucion->editar($idinstitucion, $nombre, $telefono, $correo, $dependencia, $cod_dea, $cod_estadistico, $cod_dependencia, $cod_electoral, $idestado, $idmunicipio, $idparroquia, $direccion, $fecha_fundada, $fecha_bolivariana, $clase_plantel, $categoria, $condicion_estudio, $tipo_matricula, $turno, $horario) or $sw = FALSE;
+			$Institucion->editar($idinstitucion, $nombre, $telefono, $correo, $dependencia, $cod_dea, $cod_estadistico, $cod_dependencia, $cod_electoral, $cod_smee, $idestado, $idmunicipio, $idparroquia, $direccion, $fecha_fundada, $fecha_bolivariana, $clase_plantel, $categoria, $condicion_estudio, $tipo_matricula, $turno, $horario) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {

@@ -16,13 +16,13 @@ class DiversidadFuncional
 	}
 
 	#Método para insertar registros
-	function insertar($idestudiante, $diversidad)
+	function insertar($idaspecto_fisiologico, $diversidad)
 	{	
 		$sw = TRUE;
 
 		if ($diversidad != '') {
 			for ($i=0; $i < count($diversidad) ; $i++) { 
-				$sql = "INSERT INTO diversidad_funcional (id, idestudiante, diversidad) VALUES(NULL, '$idestudiante', '$diversidad[$i]')";
+				$sql = "INSERT INTO diversidad_funcionals (id, idaspecto_fisiologico, diversidad) VALUES(NULL, '$idaspecto_fisiologico' ,'$diversidad[$i]')";
 	
 				ejecutarConsulta($sql) or $sw = FALSE;
 			}
@@ -33,9 +33,9 @@ class DiversidadFuncional
 	}
 
 	#Método para eliminar registros
-	function eliminar($idestudiante)
+	function eliminar($idaspecto_fisiologico)
 	{
-		$sql = "DELETE FROM diversidad_funcional WHERE idestudiante = '$idestudiante'";
+		$sql = "DELETE FROM diversidad_funcionals WHERE idaspecto_fisiologico = '$idaspecto_fisiologico'";
 
 		return ejecutarConsulta($sql);
 		

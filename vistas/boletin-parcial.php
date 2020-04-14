@@ -67,6 +67,7 @@ if (isset($_SESSION['permisos']['boletin-parcial']) && in_array('ver' , $_SESSIO
                 <caption>Lista de boletín parcial</caption>
                 <thead class="fondo-degradado text-white">
                   <tr>
+                  <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Opciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                     <th scope="col">Materia</th>
                     <th scope="col">Indicador</th>
                     <th scope="col">Nota</th>

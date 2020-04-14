@@ -196,8 +196,27 @@ if (strlen(session_id()) < 1)
             </a>
 
             <ul class="nav-dropdown-items">
-
+              
               <?php
+
+                echo  (isset($_SESSION['permisos']['aspecto-fisiologico']) && in_array('ver' , $_SESSION['permisos']['aspecto-fisiologico'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/aspecto-fisiologico.php">
+                    <i class="nav-icon fas fa-child"></i> Aspecto fisiológico
+                  </a>
+                </li>' 
+                :
+                '';
+
+                echo  (isset($_SESSION['permisos']['boletin-final']) && in_array('ver' , $_SESSION['permisos']['boletin-final'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/boletin-final.php">
+                    <i class="nav-icon fas fa-book-open"></i> Boletín final
+                  </a>
+                </li>' 
+                :
+                '';
+
                 echo  (isset($_SESSION['permisos']['boletin-parcial']) && in_array('ver' , $_SESSION['permisos']['boletin-parcial'])) ? 
                 '<li class="nav-item">
                   <a class="nav-link" href="/escuela-miguel-otero/vistas/boletin-parcial.php">
@@ -376,6 +395,16 @@ if (strlen(session_id()) < 1)
                   
             </ul>
           </li>
+
+          <?php
+          echo  (isset($_SESSION['permisos']['historial-estudiantil']) && in_array('ver' , $_SESSION['permisos']['historial-estudiantil'])) ? 
+            '<li class="nav-item">
+              <a class="nav-link" href="/escuela-miguel-otero/vistas/historial-estudiantil.php">
+              <i class="nav-icon fas fa-book"></i> Historial estudiantil</a>
+            </li>' 
+            :
+            '';
+          ?>
 
           <li class="divider"></li>
           <li class="nav-title">Ayuda</li>

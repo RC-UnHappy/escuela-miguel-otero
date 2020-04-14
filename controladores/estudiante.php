@@ -34,12 +34,12 @@ $estado_residencia = isset($_POST['estado_residencia']) ? limpiarCadena($_POST['
 $municipio_residencia = isset($_POST['municipio_residencia']) ? limpiarCadena($_POST['municipio_residencia']) : '';
 $parroquia_residencia = isset($_POST['parroquia_residencia']) ? limpiarCadena($_POST['parroquia_residencia']) : '';
 $direccion = isset($_POST['direccion']) ? $_POST['direccion'] : '';
-$peso = isset($_POST['peso']) ? $_POST['peso'] : '';
-$talla = isset($_POST['talla']) ? $_POST['talla'] : '';
-$vacunas = isset($_POST['vacunas']) ? $_POST['vacunas'] : '';
-$alergia = isset($_POST['alergia']) ? $_POST['alergia'] : '';
-$diversidad = isset($_POST['diversidad']) ? $_POST['diversidad'] : '';
-$enfermedad = isset($_POST['enfermedad']) ? $_POST['enfermedad'] : '';
+// $peso = isset($_POST['peso']) ? $_POST['peso'] : '';
+// $talla = isset($_POST['talla']) ? $_POST['talla'] : '';
+// $vacunas = isset($_POST['vacunas']) ? $_POST['vacunas'] : '';
+// $alergia = isset($_POST['alergia']) ? $_POST['alergia'] : '';
+// $diversidad = isset($_POST['diversidad']) ? $_POST['diversidad'] : '';
+// $enfermedad = isset($_POST['enfermedad']) ? $_POST['enfermedad'] : '';
 $vivienda = isset($_POST['vivienda']) ? $_POST['vivienda'] : '';
 $sosten = isset($_POST['sosten']) ? $_POST['sosten'] : '';
 $grupo_familiar = isset($_POST['grupo_familiar']) ? $_POST['grupo_familiar'] : '';
@@ -62,17 +62,17 @@ switch ($_GET['op']) {
 		require_once '../modelos/LugarNacimiento.php';
 		$LugarNacimiento = new LugarNacimiento();
 
-		#Se incluye el modelo de Aspecto Fisiológico
-		require_once '../modelos/AspectoFisiologico.php';
-		$AspectoFisiologico = new AspectoFisiologico();
+		// #Se incluye el modelo de Aspecto Fisiológico
+		// require_once '../modelos/AspectoFisiologico.php';
+		// $AspectoFisiologico = new AspectoFisiologico();
 
-		#Se incluye el modelo de Diversidad Funcional
-		require_once '../modelos/DiversidadFuncional.php';
-		$DiversidadFuncional = new DiversidadFuncional();
+		// #Se incluye el modelo de Diversidad Funcional
+		// require_once '../modelos/DiversidadFuncional.php';
+		// $DiversidadFuncional = new DiversidadFuncional();
 
-		#Se incluye el modelo de Enfermedad
-		require_once '../modelos/Enfermedad.php';
-		$Enfermedad = new Enfermedad();
+		// #Se incluye el modelo de Enfermedad
+		// require_once '../modelos/Enfermedad.php';
+		// $Enfermedad = new Enfermedad();
 
 		#Se incluye el modelo de Aspecto Socioeconómico
 		require_once '../modelos/AspectoSocioeconomico.php';
@@ -107,14 +107,14 @@ switch ($_GET['op']) {
 			#Se registra el lugar de nacimiento del estudiante
 			$LugarNacimiento->insertar($estudianteId, $parroquia_nacimiento) or $sw = FALSE;
 
-			#Se registran los aspectos fisiológicos del estudiante
-			$AspectoFisiologico->insertar($estudianteId, $vacunas, $peso, $talla, $alergia) or $sw = FALSE;
+			// #Se registran los aspectos fisiológicos del estudiante
+			// $AspectoFisiologico->insertar($estudianteId, $vacunas, $peso, $talla, $alergia) or $sw = FALSE;
 
-			#Se registran las diversidades funcionales del estudiante
-			$DiversidadFuncional->insertar($estudianteId, $diversidad) or $sw = FALSE;
+			// #Se registran las diversidades funcionales del estudiante
+			// $DiversidadFuncional->insertar($estudianteId, $diversidad) or $sw = FALSE;
 
-			#Se registran las enfermedades del estudiante
-			$Enfermedad->insertar($estudianteId, $enfermedad) or $sw = FALSE;
+			// #Se registran las enfermedades del estudiante
+			// $Enfermedad->insertar($estudianteId, $enfermedad) or $sw = FALSE;
 
 			#Se registran los aspectos socioeconómicos del estudiante
 			$AspectoSocioeconomico->insertar($estudianteId, $vivienda, $grupo_familiar, $ingreso_mensual) or $sw = FALSE;
@@ -154,8 +154,8 @@ switch ($_GET['op']) {
 				$Direccion->insertar($idpersona, $parroquia_residencia, $direccion) or $sw = FALSE;
 			}
 
-			#Se editan los aspectos fisiológicos del estudiante
-			$AspectoFisiologico->editar($idestudiante, $vacunas, $peso, $talla, $alergia) or $sw = FALSE;
+			// #Se editan los aspectos fisiológicos del estudiante
+			// $AspectoFisiologico->editar($idestudiante, $vacunas, $peso, $talla, $alergia) or $sw = FALSE;
 
 
 			if ($LugarNacimiento->verificar($idestudiante)) {
@@ -167,23 +167,23 @@ switch ($_GET['op']) {
 				$LugarNacimiento->insertar($idestudiante, $parroquia_nacimiento) or $sw = FALSE;
 			}
 			
-			#Verifica que la variable de diversidad contenga datos y los guarda
-			if (!empty($diversidad)) {
-				$DiversidadFuncional->eliminar($idestudiante) or $sw = FALSE;
-				$DiversidadFuncional->insertar($idestudiante, $diversidad) or $sw = FALSE;
-			}
-			else {
-				$DiversidadFuncional->eliminar($idestudiante) or $sw = FALSE;
-			}
+			// #Verifica que la variable de diversidad contenga datos y los guarda
+			// if (!empty($diversidad)) {
+			// 	$DiversidadFuncional->eliminar($idestudiante) or $sw = FALSE;
+			// 	$DiversidadFuncional->insertar($idestudiante, $diversidad) or $sw = FALSE;
+			// }
+			// else {
+			// 	$DiversidadFuncional->eliminar($idestudiante) or $sw = FALSE;
+			// }
 
-			#Verifica que la variable de enfermedad contenga datos y los guarda
-			if (!empty($enfermedad)) {
-				$Enfermedad->eliminar($idestudiante) or $sw = FALSE;
-				$Enfermedad->insertar($idestudiante, $enfermedad) or $sw = FALSE;
-			}
-			else {
-				$Enfermedad->eliminar($idestudiante) or $sw = FALSE;
-			}
+			// #Verifica que la variable de enfermedad contenga datos y los guarda
+			// if (!empty($enfermedad)) {
+			// 	$Enfermedad->eliminar($idestudiante) or $sw = FALSE;
+			// 	$Enfermedad->insertar($idestudiante, $enfermedad) or $sw = FALSE;
+			// }
+			// else {
+			// 	$Enfermedad->eliminar($idestudiante) or $sw = FALSE;
+			// }
 
 			#Se editan los aspectos socioeconómicos del estudiante
 			$AspectoSocioeconomico->editar($idestudiante, $vivienda, $grupo_familiar, $ingreso_mensual) or $sw = FALSE;

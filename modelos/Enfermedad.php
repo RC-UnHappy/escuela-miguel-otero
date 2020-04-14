@@ -16,13 +16,13 @@ class Enfermedad
 	}
 
 	#Método para insertar registros
-	function insertar($idestudiante, $enfermedad)
+	function insertar($idaspecto_fisiologico, $enfermedad)
 	{
 		$sw = TRUE;
 
 		if ($enfermedad != '') {
 			for ($i=0; $i < count($enfermedad) ; $i++) { 
-				$sql = "INSERT INTO enfermedad (id, idestudiante, enfermedad) VALUES(NULL, '$idestudiante', '$enfermedad[$i]')";
+				$sql = "INSERT INTO enfermedads (id, idaspecto_fisiologico ,enfermedad) VALUES(NULL, '$idaspecto_fisiologico', '$enfermedad[$i]')";
 	
 				ejecutarConsulta($sql) or $sw = FALSE;
 			}
@@ -32,9 +32,9 @@ class Enfermedad
 	}
 
 	#Método para eliminar registros
-	function eliminar($idestudiante)
+	function eliminar($idaspecto_fisiologico)
 	{
-		$sql = "DELETE FROM enfermedad WHERE idestudiante = '$idestudiante'";
+		$sql = "DELETE FROM enfermedads WHERE idaspecto_fisiologico = '$idaspecto_fisiologico'";
 
 		return ejecutarConsulta($sql);	
 	}

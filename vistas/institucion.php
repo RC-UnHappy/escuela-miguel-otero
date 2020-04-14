@@ -243,7 +243,7 @@ if (isset($_SESSION['permisos']['institucion']) && in_array('ver' , $_SESSION['p
                   
                   <div class="row">
 
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-6">
                       <label for="nombre">Nombre de la Institución (*)</label>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -261,6 +261,21 @@ if (isset($_SESSION['permisos']['institucion']) && in_array('ver' , $_SESSION['p
                       </div>
                     </div>
 
+                    <div class="form-group col-md-6">
+                      <label for="correo">Correo Electrónico (*)</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <i class="far fa-envelope"></i>
+                          </div>
+                        </div>
+                        <input type="email" name="correo" id="correo" class="form-control" required>
+                        <div class="invalid-feedback">
+                            Campo Obligatorio
+                        </div>
+                      </div>
+                    </div>
+
                     <div class="form-group col-md-3">
                       <label for="telefono">Teléfono (*)</label>
                       <div class="input-group">
@@ -270,21 +285,6 @@ if (isset($_SESSION['permisos']['institucion']) && in_array('ver' , $_SESSION['p
                           </div>
                         </div>
                         <input type="text" name="telefono" id="telefono" class="form-control solo_numeros guion_telefonico"  maxlength="12">
-                        <div class="invalid-feedback">
-                            Campo Obligatorio
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="form-group col-md-3">
-                      <label for="correo">Correo Electrónico (*)</label>
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-                          <div class="input-group-text">
-                            <i class="far fa-envelope"></i>
-                          </div>
-                        </div>
-                        <input type="email" name="correo" id="correo" class="form-control" required>
                         <div class="invalid-feedback">
                             Campo Obligatorio
                         </div>
@@ -335,6 +335,16 @@ if (isset($_SESSION['permisos']['institucion']) && in_array('ver' , $_SESSION['p
                       <label for="cod_electoral">Código Electoral</label>
                       <div class="input-group">
                         <input type="text" class="form-control" name="cod_electoral" id="cod_electoral" >
+                        <div class="invalid-feedback">
+                            Campo Obligatorio
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label for="cod_smee">Código SMEE</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" name="cod_smee" id="cod_smee" >
                         <div class="invalid-feedback">
                             Campo Obligatorio
                         </div>

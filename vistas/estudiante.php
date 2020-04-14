@@ -366,7 +366,7 @@ if (isset($_SESSION['permisos']['estudiante']) && in_array('ver' , $_SESSION['pe
             </div>
 
 
-            <div class="col-sm-6">
+            <!-- <div class="col-sm-6">
               <div class="card border-right-0 border-bottom-0 border-left-0  shadow mb-5 bg-white border-top-0 rounded">
                 <div class="card-header bg-white  shadow border-bottom-0 fondo-degradado">
                   <h5 class="m-0 p-0 lead font-italic font-weight-bold text-white"><i class="fas fa-user-md "></i> Aspectos fisiológicos
@@ -506,9 +506,9 @@ if (isset($_SESSION['permisos']['estudiante']) && in_array('ver' , $_SESSION['pe
                 </div>
 
               </div>
-            </div>
+            </div> -->
 
-            <div class="col-sm-6">
+            <div class="col-sm-12">
               <div class="card border-right-0 border-bottom-0 border-left-0  shadow mb-5 bg-white border-top-0 rounded">
                 <div class="card-header bg-white  shadow border-bottom-0 fondo-degradado">
                   <h5 class="m-0 p-0 lead font-italic font-weight-bold text-white"><i class="fas fa-wallet "></i> Aspectos socioeconómicos

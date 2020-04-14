@@ -629,45 +629,47 @@ function mostrar(idestudiante) {
 
 		$('#documento_padre').val(documento);
 		$('#documento_padre').selectpicker('refresh');
-		$('#cedula_padre').val(cedula_padre);
-		$('#peso').val(data.peso);
-		$('#talla').val(data.talla);
+    $('#cedula_padre').val(cedula_padre);
+    
+
+		// $('#peso').val(data.peso);
+		// $('#talla').val(data.talla);
 		
-		if (data.todas_vacunas == 1) {
-			$('#vacunasSi').attr('checked', true)
-		}
-		else {
-			$('#vacunasNo').attr('checked', true)
-		}
+		// if (data.todas_vacunas == 1) {
+		// 	$('#vacunasSi').attr('checked', true)
+		// }
+		// else {
+		// 	$('#vacunasNo').attr('checked', true)
+		// }
 
-		if (data.alergico == 1) {
-			$('#alergicoSi').attr('checked', true)
-		}
-		else {
-			$('#alergicoNo').attr('checked', true)
-		}
+		// if (data.alergico == 1) {
+		// 	$('#alergicoSi').attr('checked', true)
+		// }
+		// else {
+		// 	$('#alergicoNo').attr('checked', true)
+		// }
 
-		//Muestra las diversidades funcionales
-		if (data.diversidades != null) {
-			diversidad = data.diversidades.split(',');
-			numeroDiversidad = $('.diversidad').length;
-			for (var i = 0; i < numeroDiversidad; i++) {
-				if (jQuery.inArray($('.diversidad')[i].value, diversidad) != -1) {
-					$('.diversidad')[i].checked = 'true';
-				}
-			}
-		}
+		// //Muestra las diversidades funcionales
+		// if (data.diversidades != null) {
+		// 	diversidad = data.diversidades.split(',');
+		// 	numeroDiversidad = $('.diversidad').length;
+		// 	for (var i = 0; i < numeroDiversidad; i++) {
+		// 		if (jQuery.inArray($('.diversidad')[i].value, diversidad) != -1) {
+		// 			$('.diversidad')[i].checked = 'true';
+		// 		}
+		// 	}
+		// }
 
-		//Muestra las enfermedades
-		if (data.enfermedades != null) {
-			enfermedad = data.enfermedades.split(',');
-			numeroEnfermedad = $('.enfermedad').length;
-			for (var i = 0; i < numeroEnfermedad; i++) {
-				if (jQuery.inArray($('.enfermedad')[i].value, enfermedad) != -1) {
-					$('.enfermedad')[i].checked = 'true';
-				}
-			}	
-		}
+		// //Muestra las enfermedades
+		// if (data.enfermedades != null) {
+		// 	enfermedad = data.enfermedades.split(',');
+		// 	numeroEnfermedad = $('.enfermedad').length;
+		// 	for (var i = 0; i < numeroEnfermedad; i++) {
+		// 		if (jQuery.inArray($('.enfermedad')[i].value, enfermedad) != -1) {
+		// 			$('.enfermedad')[i].checked = 'true';
+		// 		}
+		// 	}	
+		// }
 
 		var tipo_vivienda = data.tipo_vivienda;
 		$('#'+tipo_vivienda).attr('checked', true);
@@ -804,8 +806,8 @@ function limpiar() {
 	$('#parroquia_residencia').html('<option value="">Seleccione</option>');
 	$('#parroquia_residencia').prop('disabled', true);
 	$('#parroquia_residencia').selectpicker('refresh');
-	$('input[name="vacunas"]').attr('checked', false);
-	$('input[name="alergia"]').attr('checked', false);
+	// $('input[name="vacunas"]').attr('checked', false);
+	// $('input[name="alergia"]').attr('checked', false);
 	$('input[name="vivienda"]').attr('checked', false);
 	$('input[name="canaima"]').attr('checked', false);
 	$('#condicion_canaima').prop('disabled', true);

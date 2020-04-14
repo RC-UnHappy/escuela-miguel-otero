@@ -95,12 +95,16 @@ switch ($_GET['op']) {
       $rspta = $BoletinParcial->listar($idplanificacion, $lapso, $idestudiantes);
       
       if ($rspta->num_rows != 0) {
+        $solo_uno = 0;
         while ($reg = $rspta->fetch_object()) {
   
           $data[] = array(
-          '0' => $reg->materia,
-          '1' => $reg->indicador,
-          '2' => $reg->nota);
+          '0' => ($solo_uno) == 0 ? '<a target="_blank" href="../reporte/boletin-informativo.php?idplanificacion='.$idplanificacion.'&lapso='.$lapso.'&idestudiante='.$idestudiantes.'"> <button class="btn btn-primary" title="Boletín Informativo"><i class="fa fa-file"></i></button></a>' : '',
+          '1' => $reg->materia,
+          '2' => $reg->indicador,
+          '3' => $reg->nota);
+
+          $solo_uno = 1;
         }
   
         $results = array(
