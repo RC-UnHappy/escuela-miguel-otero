@@ -99,7 +99,7 @@ class Personal //extends Persona
   #Método para traer el id del período escolar activo
 	function consultarperiodo()
 	{
-		$sql = "SELECT id FROM periodo_escolar WHERE estatus = 1";
+		$sql = "SELECT id FROM periodo_escolar WHERE estatus = 'Activo'";
 		return ejecutarConsultaSimpleFila($sql);
   }
   

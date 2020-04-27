@@ -206,22 +206,48 @@ switch ($_GET['op']) {
 
   case 'traerplanificaciones': 
     #Traer las planificaciones
+
+    // Se determina el rol que tiene el usuario
+    $rol_usuario = isset($_SESSION) ? $_SESSION['rol'] : '';
+    $id_usuario = isset($_SESSION) ? $_SESSION['idusuario'] : '';
+
+    $id_docente = $AspectoFisiologico->traerpersonal($id_usuario);
+    $id_docente = !empty($id_docente) ? $id_docente['id'] : '';
+    
     $periodo_escolar = $AspectoFisiologico->consultarperiodo();
     $idperiodo_escolar = !empty($periodo_escolar) ? $periodo_escolar['id'] : '';
 
-    $rspta = $AspectoFisiologico->traerplanificaciones($idperiodo_escolar);    
-    $data = array();
-    if ($rspta->num_rows != 0) {
-      while ($reg = $rspta->fetch_object()) {    
-        $data[] = [
-          'id' => $reg->id,
-          'grado' => $reg->grado,
-          'seccion' => $reg->seccion,
-          'nombre_docente' => $reg->p_nombre,
-          'apellido_docente' => $reg->p_apellido
-        ];
+    if ($rol_usuario == 'Docente') {
+      $rspta = $AspectoFisiologico->traerplanificaciones($idperiodo_escolar, $id_docente);    
+      $data = array();
+      if ($rspta->num_rows != 0) {
+        while ($reg = $rspta->fetch_object()) {    
+          $data[] = [
+            'id' => $reg->id,
+            'grado' => $reg->grado,
+            'seccion' => $reg->seccion,
+            'nombre_docente' => $reg->p_nombre,
+            'apellido_docente' => $reg->p_apellido
+          ];
+        }
       }
     }
+    else {
+      $rspta = $AspectoFisiologico->traerplanificaciones($idperiodo_escolar);    
+      $data = array();
+      if ($rspta->num_rows != 0) {
+        while ($reg = $rspta->fetch_object()) {    
+          $data[] = [
+            'id' => $reg->id,
+            'grado' => $reg->grado,
+            'seccion' => $reg->seccion,
+            'nombre_docente' => $reg->p_nombre,
+            'apellido_docente' => $reg->p_apellido
+          ];
+        }
+      }
+    }
+
     #Se codifica el resultado utilizando Json
     echo json_encode($data);
     break;

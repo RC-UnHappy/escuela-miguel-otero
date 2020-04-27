@@ -95,6 +95,25 @@ class PeriodoEscolar
     $sql = "SELECT * FROM periodo_escolar WHERE estatus = 'Activo'";
     return ejecutarConsultaSimpleFila($sql);
   }
+
+  public function comprobar_lapsos_finalizados($idperiodo)
+  {
+    $sql = "SELECT COUNT(id) AS lapsos_finalizados FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo' AND estatus = 'Finalizado'";
+
+    return ejecutarConsultaSimpleFila($sql);
+  }
+
+  public function comprobar_todos_lapsos_periodo($idperiodo)
+  {
+    $sql = "SELECT COUNT(id) AS todo_lapsos FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo'";
+    return ejecutarConsultaSimpleFila($sql);
+  }
+
+  public function verificar_lapso_activo()
+  {
+    $sql = "SELECT * FROM lapso_academico WHERE estatus = 'Activo'";
+    return ejecutarConsultaSimpleFila($sql);
+  }
 	
 }
 

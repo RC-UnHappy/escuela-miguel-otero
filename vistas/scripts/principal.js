@@ -104,8 +104,104 @@ $('.genero').on('change', function () {
 	}
 	else if (genero == ''){
 		$('#icono_genero').removeClass('bg-primary');
-		$('#icono_genero').removeClass('bg-danger');
+    $('#icono_genero').removeClass('bg-danger');
+    $('#icono_genero').addClass('bg-light');
 	}
 });
 
 fecha_actual();
+
+function mostrarPerfil(idusuario) {
+  let url = (location.href == 'http://localhost/escuela-miguel-otero/vistas/inscripcion/inscripcion.php') ? '../../controladores/usuario.php?op=traerperfil' : '../controladores/usuario.php?op=traerperfil';
+  
+  $.ajax({
+    async: true,
+    method: 'POST', 
+    url: url,
+    data: {idusuario:idusuario},
+    beforeSend: () => {
+      $('#btnGuardarPerfil').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Espere...<span class="sr-only"> Espere...</span>');
+    },
+    success: (response) => {
+      data = JSON.parse(response);
+      $('#usuarioperfil').val(data.usuario);
+      $('#idusuarioperfil').val(data.idusuario);
+    },
+    complete: () => {
+      $('#btnGuardarPerfil').html('Guardar');
+    }
+
+  });
+}
+
+
+if (location.href != 'http://localhost/escuela-miguel-otero/vistas/login.html') {
+  //Se ejecuta cuando se envia el formulario
+  $([formularioPerfil]).on('submit', function (event) {
+    
+    if ($([formularioPerfil])[0].checkValidity()) {
+      event.preventDefault(); //Evita que se envíe el formulario automaticamente
+      // 
+      var formData = new FormData($([formularioPerfil])[0]); //Se obtienen los datos del formulario
+      
+      let url = (location.href == 'http://localhost/escuela-miguel-otero/vistas/inscripcion/inscripcion.php') ? '../../controladores/usuario.php?op=editarperfil' : '../controladores/usuario.php?op=editarperfil';
+      $.ajax({
+        url: url, //Dirección a donde se envían los datos
+        type: 'POST', //Método por el cual se envían los datos
+        data: formData, //Datos
+        contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
+        processData: false, //Evita que jquery transforme la data en un string
+        beforeSend: () => {
+          $('#btnGuardarPerfil').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Espere...<span class="sr-only"> Espere...</span>');
+        },
+        success: function (datos) {
+          
+          if (datos == 'true') {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+  
+            Toast.fire({
+              type: 'success',
+              title: 'Usuario actualizado exitosamente :)'
+            });
+  
+            location.reload();
+          }
+          else if ( datos == 'usuario_tomado' ) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+  
+            Toast.fire({
+              type: 'error',
+              title: 'Debe elegir otro nombre de usuario :('
+            });
+          }
+          else {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+  
+            Toast.fire({
+              type: 'error',
+              title: 'Ocurrió un error y no se pudo actualizar :('
+            });
+          }
+        },
+        complete: () => {
+          $('#btnGuardarPerfil').html('Guardar');
+        }
+      });
+    }
+  });
+}

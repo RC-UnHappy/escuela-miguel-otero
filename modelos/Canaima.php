@@ -31,6 +31,13 @@ class Canaima
 
 		return ejecutarConsulta($sql);
 		
-	}
+  }
+  
+  public function verificar($idestudiante)
+  {
+    $sql = "SELECT id FROM canaima WHERE idestudiante = '$idestudiante'";
+
+		return ejecutarConsultaSimpleFila($sql);
+  }
 
 }

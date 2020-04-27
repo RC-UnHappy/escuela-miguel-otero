@@ -31,6 +31,13 @@ class AspectoSocioeconomico
 
 		return ejecutarConsulta($sql);
 		
+  }
+  
+  function verificar($idestudiante)
+	{
+		$sql = "SELECT id FROM aspecto_socioeconomico WHERE idestudiante = '$idestudiante'";
+
+		return ejecutarConsultaSimpleFila($sql);
 	}
 
 }

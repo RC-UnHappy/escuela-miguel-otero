@@ -105,7 +105,7 @@ switch ($_GET['op']) {
 			$estudianteId = $estudiante->insertar($idpersona, $idmadre, $idpadre, $parto, $orden, 'REGISTRADO') or $sw = FALSE;
 
 			#Se registra el lugar de nacimiento del estudiante
-			$LugarNacimiento->insertar($estudianteId, $parroquia_nacimiento) or $sw = FALSE;
+			$aquie = $LugarNacimiento->insertar($estudianteId, $parroquia_nacimiento) or $sw = FALSE;
 
 			// #Se registran los aspectos fisiológicos del estudiante
 			// $AspectoFisiologico->insertar($estudianteId, $vacunas, $peso, $talla, $alergia) or $sw = FALSE;
@@ -139,33 +139,35 @@ switch ($_GET['op']) {
 			#Variable para comprobar que todo salió bien al final
 			$sw = TRUE;
 
+      
 			#Se obtiene el id de la persona 
 			$idpersona = $estudiante->idpersona($idestudiante);
 			$idpersona = $idpersona['idpersona'];
 
 			#Se editan los datos de la persona
 			$persona->editar($idpersona, $cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email) or $sw = FALSE;
-
+      
 			if ($Direccion->verificar($idpersona)) {
-				#Se edita la dirección del estudiante
+        #Se edita la dirección del estudiante
 				$Direccion->editar($idpersona, $parroquia_residencia, $direccion) or $sw = FALSE;
 			} else {
-				#Se edita la dirección del estudiante
+        #Se edita la dirección del estudiante
 				$Direccion->insertar($idpersona, $parroquia_residencia, $direccion) or $sw = FALSE;
 			}
-
+      
 			// #Se editan los aspectos fisiológicos del estudiante
 			// $AspectoFisiologico->editar($idestudiante, $vacunas, $peso, $talla, $alergia) or $sw = FALSE;
-
-
+      
+      
 			if ($LugarNacimiento->verificar($idestudiante)) {
-				#Se edita el lugar de nacimiento del estudiante
+        #Se edita el lugar de nacimiento del estudiante
 				$LugarNacimiento->editar($idestudiante, $parroquia_nacimiento) or $sw = FALSE;
 			}
 			else{
-				#Se registra el lugar de nacimiento del estudiante
+        #Se registra el lugar de nacimiento del estudiante
 				$LugarNacimiento->insertar($idestudiante, $parroquia_nacimiento) or $sw = FALSE;
 			}
+      
 			
 			// #Verifica que la variable de diversidad contenga datos y los guarda
 			// if (!empty($diversidad)) {
@@ -185,23 +187,38 @@ switch ($_GET['op']) {
 			// 	$Enfermedad->eliminar($idestudiante) or $sw = FALSE;
 			// }
 
-			#Se editan los aspectos socioeconómicos del estudiante
-			$AspectoSocioeconomico->editar($idestudiante, $vivienda, $grupo_familiar, $ingreso_mensual) or $sw = FALSE;
-
+      if ($AspectoSocioeconomico->verificar($idestudiante)) {
+        #Se editan los aspectos socioeconómicos del estudiante
+        $AspectoSocioeconomico->editar($idestudiante, $vivienda, $grupo_familiar, $ingreso_mensual) or $sw = FALSE;      
+			}
+			else{
+        #Se registran los aspectos socioeconómicos del estudiante
+			  $AspectoSocioeconomico->insertar($idestudiante, $vivienda, $grupo_familiar, $ingreso_mensual) or $sw = FALSE;
+			}
+      
 			#Verifica que la variable de sosten contenga datos y los guarda
 			if (!empty($sosten)) {
-				$SostenHogar->eliminar($idestudiante) or $sw = FALSE;
+        $SostenHogar->eliminar($idestudiante) or $sw = FALSE;
 				$SostenHogar->insertar($idestudiante, $sosten) or $sw = FALSE;
 			}
 			else {
-				$SostenHogar->eliminar($idestudiante) or $sw = FALSE;
+        $SostenHogar->eliminar($idestudiante) or $sw = FALSE;
+      }
+
+      # Se verifica la canaima
+      if ($Canaima->verificar($idestudiante)) {
+        #Se edita si el estudiante posee canaima o no
+			  $Canaima->editar($idestudiante, $canaima, $condicion_canaima) or $sw = FALSE;     
 			}
-
-			#Se edita si el estudiante posee canaima o no
-			$Canaima->editar($idestudiante, $canaima, $condicion_canaima) or $sw = FALSE;
-
+			else{
+        #Se registra si el estudiante posee canaima o no
+			  $Canaima->insertar($idestudiante, $canaima, $condicion_canaima) or $sw = FALSE;
+			}
+      
+			   
 			#Se edita el estudiante
 			$rspta = $estudiante->editar($idestudiante, $idmadre, $idpadre, $parto, $orden) or $sw = FALSE;
+      
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {

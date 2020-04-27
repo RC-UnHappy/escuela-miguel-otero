@@ -28,6 +28,11 @@ $permisos = isset($_POST['permisos']) ? $_POST['permisos'] : [];
 $user = isset($_POST['user']) ? limpiarCadena($_POST['user']) : '';
 $pass = isset($_POST['pass']) ? limpiarCadena($_POST['pass']) : '';
 
+// Para cuando se desea cambiar el usuario o la contraseña
+$idusuarioperfil = isset($_POST['idusuarioperfil']) ? limpiarCadena($_POST['idusuarioperfil']) : '';
+$usuarioperfil = isset($_POST['usuarioperfil']) ? limpiarCadena($_POST['usuarioperfil']) : '';
+$passwordusuarioperfil = isset($_POST['passwordusuarioperfil']) ? limpiarCadena($_POST['passwordusuarioperfil']) : '';
+
 #Se ejecuta un caso dependiendo del valor del parámetro GET
 switch ($_GET['op']) {
   case 'guardaryeditar':
@@ -102,12 +107,12 @@ switch ($_GET['op']) {
 
     if (empty($idusuario)) {
 
-      $permisos_excluidos_para_rol_usuario = ['ambiente', 'grado', 'lapso', 'lapso-academico', 'materia', 'modulo', 'periodo-escolar', 'pic', 'planificacion', 'seccion', 'usuario', 'accion'];
+      $permisos_excluidos_para_rol_docente = ['ambiente', 'grado', 'lapso', 'expresion-literal','lapso-academico', 'materia', 'modulo', 'periodo-escolar', 'pic', 'planificacion', 'seccion', 'usuario', 'accion', 'institucion', 'historial-estudiantil', 'estudiante', 'personal', 'representante'];
 
       $permisos = '';
-      if ($rol == 'Usuario') {
+      if ($rol == 'Docente') {
         foreach ($modulos as $key => $value) {
-          if (!in_array($key, $permisos_excluidos_para_rol_usuario)) {
+          if (!in_array($key, $permisos_excluidos_para_rol_docente)) {
             $permisos .= '
               <div class="input-group-prepend">
                 <div>
@@ -332,41 +337,63 @@ switch ($_GET['op']) {
 	case 'verificar':
 		
 		#Se encripta la contraseña con el algoritmo SHA256
-		$clavehash = hash('SHA256', $pass);
+    $clavehash = hash('SHA256', $pass);
+    
+    $usuario = $Usuario->verificar_usuario($user);
 
-		$rspta = $Usuario->verificar($user, $clavehash);
-    
-		$fetch = $rspta->fetch_object();
-    
-		if (isset($fetch)) {
+    if (!empty($usuario) && $usuario['intentos_fallidos'] < 5) {
+      $rspta = $Usuario->verificar($user, $clavehash);
+  
+      $fetch = $rspta->fetch_object();
       
-      #Declaramos las variables de sesión
-			$_SESSION['idusuario'] = $fetch->id;
-			$_SESSION['usuario'] = $fetch->usuario;
-			$_SESSION['p_nombre'] = $fetch->p_nombre;
-			$_SESSION['p_apellido'] = $fetch->p_apellido;
-			// $_SESSION['email'] = $fetch->email;
-			$_SESSION['genero'] = $fetch->genero;
-			// $_SESSION['img'] = $fetch->img;
-			$_SESSION['rol'] = $fetch->rol;
-      
-			#Obtenemos los permisos del usuario 
-			$marcados = $Usuario->traer_permisos_usuario_nombre($fetch->id);
-      
-			#Declaramos el array para almacenar todos los permios marcados
-			$valores = array();
-      
-			#Almacenamos los permisos marcados en el array
-			while ($per = $marcados->fetch_object()) {
-        $valores[$per->modulo][] = $per->accion;
-				// array_push($valores, $per->idpermiso);
+      if (isset($fetch)) {
+        
+        #Declaramos las variables de sesión
+        $_SESSION['idusuario'] = $fetch->id;
+        $_SESSION['usuario'] = $fetch->usuario;
+        $_SESSION['p_nombre'] = $fetch->p_nombre;
+        $_SESSION['p_apellido'] = $fetch->p_apellido;
+        // $_SESSION['email'] = $fetch->email;
+        $_SESSION['genero'] = $fetch->genero;
+        // $_SESSION['img'] = $fetch->img;
+        $_SESSION['rol'] = $fetch->rol;
+        
+        #Obtenemos los permisos del usuario 
+        $marcados = $Usuario->traer_permisos_usuario_nombre($fetch->id);
+        
+        #Declaramos el array para almacenar todos los permios marcados
+        $valores = array();
+        
+        #Almacenamos los permisos marcados en el array
+        while ($per = $marcados->fetch_object()) {
+          $valores[$per->modulo][] = $per->accion;
+          // array_push($valores, $per->idpermiso);
+        }
+        $_SESSION['permisos'] = $valores;
+        // #Determinamos los accesos del usuario
+        // in_array(1, $valores) ? $_SESSION['escritorio'] = 1 : $_SESSION['escritorio'] = 0; 
+        // in_array(2, $valores) ? $_SESSION['usuario'] = 1 : $_SESSION['almacen'] = 0;
+        $Usuario->intento_fallido($usuario['id'], 0);
+        echo 'true';     
       }
-      $_SESSION['permisos'] = $valores;
-			// #Determinamos los accesos del usuario
-			// in_array(1, $valores) ? $_SESSION['escritorio'] = 1 : $_SESSION['escritorio'] = 0; 
-			// in_array(2, $valores) ? $_SESSION['usuario'] = 1 : $_SESSION['almacen'] = 0;    
-		}
-		echo json_encode($fetch);
+      else {
+
+        if ($usuario['rol'] != 'Administrador') {
+          $Usuario->intento_fallido($usuario['id'], ($usuario['intentos_fallidos'] + 1));
+        }
+        echo 'false';
+      }
+    }
+    else if (empty($usuario)) {
+      echo 'false';
+      die;
+    }
+    else {
+      echo 'intentos_fallidos';
+      die;
+    }
+
+
 
 		break;
 
@@ -410,6 +437,48 @@ switch ($_GET['op']) {
 	case 'comprobarpersona': 
 		$rspta = $Usuario->comprobarpersona($cedula);
 		echo json_encode($rspta->fetch_object());
-		break;
+    break;
+    
+  case 'traerperfil': 
+    $rspta = $Usuario->traerperfil($idusuario);
+    
+		echo json_encode($rspta);
+  break;
+  
+  case 'editarperfil':
+    
+    #Se deshabilita el guardado automático de la base de datos
+		autocommit(FALSE);   
+		if (!empty($idusuarioperfil)) {
+			#Variable para comprobar que todo salió bien al final
+			$sw = TRUE;
+
+      $respuesta = $Usuario->seleccionar_por_usuario($usuarioperfil);
+
+      if (empty($respuesta) || $respuesta['id'] == $idusuarioperfil) {
+        #Se encripta la clave con el algoritmo SHA256
+        $clavehash = hash('SHA256', $passwordusuarioperfil);
+        
+        #Se edita el usuario
+        $rspta = $Usuario->editarusuario($idusuarioperfil, $usuarioperfil, $clavehash) or $sw = FALSE;
+        #Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
+        
+        if ($sw) {
+          commit();
+          $_SESSION['usuario'] = $usuarioperfil;
+          echo 'true';
+        }
+        else {
+          rollback();
+          echo 'false';
+        }
+      }
+      else {
+        echo 'usuario_tomado';
+      }
+
+    } 
+
+  break;
 	
 }

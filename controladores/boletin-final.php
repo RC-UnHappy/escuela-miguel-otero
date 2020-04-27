@@ -32,7 +32,14 @@ switch ($_GET['op']) {
 		if (empty($idboletinfinal)) {
       
       #Se registra el boletin final a un estudiante
-			$BoletinFinal->insertar($idplanificacion, $idestudiantes, $idliteral, $descriptivo_final) or $sw = FALSE;
+      $BoletinFinal->insertar($idplanificacion, $idestudiantes, $idliteral, $descriptivo_final) or $sw = FALSE;
+
+      #Se obtiene la nota literal
+      $literal = $BoletinFinal->obtener_literal($idliteral);
+      $literal = !empty($literal) ? $literal['literal'] : '';
+      
+      #Se cambia el estatus de la inscripción dependiendo del literal asignado
+			$BoletinFinal->cambiar_estatus_inscripcion($idplanificacion, $idestudiantes, $literal) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
@@ -52,6 +59,13 @@ switch ($_GET['op']) {
       // Se edita el boletín final
       $BoletinFinal->editar($idboletinfinal, $idliteral, $descriptivo_final) or $sw = FALSE;
 
+      #Se obtiene la nota literal
+      $literal = $BoletinFinal->obtener_literal($idliteral);
+      $literal = !empty($literal) ? $literal['literal'] : '';
+      
+      #Se cambia el estatus de la inscripción dependiendo del literal asignado
+      $esto = $BoletinFinal->cambiar_estatus_inscripcion($idplanificacion, $idestudiantes, $literal) or $sw = FALSE;
+      
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
 				commit();
@@ -348,17 +362,41 @@ switch ($_GET['op']) {
     $periodo_escolar = $BoletinFinal->consultarperiodo();
     $idperiodo_escolar = !empty($periodo_escolar) ? $periodo_escolar['id'] : '';
 
-    $rspta = $BoletinFinal->traerplanificaciones($idperiodo_escolar);    
-    $data = array();
-    if ($rspta->num_rows != 0) {
-      while ($reg = $rspta->fetch_object()) {    
-        $data[] = [
-          'id' => $reg->id,
-          'grado' => $reg->grado,
-          'seccion' => $reg->seccion,
-          'nombre_docente' => $reg->p_nombre,
-          'apellido_docente' => $reg->p_apellido
-        ];
+    // Se determina el rol que tiene el usuario
+    $rol_usuario = isset($_SESSION) ? $_SESSION['rol'] : '';
+    $id_usuario = isset($_SESSION) ? $_SESSION['idusuario'] : '';
+
+    $id_docente = $BoletinFinal->traerpersonal($id_usuario);
+    $id_docente = !empty($id_docente) ? $id_docente['id'] : '';
+
+    if ($rol_usuario == 'Docente') {
+      $rspta = $BoletinFinal->traerplanificaciones($idperiodo_escolar, $id_docente);    
+      $data = array();
+      if ($rspta->num_rows != 0) {
+        while ($reg = $rspta->fetch_object()) {    
+          $data[] = [
+            'id' => $reg->id,
+            'grado' => $reg->grado,
+            'seccion' => $reg->seccion,
+            'nombre_docente' => $reg->p_nombre,
+            'apellido_docente' => $reg->p_apellido
+          ];
+        }
+      }
+    }
+    else {
+      $rspta = $BoletinFinal->traerplanificaciones($idperiodo_escolar);    
+      $data = array();
+      if ($rspta->num_rows != 0) {
+        while ($reg = $rspta->fetch_object()) {    
+          $data[] = [
+            'id' => $reg->id,
+            'grado' => $reg->grado,
+            'seccion' => $reg->seccion,
+            'nombre_docente' => $reg->p_nombre,
+            'apellido_docente' => $reg->p_apellido
+          ];
+        }
       }
     }
     #Se codifica el resultado utilizando Json

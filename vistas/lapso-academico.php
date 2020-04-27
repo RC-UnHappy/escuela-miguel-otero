@@ -54,7 +54,7 @@ if (isset($_SESSION['permisos']['lapso-academico']) && in_array('ver' , $_SESSIO
         
         <!-- Modal para crear Lapso académico -->
         <div class="modal fade" id="lapsoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog rounded modal-xl" role="document">
+          <div class="modal-dialog rounded " role="document">
             <div class="modal-content">
               
               <form class="needs-validation" novalidate name="formularioLapso" id="formularioregistros"> <!-- Formulario de Lapso académico -->
@@ -72,7 +72,7 @@ if (isset($_SESSION['permisos']['lapso-academico']) && in_array('ver' , $_SESSIO
 
                     <input type="hidden" name="idlapsoacademico" id="idlapsoacademico"> <!-- Input oculto que guardará el id del lapso academico cuando sea necesario -->
                     
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-lg-6 ">
                       <label for="periodo_escolar">Período Escolar (*)</label>
                         <div class="input-group ">
                           <select name="idperiodo_escolar" id="periodo_escolar" class="form-control selectpicker" required="true">
@@ -84,7 +84,7 @@ if (isset($_SESSION['permisos']['lapso-academico']) && in_array('ver' , $_SESSIO
                         </div>
                     </div>
 
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-lg-6 ">
                       <label for="lapso_academico">Lapso (*)</label>
                         <div class="input-group ">
                           <select name="lapso_academico" id="lapso_academico" class="form-control selectpicker" required="true">
@@ -96,7 +96,7 @@ if (isset($_SESSION['permisos']['lapso-academico']) && in_array('ver' , $_SESSIO
                         </div>
                     </div>
 
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-lg-6 ">
                       <label for="fecha_inicio">Fecha de inicio (*)</label>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -111,7 +111,7 @@ if (isset($_SESSION['permisos']['lapso-academico']) && in_array('ver' , $_SESSIO
                       </div>
                     </div>
 
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-lg-6 ">
                       <label for="fecha_fin">Fecha de fin (*)</label>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -126,7 +126,7 @@ if (isset($_SESSION['permisos']['lapso-academico']) && in_array('ver' , $_SESSIO
                       </div>
                     </div>
 
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-lg-12 ">
                       <label for="estatus">Estatus (*)</label>
                       <div class="input-group">
                         
@@ -180,6 +180,7 @@ if (isset($_SESSION['permisos']['lapso-academico']) && in_array('ver' , $_SESSIO
             </div>
           </div>
         </div>
+
         
       </div>
     </div>

@@ -49,9 +49,14 @@ class AspectoFisiologico
   }
   
   #Método para mostrar las planificaciones activas
-  public function traerplanificaciones($idperiodo_escolar)
+  public function traerplanificaciones($idperiodo_escolar, $id_docente = null)
   {
-      $sql = "SELECT pla.id, gra.grado, sec.seccion, p.p_nombre, p.p_apellido FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion INNER JOIN personal per ON pla.iddocente = per.id INNER JOIN persona p ON per.idpersona = p.id WHERE pla.estatus = 'Activo' AND pla.idperiodo_escolar = '$idperiodo_escolar'";
+      if (!empty($id_docente)) {
+         $sql = "SELECT pla.id, gra.grado, sec.seccion, p.p_nombre, p.p_apellido FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion INNER JOIN personal per ON pla.iddocente = per.id INNER JOIN persona p ON per.idpersona = p.id WHERE pla.estatus = 'Activo' AND pla.idperiodo_escolar = '$idperiodo_escolar' AND pla.iddocente = '$id_docente'";
+      }
+      else {
+        $sql = "SELECT pla.id, gra.grado, sec.seccion, p.p_nombre, p.p_apellido FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion INNER JOIN personal per ON pla.iddocente = per.id INNER JOIN persona p ON per.idpersona = p.id WHERE pla.estatus = 'Activo' AND pla.idperiodo_escolar = '$idperiodo_escolar'";
+      }
       return ejecutarConsulta($sql);
   }
 
@@ -89,6 +94,12 @@ class AspectoFisiologico
   public function datos_planificacion($idplanificacion)
   {
     $sql = "SELECT pla.id, gra.grado, sec.seccion, p.p_nombre, p.p_apellido, p_e.periodo FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion INNER JOIN personal per ON pla.iddocente = per.id INNER JOIN persona p ON per.idpersona = p.id INNER JOIN periodo_escolar p_e ON pla.idperiodo_escolar = p_e.id WHERE pla.id = '$idplanificacion'";
+   return ejecutarConsultaSimpleFila($sql);
+  }
+
+  public function traerpersonal($idusuario)
+  {
+    $sql = "SELECT c.id FROM usuario a INNER JOIN persona b ON a.idpersona = b.id INNER JOIN personal c ON c.idpersona = b.id WHERE a.id = '$idusuario'";
    return ejecutarConsultaSimpleFila($sql);
   }
 

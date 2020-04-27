@@ -14,7 +14,7 @@
         });
       }
       else {
-        planificacion = '<option value="">Debe finalizar todos los lapsos académicos</option>';
+        planificacion = '<option value="">No hay planificaciones activas</option>';
       }
       $('#planificaciones_general').html('<option value="">Seleccione</option>');
       $('#planificaciones_general').append(planificacion);
@@ -44,7 +44,7 @@
           });
         }
         else {
-          planificacion = '<option value="">Debe finalizar todos los lapsos académicos</option>';
+          planificacion = '<option value="">No hay planificaciones activas</option>';
         }
         $('#planificacion').html('<option value="">Seleccione</option>');
         $('#planificacion').append(planificacion);

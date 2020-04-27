@@ -91,7 +91,8 @@ class Usuario //extends Persona
 	#Método para vefiricar el acceso al sistema
 	function verificar($usuario, $clave)
 	{
-		$sql = "SELECT u.id, u.usuario, u.rol, p.p_nombre, p.p_apellido, p.genero FROM usuario as u INNER JOIN persona as p ON u.idpersona = p.id WHERE u.usuario = '$usuario' AND u.clave = '$clave' AND u.estatus = '1'";
+    $sql = "SELECT u.id, u.usuario, u.rol, u.intentos_fallidos, p.p_nombre, p.p_apellido, p.genero FROM usuario as u INNER JOIN persona as p ON u.idpersona = p.id WHERE u.usuario = '$usuario' AND u.clave = '$clave' AND u.estatus = '1'";
+
 		return ejecutarConsulta($sql);
 	}
 
@@ -141,7 +142,39 @@ class Usuario //extends Persona
 	{
 		$sql = "SELECT * FROM accion";
 		return ejecutarConsulta($sql);
-	}
+  }
+  
+  function traerperfil($idusuario)
+	{
+		$sql = "SELECT usu.id as idusuario, usu.usuario FROM usuario usu  WHERE usu.id = '$idusuario'";
+		return ejecutarConsultaSimpleFila($sql);
+  }
+  
+  function editarusuario($idusuario, $usuarioperfil, $clavehash)
+	{
+    $sql = "UPDATE usuario  SET usuario = '$usuarioperfil', clave = '$clavehash' WHERE id = '$idusuario'";
+    
+		return ejecutarConsulta($sql);
+  }
+  
+  function seleccionar_por_usuario($usuarioperfil)
+	{
+    $sql = "SELECT id, usuario FROM usuario WHERE usuario = '$usuarioperfil'";
+    
+		return ejecutarConsultaSimpleFila($sql);
+  }
+  
+	function verificar_usuario($usuario)
+	{
+    $sql = "SELECT u.id, u.usuario, u.rol, u.intentos_fallidos FROM usuario as u WHERE u.usuario = '$usuario' AND u.estatus = '1'";
+		return ejecutarConsultaSimpleFila($sql);
+  }
+  
+  public function intento_fallido($idusuario, $intentos_fallidos)
+  {
+    $sql = "UPDATE usuario SET intentos_fallidos = '$intentos_fallidos' WHERE id = '$idusuario'";
+    return ejecutarConsulta($sql);
+  }
 	
 	/*=====  End of Funciones relacionadas con Subdirector  ======*/
 	

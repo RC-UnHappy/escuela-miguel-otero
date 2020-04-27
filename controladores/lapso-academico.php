@@ -45,9 +45,10 @@ switch ($_GET['op']) {
 
     }
     else {
-      #Se edita el período escolar 
-			$PeriodoEscolar->editar($idperiodo, $periodo, $fecha_inicio, $fecha_fin, $estatus) or $sw = FALSE;
 
+      #Se edita el lapso académico
+			$LapsoAcademico->editar($idlapsoacademico, $fecha_inicio, $fecha_fin) or $sw = FALSE;
+      
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
 				commit();
@@ -119,7 +120,7 @@ switch ($_GET['op']) {
           }
           else{
             if ($siguiente_lapso == $reg->lapso) {
-              $opciones = ' <button class="btn btn-outline-success" title="Activar" onclick="activar('.$reg->id.')"><i class="fa fa-check"></i></button> ';
+              $opciones = ' <button class="btn btn-outline-success" title="Activar" onclick="activar('.$reg->id.' , '.$reg->lapso.')"><i class="fa fa-check"></i></button> ';
             }
             elseif ($reg->estatus == 'Planificado') {
               $opciones = '<button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#lapsoModal"><i class="fa fa-edit"></i></button>';
@@ -143,7 +144,7 @@ switch ($_GET['op']) {
           }
           else {
             if ($reg->lapso == 1) {
-              $opciones = ' <button class="btn btn-outline-success" title="Activar" onclick="activar('.$reg->id.')"><i class="fa fa-check"></i></button>
+              $opciones = ' <button class="btn btn-outline-success" title="Activar" onclick="activar('.$reg->id.' , '.$reg->lapso.')"><i class="fa fa-check"></i></button>
               <button class="btn btn-outline-primary" title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#lapsoModal"><i class="fa fa-edit"></i></button>';     
             }
             else {
@@ -194,7 +195,24 @@ switch ($_GET['op']) {
 		autocommit(FALSE);
 
 		#Variable para comprobar que todo salió bien al final
-		$sw = TRUE;
+    $sw = TRUE;
+    
+    if ($lapso_academico == 1) {
+      
+      // Aquí se verifica que todos los estudiantes que tengan un estatus de inscrito, tengan una inscripción activa antes de iniciar el lapso
+      $verificar_ultima_inscripcion = $LapsoAcademico->verificar_ultima_inscripcion();
+      
+      // var_dump($verificar_ultima_inscripcion);
+      // die;
+      if ($verificar_ultima_inscripcion->num_rows != 0) {
+        while ($reg = $verificar_ultima_inscripcion->fetch_object()) {
+          if ($reg->estatus != 'CURSANDO') {
+            echo 'estudiantes_no_inscritos';
+            die;
+          }
+        }
+      }    
+    }
 		
 		$rspta = $LapsoAcademico->activar($idlapsoacademico) or $sw = FALSE;
 
@@ -309,6 +327,13 @@ switch ($_GET['op']) {
       echo $collapse;
     }
     else {
+
+      $ultimo_lapso = $LapsoAcademico->traerultimolapso($idperiodo_activo);
+      if ($ultimo_lapso['id'] == $idlapsoacademico) {
+        $LapsoAcademico->finalizarplanificaciones($idperiodo_activo) or $sw = FALSE;
+        $LapsoAcademico->finalizarpic($idperiodo_activo) or $sw = FALSE;
+      }
+
       $rspta = $LapsoAcademico->finalizar($idlapsoacademico) or $sw = FALSE;
   
       #Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
@@ -358,9 +383,21 @@ switch ($_GET['op']) {
     $lapso_academico = isset($_POST['lapso_academico']) ? $_POST['lapso_academico'] : '';
     $periodo_escolar = isset($_POST['periodo_escolar']) ? $_POST['periodo_escolar'] : '';
     /**
-     * Si el lapso es igual a 1 entonces verificará la fecha de fin del ultimo lapso del período anterior
+     * Si el lapso es igual a 1 entonces verificará la fecha de fin del último lapso del período anterior
      */
     if ($lapso_academico == 1) {
+
+      // Primero se verificará que la fecha de inicio del lapso sea igual o mayor que la del período escolar
+      $periodoactivo = $LapsoAcademico->verificar_periodo_activo();
+      
+      if (!empty($periodoactivo)) {
+        if ($fecha_inicio < $periodoactivo['fecha_creacion']) {
+          echo 'fecha_inicio_erronea';
+          die;
+        }
+      }
+
+
       list($ano_inicio, $ano_fin) = explode('-', $periodo_escolar);
       $periodo_anterior = ($ano_inicio - 1).'-'.($ano_fin - 1);
       
@@ -396,6 +433,17 @@ switch ($_GET['op']) {
 
   case 'verificarfechafin':
     $fecha_fin = isset($_POST['fecha_fin']) ? $_POST['fecha_fin'] : '';
+
+    // Primero se verificará que la fecha de fin del lapso sea menor o igual que la del período escolar
+      $periodoactivo = $LapsoAcademico->verificar_periodo_activo();
+      
+      if (!empty($periodoactivo)) {
+        if ($fecha_fin > $periodoactivo['fecha_finalizacion']) {
+          echo 'fecha_fin_erronea';
+          die;
+        }
+      }
+
     $lapso_academico = isset($_POST['lapso_academico']) ? $_POST['lapso_academico'] : '';
     $periodo_escolar = isset($_POST['periodo_escolar']) ? $_POST['periodo_escolar'] : '';
     $idperiodo_escolar = $LapsoAcademico->verificar_por_periodo($periodo_escolar);

@@ -89,9 +89,25 @@ $('#frmAcceso').on('submit', function (e) {
 	var pass = $('#pass').val();
 
 	$.post('../controladores/usuario.php?op=verificar', {'user': user, 'pass': pass}, function (data) {
-		if (data!= 'null') {
+
+    // console.log(data);
+    // return;
+		if (data == 'true') {
 			$(location).attr('href', 'escritorio.php');
-		}
+    }
+    else if (data == 'intentos_fallidos') {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      });
+
+      Toast.fire({
+        type: 'error',
+        title: 'Demasiados intentos fallidos, comuníquese con el administrador'
+      });
+    }
 		else{
 			const Toast = Swal.mixin({
 				  toast: true,

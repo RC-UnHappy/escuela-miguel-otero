@@ -54,7 +54,7 @@ if (strlen(session_id()) < 1)
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <a class="navbar-brand" href="escritorio.php">
+    <a class="navbar-brand" href="/escuela-miguel-otero/vistas/escritorio.php">
       <div class="navbar-brand-full">
         <i class="fas fa-school" style="font-size: 26px;"></i>
         <em>Escuela M.O.S</em>
@@ -74,7 +74,7 @@ if (strlen(session_id()) < 1)
     </ul>
 
     <ul class="nav navbar-nav ml-auto">
-      <li class="nav-item d-md-down-none">
+      <!-- <li class="nav-item d-md-down-none">
         <a class="nav-link" href="#">
           <i class="far fa-bell"></i>
           <span class="badge badge-pill badge-danger">5</span>
@@ -89,8 +89,8 @@ if (strlen(session_id()) < 1)
         <a class="nav-link" href="#">
           <i class="far fa-envelope-open"></i>
         </a>
-      </li>
-      <li class="nav-item dropdown">
+      </li> -->
+      <li class="nav-item dropdown mr-4">
         <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" id="dropdownMenuLink">
 
           <img class="img-avatar" src="<?php
@@ -106,44 +106,89 @@ if (strlen(session_id()) < 1)
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
           <div class="dropdown-header text-center">
-            <strong>Account</strong>
-          </div>
-          <a class="dropdown-item" href="#">
-            <i class="fa fa-tasks"></i> Tasks
-            <span class="badge badge-danger">42</span>
-          </a>
-          <a class="dropdown-item" href="#">
-            <i class="fa fa-comments"></i> Comments
-            <span class="badge badge-warning">42</span>
-          </a>
-          <div class="dropdown-header text-center">
             <strong>Cuenta</strong>
           </div>
-
-          <button class="dropdown-item" onclick="actualizarPerfil(<?= $_SESSION['idusuario'] ?>)">
+          <button class="dropdown-item" data-toggle="modal" data-target="#perfilModal" onclick="mostrarPerfil(<?= $_SESSION['idusuario'] ?>)">
             <i class="fa fa-user"></i> Perfil
           </button>
-
-          <a class="dropdown-item" href="#">
-            <i class="fa fa-wrench"></i> Settings</a>
-          <a class="dropdown-item" href="#">
-            <i class="fa fa-file"></i> Projects
-            <span class="badge badge-primary">42</span>
-          </a>
+          
           <a class="dropdown-item" href="/escuela-miguel-otero/controladores/usuario.php?op=salir">
             <i class="fa fa-lock"></i> Salir</a>
         </div>
       </li>
     </ul>
-    <button class="navbar-toggler aside-menu-toggler d-md-down-none" type="button" data-toggle="aside-menu-lg-show">
+    <!-- <button class="navbar-toggler aside-menu-toggler d-md-down-none" type="button" data-toggle="aside-menu-lg-show">
       <span class="navbar-toggler-icon"></span>
-    </button>
-    <button class="navbar-toggler aside-menu-toggler d-lg-none" type="button" data-toggle="aside-menu-show">
+    </button> -->
+    <!-- <button class="navbar-toggler aside-menu-toggler d-lg-none" type="button" data-toggle="aside-menu-show">
       <span class="navbar-toggler-icon"></span>
-    </button>
+    </button> -->
   </header>
 
   <div class="app-body">
+
+    <!-- Modal para editar el perfil del usuario -->
+    <div class="modal fade" id="perfilModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog rounded" role="document">
+        <div class="modal-content">
+          
+          <form class="needs-validation" novalidate name="formularioPerfil" id="formularioPerfil"> 
+
+            <div class="modal-header fondo-degradado rounded">
+              <h5 class="modal-title text-white" id="exampleModalLabel">Editar perfil</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+
+              <div class="row"> 
+
+                <div class="form-group col-md-6">
+                  <label for="usuarioperfil">Usuario (*)</label>
+
+                  <div class="input-group">
+
+                    <input type="text" class="form-control usuarioperfil"  name="usuarioperfil"  id="usuarioperfil" required>
+
+                    <input type="hidden" name="idusuarioperfil" id="idusuarioperfil"> <!-- Input oculto que guardará el id del usuario cuando sea necesario -->
+                    
+                    <div class="invalid-feedback" >
+                        Campo Obligatorio
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label for="passwordusuarioperfil">Contraseña (*)</label>
+
+                  <div class="input-group">
+
+                    <input type="password" class="form-control passwordusuarioperfil"  name="passwordusuarioperfil"  id="passwordusuarioperfil" required>
+                    
+                    <div class="invalid-feedback" >
+                        Campo Obligatorio
+                    </div>
+
+                  </div>
+                </div>
+
+              </div> <!-- Fin row -->     
+            
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" >Cancelar</button>
+              <button type="submit" id="btnGuardarPerfil" class="btn btn-primary">Guardar</button>
+            </div>
+
+          </form> <!-- Fin del formulario -->
+        </div>
+      </div>
+    </div>
+
     <div class="sidebar">
       <nav class="sidebar-nav">
         <ul class="nav">
@@ -188,6 +233,22 @@ if (strlen(session_id()) < 1)
             :
             '';
 
+          ?>
+
+          <?php
+          if (isset($_SESSION['permisos']['usuario']) && in_array('ver' , $_SESSION['permisos']['usuario'])) {
+            echo '<li class="nav-item nav-dropdown">
+                        <a class="nav-link nav-dropdown-toggle" href="#">
+                          <i class="nav-icon fas fa-users-cog"></i> Usuarios
+                        </a>
+                        <ul class="nav-dropdown-items">
+                          <li class="nav-item">
+                            <a class="nav-link" href="/escuela-miguel-otero/vistas/usuario.php">
+                              <i class="nav-icon fas fa-user-plus"></i> Gestionar</a>
+                          </li>
+                        </ul>
+                      </li>';
+          }
           ?>
 
           <li class="nav-item nav-dropdown">
@@ -235,10 +296,10 @@ if (strlen(session_id()) < 1)
                 :
                 '';
 
-                echo  (isset($_SESSION['permisos']['inicial']) && in_array('ver' , $_SESSION['permisos']['inicial'])) ? 
+                echo  (isset($_SESSION['permisos']['inscripcion']) && in_array('ver' , $_SESSION['permisos']['inscripcion'])) ? 
                 '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/inscripcion/inicial.php">
-                    <i class="nav-icon fas fa-check"></i> Inscripción inicial
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/inscripcion/inscripcion.php">
+                    <i class="nav-icon fas fa-address-card"></i> Inscripción
                   </a>
                 </li>' 
                 :
@@ -287,22 +348,6 @@ if (strlen(session_id()) < 1)
           <li class="nav-title">Configuración</li>
 
 
-          <?php
-          if (isset($_SESSION['permisos']['usuario']) && in_array('ver' , $_SESSION['permisos']['usuario'])) {
-            echo '<li class="nav-item nav-dropdown">
-                        <a class="nav-link nav-dropdown-toggle" href="#">
-                          <i class="nav-icon fas fa-users-cog"></i> Usuarios
-                        </a>
-                        <ul class="nav-dropdown-items">
-                          <li class="nav-item">
-                            <a class="nav-link" href="/escuela-miguel-otero/vistas/usuario.php">
-                              <i class="nav-icon fas fa-user-plus"></i> Gestionar</a>
-                          </li>
-                        </ul>
-                      </li>';
-          }
-          ?>
-
           <li class="nav-item nav-dropdown">
             <a class="nav-link nav-dropdown-toggle" href="#">
               <i class="nav-icon fas fa-cogs"></i> Configuración
@@ -318,11 +363,11 @@ if (strlen(session_id()) < 1)
                 </li>' 
                 :
                 '';
-
-                echo  (isset($_SESSION['permisos']['seccion']) && in_array('ver' , $_SESSION['permisos']['seccion'])) ? 
+                
+                echo  (isset($_SESSION['permisos']['grado']) && in_array('ver' , $_SESSION['permisos']['grado'])) ? 
                 '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/seccion.php">
-                    <i class="nav-icon fas fa-apple-alt"></i> Sección
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/grado.php">
+                    <i class="nav-icon fas fa-pencil-ruler"></i> Grado
                   </a>
                 </li>' 
                 :
@@ -337,14 +382,6 @@ if (strlen(session_id()) < 1)
                 :
                 '';
 
-                echo  (isset($_SESSION['permisos']['grado']) && in_array('ver' , $_SESSION['permisos']['grado'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/grado.php">
-                    <i class="nav-icon fas fa-pencil-ruler"></i> Grado
-                  </a>
-                </li>' 
-                :
-                '';
 
                 echo  (isset($_SESSION['permisos']['lapso']) && in_array('ver' , $_SESSION['permisos']['lapso'])) ? 
                 '<li class="nav-item">
@@ -377,6 +414,15 @@ if (strlen(session_id()) < 1)
                 '<li class="nav-item">
                   <a class="nav-link" href="/escuela-miguel-otero/vistas/modulo.php">
                     <i class="nav-icon fas fa-check"></i> Módulo
+                  </a>
+                </li>' 
+                :
+                '';
+
+                echo  (isset($_SESSION['permisos']['seccion']) && in_array('ver' , $_SESSION['permisos']['seccion'])) ? 
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-miguel-otero/vistas/seccion.php">
+                    <i class="nav-icon fas fa-apple-alt"></i> Sección
                   </a>
                 </li>' 
                 :
@@ -421,3 +467,4 @@ if (strlen(session_id()) < 1)
         </ul>
       </nav>
     </div>
+

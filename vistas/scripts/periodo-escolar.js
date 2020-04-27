@@ -335,7 +335,7 @@ function finalizar(idperiodo) {
 		}).then((result) => {
 		  if (result.value) {
 		  	$.post('../controladores/periodo-escolar.php?op=finalizar', {idperiodo: idperiodo}, function (e) {
-
+          
 				if (e == 'true') {
 					const Toast = Swal.mixin({
 					  toast: true,
@@ -348,7 +348,20 @@ function finalizar(idperiodo) {
 					  type: 'success',
 					  title: 'Período escolar finalizado :)'
 					});
-				}
+        }
+        else if ( e == 'hay_lapsos_activos') {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+
+          Toast.fire({
+            type: 'error',
+            title: 'Debe finalizar todos los lapsos académicos primero'
+          });
+        }
 				else {
 					const Toast = Swal.mixin({
 					  toast: true,
@@ -364,8 +377,8 @@ function finalizar(idperiodo) {
 				}
 				tabla.ajax.reload();
 			});  
-		  } 
-		});
+		} 
+	});
 }
 
 //Función para limpiar el formulario

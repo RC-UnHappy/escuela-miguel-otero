@@ -196,9 +196,22 @@ switch ($_GET['op']) {
 		autocommit(FALSE);
 
 		#Variable para comprobar que todo salió bien al final
-		$sw = TRUE;
+    $sw = TRUE;
+    
+    $lapsos_finalizados = $PeriodoEscolar->comprobar_lapsos_finalizados($idperiodo);
+    $lapsos_finalizados = !empty($lapsos_finalizados) ? $lapsos_finalizados['lapsos_finalizados'] : 0;
+
+    $todo_lapsos = $PeriodoEscolar->comprobar_todos_lapsos_periodo($idperiodo);
+    $todo_lapsos = !empty($todo_lapsos) ? $todo_lapsos['todo_lapsos'] : 0;
+
+    if ($lapsos_finalizados == $todo_lapsos) {
+      $rspta = $PeriodoEscolar->finalizar($idperiodo) or $sw = FALSE;
+    }
+    else {
+      echo 'hay_lapsos_activos';
+      die;
+    }
 		
-		$rspta = $PeriodoEscolar->finalizar($idperiodo) or $sw = FALSE;
 
 		#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 		if ($sw) {
@@ -218,6 +231,24 @@ switch ($_GET['op']) {
 
 		#Se codifica el resultado utilizando Json
 		echo json_encode($rspta);
+
+    break;
+    
+  case 'verificar_periodo_activo':
+
+    $rspta = $PeriodoEscolar->verificar_periodo_activo();
+    $rspta = !empty($rspta) ? $rspta['periodo'] : '';
+		#Se codifica el resultado utilizando Json
+		echo $rspta;
+
+    break;
+    
+  case 'verificar_lapso_activo':
+
+    $rspta = $PeriodoEscolar->verificar_lapso_activo();
+    $rspta = !empty($rspta) ? $rspta['lapso'] : '';
+		#Se codifica el resultado utilizando Json
+		echo $rspta;
 
 		break;
 

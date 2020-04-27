@@ -113,7 +113,7 @@ switch ($_GET['op']) {
         else 
           $badge = '<span class="badge badge-pill badge-danger">Finalizado</span>';
 
-				$data[] = array('0' => !in_array($reg->id, $arreglo_idplanificaciones) ? 
+				$data[] = array('0' => ($reg->estatus == 'Activo') ? !in_array($reg->id, $arreglo_idplanificaciones) ? 
 					
 					'<button class="btn btn-outline-primary " title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#planificacionModal"><i class="fas fa-edit"></i></button>'.
 
@@ -121,7 +121,7 @@ switch ($_GET['op']) {
 
 						 :
 
-					 '',
+					 '<button class="btn btn-outline-primary " title="Editar" onclick="mostrar('.$reg->id.')" data-toggle="modal" data-target="#planificacionModal"><i class="fas fa-edit"></i></button>' : '',
 
 					 	'1' => $reg->grado.' º',
 					 	'2' => '"'.$reg->seccion.'"',

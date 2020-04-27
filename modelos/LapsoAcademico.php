@@ -39,9 +39,9 @@ class LapsoAcademico
   }
   
   #Método para editar registros
-	function editar($idperiodo, $periodo, $fecha_inicio, $fecha_fin, $estatus)
+	function editar($idlapsoacademico, $fecha_inicio, $fecha_fin)
 	{
-		$sql = "UPDATE periodo_escolar SET fecha_creacion = '$fecha_inicio', fecha_finalizacion = '$fecha_fin' WHERE id = '$idperiodo'";
+		$sql = "UPDATE lapso_academico SET fecha_inicio = '$fecha_inicio', fecha_fin = '$fecha_fin' WHERE id = '$idlapsoacademico'";
 
 		return ejecutarConsulta($sql);
 	}
@@ -62,7 +62,7 @@ class LapsoAcademico
 		return ejecutarConsulta($sql);
   }
 
-	#Método para traer el último perido
+	#Método para traer los lapsos
 	function traerlapsos($idperiodo)
 	{
 		$sql = "SELECT * FROM lapso WHERE estatus = 1 AND lapso NOT IN (SELECT lapso FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo') ORDER BY lapso ASC";
@@ -145,5 +145,35 @@ class LapsoAcademico
       $sql = "SELECT per.cedula, per.p_nombre, per.p_apellido FROM estudiante est INNER JOIN persona per ON est.idpersona = per.id WHERE est.id = '$idestudiante'";
       return ejecutarConsultaSimpleFila($sql);
   }
-	
+
+  public function verificar_ultima_inscripcion()
+  {
+    /* $sql = "SELECT ins.id AS idinscripcion, ins.idestudiante, per.cedula, per.p_nombre, per.p_apellido,  ins.estatus, gra.grado, sec.seccion, p_e.periodo FROM inscripcion ins INNER JOIN estudiante est ON ins.idestudiante = est.id  INNER JOIN persona per ON est.idpersona = per.id INNER JOIN planificacion pla ON ins.idplanificacion = pla.id INNER JOIN grado gra ON pla.idgrado = gra.id INNER JOIN seccion sec ON pla.idseccion = sec.id INNER JOIN periodo_escolar p_e ON pla.idperiodo_escolar = p_e.id WHERE ins.id IN (SELECT MAX(id) FROM inscripcion WHERE idestudiante = ins.idestudiante) AND est.estatus = 'INSCRITO'"; */
+
+    $sql = "SELECT ins.id AS idinscripcion, ins.idestudiante, ins.estatus FROM inscripcion ins INNER JOIN estudiante est ON ins.idestudiante = est.id  WHERE ins.id IN (SELECT MAX(id) FROM inscripcion WHERE idestudiante = ins.idestudiante) AND est.estatus = 'INSCRITO'";
+
+    return ejecutarConsulta($sql);	
+  }
+
+  public function traerultimolapso($idperiodo_escolar)
+  {
+    $sql = "SELECT * FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo_escolar' ORDER BY id DESC LIMIT 1";
+
+    return ejecutarConsultaSimpleFila($sql);
+  }
+
+  public function finalizarplanificaciones($idperiodo_activo)
+  {
+    $sql = "UPDATE planificacion SET estatus = 'Finalizado' WHERE idperiodo_escolar = '$idperiodo_activo'";
+
+    return ejecutarConsulta($sql);
+  }
+
+  public function finalizarpic($idperiodo_activo)
+  {
+    $sql = "UPDATE pic SET estatus = 'Finalizado' WHERE idperiodo_escolar = '$idperiodo_activo'";
+
+    return ejecutarConsulta($sql);
+  }
+  
 }

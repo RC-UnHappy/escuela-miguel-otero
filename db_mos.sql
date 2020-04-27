@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-03-2020 a las 21:07:30
+-- Tiempo de generación: 20-04-2020 a las 23:48:58
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -108,6 +108,33 @@ INSERT INTO `aspecto_fisiologico` (`id`, `idestudiante`, `todas_vacunas`, `peso`
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `aspecto_fisiologicos`
+--
+
+CREATE TABLE `aspecto_fisiologicos` (
+  `id` int(11) NOT NULL,
+  `idplanificacion` int(11) NOT NULL,
+  `idestudiante` int(11) NOT NULL,
+  `peso` float NOT NULL,
+  `talla` float NOT NULL,
+  `todas_vacunas` tinyint(1) NOT NULL,
+  `alergia` tinyint(1) NOT NULL,
+  `c` tinyint(1) NOT NULL,
+  `alimentos` tinyint(1) NOT NULL,
+  `utiles` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `aspecto_fisiologicos`
+--
+
+INSERT INTO `aspecto_fisiologicos` (`id`, `idplanificacion`, `idestudiante`, `peso`, `talla`, `todas_vacunas`, `alergia`, `c`, `alimentos`, `utiles`) VALUES
+(16, 40, 144, 44.44, 1.11, 1, 0, 0, 0, 0),
+(17, 40, 145, 11.11, 1.58, 0, 1, 0, 0, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `aspecto_socioeconomico`
 --
 
@@ -127,7 +154,31 @@ INSERT INTO `aspecto_socioeconomico` (`id`, `idestudiante`, `tipo_vivienda`, `gr
 (2, 20, 'casa', 4, 400000),
 (13, 30, 'apartamento', 5, 500000),
 (15, 35, 'apartamento', 5, 200000),
-(16, 36, 'casa', 5, 200000);
+(16, 36, 'casa', 5, 200000),
+(20, 147, 'casa', 5, 2000000);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `boletin_final`
+--
+
+CREATE TABLE `boletin_final` (
+  `id` int(11) NOT NULL,
+  `idplanificacion` int(11) NOT NULL,
+  `idestudiante` int(11) NOT NULL,
+  `idexpresion_literal` int(11) NOT NULL,
+  `descriptivo_final` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `boletin_final`
+--
+
+INSERT INTO `boletin_final` (`id`, `idplanificacion`, `idestudiante`, `idexpresion_literal`, `descriptivo_final`) VALUES
+(9, 40, 144, 5, 'Juan, es un niño alegre, solidario, de buenas costumbres, respetuoso con sus compañeros y responsable en sus actividades escolares, comparte con sus compañeros en el aula de clases y fuera de ella. Redacta cuentos sencillos con coherencia y secuencia lógica.\r\nCuenta sus experiencias y vivencias en forma verbal y escrita. Aplica los conocimientos adquiridos durante la elaboración de los proyectos de aprendizajes. Elabora trabajos escritos respetando las normas establecidas. Analiza textos sencillos para determinar las oraciones que los integran, así como sus elementos y las relaciones de forma y sentidos entre ellas como (el artículo, el sustantivo, adjetivos, clasificación.'),
+(12, 40, 145, 8, 'Pedro, es un niño alegre, solidario, de buenas costumbres, respetuoso con sus compañeros y responsable en sus actividades escolares, comparte con sus compañeros en el aula de clases y fuera de ella. Redacta cuentos sencillos con coherencia y secuencia lógica. Cuenta sus experiencias y vivencias en forma verbal y escrita. Aplica los conocimientos adquiridos durante la elaboración de los proyectos de aprendizajes. Elabora trabajos escritos respetando las normas establecidas. Analiza textos sencillos para determinar las oraciones que los integran, así como sus elementos y las relaciones de forma y sentidos entre ellas como (el artículo, el sustantivo, adjetivos, clasificación.'),
+(13, 46, 146, 5, 'El estudiante aprendió un montonaso.');
 
 -- --------------------------------------------------------
 
@@ -150,7 +201,8 @@ INSERT INTO `canaima` (`id`, `idestudiante`, `posee_canaima`, `condicion`) VALUE
 (3, 20, 'si', 'Deteriorada'),
 (13, 30, 'no', ''),
 (15, 35, 'no', ''),
-(16, 36, 'no', '');
+(16, 36, 'no', ''),
+(20, 147, 'no', '');
 
 -- --------------------------------------------------------
 
@@ -180,7 +232,8 @@ INSERT INTO `direccion` (`id`, `idpersona`, `idparroquia`, `direccion`) VALUES
 (58, 106, 702, 'barrio bolivar'),
 (59, 107, 739, 'adsasd'),
 (62, 113, 87, 'sadsad'),
-(63, 114, 739, 'fsdfdsf');
+(63, 114, 739, 'fsdfdsf'),
+(70, 212, 739, 'dasdsadsadsadsadsad');
 
 -- --------------------------------------------------------
 
@@ -225,6 +278,27 @@ CREATE TABLE `diversidad_funcional` (
 INSERT INTO `diversidad_funcional` (`id`, `idestudiante`, `diversidad`) VALUES
 (99, 20, 'autismo'),
 (100, 20, 'asperger');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `diversidad_funcionals`
+--
+
+CREATE TABLE `diversidad_funcionals` (
+  `id` int(11) NOT NULL,
+  `idaspecto_fisiologico` int(11) NOT NULL,
+  `diversidad` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `diversidad_funcionals`
+--
+
+INSERT INTO `diversidad_funcionals` (`id`, `idaspecto_fisiologico`, `diversidad`) VALUES
+(25, 16, 'motora'),
+(28, 17, 'motora'),
+(29, 17, 'autismo');
 
 -- --------------------------------------------------------
 
@@ -276,6 +350,28 @@ CREATE TABLE `enfermedad` (
 INSERT INTO `enfermedad` (`id`, `idestudiante`, `enfermedad`) VALUES
 (97, 20, 'visual'),
 (98, 20, 'auditiva');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `enfermedads`
+--
+
+CREATE TABLE `enfermedads` (
+  `id` int(11) NOT NULL,
+  `idaspecto_fisiologico` int(11) NOT NULL,
+  `enfermedad` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `enfermedads`
+--
+
+INSERT INTO `enfermedads` (`id`, `idaspecto_fisiologico`, `enfermedad`) VALUES
+(30, 16, 'visual'),
+(31, 16, 'auditiva'),
+(34, 17, 'respiratoria'),
+(35, 17, 'auditiva');
 
 -- --------------------------------------------------------
 
@@ -588,7 +684,32 @@ INSERT INTO `estudiante` (`id`, `idpersona`, `idmadre`, `idpadre`, `parto_multip
 (142, 204, 34, 43, 'no', 0, 'INSCRITO'),
 (144, 208, 34, 43, 'no', 0, 'INSCRITO'),
 (145, 209, 34, 43, 'no', 0, 'INSCRITO'),
-(146, 210, 34, 43, 'no', 0, 'INSCRITO');
+(146, 210, 34, 43, 'no', 0, 'INSCRITO'),
+(147, 212, 34, 43, 'no', 0, 'REGISTRADO');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `expresion_literal`
+--
+
+CREATE TABLE `expresion_literal` (
+  `id` int(11) NOT NULL,
+  `literal` char(1) NOT NULL,
+  `interpretacion` char(255) NOT NULL,
+  `estatus` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `expresion_literal`
+--
+
+INSERT INTO `expresion_literal` (`id`, `literal`, `interpretacion`, `estatus`) VALUES
+(4, 'B', 'El alumno alcanzó todas las competencias previstas para el grado', 1),
+(5, 'A', 'El alumno superó todas las competencias previstas para el grado', 1),
+(6, 'C', 'dasdsadasd', 1),
+(7, 'D', 'asdqweqweqw', 1),
+(8, 'E', 'sadsadsadtghfhg', 1);
 
 -- --------------------------------------------------------
 
@@ -613,6 +734,33 @@ INSERT INTO `grado` (`id`, `grado`, `estatus`) VALUES
 (4, '4', 1),
 (5, '5', 1),
 (6, '6', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `historial_estudiantil`
+--
+
+CREATE TABLE `historial_estudiantil` (
+  `id` int(11) NOT NULL,
+  `periodo_escolar` char(9) NOT NULL,
+  `turno` char(50) NOT NULL,
+  `grado` char(2) NOT NULL,
+  `seccion` char(2) NOT NULL,
+  `cedula_docente` char(14) NOT NULL,
+  `nombre_docente` char(30) NOT NULL,
+  `apellido_docente` char(0) NOT NULL,
+  `cedula_estudiante` char(15) NOT NULL,
+  `p_nombre_estudiante` char(30) NOT NULL,
+  `s_nombre_estudiante` char(30) NOT NULL,
+  `p_apellido_estudiante` char(30) NOT NULL,
+  `s_apellido_estudiante` char(30) NOT NULL,
+  `fecha_nacimiento_estudiante` date NOT NULL,
+  `lugar_nacimiento_estudiante` varchar(100) NOT NULL,
+  `sexo_estudiante` char(1) NOT NULL,
+  `literal` char(1) NOT NULL,
+  `observaciones` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -647,7 +795,20 @@ INSERT INTO `indicador` (`id`, `idplanificacion`, `idmateria`, `lapso_academico`
 (13, 40, 4, '1', 'Lee corrido y sin detenerse los numeros'),
 (14, 40, 7, '1', 'Corre durango'),
 (15, 40, 5, '1', 'Ve los arboles con atención'),
-(16, 40, 3, '1', 'No se le enreda la lengua al leer');
+(16, 40, 3, '1', 'No se le enreda la lengua al leer'),
+(18, 40, 3, '1', 'Cómodamente hablando'),
+(19, 46, 3, '1', 'Lee corrido y sin detenerse'),
+(20, 40, 3, '2', 'Puede conjugar verbos mejor que alexis'),
+(21, 40, 4, '2', 'Sabe contar del 1 al 5 sin saltarse ningún número'),
+(22, 40, 5, '2', 'Sabe diferenciar una pulga de una garrapata'),
+(23, 40, 7, '2', 'Corre como un canguro'),
+(24, 40, 5, '1', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'),
+(25, 40, 5, '1', 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'),
+(26, 40, 5, '1', 'ccccccccccccccccccccccccccccccccccccccccc'),
+(27, 40, 6, '1', 'Escribe cuentos cortos'),
+(28, 40, 6, '1', 'Realiza multiplicaciones de dos cifras'),
+(29, 40, 7, '1', 'Lee corrido y sin detenerse'),
+(30, 40, 7, '1', 'Identifica párrafos como unidades organizadas del texto');
 
 -- --------------------------------------------------------
 
@@ -669,18 +830,45 @@ CREATE TABLE `indicador_nota` (
 --
 
 INSERT INTO `indicador_nota` (`id`, `idplanificacion`, `idindicador`, `idestudiante`, `lapso_academico`, `nota`) VALUES
-(13, 40, 15, 144, 1, 'AV'),
-(14, 40, 4, 144, 1, 'EP'),
-(15, 40, 14, 144, 1, 'AV'),
-(16, 40, 1, 144, 1, 'EP'),
-(17, 40, 5, 144, 1, 'EP'),
-(18, 40, 10, 144, 1, 'C'),
-(19, 40, 12, 144, 1, 'AV'),
-(20, 40, 16, 144, 1, 'AV'),
-(21, 40, 2, 144, 1, 'AV'),
-(22, 40, 9, 144, 1, 'AV'),
-(23, 40, 11, 144, 1, 'AV'),
-(24, 40, 13, 144, 1, 'AV');
+(168, 46, 19, 146, 1, 'EP'),
+(169, 40, 15, 145, 1, 'EP'),
+(170, 40, 4, 145, 1, 'AV'),
+(171, 40, 14, 145, 1, 'I'),
+(172, 40, 1, 145, 1, 'AV'),
+(173, 40, 5, 145, 1, 'EP'),
+(174, 40, 10, 145, 1, 'EP'),
+(175, 40, 12, 145, 1, 'EP'),
+(176, 40, 16, 145, 1, 'EP'),
+(177, 40, 18, 145, 1, 'AV'),
+(178, 40, 2, 145, 1, 'AV'),
+(179, 40, 9, 145, 1, 'EP'),
+(180, 40, 11, 145, 1, 'EP'),
+(181, 40, 13, 145, 1, 'AV'),
+(198, 40, 15, 144, 1, 'I'),
+(199, 40, 24, 144, 1, 'AV'),
+(200, 40, 25, 144, 1, 'EP'),
+(201, 40, 26, 144, 1, 'I'),
+(202, 40, 4, 144, 1, 'I'),
+(203, 40, 27, 144, 1, 'EP'),
+(204, 40, 28, 144, 1, 'AV'),
+(205, 40, 14, 144, 1, 'AV'),
+(206, 40, 29, 144, 1, 'AV'),
+(207, 40, 30, 144, 1, 'C'),
+(208, 40, 1, 144, 1, 'EP'),
+(209, 40, 5, 144, 1, 'C'),
+(210, 40, 10, 144, 1, 'C'),
+(211, 40, 12, 144, 1, 'AV'),
+(212, 40, 16, 144, 1, 'I'),
+(213, 40, 18, 144, 1, 'I'),
+(214, 40, 2, 144, 1, 'I'),
+(215, 40, 9, 144, 1, 'C'),
+(216, 40, 11, 144, 1, 'EP'),
+(217, 40, 13, 144, 1, 'I'),
+(218, 40, 22, 144, 2, 'AV'),
+(219, 40, 23, 144, 2, 'AV'),
+(220, 40, 20, 144, 2, 'EP'),
+(221, 40, 3, 144, 2, 'I'),
+(222, 40, 21, 144, 2, 'EP');
 
 -- --------------------------------------------------------
 
@@ -699,7 +887,7 @@ CREATE TABLE `inscripcion` (
   `repite` tinyint(1) NOT NULL,
   `observaciones` text NOT NULL,
   `fecha_inscripcion` date NOT NULL,
-  `estatus` tinyint(1) NOT NULL
+  `estatus` char(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -707,9 +895,10 @@ CREATE TABLE `inscripcion` (
 --
 
 INSERT INTO `inscripcion` (`id`, `idperiodo_escolar`, `idplanificacion`, `idestudiante`, `idrepresentante`, `parentesco`, `plantel_procedencia`, `repite`, `observaciones`, `fecha_inscripcion`, `estatus`) VALUES
-(20, 45, 40, 144, 16, 'Madre', 'preescolar', 0, 'buen niño', '2020-03-16', 1),
-(21, 45, 40, 145, 4, 'Padre', 'preescolar', 0, 'nada', '2020-03-16', 1),
-(22, 45, 46, 146, 4, 'Padre', 'preescolar', 0, 'todo', '2020-03-16', 1);
+(20, 45, 40, 144, 16, 'Madre', 'preescolar', 0, 'buen niño', '2020-03-16', 'PROMOVIDO'),
+(21, 45, 40, 145, 4, 'Padre', 'preescolar', 0, 'nada', '2020-03-16', 'REPITE'),
+(22, 45, 46, 146, 4, 'Padre', 'preescolar', 0, 'todo', '2020-03-16', 'PROMOVIDO'),
+(23, 46, 44, 145, 4, 'Padre', 'Escuela Básica Bolivariana \"Miguel Otero Silva\"', 0, 'Repite de grado', '2020-04-19', 'CURSANDO');
 
 -- --------------------------------------------------------
 
@@ -731,6 +920,7 @@ CREATE TABLE `institucion` (
   `cod_estadistico` char(10) NOT NULL,
   `cod_dependencia` char(10) NOT NULL,
   `cod_electoral` char(10) DEFAULT NULL,
+  `cod_smee` char(25) NOT NULL,
   `fecha_fundada` date NOT NULL,
   `fecha_bolivariana` date NOT NULL,
   `clase_plantel` varchar(45) NOT NULL,
@@ -745,8 +935,8 @@ CREATE TABLE `institucion` (
 -- Volcado de datos para la tabla `institucion`
 --
 
-INSERT INTO `institucion` (`id`, `nombre`, `direccion`, `idmunicipio`, `idparroquia`, `idestado`, `telefono`, `correo`, `dependencia`, `cod_dea`, `cod_estadistico`, `cod_dependencia`, `cod_electoral`, `fecha_fundada`, `fecha_bolivariana`, `clase_plantel`, `categoria`, `condicion_estudio`, `tipo_matricula`, `turno`, `horario`) VALUES
-(4, 'Escuela Básica Bolivariana \"Miguel Otero Silva\"', 'FINAL CALLE G QTA. ETAPA URB. LA GOAJIRA CONCENTRADO', 289, 739, 17, '0255-6215634', 'migueloterosilva1971@gmail.com', 'Nacional', 'OD00041808', '180527', '006735407', '', '1971-01-16', '2005-01-21', 'CONCENTRADO', 'CIVIL', 'EXTERNADO', 'MIXTO', 'INTEGRAL-MIXTO', '8:00 am / 4:00 pm');
+INSERT INTO `institucion` (`id`, `nombre`, `direccion`, `idmunicipio`, `idparroquia`, `idestado`, `telefono`, `correo`, `dependencia`, `cod_dea`, `cod_estadistico`, `cod_dependencia`, `cod_electoral`, `cod_smee`, `fecha_fundada`, `fecha_bolivariana`, `clase_plantel`, `categoria`, `condicion_estudio`, `tipo_matricula`, `turno`, `horario`) VALUES
+(4, 'Escuela Básica Bolivariana \"Miguel Otero Silva\"', 'FINAL CALLE G QTA. ETAPA URB. LA GOAJIRA CONCENTRADO', 289, 739, 17, '0255-6215634', 'migueloterosilva1971@gmail.com', 'Nacional', 'OD00041808', '180527', '006735407', '', '', '1971-01-16', '2005-01-21', 'CONCENTRADO', 'CIVIL', 'EXTERNADO', 'MIXTO', 'INTEGRAL-MIXTO', '8:00 am / 4:00 pm');
 
 -- --------------------------------------------------------
 
@@ -789,9 +979,9 @@ CREATE TABLE `lapso_academico` (
 --
 
 INSERT INTO `lapso_academico` (`id`, `idperiodo_escolar`, `lapso`, `fecha_inicio`, `fecha_fin`, `estatus`) VALUES
-(4, 45, '1', '2021-08-25', '2021-12-10', 'Activo'),
-(5, 45, '2', '2021-12-11', '2022-03-30', 'Planificado'),
-(7, 45, '3', '2022-04-01', '2022-06-30', 'Planificado');
+(4, 45, '1', '2021-08-25', '2021-12-10', 'Finalizado'),
+(5, 45, '2', '2021-12-11', '2022-03-30', 'Finalizado'),
+(7, 45, '3', '2022-04-01', '2022-06-30', 'Finalizado');
 
 -- --------------------------------------------------------
 
@@ -817,7 +1007,8 @@ INSERT INTO `lugar_nacimiento` (`id`, `idestudiante`, `idparroquia`) VALUES
 (58, 142, 736),
 (60, 144, 722),
 (61, 145, 722),
-(62, 146, 722);
+(62, 146, 722),
+(63, 147, 739);
 
 -- --------------------------------------------------------
 
@@ -877,8 +1068,12 @@ INSERT INTO `modulo` (`id`, `modulo`) VALUES
 (16, 'seccion'),
 (17, 'usuario'),
 (18, 'accion'),
-(19, 'inicial'),
-(20, 'boletin-parcial');
+(19, 'inscripcion'),
+(20, 'boletin-parcial'),
+(21, 'expresion-literal'),
+(22, 'boletin-final'),
+(23, 'historial-estudiantil'),
+(24, 'aspecto-fisiologico');
 
 -- --------------------------------------------------------
 
@@ -3197,10 +3392,11 @@ INSERT INTO `persona` (`id`, `cedula`, `p_nombre`, `s_nombre`, `p_apellido`, `s_
 (114, 'V-11026307', 'Ana', 'Maria', 'Romero', '', 'F', '1967-07-25', 'fsdfds@gmail.com', '2020-02-28 14:17:46'),
 (195, 'CE-37693822', 'dasd', 'dasds', 'asdsa', 'asddas', 'M', '1998-03-02', NULL, '2020-03-08 20:21:37'),
 (204, 'V-37693822', 'asdad', '', 'sadsad', '', 'M', '0000-00-00', NULL, '2020-03-09 22:28:42'),
-(208, 'CE-11411693822', 'juan', '', 'cáceres', '', 'M', '0000-00-00', NULL, '2020-03-16 11:27:11'),
+(208, 'CE-11411693822', 'juan', '', 'cáceres', '', 'M', '1998-06-23', NULL, '2020-03-16 11:27:11'),
 (209, 'CE-11511693822', 'pedro', '', 'cáceres', '', 'M', '0000-00-00', NULL, '2020-03-16 15:41:34'),
 (210, 'CE-11011693822', 'carmelo', '', 'caramelo', '', 'M', '0000-00-00', NULL, '2020-03-16 16:30:14'),
-(211, 'V-00000000', 'ADMINISTRADOR', 'ADMINISTRADOR', 'ADMINISTRADOR', 'ADMINISTRADOR', 'M', '2020-03-24', 'mastercaceresxt12@gmail.com', '2020-03-24 20:33:10');
+(211, 'V-00000000', 'ADMINISTRADOR', 'ADMINISTRADOR', 'ADMINISTRADOR', 'ADMINISTRADOR', 'M', '2020-03-24', 'mastercaceresxt12@gmail.com', '2020-03-24 20:33:10'),
+(212, 'V-35693822', 'Petro', '', 'Cáceres', '', 'M', '2006-02-06', '', '2020-04-13 22:25:41');
 
 -- --------------------------------------------------------
 
@@ -3289,7 +3485,7 @@ CREATE TABLE `planificacion` (
 
 INSERT INTO `planificacion` (`id`, `idperiodo_escolar`, `idgrado`, `idseccion`, `idambiente`, `iddocente`, `cupo`, `cupo_disponible`, `estatus`) VALUES
 (40, 45, 1, 2, 5, 1, 30, 28, 'Activo'),
-(44, 46, 1, 3, 5, 1, 30, 30, 'Planificado'),
+(44, 46, 1, 3, 5, 1, 30, 29, 'Planificado'),
 (46, 45, 2, 2, 11, 14, 30, 29, 'Activo'),
 (50, 47, 1, 2, 8, 1, 30, 30, 'Planificado'),
 (56, 45, 3, 2, 9, 13, 30, 30, 'Activo');
@@ -3340,9 +3536,10 @@ CREATE TABLE `recomendacion` (
 --
 
 INSERT INTO `recomendacion` (`id`, `idplanificacion`, `idestudiante`, `lapso_academico`, `recomendacion`) VALUES
-(1, 40, 144, '1', 'xsadsadasdsadsadsad'),
-(2, 40, 144, '1', 'dasasdasdafafafafasdsadsad'),
-(3, 40, 144, '1', 'Esto y lo otro');
+(3, 40, 144, '1', 'No sabe nada.'),
+(6, 46, 146, '1', 'Nada nuevo'),
+(7, 40, 145, '1', 'Fino fino'),
+(8, 40, 144, '2', 'Si sabe un monton');
 
 -- --------------------------------------------------------
 
@@ -3416,7 +3613,10 @@ INSERT INTO `sosten_hogar` (`id`, `idestudiante`, `sosten`) VALUES
 (67, 30, 'papa'),
 (68, 30, 'mama'),
 (69, 36, 'papa'),
-(70, 36, 'mama');
+(70, 36, 'mama'),
+(76, 147, 'papa'),
+(77, 147, 'mama'),
+(78, 147, 'otros');
 
 -- --------------------------------------------------------
 
@@ -3463,7 +3663,7 @@ INSERT INTO `telefono` (`id`, `idpersona`, `telefono`, `tipo`) VALUES
 (459, 92, '0416-2692642', 'M'),
 (460, 92, '0255-6630637', 'F'),
 (471, 34, '0416-3065905', 'M'),
-(472, 43, '0416-2692642', 'M');
+(478, 43, '0416-2692642', 'M');
 
 -- --------------------------------------------------------
 
@@ -3528,74 +3728,93 @@ INSERT INTO `usuario_modulo_accion` (`id`, `idusuario`, `idmodulo`, `idaccion`) 
 (709, 3, 15, 2),
 (710, 3, 15, 3),
 (711, 3, 15, 4),
-(998, 5, 18, 1),
-(999, 5, 1, 1),
-(1000, 5, 1, 2),
-(1001, 5, 1, 3),
-(1002, 5, 1, 4),
-(1003, 5, 2, 1),
-(1004, 5, 3, 1),
-(1005, 5, 3, 2),
-(1006, 5, 3, 3),
-(1007, 5, 3, 4),
-(1008, 5, 4, 1),
-(1009, 5, 4, 2),
-(1010, 5, 4, 3),
-(1011, 5, 4, 4),
-(1012, 5, 5, 1),
-(1013, 5, 5, 2),
-(1014, 5, 5, 3),
-(1015, 5, 5, 4),
-(1016, 5, 19, 1),
-(1017, 5, 19, 2),
-(1018, 5, 19, 3),
-(1019, 5, 19, 4),
-(1020, 5, 6, 1),
-(1021, 5, 6, 2),
-(1022, 5, 6, 3),
-(1023, 5, 6, 4),
-(1024, 5, 7, 1),
-(1025, 5, 7, 2),
-(1026, 5, 7, 3),
-(1027, 5, 7, 4),
-(1028, 5, 8, 1),
-(1029, 5, 8, 2),
-(1030, 5, 8, 3),
-(1031, 5, 8, 4),
-(1032, 5, 9, 1),
-(1033, 5, 9, 2),
-(1034, 5, 9, 3),
-(1035, 5, 9, 4),
-(1036, 5, 10, 1),
-(1037, 5, 11, 1),
-(1038, 5, 11, 2),
-(1039, 5, 11, 3),
-(1040, 5, 11, 4),
-(1041, 5, 12, 1),
-(1042, 5, 12, 2),
-(1043, 5, 12, 3),
-(1044, 5, 12, 4),
-(1045, 5, 13, 1),
-(1046, 5, 13, 2),
-(1047, 5, 13, 3),
-(1048, 5, 13, 4),
-(1049, 5, 14, 1),
-(1050, 5, 14, 2),
-(1051, 5, 14, 3),
-(1052, 5, 14, 4),
-(1053, 5, 15, 1),
-(1054, 5, 15, 2),
-(1055, 5, 15, 3),
-(1056, 5, 15, 4),
-(1057, 5, 16, 1),
-(1058, 5, 16, 2),
-(1059, 5, 16, 3),
-(1060, 5, 16, 4),
-(1061, 5, 17, 1),
-(1062, 5, 17, 2),
-(1063, 5, 17, 3),
-(1064, 5, 17, 4),
-(1065, 5, 20, 1);
+(1473, 5, 18, 1),
+(1474, 5, 1, 1),
+(1475, 5, 1, 2),
+(1476, 5, 1, 3),
+(1477, 5, 1, 4),
+(1478, 5, 24, 1),
+(1479, 5, 24, 2),
+(1480, 5, 24, 3),
+(1481, 5, 24, 4),
+(1482, 5, 22, 1),
+(1483, 5, 22, 2),
+(1484, 5, 22, 3),
+(1485, 5, 22, 4),
+(1486, 5, 20, 1),
+(1487, 5, 20, 2),
+(1488, 5, 20, 3),
+(1489, 5, 20, 4),
+(1490, 5, 2, 1),
+(1491, 5, 3, 1),
+(1492, 5, 3, 2),
+(1493, 5, 3, 3),
+(1494, 5, 3, 4),
+(1495, 5, 21, 1),
+(1496, 5, 21, 2),
+(1497, 5, 21, 3),
+(1498, 5, 21, 4),
+(1499, 5, 4, 1),
+(1500, 5, 4, 2),
+(1501, 5, 4, 3),
+(1502, 5, 4, 4),
+(1503, 5, 5, 1),
+(1504, 5, 5, 2),
+(1505, 5, 5, 3),
+(1506, 5, 5, 4),
+(1507, 5, 23, 1),
+(1508, 5, 23, 2),
+(1509, 5, 23, 3),
+(1510, 5, 23, 4),
+(1511, 5, 19, 1),
+(1512, 5, 19, 2),
+(1513, 5, 19, 3),
+(1514, 5, 19, 4),
+(1515, 5, 6, 1),
+(1516, 5, 6, 2),
+(1517, 5, 6, 3),
+(1518, 5, 6, 4),
+(1519, 5, 7, 1),
+(1520, 5, 7, 2),
+(1521, 5, 7, 3),
+(1522, 5, 7, 4),
+(1523, 5, 8, 1),
+(1524, 5, 8, 2),
+(1525, 5, 8, 3),
+(1526, 5, 8, 4),
+(1527, 5, 9, 1),
+(1528, 5, 9, 2),
+(1529, 5, 9, 3),
+(1530, 5, 9, 4),
+(1531, 5, 10, 1),
+(1532, 5, 11, 1),
+(1533, 5, 11, 2),
+(1534, 5, 11, 3),
+(1535, 5, 11, 4),
+(1536, 5, 12, 1),
+(1537, 5, 12, 2),
+(1538, 5, 12, 3),
+(1539, 5, 12, 4),
+(1540, 5, 13, 1),
+(1541, 5, 13, 2),
+(1542, 5, 13, 3),
+(1543, 5, 13, 4),
+(1544, 5, 14, 1),
+(1545, 5, 14, 2),
+(1546, 5, 14, 3),
+(1547, 5, 14, 4),
+(1548, 5, 15, 1),
+(1549, 5, 15, 2),
+(1550, 5, 15, 3),
+(1551, 5, 15, 4),
+(1552, 5, 16, 1),
+(1553, 5, 16, 2),
+(1554, 5, 16, 3),
+(1555, 5, 16, 4),
+(1556, 5, 17, 1),
+(1557, 5, 17, 2),
+(1558, 5, 17, 3),
+(1559, 5, 17, 4);
 
 --
 -- Índices para tablas volcadas
@@ -3622,11 +3841,28 @@ ALTER TABLE `aspecto_fisiologico`
   ADD KEY `idestudiante` (`idestudiante`);
 
 --
+-- Indices de la tabla `aspecto_fisiologicos`
+--
+ALTER TABLE `aspecto_fisiologicos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idinscripcion` (`idplanificacion`),
+  ADD KEY `idestudiante` (`idestudiante`);
+
+--
 -- Indices de la tabla `aspecto_socioeconomico`
 --
 ALTER TABLE `aspecto_socioeconomico`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idestudiante` (`idestudiante`);
+
+--
+-- Indices de la tabla `boletin_final`
+--
+ALTER TABLE `boletin_final`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idplanificacion` (`idplanificacion`),
+  ADD KEY `idestudiante` (`idestudiante`),
+  ADD KEY `idexpresion_literal` (`idexpresion_literal`);
 
 --
 -- Indices de la tabla `canaima`
@@ -3659,6 +3895,13 @@ ALTER TABLE `diversidad_funcional`
   ADD KEY `idestudiante` (`idestudiante`);
 
 --
+-- Indices de la tabla `diversidad_funcionals`
+--
+ALTER TABLE `diversidad_funcionals`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idaspecto_fisiologico` (`idaspecto_fisiologico`);
+
+--
 -- Indices de la tabla `documentos_consignados`
 --
 ALTER TABLE `documentos_consignados`
@@ -3671,6 +3914,13 @@ ALTER TABLE `documentos_consignados`
 ALTER TABLE `enfermedad`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idestudiante` (`idestudiante`);
+
+--
+-- Indices de la tabla `enfermedads`
+--
+ALTER TABLE `enfermedads`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idaspecto_fisiologico` (`idaspecto_fisiologico`);
 
 --
 -- Indices de la tabla `estado`
@@ -3689,11 +3939,23 @@ ALTER TABLE `estudiante`
   ADD KEY `idpadre` (`idpadre`);
 
 --
+-- Indices de la tabla `expresion_literal`
+--
+ALTER TABLE `expresion_literal`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `grado`
 --
 ALTER TABLE `grado`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `grado` (`grado`);
+
+--
+-- Indices de la tabla `historial_estudiantil`
+--
+ALTER TABLE `historial_estudiantil`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `indicador`
@@ -3914,22 +4176,34 @@ ALTER TABLE `aspecto_fisiologico`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
+-- AUTO_INCREMENT de la tabla `aspecto_fisiologicos`
+--
+ALTER TABLE `aspecto_fisiologicos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
 -- AUTO_INCREMENT de la tabla `aspecto_socioeconomico`
 --
 ALTER TABLE `aspecto_socioeconomico`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT de la tabla `boletin_final`
+--
+ALTER TABLE `boletin_final`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `canaima`
 --
 ALTER TABLE `canaima`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `direccion`
 --
 ALTER TABLE `direccion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT de la tabla `direccion_trabajo`
@@ -3944,16 +4218,28 @@ ALTER TABLE `diversidad_funcional`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
+-- AUTO_INCREMENT de la tabla `diversidad_funcionals`
+--
+ALTER TABLE `diversidad_funcionals`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
 -- AUTO_INCREMENT de la tabla `documentos_consignados`
 --
 ALTER TABLE `documentos_consignados`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT de la tabla `enfermedad`
 --
 ALTER TABLE `enfermedad`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
+
+--
+-- AUTO_INCREMENT de la tabla `enfermedads`
+--
+ALTER TABLE `enfermedads`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT de la tabla `estado`
@@ -3965,7 +4251,13 @@ ALTER TABLE `estado`
 -- AUTO_INCREMENT de la tabla `estudiante`
 --
 ALTER TABLE `estudiante`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=148;
+
+--
+-- AUTO_INCREMENT de la tabla `expresion_literal`
+--
+ALTER TABLE `expresion_literal`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `grado`
@@ -3974,22 +4266,28 @@ ALTER TABLE `grado`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT de la tabla `historial_estudiantil`
+--
+ALTER TABLE `historial_estudiantil`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `indicador`
 --
 ALTER TABLE `indicador`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `indicador_nota`
 --
 ALTER TABLE `indicador_nota`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=223;
 
 --
 -- AUTO_INCREMENT de la tabla `inscripcion`
 --
 ALTER TABLE `inscripcion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `institucion`
@@ -4013,7 +4311,7 @@ ALTER TABLE `lapso_academico`
 -- AUTO_INCREMENT de la tabla `lugar_nacimiento`
 --
 ALTER TABLE `lugar_nacimiento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT de la tabla `materia`
@@ -4025,7 +4323,7 @@ ALTER TABLE `materia`
 -- AUTO_INCREMENT de la tabla `modulo`
 --
 ALTER TABLE `modulo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `municipio`
@@ -4055,7 +4353,7 @@ ALTER TABLE `periodo_escolar`
 -- AUTO_INCREMENT de la tabla `persona`
 --
 ALTER TABLE `persona`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=212;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=213;
 
 --
 -- AUTO_INCREMENT de la tabla `personal`
@@ -4091,7 +4389,7 @@ ALTER TABLE `proyecto_aprendizaje`
 -- AUTO_INCREMENT de la tabla `recomendacion`
 --
 ALTER TABLE `recomendacion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `representante`
@@ -4109,13 +4407,13 @@ ALTER TABLE `seccion`
 -- AUTO_INCREMENT de la tabla `sosten_hogar`
 --
 ALTER TABLE `sosten_hogar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
 -- AUTO_INCREMENT de la tabla `telefono`
 --
 ALTER TABLE `telefono`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=473;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=479;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
@@ -4127,7 +4425,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `usuario_modulo_accion`
 --
 ALTER TABLE `usuario_modulo_accion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1066;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1560;
 
 --
 -- Restricciones para tablas volcadas
@@ -4140,10 +4438,25 @@ ALTER TABLE `aspecto_fisiologico`
   ADD CONSTRAINT `aspecto_fisiologico_estudiante` FOREIGN KEY (`idestudiante`) REFERENCES `estudiante` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `aspecto_fisiologicos`
+--
+ALTER TABLE `aspecto_fisiologicos`
+  ADD CONSTRAINT `aspecto_fisiologicos_ibfk_1` FOREIGN KEY (`idplanificacion`) REFERENCES `planificacion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `aspecto_fisiologicos_ibfk_2` FOREIGN KEY (`idestudiante`) REFERENCES `estudiante` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `aspecto_socioeconomico`
 --
 ALTER TABLE `aspecto_socioeconomico`
   ADD CONSTRAINT `aspecto_socieconomico_estudiante` FOREIGN KEY (`idestudiante`) REFERENCES `estudiante` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `boletin_final`
+--
+ALTER TABLE `boletin_final`
+  ADD CONSTRAINT `boletin_final_ibfk_1` FOREIGN KEY (`idplanificacion`) REFERENCES `planificacion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `boletin_final_ibfk_2` FOREIGN KEY (`idestudiante`) REFERENCES `estudiante` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `boletin_final_ibfk_3` FOREIGN KEY (`idexpresion_literal`) REFERENCES `expresion_literal` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `canaima`
@@ -4172,6 +4485,12 @@ ALTER TABLE `diversidad_funcional`
   ADD CONSTRAINT `diversidad_funcional_estudiante` FOREIGN KEY (`idestudiante`) REFERENCES `estudiante` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `diversidad_funcionals`
+--
+ALTER TABLE `diversidad_funcionals`
+  ADD CONSTRAINT `diversidad_funcionals_ibfk_1` FOREIGN KEY (`idaspecto_fisiologico`) REFERENCES `aspecto_fisiologicos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `documentos_consignados`
 --
 ALTER TABLE `documentos_consignados`
@@ -4182,6 +4501,12 @@ ALTER TABLE `documentos_consignados`
 --
 ALTER TABLE `enfermedad`
   ADD CONSTRAINT `enfermedad_estudiante` FOREIGN KEY (`idestudiante`) REFERENCES `estudiante` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `enfermedads`
+--
+ALTER TABLE `enfermedads`
+  ADD CONSTRAINT `enfermedads_ibfk_1` FOREIGN KEY (`idaspecto_fisiologico`) REFERENCES `aspecto_fisiologicos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `estado`

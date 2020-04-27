@@ -3,10 +3,13 @@
 ob_start();
 session_start();
 
-if (!isset($_SESSION['usuario'])) {
+if (!isset($_SESSION['idusuario'])) {
     header('location: ../login.html');
 } else {
-    require_once '../modules/header.php';
+  require_once '../modules/header.php';
+
+  if (isset($_SESSION['permisos']['inscripcion']) && in_array('ver' , $_SESSION['permisos']['inscripcion'])) {
+
 ?>
 
 <!-- Contenido -->
@@ -19,14 +22,31 @@ if (!isset($_SESSION['usuario'])) {
 
         <div class="card-header pt-0 pb-1 bg-white mb-3">
             <!-- Botonera del panel -->
-
-            <!-- Botón para mostrar modal inscripción -->
-            <h1 class="font-weight-normal h5">Inscripción Inicial
+          <div class="pl-3 col-md-12 d-flex justify-content-start">
+            <!-- Botón para mostrar modal inscripción inicial -->
+            <h1 class="font-weight-normal h5 mr-3">Inscripción 
                 <button class="btn btn-outline-primary btn-pill shadow-sm" data-toggle="modal" data-target="#inscripcionModal" id="btnAgregar">
-                    <i class="fa fa-plus-circle"></i> Inscribir
+                    <i class="fa fa-plus-circle"></i> Inicial
                 </button>
             </h1>
 
+            <?php 
+              if ($_SESSION['rol'] == 'Docente') {
+                
+              }
+              else {
+                echo 
+                '<!-- Botón para mostrar modal inscripción regular-->
+                  <h1 class="font-weight-normal h5">
+                      <button class="btn btn-outline-danger btn-pill shadow-sm" data-toggle="modal" data-target="#listadoInscripcionRegularModal" id="btnInscripcionRegular">
+                          <i class="fa fa-plus-circle"></i> Regular
+                      </button>
+                  </h1>';
+              }
+            ?>
+            
+
+          </div>
         </div>
 
         <div class="row" id="listadoregistros">
@@ -52,7 +72,7 @@ if (!isset($_SESSION['usuario'])) {
             </div>
         </div>
 
-        <!-- Modal para inscribir -->
+        <!-- Modal para inscripción incial-->
         <div class="modal fade" id="inscripcionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog rounded modal-xl" role="document">
             <div class="modal-content">
@@ -145,7 +165,22 @@ if (!isset($_SESSION['usuario'])) {
                                           </div>
                                       </div>
 
-                                      <div class="form-group col-md-3">
+                                      <div class="form-group col-md-6">
+                                          <label for="f_nac_estudiante">Fecha Nacimiento (*)</label>
+                                          <div class="input-group">
+                                              <div class="input-group-prepend">
+                                                  <div class="input-group-text">
+                                                      <i class="fas fa-calendar-alt"></i>
+                                                  </div>
+                                              </div>
+                                              <input type="date" name="f_nac_estudiante" id="f_nac_estudiante" class="form-control" required>
+                                              <div class="invalid-feedback">
+                                                  Campo Obligatorio
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      <div class="form-group col-md-6">
                                           <label for="genero_estudiante">Género (*)</label>
                                           <div class="input-group">
                                               <div class="input-group-prepend">
@@ -164,20 +199,7 @@ if (!isset($_SESSION['usuario'])) {
                                           </div>
                                       </div>
 
-                                      <div class="form-group col-md-3">
-                                          <label for="f_nac_estudiante">Fecha Nacimiento (*)</label>
-                                          <div class="input-group">
-                                              <div class="input-group-prepend">
-                                                  <div class="input-group-text">
-                                                      <i class="fas fa-calendar-alt"></i>
-                                                  </div>
-                                              </div>
-                                              <input type="date" name="f_nac_estudiante" id="f_nac_estudiante" class="form-control" required>
-                                              <div class="invalid-feedback">
-                                                  Campo Obligatorio
-                                              </div>
-                                          </div>
-                                      </div>
+                                      
 
                                       <div class="form-group col-md-3">
                                           <label for="">¿Es parto multiple? (*)</label>
@@ -264,10 +286,10 @@ if (!isset($_SESSION['usuario'])) {
                                           </div>
                                       </div>
 
-                                      <div class="form-group col-md-6">
+                                      <div class="form-group col-md-12">
                                           <label for="plantel_procedencia_estudiante">Plantel de procedencia</label>
                                           <div class="input-group">
-                                              <input type="text" class="form-control solo_letras" name="plantel_procedencia_estudiante" id="plantel_procedencia_estudiante">
+                                              <input type="text" class="form-control" name="plantel_procedencia_estudiante" id="plantel_procedencia_estudiante">
                                           </div>
                                       </div>
 
@@ -421,7 +443,7 @@ if (!isset($_SESSION['usuario'])) {
                                       <div class="form-group col-md-6">
                                           <label for="documento_padre">Tipo de documento (*)</label>
                                           <div class="input-group ">
-                                              <select name="documento_padre" id="documento_padre" class="form-control selectpicker" required="true">
+                                              <select name="documento_padre" id="documento_padre" class="form-control selectpicker" ="true">
                                                   <option value="">Seleccione</option>
                                                   <option value="venezolano">Venezolano</option>
                                                   <option value="extranjero">Extranjero</option>
@@ -441,7 +463,7 @@ if (!isset($_SESSION['usuario'])) {
 
                                               <input type="hidden" name="idpersonapadre" id="idpersonapadre"> <!-- Input oculto que guardará el id de la persona cuando sea necesario -->
 
-                                              <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula_padre" id="cedula_padre" maxlength="8" minlength="7" required>
+                                              <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula_padre" id="cedula_padre" maxlength="8" minlength="7" >
 
                                               <div class="invalid-feedback" id="mensajeCedula">
                                                   Campo Obligatorio
@@ -452,7 +474,7 @@ if (!isset($_SESSION['usuario'])) {
                                       <div class="form-group col-md-6">
                                           <label for="p_nombre_padre">Primer Nombre (*)</label>
                                           <div class="input-group">
-                                              <input type="text" class="form-control solo_letras" name="p_nombre_padre" id="p_nombre_padre" required>
+                                              <input type="text" class="form-control solo_letras" name="p_nombre_padre" id="p_nombre_padre" >
                                               <div class="invalid-feedback">
                                                   Campo Obligatorio
                                               </div>
@@ -469,7 +491,7 @@ if (!isset($_SESSION['usuario'])) {
                                       <div class="form-group col-md-6">
                                           <label for="p_apellido_padre">Primer Apellido (*)</label>
                                           <div class="input-group">
-                                              <input type="text" class="form-control solo_letras" name="p_apellido_padre" id="p_apellido_padre" required>
+                                              <input type="text" class="form-control solo_letras" name="p_apellido_padre" id="p_apellido_padre" >
                                               <div class="invalid-feedback">
                                                   Campo Obligatorio
                                               </div>
@@ -487,7 +509,7 @@ if (!isset($_SESSION['usuario'])) {
                                           <label for="oficio_padre">Profesión (*)</label>
                                           <div class="input-group">
 
-                                              <input type="text" name="oficio_padre" id="oficio_padre" class="form-control" required>
+                                              <input type="text" name="oficio_padre" id="oficio_padre" class="form-control" >
                                               <div class="invalid-feedback">
                                                   Campo Obligatorio
                                               </div>
@@ -512,7 +534,7 @@ if (!isset($_SESSION['usuario'])) {
                                       <div class="form-group col-md-12">
                                           <label for="direccion_residencia_padre">Dirección de habitación (*)</label>
                                           <div class="input-group">
-                                              <input type="text" name="direccion_residencia_padre" id="direccion_residencia_padre" class="form-control" required>
+                                              <input type="text" name="direccion_residencia_padre" id="direccion_residencia_padre" class="form-control" >
                                               <div class="invalid-feedback">
                                                   Campo Obligatorio
                                               </div>
@@ -522,7 +544,7 @@ if (!isset($_SESSION['usuario'])) {
                                       <div class="form-group col-md-12">
                                           <label for="direccion_trabajo_padre">Dirección de trabajo (*)</label>
                                           <div class="input-group">
-                                              <input type="text" name="direccion_trabajo_padre" id="direccion_trabajo_padre" class="form-control" required>
+                                              <input type="text" name="direccion_trabajo_padre" id="direccion_trabajo_padre" class="form-control" >
                                               <div class="invalid-feedback">
                                                   Campo Obligatorio
                                               </div>
@@ -568,7 +590,7 @@ if (!isset($_SESSION['usuario'])) {
 
                                               <input type="hidden" name="idrepresentante" id="idrepresentante"> <!-- Input oculto que guardará el id del representante cuando sea necesario -->
 
-                                              <input type="hidden" name="idpersonarepresentante" id="idpersonarepresentante"> <!-- Input oculto que guardará el id de al persona cuando sea necesario -->
+                                              <input type="hidden" name="idpersonarepresentante" id="idpersonarepresentante"> <!-- Input oculto que guardará el id de la persona cuando sea necesario -->
 
                                               <input type="hidden" name="tiporepresentante" id="tiporepresentante"> 
 
@@ -648,7 +670,7 @@ if (!isset($_SESSION['usuario'])) {
                                                   <i class="fas fa-venus-mars"></i>
                                               </div>
                                           </div>
-                                          <select name="genero_representante" class="form-control selectpicker genero" id="genero_representante" required>
+                                          <select name="genero_representante" class="form-control selectpicker" id="genero_representante" required>
                                             <option value="">Seleccione</option>
                                             <option value="M">Masculino</option>
                                             <option value="F">Femenino</option>
@@ -832,9 +854,9 @@ if (!isset($_SESSION['usuario'])) {
                                       </div>
 
                                       <div class="form-group col-md-6">
-                                          <label class="col-md-3 col-form-label" for="textarea-input">Observaciones</label>
-                                          <div class="col-md-9">
-                                              <textarea class="form-control" id="observaciones" name="observaciones" rows="4" placeholder="Juicio del Docente Guía / Observaciones "></textarea>
+                                          <label class="col-md-6 col-form-label" for="textarea-input">Observaciones</label>
+                                          <div class="col-md-12">
+                                              <textarea class="form-control" id="observaciones" name="observaciones" rows="5" placeholder="Juicio del Docente Guía / Observaciones "></textarea>
                                           </div>
                                       </div>
 
@@ -849,6 +871,297 @@ if (!isset($_SESSION['usuario'])) {
                   <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelarform()">Cancelar</button>
                       <button type="submit" id="btnGuardar" class="btn btn-primary">Guardar</button>
+                  </div>
+
+                </div>
+              </form> <!-- Fin del formulario -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal para el listado de inscripción regular -->
+        <div class="modal fade" id="listadoInscripcionRegularModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog rounded modal-xl" role="document">
+            <div class="modal-content">
+
+              <div class="modal-header fondo-degradado rounded">
+                  <h5 class="modal-title text-white" id="exampleModalLabel">Estudiantes regulares</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+
+              <div class="modal-body">
+
+                <!-- lisata de estudiantes esperanda a ser inscritos o retirados -->
+                <div class="row" id="listadoinscripcionregular">
+                  <div class="col-sm-12">
+                    <div class="table-responsive ">
+                      <table class="table table-borderless table-striped w-100" id="tblistadoinscripcionregular">
+                        <caption>Lista de inscripción regular</caption>
+                        <thead class="fondo-degradado text-white">
+                          <tr >
+                            <th scope="col" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Opciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                            <th scope="col" >Cédula</th>
+                            <th scope="col" >Nombre</th>
+                            <th scope="col" >Apellido</th>
+                            <th scope="col" >Último grado cursado</th>
+                            <th scope="col" >Estatus</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div> <!-- Fin row -->
+                  
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelarform()">Cancelar</button>
+                    <button type="submit" id="btnGuardar" class="btn btn-primary">Guardar</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal para inscripción regular-->
+        <div class="modal fade" id="inscripcionRegularModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog rounded modal-lg" role="document">
+            <div class="modal-content">
+
+              <form class="needs-validation" novalidate name="formularioInscripcionRegular" id="formularioInscripcionRegular">
+                <!-- Formulario de inscripción regular-->
+
+                <div class="modal-header fondo-degradado rounded">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Inscripción regular</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                  <div class="row">
+                    <!-- representante -->
+                    <div class="col-sm-12">
+                        <div class="card border-right-0 border-bottom-0 border-left-0  border-top-0 shadow mb-3 bg-white rounded">
+                            <div class="card-header bg-white  shadow border-bottom-0 fondo-degradado">
+                                <h5 class="m-0 p-0  font-italic font-weight-bold text-white"><i class="fas fa-user-tie"></i> Datos del representante
+                                    <small class="text-dark">(Requerido)</small>
+                                </h5>
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="row">
+
+                                    <div class="form-group col-md-6">
+                                        <label for="documento_representante_regular">Tipo de documento (*)</label>
+                                        <div class="input-group ">
+                                            <select name="documento_representante_regular" id="documento_representante_regular" class="form-control selectpicker" required="true">
+                                                <option value="">Seleccione</option>
+                                                <option value="V-">Venezolano</option>
+                                                <option value="E-">Extranjero</option>
+                                                <option value="P-">Pasaporte</option>
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                Campo Obligatorio
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="cedula_representante_regular">Cédula (*)</label>
+                                        <div class="input-group">
+
+                                            <input type="hidden" name="idrepresentante_regular" id="idrepresentante_regular"> <!-- Input oculto que guardará el id del representante cuando sea necesario -->
+
+                                            <input type="hidden" name="idpersonarepresentante_regular" id="idpersonarepresentante_regular"> <!-- Input oculto que guardará el id de al persona cuando sea necesario -->
+
+                                            <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula_representante_regular" id="cedula_representante_regular" maxlength="8" minlength="7" required>
+
+                                            <div class="invalid-feedback" >
+                                                Campo Obligatorio
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="p_nombre_representante_regular">Primer Nombre (*)</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control solo_letras" name="p_nombre_representante_regular" id="p_nombre_representante_regular" required>
+                                            <div class="invalid-feedback">
+                                                Campo Obligatorio
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="s_nombre_representante_regular">Segundo Nombre</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control solo_letras" name="s_nombre_representante_regular" id="s_nombre_representante_regular">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="p_apellido_representante_regular">Primer Apellido (*)</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control solo_letras" name="p_apellido_representante_regular" id="p_apellido_representante_regular" required>
+                                            <div class="invalid-feedback">
+                                                Campo Obligatorio
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="s_apellido_representante_regular">Segundo Apellido</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control solo_letras" name="s_apellido_representante_regular" id="s_apellido_representante_regular">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="oficio_representante_regular">Profesión (*)</label>
+                                        <div class="input-group">
+
+                                            <input type="text" name="oficio_representante_regular" id="oficio_representante_regular" class="form-control" required>
+                                            <div class="invalid-feedback">
+                                                Campo Obligatorio
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="celular_representante_regular">Teléfono Celular</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fas fa-mobile-alt"></i>
+                                                </div>
+                                            </div>
+                                            <input type="text" name="celular_representante_regular" id="celular_representante_regular" class="form-control solo_numeros guion_telefonico" maxlength="12">
+                                            <div class="invalid-feedback">
+                                                Campo Obligatorio
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                      <label for="genero_representante_regular">Género (*)</label>
+                                      <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fas fa-venus-mars"></i>
+                                            </div>
+                                        </div>
+                                        <select name="genero_representante_regular" class="form-control selectpicker genero" id="genero_representante_regular" required>
+                                          <option value="">Seleccione</option>
+                                          <option value="M">Masculino</option>
+                                          <option value="F">Femenino</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                          Campo Obligatorio
+                                        </div>
+                                      </div>
+                                    </div>
+                                          
+                                    <div class="form-group col-md-6">
+                                      <label for="parentesco_representante_regular">Parentesco (*)</label>
+                                      <div class="input-group">
+                                          <input type="text" name="parentesco_representante_regular" id="parentesco_representante_regular" class="form-control solo_letras text-uppercase" required>
+                                          <div class="invalid-feedback">
+                                              Campo Obligatorio
+                                          </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                      <label for="direccion_residencia_representante_regular">Dirección de habitación (*)</label>
+                                      <div class="input-group">
+                                          <input type="text" name="direccion_residencia_representante_regular" id="direccion_residencia_representante_regular" class="form-control" required>
+                                          <div class="invalid-feedback">
+                                              Campo Obligatorio
+                                          </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                      <label for="direccion_trabajo_representante_regular">Dirección de trabajo (*)</label>
+                                      <div class="input-group">
+                                          <input type="text" name="direccion_trabajo_representante_regular" id="direccion_trabajo_representante_regular" class="form-control" required>
+                                          <div class="invalid-feedback">
+                                              Campo Obligatorio
+                                          </div>
+                                      </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- inscripción regular-->
+                    <div class="col-sm-12">
+                        <div class="card border-right-0 border-bottom-0 border-left-0  border-top-0 shadow mb-3 bg-white rounded">
+                            <div class="card-header bg-white  shadow border-bottom-0 fondo-degradado">
+                                <h5 class="m-0 p-0  font-italic font-weight-bold text-white"><i class="fas fa-money-check"></i> Inscripción
+                                    <small class="text-dark">(Requerido)</small>
+                                </h5>
+                            </div>
+
+                            <div class="card-body">
+
+                              <div class="row">
+
+                                <input type="hidden" name="idestudiante_regular" id="idestudiante_regular"> <!-- Input oculto que guardará el id del estudiante regular cuando sea necesario -->
+
+                                <div class="form-group col-md-3">
+                                  <label for="periodo_escolar_regular">Período escolar (*)</label>
+                                  <div class="input-group ">
+                                    <select name="idperiodo_escolar_regular" id="periodo_escolar_regular" class="form-control selectpicker" required="true">
+
+                                    </select>
+                                    <div class="invalid-feedback">
+                                      Campo Obligatorio
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="planificacion_regular">Planificación (*)</label>
+                                    <div class="input-group ">
+                                        <select name="idplanificacion_regular" id="planificacion_regular" class="form-control selectpicker " required="true">
+                                            <!-- <option value="">Seleccione</option> -->
+
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Campo Obligatorio
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label class="col-md-6 col-form-label" for="textarea-input">Observaciones</label>
+                                    <div class="col-md-12">
+                                        <textarea class="form-control" id="observaciones_regular" name="observaciones_regular" rows="5" placeholder="Juicio del Docente Guía / Observaciones " required></textarea>
+                                    </div>
+                                </div>
+
+                              </div>
+
+                            </div>
+                        </div>
+                    </div>
+                  </div> <!-- Fin row -->
+
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelarform()">Cancelar</button>
+                      <button type="submit" id="btnGuardarInscripcionRegular" class="btn btn-primary">Guardar</button>
                   </div>
 
                 </div>
@@ -900,17 +1213,37 @@ if (!isset($_SESSION['usuario'])) {
             </div>
         </div>
 
+
+
       </div>
     </div>
   </div>
 </main>
 <!-- Fin Contenido -->
 
-<?php
-
-require_once '../modules/footer.php';
+<?php 
+} //cierre del if de permisos
+else {
 ?>
-<script src="../scripts/inscripcion/inicial.js"></script>
+<script>
+  window.onload = function noacceso() {
+    Swal.fire({
+      type: 'warning',
+      title: 'Restringido',
+      text: 'Usted no tiene acceso a esta sección',
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      footer: '<a href="../escritorio.php">Volver al escritorio</a>'
+    })
+  }
+</script>
+
+<?php
+} //cierre del else
+  require_once '../modules/footer.php';
+?>
+
+<script src="../scripts/inscripcion/inscripcion.js"></script>
 
 <?php
 } //Cierre del else que muestra esta vista

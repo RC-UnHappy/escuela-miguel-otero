@@ -14,6 +14,17 @@
   });
 
 
+  //Se ejecuta cuando se envia el formulario de inscripción regular
+  $([formularioInscripcionRegular]).on('submit', function (event) {
+      if ($([formularioInscripcionRegular])[0].checkValidity()) {
+        guardaryeditarInscripcionRegular(event);
+      }
+      else {
+          scrollTo(0, 100);
+      }
+  });
+
+
   ////////////////////////// Eventos relacionados con el estudiante
   // Se ejecuta al seleccionar un elemento del select documento
   $('#documento_estudiante').on('change', function () {
@@ -94,6 +105,19 @@
           comprobarPadres('representante', null);
           comprobarPersona('representante', null);           
       }
+  });
+
+  ////////////////////////// Eventos relacionados con el representante en el formulario de inscripcion regular
+  // Se ejecuta al seleccionar un elemento del select documento
+  $('#documento_representante_regular').on('change', function () {  
+    comprobarPadres('representante_regular', null);
+    comprobarPersona('representante_regular', null);
+  });
+
+  // Se ejecuta al quitar el foco del input cedula
+  $('#cedula_representante_regular').on('blur', function () {
+    comprobarPadres('representante_regular', null);
+    comprobarPersona('representante_regular', null);
   });
 
 
@@ -203,6 +227,10 @@
     // traerRepresentantes();
   });
 
+  $('#btnInscripcionRegular').on('click', function () {
+    listarInscripcionRegular();
+  });
+
   tabla.ajax.reload();
 })();
 
@@ -244,14 +272,14 @@ function comprobarInscripcion() {
         cedula = documento + cedula;
 
         $.ajax({
-            url: '../../controladores/inscripcion/inicial.php?op=comprobarinscripcion',
+            url: '../../controladores/inscripcion/inscripcion.php?op=comprobarinscripcion',
             type: 'POST',
             data: { cedula: cedula},
             success: function (datos) {
                 datos = JSON.parse(datos);
                 if (datos != null) {
                     $('#estudianteYaRegistrado').remove();
-                    $('#comienzoFormulario').before('<div class="alert alert-danger col-md-12" role="alert" id="estudianteYaRegistrado">El estudiante ya se encuentra inscrito, debe inscribirlo en prosecución.</div>');
+                    $('#comienzoFormulario').before('<div class="alert alert-danger col-md-12" role="alert" id="estudianteYaRegistrado">El estudiante ya se encuentra inscrito.</div>');
                     $('#cedula_estudiante').addClass('is-invalid');
                 }
                 else {
@@ -280,7 +308,7 @@ function comprobarPadres(tipo = null, genero = null) {
         cedula = documento + cedula;
         
         $.ajax({
-            url: '../../controladores/inscripcion/inicial.php?op=comprobarrepresentante',
+            url: '../../controladores/inscripcion/inscripcion.php?op=comprobarrepresentante',
             type: 'POST',
             data: { cedula: cedula, genero: genero},
             success: function (datos) {
@@ -316,32 +344,48 @@ function comprobarPersona(tipo = null, genero = null) {
         cedula = documento + cedula;
 
         $.ajax({
-            url: '../../controladores/inscripcion/inicial.php?op=comprobarpersona',
+            url: '../../controladores/inscripcion/inscripcion.php?op=comprobarpersona',
             type: 'POST',
             data: { cedula: cedula, genero: genero },
             success: function (datos) {
                 datos = JSON.parse(datos);
                 if (datos != null) {
-                    $('#p_nombre_' + tipo).val(datos.p_nombre);
-                    $('#s_nombre_' + tipo).val(datos.s_nombre);
-                    $('#p_apellido_' + tipo).val(datos.p_apellido);
-                    $('#s_apellido_' + tipo).val(datos.s_apellido);
-                    $('#celular_' + tipo).val(datos.celular);
-                    $('#direccion_residencia_' + tipo).val(datos.direccion_residencia);
-                    $('#direccion_trabajo_' + tipo).val(datos.direccion_trabajo);
-                    $('#idpersona' + tipo).val(datos.id);
+                  $('#p_nombre_' + tipo).val(datos.p_nombre);
+                  $('#s_nombre_' + tipo).val(datos.s_nombre);
+                  $('#p_apellido_' + tipo).val(datos.p_apellido);
+                  $('#s_apellido_' + tipo).val(datos.s_apellido);
+                  $('#celular_' + tipo).val(datos.celular);                 
+                  $('#direccion_residencia_' + tipo).val(datos.direccion_residencia);
+                  $('#direccion_trabajo_' + tipo).val(datos.direccion_trabajo);
+                  $('#idpersona' + tipo).val(datos.id);
                 }
                 else {
-                    $('#p_nombre_' + tipo).val('');
-                    $('#s_nombre_' + tipo).val('');
-                    $('#p_apellido_' + tipo).val('');
-                    $('#s_apellido_' + tipo).val('');
-                    $('#celular_' + tipo).val('');
-                    $('#direccion_residencia_' + tipo).val('');
-                    $('#direccion_trabajo_' + tipo).val('');
-                    $('#idpersona' + tipo).val('');
+                  $('#p_nombre_' + tipo).val('');
+                  $('#s_nombre_' + tipo).val('');
+                  $('#p_apellido_' + tipo).val('');
+                  $('#s_apellido_' + tipo).val('');
+                  $('#celular_' + tipo).val('');
+                  $('#direccion_residencia_' + tipo).val('');
+                  $('#direccion_trabajo_' + tipo).val('');
+                  $('#idpersona' + tipo).val('');
                 }
+                
+                if (tipo == 'representante_regular') {
+                  $('#parentesco_' + tipo).val('');                  
+                }
+              
+                
+                if (datos != null && typeof datos.genero != 'undefined' ) {
+                  $('#genero_' + tipo).val(datos.genero);
+                  $('#genero_' + tipo).selectpicker('refresh');              
+                }
+                else {
+                  $('#genero_' + tipo).val('');
+                  $('#genero_' + tipo).selectpicker('refresh');  
+                } 
+
                 comprobarRepresentante('representante');
+                
             }
         });
     }
@@ -378,6 +422,7 @@ function comprobarRepresentante(tipo = null) {
         cedulaRepresentante = documentoRepresentante + cedulaRepresentante;
 
         if (cedulaMadre == cedulaRepresentante && cedulaRepresentante != '') {
+          sw = true;
             $('#p_nombre_representante').val($('#p_nombre_madre')[0].value);
             $('#s_nombre_representante').val($('#s_nombre_madre')[0].value);
             $('#p_apellido_representante').val($('#p_apellido_madre')[0].value);
@@ -385,14 +430,13 @@ function comprobarRepresentante(tipo = null) {
             $('#oficio_representante').val($('#oficio_madre')[0].value);
             $('#celular_representante').val($('#celular_madre')[0].value);
             $('#genero_representante').val('F');
-            $('#genero_representante').selectpicker('refresh');
             $('#tiporepresentante').val('madre');
             $('#direccion_residencia_representante').val($('#direccion_residencia_madre')[0].value);
             $('#direccion_trabajo_representante').val($('#direccion_trabajo_madre')[0].value);
             $('#parentesco_representante').val('Madre');
-            return sw;
         }
         else if (cedulaPadre == cedulaRepresentante && cedulaRepresentante != '') {
+          sw = true;
             $('#p_nombre_representante').val($('#p_nombre_padre')[0].value);
             $('#s_nombre_representante').val($('#s_nombre_padre')[0].value);
             $('#p_apellido_representante').val($('#p_apellido_padre')[0].value);
@@ -400,18 +444,18 @@ function comprobarRepresentante(tipo = null) {
             $('#oficio_representante').val($('#oficio_padre')[0].value);
             $('#celular_representante').val($('#celular_padre')[0].value);
             $('#genero_representante').val('M');
-            $('#genero_representante').selectpicker('refresh');
             $('#tiporepresentante').val('padre');
             $('#direccion_residencia_representante').val($('#direccion_residencia_padre')[0].value);
             $('#direccion_trabajo_representante').val($('#direccion_trabajo_padre')[0].value);
             $('#parentesco_representante').val('Padre');
-            return sw;
         }
         else {
+          sw = false;
           $('#parentesco_representante').val(''); 
           $('#genero_representante').val('');
-          $('#genero_representante').selectpicker('refresh');
         }
+        
+      $('#genero_representante').selectpicker('refresh');
     }
     return sw;
 }
@@ -443,14 +487,14 @@ function tipoDocumento(documento = null) {
 function paises(idpais = null) {
 
   if (idpais !== null) {
-    $.post('../../controladores/inscripcion/inicial.php?op=listarpaises', function (data) {
+    $.post('../../controladores/inscripcion/inscripcion.php?op=listarpaises', function (data) {
       $('#pais_nacimiento_estudiante').append(data);
       $('#pais_nacimiento_estudiante').val(idpais);
       $('#pais_nacimiento_estudiante').selectpicker('refresh');
     });
   }
   else {
-    $.post('../../controladores/inscripcion/inicial.php?op=listarpaises', function (data) {
+    $.post('../../controladores/inscripcion/inscripcion.php?op=listarpaises', function (data) {
       $('#pais_nacimiento_estudiante').append(data);
       $('#pais_nacimiento_estudiante').selectpicker('refresh');
 
@@ -473,9 +517,9 @@ function paises(idpais = null) {
 function estados(idpais = null) {
   let estados;
   if (idpais !== null)
-    estados = $.post('../../controladores/inscripcion/inicial.php?op=listarestados&idpais=' + idpais);
+    estados = $.post('../../controladores/inscripcion/inscripcion.php?op=listarestados&idpais=' + idpais);
   else
-    estados = $.post('../../controladores/inscripcion/inicial.php?op=listarestados');
+    estados = $.post('../../controladores/inscripcion/inscripcion.php?op=listarestados');
 
   return estados;
 }
@@ -485,9 +529,9 @@ function municipios(idestado) {
 
   let municipios;
   if (idestado !== null)
-    municipios = $.post('../../controladores/inscripcion/inicial.php?op=listarmunicipios&idestado=' + idestado);
+    municipios = $.post('../../controladores/inscripcion/inscripcion.php?op=listarmunicipios&idestado=' + idestado);
   else
-    municipios = $.post('../../controladores/inscripcion/inicial.php?op=listarmunicipios');
+    municipios = $.post('../../controladores/inscripcion/inscripcion.php?op=listarmunicipios');
 
   return municipios;
 }
@@ -497,31 +541,32 @@ function parroquias(idmunicipio) {
 
   let parroquias;
   if (idmunicipio !== null)
-    parroquias = $.post('../../controladores/inscripcion/inicial.php?op=listarparroquias&idmunicipio=' + idmunicipio);
+    parroquias = $.post('../../controladores/inscripcion/inscripcion.php?op=listarparroquias&idmunicipio=' + idmunicipio);
   else
-    parroquias = $.post('../../controladores/inscripcion/inicial.php?op=listarparroquias');
+    parroquias = $.post('../../controladores/inscripcion/inscripcion.php?op=listarparroquias');
 
   return parroquias;
 }
 
 function traerPlanificaciones() {
-    $.post('../../controladores/inscripcion/inicial.php?op=traerplanificaciones', function (data) {  
-        data = JSON.parse(data);
-        
-        let planificacion = '';
-        if (data.length != 0) {
-            data.forEach(function (indice) {
-                planificacion += '<option value="' + indice.id + '">' + indice.grado + ' º - "' + indice.seccion + '" - Cupo disponible: '+indice.cupo_disponible+'</option>';
-            });
-        }
-        else {
-            planificacion = '<option value="">Debe crear planificaciones en configuración</option>';
-        }
-        
-        $('#planificacion').html('<option value="">Seleccione</option>');
-        $('#planificacion').append(planificacion);
-        $('#planificacion').selectpicker('refresh');
-    });
+    $.post('../../controladores/inscripcion/inscripcion.php?op=traerplanificaciones', function (data) {
+    
+      data = JSON.parse(data);
+      
+      let planificacion = '';
+      if (data.length != 0) {
+          data.forEach(function (indice) {
+              planificacion += '<option value="' + indice.id + '">' + indice.grado + ' º - "' + indice.seccion + '" - Cupo disponible: '+indice.cupo_disponible+'</option>';
+          });
+      }
+      else {
+          planificacion = '<option value="">Debe crear planificaciones en configuración</option>';
+      }
+      
+      $('#planificacion').html('<option value="">Seleccione</option>');
+      $('#planificacion').append(planificacion);
+      $('#planificacion').selectpicker('refresh');
+  });
 }
 
 
@@ -534,7 +579,7 @@ function cancelarform() {
 function guardaryeditar(event) {
     event.preventDefault(); //Evita que se envíe el formulario automaticamente
     // 
-    // $('#btnGuardar').prop('disabled', true);
+    $('#btnGuardar').prop('disabled', true);
     var formData = new FormData($([formularioInscripcion])[0]); //Se obtienen los datos del formulario
 
     /**
@@ -570,12 +615,14 @@ function guardaryeditar(event) {
     formData.set('cedula_representante', documento_representante + cedula_representante);
 
     $.ajax({
-        url: '../../controladores/inscripcion/inicial.php?op=inscribir', //Dirección a donde se envían los datos
+        url: '../../controladores/inscripcion/inscripcion.php?op=inscribir', //Dirección a donde se envían los datos
         type: 'POST', //Método por el cual se envían los datos
         data: formData, //Datos
         contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
         processData: false, //Evita que jquery transforme la data en un string
         success: function (datos) {
+          
+          $('#btnGuardar').prop('disabled', false);
             
             if (datos == 'true') {
                 const Toast = Swal.mixin({
@@ -589,6 +636,7 @@ function guardaryeditar(event) {
                     type: 'success',
                     title: 'Inscripción realizada exitosamente :)'
                 });
+              traerPlanificaciones();
             }
             else if (datos == 'update') {
                 const Toast = Swal.mixin({
@@ -627,6 +675,78 @@ function guardaryeditar(event) {
     });
 }
 
+//Función para inscribir
+function guardaryeditarInscripcionRegular(event) {
+  event.preventDefault(); //Evita que se envíe el formulario automaticamente
+  // 
+  // $('#btnGuardar').prop('disabled', true);
+  var formData = new FormData($([formularioInscripcionRegular])[0]); //Se obtienen los datos del formulario
+
+  /**
+   * Se formatea la cédula del representante regular
+   */
+  let documento_representante = formData.get('documento_representante_regular');
+  let cedula_representante = formData.get('cedula_representante_regular');
+  formData.set('cedula_representante_regular', documento_representante + cedula_representante);
+
+  $.ajax({
+    url: '../../controladores/inscripcion/inscripcion.php?op=inscribir_regular', //Dirección a donde se envían los datos
+    type: 'POST', //Método por el cual se envían los datos
+    data: formData, //Datos
+    contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
+    processData: false, //Evita que jquery transforme la data en un string
+    success: function (datos) {
+
+      if (datos == 'true') {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
+
+        Toast.fire({
+          type: 'success',
+          title: 'Inscripción realizada exitosamente :)'
+        });
+
+        $('#inscripcionRegularModal').modal('hide');
+      }
+      // else if (datos == 'update') {
+      //   const Toast = Swal.mixin({
+      //     toast: true,
+      //     position: 'top-end',
+      //     showConfirmButton: false,
+      //     timer: 3000
+      //   });
+
+      //   Toast.fire({
+      //     type: 'success',
+      //     title: 'Inscripción modificada exitosamente :)'
+      //   });
+
+      //   $('#planificacionModal').modal('hide');
+      // }
+      else {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
+
+        Toast.fire({
+          type: 'error',
+          title: 'Ocurrió un error y no se pudo inscribir :('
+        });
+      }
+
+      limpiarInscripcionRegular();
+      tablaInscripcionRegular.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
+    }
+  });
+}
+
 //Función para listar los registros
 function listar() {
     tabla = $('#tblistado').DataTable({
@@ -648,7 +768,7 @@ function listar() {
         dom: 'lfrtip',
         "destroy": true, //Elimina cualquier elemento que se encuentre en la tabla
         "ajax": {
-            url: '../../controladores/inscripcion/inicial.php?op=listar',
+            url: '../../controladores/inscripcion/inscripcion.php?op=listar',
             type: 'GET',
             dataType: 'json'
         },
@@ -656,36 +776,141 @@ function listar() {
     });
 }
 
+//Función para listar los estudiantes esperando a ser inscritos de forma regular
+function listarInscripcionRegular() {
+  tablaInscripcionRegular = $('#tblistadoinscripcionregular').DataTable({
+    "processing": true,
+    pagingType: "first_last_numbers",
+    language: {
+      "info": "Mostrando desde _START_ hasta _END_ de _TOTAL_ registros",
+      "lengthMenu": "Mostrar _MENU_ entradas",
+      "loadingRecords": "Cargando...",
+      "processing": "Procesando...",
+      "search": "Buscar:",
+      "emptyTable": "No hay datos para mostrar",
+      "infoEmpty": "Mostrando 0 hasta 0 de 0 entradas",
+      "paginate": {
+        "first": "Primero",
+        "last": "Último"
+      },
+    },
+    dom: 'lfrtip',
+    "destroy": true, //Elimina cualquier elemento que se encuentre en la tabla
+    "ajax": {
+      url: '../../controladores/inscripcion/inscripcion.php?op=listadoinscripcionregular',
+      type: 'GET',
+      dataType: 'json'
+    },
+    'order': [[4, 'asc']]
+  });
+}
+
 //Función para mostrar los estudiantes inscritos en una planificación
 function mostrar(idplanificacion) {
 
-        tablaEstudiantes = $('#tblistadoEstudiantes').DataTable({
-            "processing": true,
-            pagingType: "first_last_numbers",
-            language: {
-                "info": "Mostrando desde _START_ hasta _END_ de _TOTAL_ registros",
-                "lengthMenu": "Mostrar _MENU_ entradas",
-                "loadingRecords": "Cargando...",
-                "processing": "Procesando...",
-                "search": "Buscar:",
-                "emptyTable": "No hay datos para mostrar",
-                "infoEmpty": "Mostrando 0 hasta 0 de 0 entradas",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Último"
-                },
-            },
-            dom: 'lfrtip',
-            "destroy": true, //Elimina cualquier elemento que se encuentre en la tabla
-            "ajax": {
-                url: '../../controladores/inscripcion/inicial.php?op=mostrar&idplanificacion='+idplanificacion,
-                type: 'GET',
-                dataType: 'json'
-            },
-            'order': [[0, 'desc']],
-        });
+  tablaEstudiantes = $('#tblistadoEstudiantes').DataTable({
+      "processing": true,
+      pagingType: "first_last_numbers",
+      language: {
+          "info": "Mostrando desde _START_ hasta _END_ de _TOTAL_ registros",
+          "lengthMenu": "Mostrar _MENU_ entradas",
+          "loadingRecords": "Cargando...",
+          "processing": "Procesando...",
+          "search": "Buscar:",
+          "emptyTable": "No hay datos para mostrar",
+          "infoEmpty": "Mostrando 0 hasta 0 de 0 entradas",
+          "paginate": {
+              "first": "Primero",
+              "last": "Último"
+          },
+      },
+      dom: 'lfrtip',
+      "destroy": true, //Elimina cualquier elemento que se encuentre en la tabla
+      "ajax": {
+          url: '../../controladores/inscripcion/inscripcion.php?op=mostrar&idplanificacion='+idplanificacion,
+          type: 'GET',
+          dataType: 'json'
+      },
+      'order': [[0, 'desc']],
+  });
+  
+  tablaEstudiantes.ajax.reload();
+}
+
+// Función para mostrar los datos necesarios para la inscripción regular
+function mostrarInscripcionRegular(idinscripcionregular, grado, seccion, estatus, idestudiante) {  
+  // Se establece en un input oculto el id del estudiante
+  $('#idestudiante_regular').val(idestudiante);
+
+  // Se trae los datos del último representante que tuvo el estudiante
+  $.post('../../controladores/inscripcion/inscripcion.php?op=traerrepresentanteregular', { idinscripcionregular: idinscripcionregular }, function (data) {
+    datos = JSON.parse(data);
+    if (datos != null) {
+      var documento = datos.cedula.slice(0, 2);
+      var cedula = datos.cedula.slice(2);
+
+      $('#documento_representante_regular').val(documento);
+      $('#documento_representante_regular').selectpicker('refresh');
+      $('#cedula_representante_regular').val(cedula);
+      $('#p_nombre_representante_regular').val(datos.p_nombre);
+      $('#s_nombre_representante_regular').val(datos.s_nombre);
+      $('#p_apellido_representante_regular').val(datos.p_apellido);
+      $('#s_apellido_representante_regular').val(datos.s_apellido);
+      $('#oficio_representante_regular').val(datos.oficio);
+      $('#celular_representante_regular').val(datos.celular);
+      $('#genero_representante_regular').val(datos.genero);
+      $('#genero_representante_regular').selectpicker('refresh');
+      $('#parentesco_representante_regular').val(datos.parentesco);
+      $('#direccion_residencia_representante_regular').val(datos.direccion_residencia);
+      $('#direccion_trabajo_representante_regular').val(datos.direccion_trabajo);
+      $('#idrepresentante_regular').val(datos.idrepresentante);
+      $('#idpersonarepresentante_regular').val(datos.idpersona);
+    }
+  });
+
+  // Se trae el siguiente período escolar 
+  $.post('../../controladores/inscripcion/inscripcion.php?op=traersiguienteperiodo', { idinscripcionregular: idinscripcionregular }, function (data) {
+    datos = JSON.parse(data);
+    if (datos != null) {
+      $('#periodo_escolar_regular').html('<option value="'+datos.id+'">'+datos.periodo+'</option>');
+      
+      $('#idperiodo_escolar_regular').val(datos.id);
+      
+      let siguientePeriodo = datos.id;
+      // Se trae la planificación que corresponda al estudiante dependiendo de si aprobó o repitió el año anterior
+      $.post('../../controladores/inscripcion/inscripcion.php?op=traerplanificacionregular', { idinscripcionregular: idinscripcionregular, idsiguienteperiodo: siguientePeriodo, grado_regular: grado, seccion_regular: seccion, estatus_regular: estatus }, function (data) {
         
-        tablaEstudiantes.ajax.reload();
+        data = JSON.parse(data);
+        let selected = '';
+
+        let planificacion = '';
+        if (data.length != 0) {
+          data.forEach(function (indice) {
+
+            selected = (indice.seccion == seccion) ? 'selected' : '';
+            
+            
+            planificacion += '<option ' + selected + ' value="' + indice.id + '">' + indice.grado + ' º - "' + indice.seccion + '" '+ indice.p_nombre +'  ' + indice.p_apellido +'- Cupo disponible: ' + indice.cupo_disponible + '</option>';
+          });
+        }
+        else {
+          planificacion = '<option value="">Debe crear planificaciones en configuración</option>';
+        }
+
+        $('#planificacion_regular').html(planificacion);
+        // $('#planificacion_regular').append(planificacion);
+        $('#planificacion_regular').selectpicker('refresh');
+      });
+
+    }
+    else {
+      $('#periodo_escolar_regular').html('<option value="">Debe planificar el siguiente periodo escolar</option>');
+
+      $('#idperiodo_escolar_regular').val('');
+    }
+    $('#periodo_escolar_regular').selectpicker('refresh');
+  });
+  
 }
 
 //Función para limpiar el formulario
@@ -693,6 +918,8 @@ function limpiar() {
   $([formularioInscripcion])[0].reset();
   $('#documento_estudiante').selectpicker('val', '');
   $('#genero_estudiante').selectpicker('val', '');
+  $('#icono_genero').removeClass('bg-primary');
+  $('#icono_genero').removeClass('bg-danger');
   $('#pais_nacimiento_estudiante').selectpicker('val', '');
   $('#estado_nacimiento_estudiante').selectpicker('val', '');
   $('#municipio_nacimiento_estudiante').selectpicker('val', '');
@@ -703,5 +930,12 @@ function limpiar() {
   $('#genero_representante').selectpicker('val', '');
   $('#planificacion').selectpicker('val', '');
   $([formularioInscripcion]).removeClass('was-validated');
+}
+
+//Función para limpiar el formulario
+function limpiarInscripcionRegular() {
+  $([formularioInscripcionRegular])[0].reset();
+  $('.selectpicker').selectpicker('refresh');
+  $([formularioInscripcionRegular]).removeClass('was-validated');
 }
 

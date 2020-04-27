@@ -173,6 +173,7 @@ function guardaryeditar(event) {
     contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
     processData: false, //Evita que jquery transforme la data en un string
     success: function (datos) {
+      
       $('#btnGuardar').prop('disabled', false);
       if (datos == 'true') {
         const Toast = Swal.mixin({
@@ -306,6 +307,7 @@ function mostrar(idboletinfinal) {
 
     $('#estudiantes').html('<option value="' + data.idestudiante + '">' + capitalize(data.p_nombre_estudiante) + ' ' + capitalize(data.s_nombre_estudiante) + ' ' + capitalize(data.p_apellido_estudiante) + ' ' + capitalize(data.s_apellido_estudiante) + '</option>');
 
+    $('#estudiantes').prop('disabled', false);
     $('#estudiantes').selectpicker('refresh');
 
     

@@ -188,7 +188,7 @@ if (isset($_SESSION['permisos']['personal']) && in_array('ver' , $_SESSION['perm
                             <i class="far fa-envelope"></i>
                           </div>
                         </div>
-                        <input type="email" name="email" id="email" class="form-control" required>
+                        <input type="email" name="email" id="email" class="form-control" >
                         <div class="invalid-feedback">
                             Campo Obligatorio
                         </div>

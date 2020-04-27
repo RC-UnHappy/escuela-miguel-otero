@@ -61,15 +61,22 @@ switch ($_GET['op']) {
 			#Se registra el personal
       $idpersonal = $Personal->insertar($idpersona, $cargo, '1') or $sw = FALSE;
       
+
+      $idperiodo_escolar = $Personal->consultarperiodo();
+      $idperiodo_escolar = !empty($idperiodo_escolar) ? $idperiodo_escolar['id'] : '';
+
+      if (!empty($cargo_directivo) && empty($idperiodo_escolar)) {
+        echo 'establecer_periodo_escolar';
+        die;
+      }
       /**
        * Métodos para asignar cargos directivos
        */
       $Personal->quitar_cargo_directivo($cargo_directivo) or $sw = FALSE;
 
-      $idperiodo_escolar = $Personal->consultarperiodo();
-      $idperiodo_escolar = $idperiodo_escolar['id'];
 
-      $Personal->asignar_cargo_directivo($idpersonal, $idperiodo_escolar, $cargo_directivo) or $sw = FALSE;
+
+      $esto =$Personal->asignar_cargo_directivo($idpersonal, $idperiodo_escolar, $cargo_directivo) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
@@ -200,8 +207,8 @@ switch ($_GET['op']) {
 					 ' <button class="btn btn-outline-success" title="Activar" onclick="activar('.$reg->id.')"><i class="fa fa-check"></i></button> ',
 
 					 	'1' => $reg->cedula,
-					 	'2' => $reg->p_nombre,
-					 	'3' => $reg->p_apellido,
+					 	'2' => ucfirst($reg->p_nombre),
+					 	'3' => ucfirst($reg->p_apellido),
 						'4' => $reg->email,
 						'5' => $reg->celular,
 						'6' => $reg->fijo,

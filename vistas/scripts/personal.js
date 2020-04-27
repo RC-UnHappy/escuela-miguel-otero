@@ -180,46 +180,57 @@ function guardaryeditar(event) {
 		contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
 		processData: false, //Evita que jquery transforme la data en un string
 		success: function (datos) {
-      
-			if (datos == 'true') {
-				const Toast = Swal.mixin({
-				  toast: true,
-				  position: 'top-end',
-				  showConfirmButton: false,
-				  timer: 3000
-				});
 
-				Toast.fire({
-				  type: 'success',
-				  title: 'Personal registrado exitosamente :)'
-				});
-			}
-			else if (datos == 'update') {
-				const Toast = Swal.mixin({
-				  toast: true,
-				  position: 'top-end',
-				  showConfirmButton: false,
-				  timer: 3000
-				});
+			if (datos == "true") {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+        });
 
-				Toast.fire({
-				  type: 'success',
-				  title: 'Personal actualizado exitosamente :)'
-				});
-			}
-			else {
-				const Toast = Swal.mixin({
-				  toast: true,
-				  position: 'top-end',
-				  showConfirmButton: false,
-				  timer: 3000
-				});
+        Toast.fire({
+          type: "success",
+          title: "Personal registrado exitosamente :)",
+        });
+      } else if (datos == "establecer_periodo_escolar") {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+        });
 
-				Toast.fire({
-				  type: 'error',
-				  title: 'Ocurrió un error y no se pudo registrar :('
-				});
-			}
+        Toast.fire({
+          type: "error",
+          title:
+            "Para asignar un cargo directivo es necesario crear un período escolar",
+        });
+      } else if (datos == "update") {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+
+        Toast.fire({
+          type: "success",
+          title: "Personal actualizado exitosamente :)",
+        });
+      } else {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+
+        Toast.fire({
+          type: "error",
+          title: "Ocurrió un error y no se pudo registrar :(",
+        });
+      }
 
 			mostrarform(false);
       limpiar();

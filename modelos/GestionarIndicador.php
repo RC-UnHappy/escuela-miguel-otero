@@ -107,10 +107,14 @@ class GestionarIndicador
 	}
 
   #Método para mostrar las planificaciones activas
-  public function traerplanificaciones()
+  public function traerplanificaciones($id_docente = null)
   {
+    if ($id_docente != null)
+      $sql = "SELECT pla.id, gra.grado, sec.seccion, p.p_nombre, p.p_apellido FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion INNER JOIN personal per ON pla.iddocente = per.id INNER JOIN persona p ON per.idpersona = p.id WHERE pla.estatus = 'Activo' AND pla.iddocente = '$id_docente'";
+    else
       $sql = "SELECT pla.id, gra.grado, sec.seccion, p.p_nombre, p.p_apellido FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion INNER JOIN personal per ON pla.iddocente = per.id INNER JOIN persona p ON per.idpersona = p.id WHERE pla.estatus = 'Activo'";
-      return ejecutarConsulta($sql);
+    
+    return ejecutarConsulta($sql);
   }
 
   #Método para mostrar las materias activas
@@ -142,6 +146,12 @@ class GestionarIndicador
   {
     $sql = "SELECT proyecto_aprendizaje FROM proyecto_aprendizaje WHERE idplanificacion = '$idplanificacion_indicador' AND lapso_academico =  '$lapso_indicador'";
     return ejecutarConsultaSimpleFila($sql);
+  }
+
+  public function traerpersonal($idusuario)
+  {
+    $sql = "SELECT c.id FROM usuario a INNER JOIN persona b ON a.idpersona = b.id INNER JOIN personal c ON c.idpersona = b.id WHERE a.id = '$idusuario'";
+   return ejecutarConsultaSimpleFila($sql);
   }
 	
 }

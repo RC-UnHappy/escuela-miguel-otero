@@ -60,6 +60,8 @@ function traerPeriodoActivo() {
  * @param {} fecha
  */
 function verificarFechaInicio(fecha) {
+
+  // Cuando recibe la fecha de inicio del lapso académico
   if (fecha.value != '') {
 
     let periodo_escolar = $('option:selected', $('#periodo_escolar')).attr('periodo');
@@ -68,6 +70,7 @@ function verificarFechaInicio(fecha) {
     let finPeriodo = Number(periodoEscolarArreglo[1]);
     let fechaInicio = fecha.value.split('-');
     fechaInicio = Number(fechaInicio[0]);
+    
     
     if (fechaInicio < inicioPeriodo || fechaInicio > finPeriodo) {
       const Toast = Swal.mixin({
@@ -88,7 +91,7 @@ function verificarFechaInicio(fecha) {
       if (lapso_academico != '') {
         $.post('../controladores/lapso-academico.php?op=verificarfechainicio', {fecha_inicio: fecha.value, lapso_academico: lapso_academico, periodo_escolar: periodo_escolar}, function (data) {
 
-          if (data != 'true') {
+          if (data == 'false') {
             const Toast = Swal.mixin({
               toast: true,
               position: 'top-end',
@@ -103,6 +106,22 @@ function verificarFechaInicio(fecha) {
   
             $('#fecha_inicio').val('');
           }
+          else if (data == 'fecha_inicio_erronea') {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+
+            Toast.fire({
+              type: 'error',
+              title: 'La fecha de inicio de este lapso no puede ser anterior a la fecha de inicio del período escolar'
+            });
+
+            $('#fecha_inicio').val('');
+          }
+
         }); 
       }
       else {
@@ -152,19 +171,36 @@ function verificarFechaFin(fecha) {
       let lapso_academico = $('#lapso_academico')[0].value;
       if (lapso_academico != '') {
         $.post('../controladores/lapso-academico.php?op=verificarfechafin', {fecha_fin: fecha.value, lapso_academico: lapso_academico, periodo_escolar: periodo_escolar}, function (data) {
-          if (data != 'true') {
+
+          if (data == 'false') {
             const Toast = Swal.mixin({
               toast: true,
               position: 'top-end',
               showConfirmButton: false,
               timer: 3000
             });
-  
+            
             Toast.fire({
               type: 'error',
               title: 'La fecha de fin de éste lapso choca con la fecha de inicio del lapso siguiente'
             });
   
+            $('#fecha_fin').val('');
+          }
+
+          else if (data == 'fecha_fin_erronea') {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+
+            Toast.fire({
+              type: 'error',
+              title: 'La fecha de fin de este lapso no puede ser mayor a la fecha de fin del período escolar'
+            });
+
             $('#fecha_fin').val('');
           }
         }); 
@@ -318,7 +354,7 @@ function mostrar(idlapsoacademico) {
 }
 
 //Función para activar el lapso académico
-function activar(idlapsoacademico) {
+function activar(idlapsoacademico, lapso) {
 
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -338,8 +374,8 @@ function activar(idlapsoacademico) {
     reverseButtons: true
   }).then((result) => {
     if (result.value) {
-      $.post('../controladores/lapso-academico.php?op=activar', { idlapsoacademico: idlapsoacademico }, function (e) {
-
+      $.post('../controladores/lapso-academico.php?op=activar', { idlapsoacademico: idlapsoacademico, lapso_academico:lapso }, function (e) {
+       
         if (e == 'true') {
           const Toast = Swal.mixin({
             toast: true,
@@ -352,8 +388,9 @@ function activar(idlapsoacademico) {
             type: 'success',
             title: 'Lapso activado :)'
           });
+          tabla.ajax.reload();
         }
-        else {
+        else if (e == 'false'){
           const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -365,8 +402,19 @@ function activar(idlapsoacademico) {
             type: 'error',
             title: 'Ups! No se pudo activar el lapso'
           });
+          tabla.ajax.reload();
         }
-        tabla.ajax.reload();
+
+        else if (e == 'estudiantes_no_inscritos') {
+          Swal.fire({
+            type: 'warning',
+            title: 'Advertencia',
+            text: 'Hay estudiantes que no han sido reinscritos',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            footer: '<a href="inscripcion/inscripcion.php">Ir al módulo de inscripción</a>'
+          })
+        }      
       });
     }
   });

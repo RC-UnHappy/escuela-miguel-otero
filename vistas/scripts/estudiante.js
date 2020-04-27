@@ -434,7 +434,7 @@ function parroquias(idmunicipio) {
 function guardaryeditar(event) {
 	event.preventDefault(); //Evita que se envíe el formulario automaticamente
 	// 
-	$('#btnGuardar').prop('disabled', true); //Deshabilita el botón submit para evitar que lo presionen dos veces
+	// $('#btnGuardar').prop('disabled', true); //Deshabilita el botón submit para evitar que lo presionen dos veces
 	var formData = new FormData($([estudiante])[0]); //Se obtienen los datos del formulario
 	
 	var documento = formData.get('documento'); //Se obtiene el tipo de documento
@@ -451,7 +451,7 @@ function guardaryeditar(event) {
 		contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
 		processData: false, //Evita que jquery transforme la data en un string
 		success: function (datos) {
-			
+		
 			if (datos == 'true') {
 				const Toast = Swal.mixin({
 				  toast: true,
@@ -534,7 +534,8 @@ function listar() {
 //Función para mostrar un registro para editar
 function mostrar(idestudiante) {
 	$.post('../controladores/estudiante.php?op=mostrar',{idestudiante: idestudiante}, function (data) {	
-		data = JSON.parse(data);
+
+    data = JSON.parse(data);
 		
 		mostrarform(true, data.idpaisnacimiento , data.idestadoresidencia);
 
@@ -614,22 +615,27 @@ function mostrar(idestudiante) {
 		$('#documento_madre').selectpicker('refresh');
 		$('#cedula_madre').val(cedula_madre);
 
-		var documento_padre = data.cedulaP.slice(0,2);
-		var cedula_padre = data.cedulaP.slice(2);
-
-		if (documento_padre == 'V-') {
-			documento = 'venezolano';
-		}
-		else if (documento_padre == 'E-') {
-			documento = 'extranjero';
-		}
-		else if (documento_padre == 'P-') {
-			documento = 'pasaporte';
-		}
-
-		$('#documento_padre').val(documento);
-		$('#documento_padre').selectpicker('refresh');
-    $('#cedula_padre').val(cedula_padre);
+    // console.log(data.cedulaP);
+    // return;
+    
+    if (data.cedulaP != null) {
+      var documento_padre = data.cedulaP.slice(0,2);
+      var cedula_padre = data.cedulaP.slice(2);
+  
+      if (documento_padre == 'V-') {
+        documento = 'venezolano';
+      }
+      else if (documento_padre == 'E-') {
+        documento = 'extranjero';
+      }
+      else if (documento_padre == 'P-') {
+        documento = 'pasaporte';
+      }
+  
+      $('#documento_padre').val(documento);
+      $('#documento_padre').selectpicker('refresh');
+      $('#cedula_padre').val(cedula_padre);     
+    }
     
 
 		// $('#peso').val(data.peso);
@@ -811,7 +817,8 @@ function limpiar() {
 	$('input[name="vivienda"]').attr('checked', false);
 	$('input[name="canaima"]').attr('checked', false);
 	$('#condicion_canaima').prop('disabled', true);
-	$('#formularioregistros').removeClass('was-validated');
+  $('#formularioregistros').removeClass('was-validated');
+  $('#cedula_padre').removeClass('is-invalid');
 	$('#idestudiante').val('');
 }
 

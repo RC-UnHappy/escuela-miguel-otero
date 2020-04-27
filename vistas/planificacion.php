@@ -87,7 +87,7 @@ if (isset($_SESSION['permisos']['planificacion']) && in_array('ver' , $_SESSION[
 
                   <div class="row">
                     
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-lg-4 col-xl-2">
                       <label for="periodo_escolar">Período escolar (*)</label>
                       <div class="input-group ">
                         <select name="idperiodo_escolar" id="periodo_escolar" class="form-control selectpicker" required="true">
@@ -101,7 +101,7 @@ if (isset($_SESSION['permisos']['planificacion']) && in_array('ver' , $_SESSION[
 
                     <!-- guarda el id de la planificación cuando es necesario -->
                     <input type="hidden" value="" id="idplanificacion" name="idplanificacion">
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-lg-2 col-xl-2">
                       <label for="grado">Grado (*)</label>
                       <div class="input-group ">
                         <select name="idgrado" id="grado" class="form-control selectpicker" required="true">
@@ -114,7 +114,7 @@ if (isset($_SESSION['permisos']['planificacion']) && in_array('ver' , $_SESSION[
                       </div>
                     </div>
 
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-lg-2 col-xl-2">
                       <label for="seccion">Sección (*)</label>
                       <div class="input-group ">
                         <select name="idseccion" id="seccion" class="form-control selectpicker" required="true" disabled>
@@ -127,7 +127,7 @@ if (isset($_SESSION['permisos']['planificacion']) && in_array('ver' , $_SESSION[
                       </div>
                     </div>
 
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-lg-2 col-xl-2">
                       <label for="ambiente">Ambiente (*)</label>
                       <div class="input-group ">
                         <select name="idambiente" id="ambiente" class="form-control selectpicker" required="true">
@@ -140,25 +140,25 @@ if (isset($_SESSION['permisos']['planificacion']) && in_array('ver' , $_SESSION[
                       </div>
                     </div>
 
-                    <div class="form-group col-md-2">
-                      <label for="docente">Docente (*)</label>
-                      <div class="input-group ">
-                        <select name="iddocente" id="docente" class="form-control selectpicker " required="true" data-live-search="true">
-                          <option value="">Seleccione</option>
+                    <div class="form-group col-lg-2 col-xl-2">
+                      <label for="cupo">Cupo (*)</label>
+                      <div class="input-group">
 
-                        </select>
+                        <input type="text" class="form-control solo_numeros" placeholder="Ej: 30" name="cupo" id="cupo" maxlength="2" required>
+
                         <div class="invalid-feedback">
                           Campo Obligatorio
                         </div>
                       </div>
                     </div>
 
-                    <div class="form-group col-md-2">
-                      <label for="cupo">Cupo (*)</label>
-                      <div class="input-group">
+                    <div class="form-group col-lg-12 col-xl-2">
+                      <label for="docente">Docente (*)</label>
+                      <div class="input-group ">
+                        <select name="iddocente" id="docente" class="form-control selectpicker " required="true" data-live-search="true">
+                          <option value="">Seleccione</option>
 
-                        <input type="text" class="form-control solo_numeros" placeholder="Ej: 30" name="cupo" id="cupo" maxlength="2" required>
-
+                        </select>
                         <div class="invalid-feedback">
                           Campo Obligatorio
                         </div>

@@ -267,7 +267,7 @@ function desactivar(idusuario) {
   }).then((result) => {
     if (result.value) {
       $.post('../controladores/usuario.php?op=desactivar', { idusuario: idusuario }, function (e) {
-        console.log(e);
+        
         if (e == 'true') {
           const Toast = Swal.mixin({
             toast: true,
@@ -372,7 +372,7 @@ function resetear(idusuario) {
     text: "¿Quieres resetear a este usuario?",
     type: 'warning',
     showCancelButton: true,
-    confirmButtonText: 'Activar',
+    confirmButtonText: 'Si',
     cancelButtonText: 'Cancelar',
     reverseButtons: true
   }).then((result) => {

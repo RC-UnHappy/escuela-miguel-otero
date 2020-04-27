@@ -16,6 +16,8 @@ function init() {
   });
 
   $('#btnAgregar').on('click', function () {
+    $('#estatus').html('<option value="">Seleccione</option><option value ="Planificado">Planificado</option >');
+    $('#estatus').selectpicker('refresh');
     traerPeriodosSinProyecto();
     // limpiar();
   });
@@ -154,12 +156,13 @@ function mostrar(idpic) {
   $.post('../controladores/pic.php?op=mostrar', { idpic: idpic }, function (data) {
 
     data = JSON.parse(data);
-
+    // console.log(data);
+    // return;
     $('#periodo_escolar').html('<option value="' + data.idperiodo_escolar + '"> ' + data.periodo + '</option >');
     $('#periodo_escolar').prop('readonly', true);
     $('#periodo_escolar').selectpicker('refresh');
     $('#pic').val(data.pic);
-    $('#estatus').val(data.estatus);
+    $('#estatus').html('<option value="'+data.estatus+'">'+data.estatus+'</option>');
     $('#estatus').selectpicker('refresh');
     $('#idpic').val(data.id);
   });
@@ -227,7 +230,7 @@ function limpiar() {
   $('#periodo_escolar').selectpicker('refresh');
   $('#pic').val('');
   $('#pic').removeClass('is-invalid');
-  $('#estatus').val('');
+  $('#estatus').html('<option value="">Seleccione</option>< option value = "Planificado" > Planificado</option >');
   $('#estatus').removeClass('is-invalid');
   $('#estatus').selectpicker('refresh');
   $('#idpic').val('');

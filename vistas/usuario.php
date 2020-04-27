@@ -3,7 +3,7 @@
 ob_start();
 session_start();
 
-if (!isset($_SESSION['usuario'])) {
+if (!isset($_SESSION['idusuario'])) {
   header('location: login.html');
 }
 else {
@@ -216,7 +216,7 @@ if (isset($_SESSION['permisos']['usuario']) && in_array('ver' , $_SESSION['permi
                               </div>
                               <select id="rol" name="rol" class="form-control selectpicker" required>
                                 <option value="">Seleccione</option>
-                                <option value="Usuario">Usuario</option>
+                                <option value="Docente">Docente</option>
                                 <option value="Administrador">Administrador</option>
                               </select>
                               <div class="invalid-feedback">

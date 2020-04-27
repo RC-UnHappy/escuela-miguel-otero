@@ -71,7 +71,7 @@ if (isset($_SESSION['permisos']['periodo-escolar']) && in_array('ver' , $_SESSIO
                   <div class="row"> 
 
                     <input type="hidden" name="idperiodo" id="idperiodo"> <!-- Input oculto que guardará el id del periodo cuando sea necesario -->
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-lg-4 col-xl-3">
                       <label for="periodo">Período Escolar (*)</label>
                         <div class="input-group ">
                           <select name="periodo" id="periodo" class="form-control selectpicker" required="true">
@@ -83,7 +83,7 @@ if (isset($_SESSION['permisos']['periodo-escolar']) && in_array('ver' , $_SESSIO
                         </div>
                     </div>
 
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-lg-4 col-xl-3">
                       <label for="fecha_inicio">Fecha de inicio (*)</label>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -98,7 +98,7 @@ if (isset($_SESSION['permisos']['periodo-escolar']) && in_array('ver' , $_SESSIO
                       </div>
                     </div>
 
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-lg-4 col-xl-3">
                       <label for="fecha_fin">Fecha de fin (*)</label>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -113,7 +113,7 @@ if (isset($_SESSION['permisos']['periodo-escolar']) && in_array('ver' , $_SESSIO
                       </div>
                     </div>
 
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-lg-12 col-xl-3">
                       <label for="estatus">Estatus (*)</label>
                       <div class="input-group">
                         
