@@ -1,0 +1,17 @@
+/* Estilos del login */
+
+body {
+
+}
+
+body:before {
+	content: '';
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-image: url(../../public/img/educacion.jpg);
+	opacity: .7;
+	background-size: cover;
+	/*background-position: center center;*/
+}
