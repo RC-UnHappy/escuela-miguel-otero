@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-05-2020 a las 05:43:48
+-- Tiempo de generación: 03-06-2020 a las 00:51:39
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -136,7 +136,8 @@ CREATE TABLE `boletin_final` (
 --
 
 INSERT INTO `boletin_final` (`id`, `idplanificacion`, `idestudiante`, `idexpresion_literal`, `descriptivo_final`) VALUES
-(1, 1, 1, 1, 'El estudiante alcanzo todas la expectativas previstas para el grado.');
+(1, 1, 1, 1, 'El estudiante alcanzo todas la expectativas previstas para el grado.'),
+(2, 2, 2, 3, 'Cumplió con todos los objetivos previstos para el grado que cursa.');
 
 -- --------------------------------------------------------
 
@@ -881,7 +882,7 @@ CREATE TABLE `inscripcion` (
 
 INSERT INTO `inscripcion` (`id`, `idperiodo_escolar`, `idplanificacion`, `idestudiante`, `idrepresentante`, `parentesco`, `plantel_procedencia`, `observaciones`, `fecha_inscripcion`, `estatus`) VALUES
 (1, 1, 1, 1, 1, 'Madre', 'Preescolar', 'Ninguna', '2020-05-19', 'PROMOVIDO'),
-(2, 1, 2, 2, 4, 'Padre', 'Goajira 1', 'Ninguna', '2020-05-19', 'CURSANDO');
+(2, 1, 2, 2, 4, 'Padre', 'Goajira 1', 'Ninguna', '2020-05-19', 'PROMOVIDO');
 
 -- --------------------------------------------------------
 
@@ -3316,7 +3317,7 @@ CREATE TABLE `periodo_escolar` (
 --
 
 INSERT INTO `periodo_escolar` (`id`, `periodo`, `fecha_creacion`, `fecha_finalizacion`, `estatus`) VALUES
-(1, '2020-2021', '2020-05-19', '2020-05-22', 'Activo');
+(1, '2020-2021', '2020-05-19', '2020-05-31', 'Finalizado');
 
 -- --------------------------------------------------------
 
@@ -3453,8 +3454,8 @@ CREATE TABLE `planificacion` (
 --
 
 INSERT INTO `planificacion` (`id`, `idperiodo_escolar`, `idgrado`, `idseccion`, `idambiente`, `iddocente`, `cupo`, `cupo_disponible`, `estatus`) VALUES
-(1, 1, 1, 1, 3, 13, 30, 29, 'Activo'),
-(2, 1, 2, 1, 4, 14, 30, 29, 'Activo');
+(1, 1, 1, 1, 3, 13, 30, 29, 'Finalizado'),
+(2, 1, 2, 1, 4, 14, 30, 29, 'Finalizado');
 
 -- --------------------------------------------------------
 
@@ -4134,7 +4135,7 @@ ALTER TABLE `aspecto_socioeconomico`
 -- AUTO_INCREMENT de la tabla `boletin_final`
 --
 ALTER TABLE `boletin_final`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `canaima`

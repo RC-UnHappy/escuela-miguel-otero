@@ -42,17 +42,24 @@ require_once 'modules/header.php';
                         <div class="text-value" id="mostrarLapso"></div>
                         
                         <small class="text-muted text-uppercase font-weight-bold" id="estatusLapso">Lapso</small>
+                        
+                        
 
                       </div>
 
                     </div>
                     
-                      <div id="alerta-periodo">
-                      
+                    <div  class="row" >
+                      <div class="col-md-12" id="alerta-periodo">
+                        
                       </div>
-                      <div id="alerta-lapso">
-                      
+                      <div class="col-md-12">
+                        <div id="alerta-lapso">
+                        
+                        </div>
                       </div>
+                    </div>
+
                   </div>
                 </div>
               </div>

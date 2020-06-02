@@ -502,7 +502,14 @@ switch ($_GET['op']) {
       if ($todos_lapsos_periodo == $lapsos_finalizados) {
         $ultimoLapso = $PeriodoEscolar->verificarUltimoLapso($idperiodo_activo);
         
-        $rspta = array('lapso' => $ultimoLapso['lapso'], 'estatus' => $ultimoLapso['estatus']);
+        if (!empty($ultimoLapso)) {
+          
+          $rspta = array('lapso' => $ultimoLapso['lapso'], 'estatus' => $ultimoLapso['estatus']);
+          
+        }
+        else {
+          $rspta = '';
+        }
       }
       else {
         $rspta = '';

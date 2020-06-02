@@ -25,11 +25,13 @@ function mostrarDatosInstitucion() {
       		$('#mostrarPeriodo').html(data);
 		}
 		else {
-      		$('#alerta-periodo').html('<a class="badge badge-danger text-white" href="periodo-escolar.php">Click aquí para ir al módulo período escolar</a>');
+      		$('#alerta-periodo').html('<a class="badge badge-danger text-white col-md-12 p-2 m-1" href="periodo-escolar.php">Click para ir al módulo período escolar</a>');
 		}
   })
   
   $.post('../controladores/periodo-escolar.php?op=verificar_lapso_activo', function (data) {
+  	// console.log(data);
+  	// return;
   	data = JSON.parse(data);
 
     if (data != '') {
@@ -37,7 +39,7 @@ function mostrarDatosInstitucion() {
       $('#estatusLapso').html('Lapso ' + data.estatus);
     }
     else {
-      $('#alerta-lapso').html('<a class="badge badge-danger text-white" href="lapso-academico.php">Click aquí para ir al módulo lapso académico</a>');
+      $('#alerta-lapso').html('<a class="badge badge-danger text-white col-md-12 p-2 m-1" href="lapso-academico.php">Click para ir al módulo lapso académico</a>');
     }
   })
 }
