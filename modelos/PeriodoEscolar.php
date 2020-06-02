@@ -165,7 +165,28 @@ class PeriodoEscolar
 	return ejecutarConsulta($sql);
 
   }
-	
+
+  public function traerultimolapso($idperiodo_escolar)
+  {
+    $sql = "SELECT * FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo_escolar' ORDER BY id DESC LIMIT 1";
+
+    return ejecutarConsultaSimpleFila($sql);
+  }
+
+  public function finalizarpic($idperiodo_activo)
+  {
+    $sql = "UPDATE pic SET estatus = 'Finalizado' WHERE idperiodo_escolar = '$idperiodo_activo'";
+
+    return ejecutarConsulta($sql);
+  }	
+
+  public function finalizarplanificaciones($idperiodo_activo)
+  {
+    $sql = "UPDATE planificacion SET estatus = 'Finalizado' WHERE idperiodo_escolar = '$idperiodo_activo'";
+
+    return ejecutarConsulta($sql);
+  }
+
 }
 
 

@@ -238,8 +238,11 @@ function listar() {
 		"ajax": {
 			url: '../controladores/periodo-escolar.php?op=listar',
 			type: 'GET',
-      dataType: 'json'
-		},
+      dataType: 'json',
+      error: (error) => {
+        console.log(error);
+      }		
+    },
 		'order': [[1, 'desc']]
 	});
 }
@@ -334,50 +337,46 @@ function finalizar(idperiodo) {
 		  reverseButtons: true
 		}).then((result) => {
 		  if (result.value) {
-		  	$.post('../controladores/periodo-escolar.php?op=finalizar', {idperiodo: idperiodo}, function (e) {
-        
-        console.log(e);
-        return;
-				if (e == 'true') {
-					const Toast = Swal.mixin({
-					  toast: true,
-					  position: 'top-end',
-					  showConfirmButton: false,
-					  timer: 3000
-					});
+		  	$.post('../controladores/periodo-escolar.php?op=finalizar', {idperiodo: idperiodo}, function (response) {
 
-					Toast.fire({
-					  type: 'success',
-					  title: 'Período escolar finalizado :)'
-					});
-        }
-        else if ( e == 'hay_lapsos_activos') {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000
-          });
+          response = JSON.parse(response);
 
-          Toast.fire({
-            type: 'error',
-            title: 'Debe finalizar todos los lapsos académicos primero'
-          });
-        }
-				else {
-					const Toast = Swal.mixin({
-					  toast: true,
-					  position: 'top-end',
-					  showConfirmButton: false,
-					  timer: 3000
-					});
+  				if (response.code === 1 ) {
 
-					Toast.fire({
-					  type: 'error',
-					  title: 'Ups! No se pudo finalizar el periodo escolar'
-					});
-				}
-				tabla.ajax.reload();
+  					const Toast = Swal.mixin({
+  					  toast: true,
+  					  position: 'top-end',
+  					  showConfirmButton: false,
+  					  timer: 3000
+  					});
+
+  					Toast.fire({
+  					  type: 'success',
+  					  title: response.message
+  					});
+
+				    tabla.ajax.reload();
+
+          }
+          else if ( response.code === 2 ) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+
+            Toast.fire({
+              type: 'error',
+              title: response.message
+            });
+          }
+  				else if ( response.code === 3){
+
+  					$('#studentsWithoutFinalReport').html(response.message);
+            $('#noFinalReport').modal('show');
+
+  				}
 			});  
 		} 
 	});

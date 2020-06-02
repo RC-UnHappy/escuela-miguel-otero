@@ -149,6 +149,31 @@ if (isset($_SESSION['permisos']['periodo-escolar']) && in_array('ver' , $_SESSIO
             </div>
           </div>
         </div>
+
+        <!-- Modal para mostrar los estudiantes que no tengan el boletín final -->
+        <div class="modal fade" id="noFinalReport" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog rounded " role="document">
+            <div class="modal-content">
+
+                <div class="modal-header fondo-degradado rounded">
+                  <h5 class="modal-title text-white" id="tituloModal">Se necesita calificar a los siguientes estudiantes</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+                <div class="modal-body" id="studentsWithoutFinalReport">
+                  
+                
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+
+            </div>
+          </div>
+        </div>
         
       </div>
     </div>

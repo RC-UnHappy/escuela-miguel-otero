@@ -269,25 +269,49 @@ switch ($_GET['op']) {
     $todo_lapsos = $PeriodoEscolar->comprobar_todos_lapsos_periodo($idperiodo);
     $todo_lapsos = !empty($todo_lapsos) ? $todo_lapsos['todo_lapsos'] : 0;
 
+    try {
 
-    //Verifica que todos los lapsos que se crearon para el período escolar esten finalizados
-    if ($lapsos_finalizados == $todo_lapsos) {
-      
-
-      // Lógica para verificar que todos los estudiantes tengan un boletín final
-      try {
+      //Verifica que todos los lapsos que se crearon para el período escolar esten finalizados
+      if ($lapsos_finalizados == $todo_lapsos) {
+        
+        // Lógica para verificar que todos los estudiantes tengan un boletín final
 
         // Se traen las planificaciones activas
         $schedules = $PeriodoEscolar->getActiveSchedules();
-        
+          
         // Aquí se almacenan los id de todas las planificaciones activas
         $schedulesArray = [];
-        if ($schedules->num_rows != 0) {
-          while ($reg = $schedules->fetch_object()) {
-            array_push($schedulesArray, $reg->id);
-          }
-        }
 
+
+        // Ingresa el id de todas la planificaciones del período en un arreglo
+        if ($schedules->num_rows != 0) {
+
+          while ($reg = $schedules->fetch_object()) {
+
+            array_push($schedulesArray, $reg->id);
+
+          }
+
+        }
+        // Si el período no tenía planificaciones lo finaliza
+        else {
+          
+          $finishPic = $PeriodoEscolar::finalizarpic($idperiodo) or $sw = FALSE;
+          if (!$finishPic) throw new Exceptio('Error al finalizar el PIC'); 
+
+          $finishPeriod = $PeriodoEscolar->finalizar($idperiodo) or $sw = FALSE;
+          if (!$finishPeriod) throw new Exception('Error al finalizar el Período escolar'); 
+
+          commit();
+
+          $response->code = 1;
+
+          $response->message = 'Período finalizado exitosamente';
+
+          echo json_encode($response);
+          exit;
+
+        }
 
         /**
          * Aquí traigo todas la inscripciones de cada planificación, y luego en un arreglo ingreso todos los id de todos los estudiantes agrupados por el id de la planificación
@@ -321,72 +345,124 @@ switch ($_GET['op']) {
 
             $hasFinalReportCard = PeriodoEscolar::verifyFinalReportCardByStudent($studentId, $scheduleId);
 
-            if ($hasFinalReportCard === NULL) $studentsWithoutFinalReportCard[$scheduleId][] = $studentId;
+            if ($hasFinalReportCard === NULL) {
 
-          }
-
-        }
-
-
-        $studentsBySchedule = [];
-
-        foreach ($studentsWithoutFinalReportCard as $scheduleId => $studentsId) {
-          
-          $scheduleData = PeriodoEscolar::getScheduleData($scheduleId);
-
-
-          $studentsBySchedule[$scheduleId]['schedule'] = $scheduleData;
-
-          $studentsData = PeriodoEscolar::getStudentsData($studentsId);
-
-          if ($studentsData->num_rows != 0) {
-
-            while ($reg = $studentsData->fetch_object()) {
-
-              $studentsBySchedule[$scheduleId][] = $reg;
+              $studentsWithoutFinalReportCard[$scheduleId][] = $studentId;
 
             }
 
           }
-          
+
         }
 
-        // print_r($studentsBySchedule[2]['schedule']);
-        // die;
-         
+
+        if (!empty($studentsWithoutFinalReportCard)) {
+          
+          $collapse = '
+
+            <div class="accordion" id="accordionExample">';
+
+          foreach ($studentsWithoutFinalReportCard as $scheduleId => $studentsId) {
+            
+            $scheduleData = PeriodoEscolar::getScheduleData($scheduleId);
+
+            $collapse .= '
+          
+              <div class="card">
+
+                <div class="card-header" id="heading'.$scheduleId.'">
+
+                  <h2 class="mb-0">
+
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse'.$scheduleId.'" aria-expanded="true" aria-controls="collapse'.$scheduleId.'">
+
+                      '.$scheduleData['grado'].'º "'.$scheduleData['seccion'].'" - '.$scheduleData['p_nombre'].' '.$scheduleData['p_apellido'].'
+
+                    </button>
+
+                  </h2>
+
+                </div>
+
+                <div id="collapse'.$scheduleId.'" class="collapse show" aria-labelledby="heading'.$scheduleId.'" data-parent="#accordionExample">
+                  <div class="card-body">
+                    <ul class="list-group">';
+
+                      $studentsData = PeriodoEscolar::getStudentsData($studentsId);
+                      
+                      if ($studentsData->num_rows != 0) {
+
+                        while ($studentData = $studentsData->fetch_object()) {
+
+                          $collapse .= '
+
+                            <li class="list-group-item">'.$studentData->cedula.' - '.ucfirst($studentData->p_nombre).' '.ucfirst($studentData->p_apellido).'</li>';
+
+                        }
+
+                      }
+            
+                      $collapse .= 
+                    '</ul>
+                  </div>
+                </div>
+              </div>';
+
+          }
+
+              $collapse .= 
+            '</div>';
+
+          $response->code = 3;
+
+          $response->message = $collapse;
+
+          echo json_encode($response);
+          exit;
         
-      } catch (Exception $e) {
+        }
+        else {
 
-        $response->code = 2;
+          $finishPic = $PeriodoEscolar::finalizarpic($idperiodo) or $sw = FALSE;
+          if (!$finishPic) throw new Exception('Error al finalizar el PIC');
 
-        $response->message = $e->getMessage();
+          $finishSchedule = $PeriodoEscolar->finalizarplanificaciones($idperiodo) or $sw = FALSE;
+          if (!$finishSchedule) throw new Exception('Error al finalizar las planificaciones');
 
-        echo json_encode($response);
+          $finishPeriod = $PeriodoEscolar->finalizar($idperiodo) or $sw = FALSE;
+          if (!$finishPeriod) throw new Exception('Error al finalizar el Período escolar'); 
 
+          commit();
+
+          $response->code = 1;
+
+          $response->message = 'Período finalizado exitosamente';
+
+          echo json_encode($response);
+          exit;
+
+        }
+           
       }
-
-
-
+      else {
+        
+        throw new Exception('Debe finalizar todos los lapsos primero', 1);
+        
+      }
       
-      $rspta = $PeriodoEscolar->finalizar($idperiodo) or $sw = FALSE;
-    }
-    else {
-      echo 'hay_lapsos_activos';
-      die;
-    }
-		
+    } catch (Exception $e) {
+      
+      rollback();
 
-		#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
-		if ($sw) {
-			commit();
-			echo 'true';
-		}
-		else {
-			rollback();
-			echo 'false';
-		}
+      $response->code = 2;
 
-    break;
+      $response->message = $e->getMessage();
+
+      echo json_encode($response);
+      exit;
+    }
+
+  break;
     
   case 'mostrar':
 	

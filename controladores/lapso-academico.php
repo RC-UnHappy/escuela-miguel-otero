@@ -382,6 +382,7 @@ switch ($_GET['op']) {
               <div id="collapse'.$key.'" class="collapse show" aria-labelledby="heading'.$key.'" data-parent="#accordionExample">
                 <div class="card-body">
                   <ul class="list-group">';
+                  
                     foreach ($value as $key2 => $value2) {
                       $datos_estudiante = $LapsoAcademico->traerestudiante($value2);
                       $collapse .= '<li class="list-group-item">'.$datos_estudiante['cedula'].' - '.ucfirst($datos_estudiante['p_nombre']).' '.ucfirst($datos_estudiante['p_apellido']).'</li>';
