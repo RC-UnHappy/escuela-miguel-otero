@@ -238,10 +238,7 @@ function listar() {
 		"ajax": {
 			url: '../controladores/periodo-escolar.php?op=listar',
 			type: 'GET',
-      dataType: 'json',
-      error: (error) => {
-        console.log(error);
-      }		
+      dataType: 'json'	
     },
 		'order': [[1, 'desc']]
 	});

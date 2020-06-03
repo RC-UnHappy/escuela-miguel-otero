@@ -18,9 +18,9 @@
 
 	$('#btnAgregar').on('click', function () {
     $('#tituloModal').html('Crear planificación');
-    traerPeriodosActivoPlanificados();
+    	traerPeriodosActivoPlanificados();
 		traerGrados();
-    traerAmbientes();
+    	traerAmbientes();
 		traerDocentes();
 	});
 
@@ -175,7 +175,7 @@ function traerAmbientes(idambiente = null, idPeriodoEscolar) {
 
 function traerDocentes(iddocente = null, idPeriodoEscolar) {
   $.post('../controladores/planificacion.php?op=traerdocentes', { iddocente: iddocente, idperiodo_escolar: idPeriodoEscolar}, function (data) {
-		
+
 		data = JSON.parse(data);
 		let docente = '';
 		if (data.length != 0) {
@@ -298,7 +298,7 @@ function listar(idperiodo = null) {
 		"ajax": {
 			url: '../controladores/planificacion.php?op=listar&idperiodo='+idperiodo,
 			type: 'GET',
-      dataType: 'json'
+      		dataType: 'json'
 		},
 		'order': [[1, 'asc']]
 	});

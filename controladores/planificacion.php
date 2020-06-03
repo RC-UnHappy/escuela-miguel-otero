@@ -31,15 +31,17 @@ switch ($_GET['op']) {
 		#Si la variable esta vacía quiere decir que es un nuevo registro
 		if (empty($idplanificacion)) {
 
+
 			#Se trae el id del período escolar en curso
-			$idperiodo_escolar_actual = $Planificacion->consultarperiodo() or $sw = FALSE;
-      $idperiodo_escolar_actual = !empty($idperiodo_escolar_actual) ? $idperiodo_escolar_actual['id'] : '';
-      
-      $estatus = '';
-      if ($idperiodo_escolar_actual == $idperiodo_escolar)
-        $estatus = 'Activo';
-      else 
-        $estatus = 'Planificado';
+			$idperiodo_escolar_actual = $Planificacion->consultarperiodo();
+			
+	      	$idperiodo_escolar_actual = !empty($idperiodo_escolar_actual) ? $idperiodo_escolar_actual['id'] : '';
+	      
+	      	$estatus = '';
+	      	if ($idperiodo_escolar_actual == $idperiodo_escolar)
+	        	$estatus = 'Activo';
+      		else 
+        		$estatus = 'Planificado';
 
 			#Se registra la planificación
 			$Planificacion->insertar($idperiodo_escolar, $idgrado, $idseccion, $idambiente, $iddocente, $cupo, $cupo, $estatus) or $sw = FALSE;
@@ -56,16 +58,16 @@ switch ($_GET['op']) {
 
 		}
 		else{
-      #Se consulta el cupo anterior
-      $cupoanterior = $Planificacion->verificarcupo($idplanificacion, 'cupo');
-      $cupoanterior = $cupoanterior['cupo'];
+      		#Se consulta el cupo anterior
+      		$cupoanterior = $Planificacion->verificarcupo($idplanificacion, 'cupo');
+      		$cupoanterior = $cupoanterior['cupo'];
 
 			#Se consulta el cupo disponible
 			$cupodisponible = $Planificacion->verificarcupo($idplanificacion, 'cupo_disponible');
-      $cupodisponible = $cupodisponible['cupo_disponible'];
+      		$cupodisponible = $cupodisponible['cupo_disponible'];
 
-      #Cantidad de estudiantes inscritos
-      $cantidad_estudiantes = ($cupoanterior - $cupodisponible);
+     		#Cantidad de estudiantes inscritos
+      		$cantidad_estudiantes = ($cupoanterior - $cupodisponible);
 
 			if(($cupo - $cantidad_estudiantes) < 0)
 				$sw = FALSE;
@@ -83,7 +85,7 @@ switch ($_GET['op']) {
 				echo 'false';
 			}
 		}
-		break;
+	break;
 
 	case 'listar':
     	$idperiodo = isset($_GET['idperiodo']) ? $_GET['idperiodo'] : '';
@@ -248,7 +250,7 @@ switch ($_GET['op']) {
 		break;
 
 	case 'traerdocentes': 
-
+		
 		#iddocente es un parámetro que puede o no estar vacío
 		$rspta = $Planificacion->traerdocentes($iddocente, $idperiodo_escolar);
 

@@ -362,7 +362,6 @@ switch ($_GET['op']) {
     }
 
 
-
     if (!empty($estudiantes_sin_notas_completas)) {
       $collapse = '<div class="accordion" id="accordionExample">';
       foreach ($estudiantes_sin_notas_completas as $key => $value) {
