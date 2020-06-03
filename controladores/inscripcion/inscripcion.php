@@ -831,7 +831,7 @@ switch ($_GET['op']) {
     autocommit(FALSE);
     #Variable para comprobar que todo salió bien al final
     $sw = TRUE;
-       
+    
     /**
      * Operaciones relacionadas con el registro, actualización del representante
      */
@@ -927,8 +927,9 @@ switch ($_GET['op']) {
     $nombre_institucion = $Inscripcion->traerdatosinstitucion();
     $nombre_institucion = !empty($nombre_institucion) ? $nombre_institucion['nombre'] : 'Escuela Básica Miguel Otero Silva';
 
+
     #Se registra la inscripción
-    $idinscripcion_regular = $Inscripcion->inscribir($idperiodo_escolar_regular, $idplanificacion_regular, $idestudiante_regular, $idrepresentante_regular, $parentesco_representante_regular, $nombre_institucion, 0, $observaciones_regular, 'CURSANDO') or $sw = FALSE;
+    $idinscripcion_regular = $Inscripcion->inscribir($idperiodo_escolar_regular, $idplanificacion_regular, $idestudiante_regular, $idrepresentante_regular, $parentesco_representante_regular, $nombre_institucion, $observaciones_regular, 'CURSANDO') or $sw = FALSE;
  
     #Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
     if ($sw) {

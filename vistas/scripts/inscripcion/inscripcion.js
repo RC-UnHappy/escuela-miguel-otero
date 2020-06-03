@@ -696,7 +696,9 @@ function guardaryeditarInscripcionRegular(event) {
     contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
     processData: false, //Evita que jquery transforme la data en un string
     success: function (datos) {
-
+      // console.log(datos);
+      // return;
+      
       if (datos == 'true') {
         const Toast = Swal.mixin({
           toast: true,
@@ -743,6 +745,7 @@ function guardaryeditarInscripcionRegular(event) {
 
       limpiarInscripcionRegular();
       tablaInscripcionRegular.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
+      tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
     }
   });
 }
@@ -770,10 +773,7 @@ function listar() {
         "ajax": {
             url: '../../controladores/inscripcion/inscripcion.php?op=listar',
             type: 'GET',
-            dataType: 'json',
-            error: (e) => {
-              console.log(e.responseText);
-            }
+            dataType: 'json'
         },
         'order': [[0, 'desc']],
     });
