@@ -931,6 +931,7 @@ function retirar(event) {
 			window.open('../reporte/boletin-retiro.php?idpersona='+idpersona+'&idestudianteretiro='+idestudianteretiro+'&nombre_completo_estudiante='+nombre_completo_estudiante+'&condicion='+condicion+'&ultimo_grado_cursado='+ultimo_grado_cursado+'&nombre_completo_representante='+nombre_completo_representante+'&cedula_representante='+cedula_representante+'&causa_retiro='+causa_retiro, '_blank');
 
 			$.ajax({
+				async: false,
 				url: '../controladores/estudiante.php?op=retirar', //Dirección a donde se envían los datos
 				type: 'POST', //Método por el cual se envían los datos
 				data: formData, //Datos

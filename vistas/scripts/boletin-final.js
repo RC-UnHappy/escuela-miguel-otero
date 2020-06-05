@@ -174,9 +174,14 @@ function guardaryeditar(event) {
     contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
     processData: false, //Evita que jquery transforme la data en un string
     success: function (datos) {
-      
+      datos = JSON.parse(datos);
+      // console.log(datos);
+      // return; 
+
       $('#btnGuardar').prop('disabled', false);
-      if (datos == 'true') {
+
+      if (datos.estatus == 1) {
+
         const Toast = Swal.mixin({
           toast: true,
           position: 'top-end',
@@ -186,7 +191,7 @@ function guardaryeditar(event) {
 
         Toast.fire({
           type: 'success',
-          title: 'Boletín final registrado exitosamente :)'
+          title: datos.msj
         });
 
         // Actualiza el select de estudiante
@@ -232,7 +237,8 @@ function guardaryeditar(event) {
         $('#literal').selectpicker('refresh');
         $('#formularioBoletinFinal').removeClass('was-validated');
       }
-      else if (datos == 'update') {
+
+      else if (datos.estatus == 2) {
         const Toast = Swal.mixin({
           toast: true,
           position: 'top-end',
@@ -242,7 +248,7 @@ function guardaryeditar(event) {
 
         Toast.fire({
           type: 'success',
-          title: 'Boletín final modificado exitosamente :)'
+          title: datos.msj
         });
 
         $('#boletinFinalModal').modal('hide');
@@ -258,7 +264,7 @@ function guardaryeditar(event) {
 
         Toast.fire({
           type: 'error',
-          title: 'Ocurrió un error y no se pudo registrar :('
+          title: datos.msj
         });
       }
       tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página

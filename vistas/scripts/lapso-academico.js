@@ -442,7 +442,7 @@ function finalizar(idlapsoacademico) {
   }).then((result) => {
     if (result.value) {
       $.post('../controladores/lapso-academico.php?op=finalizar', { idlapsoacademico: idlapsoacademico }, function (e) {
-        
+
         if (e == 'true') {
           const Toast = Swal.mixin({
             toast: true,

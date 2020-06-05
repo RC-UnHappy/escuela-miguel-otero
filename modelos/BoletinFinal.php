@@ -122,6 +122,92 @@ class BoletinFinal
     $sql = "SELECT c.id FROM usuario a INNER JOIN persona b ON a.idpersona = b.id INNER JOIN personal c ON c.idpersona = b.id WHERE a.id = '$idusuario'";
    return ejecutarConsultaSimpleFila($sql);
   }
+
+  public function getPersonFromStudent($studentId)
+  {
+    $sql = "SELECT per.* FROM estudiante est INNER JOIN persona per ON est.idpersona = per.id WHERE est.id = '$studentId'";
+
+    return ejecutarConsultaSimpleFila($sql);
+  }
+
+  function getRegistrations($studentId)
+  {
+    $sql = "SELECT ins.*, gra.grado, sec.seccion, p_e.periodo, perso.cedula AS cedula_docente, perso.p_nombre AS nombre_docente, perso.p_apellido AS apellido_docente, bo_fi.descriptivo_final, ex_li.literal, peres.cedula AS cedula_estudiante, peres.p_nombre AS p_nombre_estudiante, peres.s_nombre AS s_nombre_estudiante, peres.p_apellido AS p_apellido_estudiante, peres.s_apellido AS s_apellido_estudiante, peres.f_nac AS f_nac_estudiante, peres.genero AS genero_estudiante, muni.municipio, (SELECT turno FROM institucion) AS turno, estu.idmadre, estu.idpadre FROM inscripcion ins INNER JOIN planificacion pla ON pla.id = ins.idplanificacion INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = pla.idseccion INNER JOIN periodo_escolar p_e ON p_e.id = pla.idperiodo_escolar INNER JOIN personal pernal ON pernal.id = pla.iddocente INNER JOIN persona perso ON perso.id = pernal.idpersona INNER JOIN estudiante estu ON ins.idestudiante = estu.id INNER JOIN persona peres ON estu.idpersona = peres.id INNER JOIN lugar_nacimiento lu_na ON lu_na.idestudiante = estu.id INNER JOIN parroquia parro ON parro.id = lu_na.idparroquia INNER JOIN municipio muni ON muni.id = parro.idmunicipio LEFT JOIN boletin_final bo_fi ON bo_fi.idplanificacion = ins.idplanificacion AND bo_fi.idestudiante = ins.idestudiante LEFT JOIN expresion_literal ex_li ON ex_li.id = bo_fi.idexpresion_literal  WHERE ins.idestudiante = '$studentId'";
+
+    return ejecutarConsulta($sql);
+  }
+
+  function retire($periodo_escolar, $turno, $grado, $seccion, $cedula_docente, $nombre_docente, $apellido_docente, $cedula_estudiante, $p_nombre_estudiante, $s_nombre_estudiante, $p_apellido_estudiante, $s_apellido_estudiante, $fecha_nacimiento_estudiante, $lugar_nacimiento_estudiante, $sexo_estudiante, $literal, $observaciones, $estatus)
+  {
+
+    $sql = "INSERT INTO historial_estudiantil (periodo_escolar, turno, grado, seccion, cedula_docente, nombre_docente, apellido_docente, cedula_estudiante, p_nombre_estudiante, s_nombre_estudiante, p_apellido_estudiante, s_apellido_estudiante, fecha_nacimiento_estudiante, lugar_nacimiento_estudiante, sexo_estudiante, literal, observaciones, estatus, fecha_creacion) VALUES ('$periodo_escolar', '$turno', '$grado', '$seccion', '$cedula_docente', '$nombre_docente', '$apellido_docente', '$cedula_estudiante', '$p_nombre_estudiante', '$s_nombre_estudiante', '$p_apellido_estudiante', '$s_apellido_estudiante', '$fecha_nacimiento_estudiante', '$lugar_nacimiento_estudiante', '$sexo_estudiante', '$literal', '$observaciones', '$estatus', NOW() )";
+
+    return ejecutarConsulta($sql);
+  }
+
+  public function verificar_representante_inscripcion($idrepresentante, $idestudiante)
+  {
+    $sql = "SELECT * FROM inscripcion WHERE idrepresentante = '$idrepresentante' AND idestudiante != '$idestudiante' ";
+    return ejecutarConsulta($sql);
+  }
+
+  public function verificar_padre_idrepresentante($idrepresentante, $idestudiante)
+  {
+    $sql = "SELECT * FROM estudiante WHERE idmadre = (SELECT idpersona FROM representante WHERE id = '$idrepresentante') OR idmadre = (SELECT idpersona FROM representante WHERE id = '$idrepresentante') AND id != '$idestudiante'";
+    return ejecutarConsulta($sql);
+  }
+
+  public function verificar_personal($idrepresentante)
+  {
+    $sql = "SELECT * FROM personal WHERE idpersona = (SELECT idpersona FROM representante WHERE id = '$idrepresentante') ";
+    return ejecutarConsulta($sql);
+  }
+
+  function eliminar_persona_representante($idrepresentante)
+  {
+    $sql = "DELETE FROM persona WHERE id = (SELECT idpersona FROM representante WHERE id = '$idrepresentante')";
+
+    return ejecutarConsulta($sql);
+  }
+
+  public function verificar_representante_idpersona($idpersona, $idestudiante)
+  {
+    $sql = "SELECT * FROM inscripcion WHERE idrepresentante = (SELECT id FROM representante WHERE idpersona = '$idpersona') AND idestudiante != '$idestudiante' ";
+    return ejecutarConsulta($sql);
+  }
+
+  public function verificar_padre($idpersona, $idestudiante)
+  {
+    $sql = "SELECT * FROM estudiante WHERE idmadre = '$idpersona' OR idmadre = '$idpersona' AND id != '$idestudiante'";
+    return ejecutarConsulta($sql);
+  }
+
+  public function verificar_padre_personal($idpersona)
+  {
+    $sql = "SELECT * FROM personal WHERE idpersona = '$idpersona' ";
+    return ejecutarConsulta($sql);
+  }
+
+  function eliminar_persona_padre($idpersona)
+  {
+    $sql = "DELETE FROM persona WHERE id = '$idpersona'";
+
+    return ejecutarConsulta($sql);
+  }
+
+  function eliminar($idpersona)
+  {
+    $sql = "DELETE FROM persona WHERE id = '$idpersona'";
+
+    return ejecutarConsulta($sql);
+  }
+
+  public function getSchedule($scheduleId)
+  {
+    $sql = "SELECT pla.*, gra.grado FROM planificacion pla INNER JOIN grado gra ON pla.idgrado = gra.id WHERE pla.id = '$scheduleId'";
+
+    return ejecutarConsultaSimpleFila($sql);
+  }
 	
 }
 

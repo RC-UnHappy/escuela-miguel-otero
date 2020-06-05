@@ -58,10 +58,18 @@ class PeriodoEscolar
   #Método para activar un período escolar
 	function activar($idperiodo)
 	{
-		$sql = "UPDATE periodo_escolar SET estatus = 'Activo', fecha_creacion = CURDATE() WHERE id = '$idperiodo'";
+		$sql = "UPDATE periodo_escolar SET estatus = 'Activo' WHERE id = '$idperiodo'";
 
 		return ejecutarConsulta($sql);
 	}
+
+  #Método para activar las planificaciones asociadas a un período escolar
+  function activarPlanificaciones($idperiodo)
+  {
+    $sql = "UPDATE planificacion SET estatus = 'Activo' WHERE idperiodo_escolar = '$idperiodo'";
+
+    return ejecutarConsulta($sql);
+  }
 
 	#Método para desactivar un período escolar
 	function finalizar($idperiodo)

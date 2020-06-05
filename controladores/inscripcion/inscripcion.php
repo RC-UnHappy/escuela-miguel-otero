@@ -491,9 +491,11 @@ switch ($_GET['op']) {
     $id_docente = !empty($id_docente) ? $id_docente['id'] : '';
 
     if ($rol_usuario == 'Docente') {
-      $rspta = $Inscripcion->listar($id_docente);
+
+      $rspta = $Inscripcion->listarPlanificacionActiva($id_docente);
   
       if ($rspta->num_rows != 0) {
+
         while ($reg = $rspta->fetch_object()) {
             
           $percentage = ($reg->cupo_disponible * 100) / $reg->cupo;
@@ -536,19 +538,77 @@ switch ($_GET['op']) {
             
         );
       } else {
-        $results = array(
-            "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
-            "recordsTotal" => 0, #Se envía el total de registros al datatable
-            "recordsFiltered" => 0, #Se envía el total de registros a visualizar
-            "data" => '' #datos en un array
+
+        $rspta = $Inscripcion->listarPlanificacionPlanificada($id_docente);
+
+        if ($rspta->num_rows != 0) {
+          
+          while ($reg = $rspta->fetch_object()) {
+              
+            $percentage = ($reg->cupo_disponible * 100) / $reg->cupo;
+            $percentage = 100 - $percentage;
+            $percentage_color = ($percentage >= 50 && $percentage < 75) ? 'bg-warning' 
+            : ($percentage >= 75) ? 'bg-danger' 
+            : 'bg-success';
             
-        );
+            $data[] = array(
+                '0' => ($reg->estatus) ?
+                
+                '<button class="btn btn-outline-primary " title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#estudiantesSeccionModal"><i class="fas fa-eye"></i></button>' 
+                
+                : 
+                
+                '<button class="btn btn-outline-primary" title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#estudiantesSeccionModal"><i class="fas fa-eye"></i></button>',
+                
+                '1' => $reg->grado . ' º',
+                '2' => '"' . $reg->seccion . '"',
+                '3' => $reg->p_nombre . ' ' . $reg->p_apellido,
+                '4' => '<div class="text-uppercase">
+                <small>
+                <b>Porcentaje de Ocupación</b>
+                </small>
+                </div>
+                <div class="progress bg-secondary" style="height: 30px;" bg-success>
+                <div class="progress-bar '.$percentage_color.'"                  role="progressbar" style="width: '.$percentage.'%; color:white;"           aria-valuenow="'.$percentage.'" aria-valuemin="0" aria-valuemax="100">'.number_format($percentage, 1).' %
+                </div>
+                </div>
+                <small >'.($reg->cupo - $reg->cupo_disponible).' / '.$reg->cupo. ' cupos</small>',
+                '5' => $reg->periodo
+            );
+          }
+            
+          $results = array(
+              "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+              "recordsTotal" => count($data), #Se envía el total de registros al datatable
+              "recordsFiltered" => count($data), #Se envía el total de registros a visualizar
+              "data" => $data #datos en un array
+              
+          );
+          
+        }
+        else {
+
+          $results = array(
+              "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+              "recordsTotal" => 0, #Se envía el total de registros al datatable
+              "recordsFiltered" => 0, #Se envía el total de registros a visualizar
+              "data" => '' #datos en un array
+              
+          );
+
+        }
+
       }
     }
-    else {
-      $rspta = $Inscripcion->listar();
     
+
+
+    else {
+      $rspta = $Inscripcion->listarPlanificacionActiva();
+    
+      
       if ($rspta->num_rows != 0) {
+
         while ($reg = $rspta->fetch_object()) {
             
           $percentage = ($reg->cupo_disponible * 100) / $reg->cupo;
@@ -593,15 +653,73 @@ switch ($_GET['op']) {
             "data" => $data #datos en un array
             
         );
-      } else {
-        $results = array(
-            "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
-            "recordsTotal" => 0, #Se envía el total de registros al datatable
-            "recordsFiltered" => 0, #Se envía el total de registros a visualizar
-            "data" => '' #datos en un array
+
+      } 
+      else {
+
+        $rspta = $Inscripcion->listarPlanificacionPlanificada();
+
+
+        if ($rspta->num_rows != 0) {
+
+          while ($reg = $rspta->fetch_object()) {
+              
+            $percentage = ($reg->cupo_disponible * 100) / $reg->cupo;
+            $percentage = 100 - $percentage;
+            $percentage_color = ($percentage >= 50 && $percentage < 75) ? 'bg-warning' 
+            : ($percentage >= 75) ? 'bg-danger' 
+            : 'bg-success';
             
-        );
+            $data[] = array(
+                '0' => 
+
+                ( ( isset($_SESSION['permisos']['inscripcion']) && 
+                    in_array('ver' , $_SESSION['permisos']['inscripcion']) ) ?
+                
+                '<button class="btn btn-outline-primary " title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#estudiantesSeccionModal"><i class="fas fa-eye"></i></button> '.
+
+                ( ($reg->cupo_disponible > 0) ?  
+
+                '<a target="_blank" href="../../reporte/disponibilidad-cupo.php?grado='.$reg->grado.'"> <button class="btn btn-primary" title="Disponibilidad de cupo"><i class="fa fa-file-medical"></i></button></a> ' : '') : ''),
+                
+                '1' => $reg->grado . ' º',
+                '2' => '"' . $reg->seccion . '"',
+                '3' => $reg->p_nombre . ' ' . $reg->p_apellido,
+                '4' => '<div class="text-uppercase">
+                <small>
+                <b>Porcentaje de Ocupación</b>
+                </small>
+                </div>
+                <div class="progress bg-secondary" style="height: 30px;" bg-success>
+                <div class="progress-bar '.$percentage_color.'"                  role="progressbar" style="width: '.$percentage.'%; color:white;"           aria-valuenow="'.$percentage.'" aria-valuemin="0" aria-valuemax="100">'.number_format($percentage, 1).' %
+                </div>
+                </div>
+                <small >'.($reg->cupo - $reg->cupo_disponible).' / '.$reg->cupo. ' cupos</small>',
+                '5' => $reg->periodo
+            );
+          }
+        
+          $results = array(
+              "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+              "recordsTotal" => count($data), #Se envía el total de registros al datatable
+              "recordsFiltered" => count($data), #Se envía el total de registros a visualizar
+              "data" => $data #datos en un array
+              
+          );
+
+        }
+        else {
+          $results = array(
+              "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+              "recordsTotal" => 0, #Se envía el total de registros al datatable
+              "recordsFiltered" => 0, #Se envía el total de registros a visualizar
+              "data" => '' #datos en un array
+              
+          );
+
+        }
       }
+
     }
     echo json_encode($results);
   break;

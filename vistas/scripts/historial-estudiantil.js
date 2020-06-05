@@ -264,7 +264,7 @@ function listar(periodo_escolar_general = null) {
         console.log(e.responseText);
       }
     },
-    'order': [[1, 'asc']]
+    'order': []
   });
 }
 

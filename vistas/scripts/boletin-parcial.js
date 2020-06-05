@@ -378,7 +378,7 @@ function listarindicadores(idestudiantes) {
         "last": "Último"
       },
     },
-    "pageLength": 25,
+    "pageLength": 50,
     dom: '',
     "destroy": true, //Elimina cualquier elemente que se encuentre en la tabla
     "ajax": {

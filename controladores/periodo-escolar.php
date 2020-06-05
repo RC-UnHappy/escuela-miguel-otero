@@ -243,6 +243,8 @@ switch ($_GET['op']) {
 		
 		$rspta = $PeriodoEscolar->activar($idperiodo) or $sw = FALSE;
 
+    $rspta = $PeriodoEscolar->activarPlanificaciones($idperiodo) or $sw = FALSE;
+
 		#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 		if ($sw) {
 			commit();
