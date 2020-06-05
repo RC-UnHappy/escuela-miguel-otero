@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-06-2020 a las 05:11:07
+-- Tiempo de generación: 05-06-2020 a las 03:20:03
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -89,15 +89,6 @@ CREATE TABLE `aspecto_fisiologicos` (
   `utiles` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `aspecto_fisiologicos`
---
-
-INSERT INTO `aspecto_fisiologicos` (`id`, `idplanificacion`, `idestudiante`, `peso`, `talla`, `todas_vacunas`, `alergia`, `c`, `alimentos`, `utiles`) VALUES
-(1, 2, 2, 40, 1.3, 0, 0, 0, 1, 1),
-(2, 4, 2, 35, 1.5, 1, 0, 0, 1, 1),
-(3, 3, 1, 50, 1.5, 1, 0, 0, 0, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -111,13 +102,6 @@ CREATE TABLE `aspecto_socioeconomico` (
   `grupo_familiar` int(11) NOT NULL,
   `ingreso_mensual` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `aspecto_socioeconomico`
---
-
-INSERT INTO `aspecto_socioeconomico` (`id`, `idestudiante`, `tipo_vivienda`, `grupo_familiar`, `ingreso_mensual`) VALUES
-(2, 2, 'casa', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -133,18 +117,6 @@ CREATE TABLE `boletin_final` (
   `descriptivo_final` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `boletin_final`
---
-
-INSERT INTO `boletin_final` (`id`, `idplanificacion`, `idestudiante`, `idexpresion_literal`, `descriptivo_final`) VALUES
-(1, 1, 1, 1, 'El estudiante alcanzo todas la expectativas previstas para el grado.'),
-(2, 2, 2, 3, 'Cumplió con todos los objetivos previstos para el grado que cursa.'),
-(3, 3, 1, 2, 'Es una niña inteligente y logró superar las expectativas'),
-(4, 4, 2, 5, 'Lamentablemente el estudiante no alcanzó los requerimientos mínimos exigidos por la ley para pasar de año.'),
-(5, 5, 1, 1, 'Excelente estudiante, superando los requrimientos durante todo el año.'),
-(6, 5, 2, 5, 'Lamentablemente el estudiante no obtuvo la nota necesaria para pasar de grado.');
-
 -- --------------------------------------------------------
 
 --
@@ -157,13 +129,6 @@ CREATE TABLE `canaima` (
   `posee_canaima` char(2) NOT NULL,
   `condicion` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `canaima`
---
-
-INSERT INTO `canaima` (`id`, `idestudiante`, `posee_canaima`, `condicion`) VALUES
-(2, 2, 'no', '');
 
 -- --------------------------------------------------------
 
@@ -187,7 +152,8 @@ INSERT INTO `direccion` (`id`, `idpersona`, `idparroquia`, `direccion`) VALUES
 (2, 70, NULL, 'Goajira'),
 (3, 18, NULL, 'Goajira'),
 (4, 19, NULL, 'Goajira'),
-(5, 72, 739, 'La goajira');
+(6, 73, NULL, 'Goajira'),
+(7, 74, NULL, 'Goajira');
 
 -- --------------------------------------------------------
 
@@ -210,7 +176,9 @@ INSERT INTO `direccion_trabajo` (`id`, `idpersona`, `idparroquia`, `direccion`) 
 (1, 58, NULL, 'Goajira'),
 (2, 70, NULL, 'Goajira'),
 (3, 18, NULL, 'Goajira'),
-(4, 19, NULL, 'Goajira');
+(4, 19, NULL, 'Goajira'),
+(5, 73, NULL, 'Goajira'),
+(6, 74, NULL, 'Goajira');
 
 -- --------------------------------------------------------
 
@@ -245,14 +213,6 @@ CREATE TABLE `documentos_consignados` (
   `constancia_buena_conducta` tinyint(1) NOT NULL,
   `informe_descriptivo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `documentos_consignados`
---
-
-INSERT INTO `documentos_consignados` (`id`, `idinscripcion`, `fotocopia_cedula_madre`, `fotocopia_cedula_padre`, `fotocopia_cedula_representante`, `fotos_representante`, `fotocopia_partida_nacimiento`, `fotocopia_cedula_estudiante`, `fotocopia_constancia_vacunas`, `fotos_estudiante`, `boleta_promocion`, `constancia_buena_conducta`, `informe_descriptivo`) VALUES
-(5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-(6, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -564,14 +524,6 @@ CREATE TABLE `estudiante` (
   `estatus` char(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `estudiante`
---
-
-INSERT INTO `estudiante` (`id`, `idpersona`, `idmadre`, `idpadre`, `parto_multiple`, `orden_nacimiento`, `estatus`) VALUES
-(1, 71, 58, 70, 'no', 0, 'INSCRITO'),
-(2, 72, 18, 19, 'no', 0, 'INSCRITO');
-
 -- --------------------------------------------------------
 
 --
@@ -649,6 +601,38 @@ CREATE TABLE `historial_estudiantil` (
   `fecha_creacion` datetime NOT NULL,
   `fecha_actualizacion` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `historial_estudiantil`
+--
+
+INSERT INTO `historial_estudiantil` (`id`, `periodo_escolar`, `turno`, `grado`, `seccion`, `cedula_docente`, `nombre_docente`, `apellido_docente`, `cedula_estudiante`, `p_nombre_estudiante`, `s_nombre_estudiante`, `p_apellido_estudiante`, `s_apellido_estudiante`, `fecha_nacimiento_estudiante`, `lugar_nacimiento_estudiante`, `sexo_estudiante`, `literal`, `observaciones`, `estatus`, `fecha_creacion`, `fecha_actualizacion`) VALUES
+(1, '2024-2025', 'INTEGRAL-MIXTO', '5', 'A', 'V-13234567', 'Leida', 'Betancourt', 'CE-10720548122', 'Juan', 'Daniel', 'Pérez', 'Perdomo', '2007-05-02', 'Páez', 'M', '', 'Ninguna', 'RETIRADO', '2020-06-03 17:40:45', NULL),
+(2, '2024-2025', 'INTEGRAL-MIXTO', '5', 'A', 'V-13234567', 'Leida', 'Betancourt', 'CE-10620548122', 'Pietro', '', 'Degracia', '', '2006-02-03', 'Páez', 'M', '', 'ninguna', 'RETIRADO', '2020-06-03 17:55:46', NULL),
+(3, '2024-2025', 'INTEGRAL-MIXTO', '5', 'A', 'V-13234567', 'Leida', 'Betancourt', 'CE-10820548122', 'Pamela', '', 'Silverstone', '', '2008-02-06', 'Páez', 'F', '', 'ninguno', 'RETIRADO', '2020-06-03 18:09:08', NULL),
+(4, '2024-2025', 'INTEGRAL-MIXTO', '5', 'A', 'V-13234567', 'Leida', 'Betancourt', 'CE-10920548122', 'Doroteo', '', 'Arango', '', '2009-02-05', 'Páez', 'M', '', 'ninguno', 'RETIRADO', '2020-06-03 18:12:59', NULL),
+(5, '2024-2025', 'INTEGRAL-MIXTO', '5', 'A', 'V-13234567', 'Leida', 'Betancourt', 'CE-51020548122', 'Vilario', 'Vladimiir', 'Vlad', 'Velzaquez', '2010-06-02', 'Páez', 'M', '', 'Nada', 'RETIRADO', '2020-06-03 18:18:20', NULL),
+(6, '2025-2026', 'INTEGRAL-MIXTO', '6', 'A', 'V-12234567', 'Carolina', 'Melendez', 'CE-31020548122', 'Pope', '', 'Dacosta', '', '2010-02-06', 'Páez', 'M', '', 'ninguna', 'RETIRADO', '2020-06-04 15:06:48', NULL),
+(10, '2020-2021', 'INTEGRAL-MIXTO', '1', 'A', 'V-12234567', 'Carolina', 'Melendez', 'CE-11418451211', 'Elizabeth', 'Daniela', 'Castillo', 'Paredes', '2014-06-23', 'Guanare', 'F', 'A', 'Ninguna', 'PROMOVIDO', '2020-06-04 19:22:41', NULL),
+(11, '2021-2022', 'INTEGRAL-MIXTO', '2', 'B', 'V-12234567', 'Carolina', 'Melendez', 'CE-11418451211', 'Elizabeth', 'Daniela', 'Castillo', 'Paredes', '2014-06-23', 'Guanare', 'F', 'B', 'Ninguna', 'PROMOVIDO', '2020-06-04 19:22:41', NULL),
+(12, '2022-2023', 'INTEGRAL-MIXTO', '3', 'A', 'V-12234567', 'Carolina', 'Melendez', 'CE-11418451211', 'Elizabeth', 'Daniela', 'Castillo', 'Paredes', '2014-06-23', 'Guanare', 'F', 'A', 'Buena estudiante', 'PROMOVIDO', '2020-06-04 19:22:41', NULL),
+(13, '2023-2024', 'INTEGRAL-MIXTO', '4', 'A', 'V-13234567', 'Leida', 'Betancourt', 'CE-11418451211', 'Elizabeth', 'Daniela', 'Castillo', 'Paredes', '2014-06-23', 'Guanare', 'F', 'B', 'Excelente estudiante', 'PROMOVIDO', '2020-06-04 19:22:41', NULL),
+(14, '2024-2025', 'INTEGRAL-MIXTO', '5', 'A', 'V-13234567', 'Leida', 'Betancourt', 'CE-11418451211', 'Elizabeth', 'Daniela', 'Castillo', 'Paredes', '2014-06-23', 'Guanare', 'F', 'A', 'Excelente', 'PROMOVIDO', '2020-06-04 19:22:41', NULL),
+(15, '2025-2026', 'INTEGRAL-MIXTO', '6', 'A', 'V-12234567', 'Carolina', 'Melendez', 'CE-11418451211', 'Elizabeth', 'Daniela', 'Castillo', 'Paredes', '2014-06-23', 'Guanare', 'F', 'A', 'Nada', 'PROMOVIDO', '2020-06-04 19:22:41', NULL),
+(16, '2025-2026', 'INTEGRAL-MIXTO', '5', 'A', 'V-13234567', 'Leida', 'Betancourt', 'CE-11120548122', 'Uganda', '', 'Villavicencio', '', '2011-02-02', 'Páez', 'F', 'E', 'No cumplió con los requerimientos mínimos para pasar de grado', 'REPITE', '2020-06-04 20:19:00', NULL),
+(17, '2026-2027', 'INTEGRAL-MIXTO', '5', 'A', 'V-12234567', 'Carolina', 'Melendez', 'CE-11120548122', 'Uganda', '', 'Villavicencio', '', '2011-02-02', 'Páez', 'F', '', 'ninguno', 'RETIRADO', '2020-06-04 20:19:00', NULL),
+(18, '2020-2021', 'INTEGRAL-MIXTO', '2', 'A', 'V-13234567', 'Leida', 'Betancourt', 'CE-11411693822', 'Carlos', 'Jose', 'Perez', 'Mendoza', '2014-06-23', 'Páez', 'M', 'C', 'Cumplió con todos los objetivos previstos para el grado que cursa.', 'PROMOVIDO', '2020-06-04 20:21:47', NULL),
+(19, '2021-2022', 'INTEGRAL-MIXTO', '3', 'A', 'V-13234567', 'Leida', 'Betancourt', 'CE-11411693822', 'Carlos', 'Jose', 'Perez', 'Mendoza', '2014-06-23', 'Páez', 'M', 'E', 'Lamentablemente el estudiante no alcanzó los requerimientos mínimos exigidos por la ley para pasar de año.', 'REPITE', '2020-06-04 20:21:47', NULL),
+(20, '2022-2023', 'INTEGRAL-MIXTO', '3', 'A', 'V-12234567', 'Carolina', 'Melendez', 'CE-11411693822', 'Carlos', 'Jose', 'Perez', 'Mendoza', '2014-06-23', 'Páez', 'M', 'E', 'Lamentablemente el estudiante no obtuvo la nota necesaria para pasar de grado.', 'REPITE', '2020-06-04 20:21:47', NULL),
+(21, '2023-2024', 'INTEGRAL-MIXTO', '3', 'A', 'V-12234567', 'Carolina', 'Melendez', 'CE-11411693822', 'Carlos', 'Jose', 'Perez', 'Mendoza', '2014-06-23', 'Páez', 'M', 'B', 'Muy bien', 'PROMOVIDO', '2020-06-04 20:21:47', NULL),
+(22, '2024-2025', 'INTEGRAL-MIXTO', '4', 'A', 'V-12234567', 'Carolina', 'Melendez', 'CE-11411693822', 'Carlos', 'Jose', 'Perez', 'Mendoza', '2014-06-23', 'Páez', 'M', 'C', 'Todo excelente', 'PROMOVIDO', '2020-06-04 20:21:47', NULL),
+(23, '2025-2026', 'INTEGRAL-MIXTO', '5', 'A', 'V-13234567', 'Leida', 'Betancourt', 'CE-11411693822', 'Carlos', 'Jose', 'Perez', 'Mendoza', '2014-06-23', 'Páez', 'M', 'B', 'Bien sigue así', 'PROMOVIDO', '2020-06-04 20:21:47', NULL),
+(24, '2026-2027', 'INTEGRAL-MIXTO', '6', 'A', 'V-13234567', 'Leida', 'Betancourt', 'CE-11411693822', 'Carlos', 'Jose', 'Perez', 'Mendoza', '2014-06-23', 'Páez', 'M', '', 'ninguno', 'RETIRADO', '2020-06-04 20:21:47', NULL),
+(25, '2026-2027', 'INTEGRAL-MIXTO', '5', 'A', 'V-12234567', 'Carolina', 'Melendez', 'CE-91020548122', 'Carlos', '', 'Carpenter', '', '2010-06-23', 'Antonio Díaz', 'M', '', 'ninguno', 'RETIRADO', '2020-06-04 20:25:16', NULL),
+(26, '2026-2027', 'INTEGRAL-MIXTO', '5', 'A', 'V-12234567', 'Carolina', 'Melendez', 'CE-10920548122', 'Federico', '', 'Matalas', 'Callando', '2009-05-10', 'Cardenal Quintero', 'M', '', 'dasdasdsadsad', 'RETIRADO', '2020-06-04 20:29:12', NULL),
+(27, '2026-2027', 'INTEGRAL-MIXTO', '5', 'A', 'V-12234567', 'Carolina', 'Melendez', 'CE-10420548122', 'Carlos', '', 'Villagran', '', '2004-12-02', 'Rómulo Gallegos', 'M', 'A', 'sadasdsadsaddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', 'PROMOVIDO', '2020-06-04 20:34:56', NULL),
+(28, '2027-2028', 'INTEGRAL-MIXTO', '6', 'A', 'V-12234567', 'Carolina', 'Melendez', 'CE-10420548122', 'Carlos', '', 'Villagran', '', '2004-12-02', 'Rómulo Gallegos', 'M', '', 'ninguno', 'RETIRADO', '2020-06-04 20:34:56', NULL),
+(29, '2027-2028', 'INTEGRAL-MIXTO', '6', 'A', 'V-12234567', 'Carolina', 'Melendez', 'CE-11220548122', 'adsasd', '', 'asdasd', '', '2012-02-20', 'Papelón', 'M', '', 'dasdasdsa', 'RETIRADO', '2020-06-04 20:40:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -890,7 +874,276 @@ INSERT INTO `indicador` (`id`, `idplanificacion`, `idmateria`, `lapso_academico`
 (219, 5, 6, '3', 'Sabe dividir entre cero'),
 (220, 5, 6, '3', 'Realiza divisiones de una cifra'),
 (221, 5, 8, '3', 'Lee corrido cuentos cortos'),
-(222, 5, 8, '3', 'Realiza divisiones de una cifra');
+(222, 5, 8, '3', 'Realiza divisiones de una cifra'),
+(223, 10, 1, '1', 'Juega futbol'),
+(224, 10, 1, '1', 'Entiende la cultura venezolana'),
+(225, 10, 1, '1', 'Identifica párrafos como unidades organizadas del texto'),
+(226, 10, 2, '1', 'Juega futbol'),
+(227, 10, 2, '1', 'Diferencia sujeto y verbo'),
+(228, 10, 3, '1', 'Conversa con sus compañeros'),
+(229, 10, 3, '1', 'Construye juguetes con material reciclable'),
+(230, 10, 3, '1', 'Entiende los simbolos patrios'),
+(231, 10, 4, '1', 'Juega futbol'),
+(232, 10, 4, '1', 'Conoce la comida típica Venezolana'),
+(233, 10, 6, '1', 'Es perseverante y honesto en la realización de sus trabajos'),
+(234, 10, 6, '1', 'Entiente las ciencias naturales'),
+(235, 10, 8, '1', 'Lee corrido cuentos cortos'),
+(236, 10, 8, '1', 'Entiende la polinización'),
+(237, 11, 1, '1', 'Lee corrido cuentos cortos'),
+(238, 11, 1, '1', 'Conoce las vocales'),
+(239, 11, 2, '1', 'Suma y resta sin dificultad'),
+(240, 11, 2, '1', 'Construye juguetes con material reciclable'),
+(241, 11, 3, '1', 'Diferencia sujeto y verbo'),
+(242, 11, 3, '1', 'Es perseverante y honesto en la realización de sus trabajos'),
+(243, 11, 3, '1', 'Diferencia sujeto y verbo'),
+(244, 11, 4, '1', 'Diferencia sujeto y verbo'),
+(245, 11, 4, '1', 'Entiende la importancia de las plantas'),
+(246, 11, 6, '1', 'Participa en actividades relacionadas al huerto escolar'),
+(247, 11, 6, '1', 'Participa en actividades lúdicas respetando las ideas ajenas'),
+(248, 11, 8, '1', 'Diferencia sujeto y verbo'),
+(249, 11, 8, '1', 'Juega con sus compañeros'),
+(250, 10, 1, '2', 'Suma y resta sin dificultad'),
+(251, 10, 1, '2', 'Los arboles y la capa de ozono'),
+(252, 10, 1, '2', 'Lee corrido cuentos cortos'),
+(253, 10, 2, '2', 'Conoce las vocales'),
+(254, 10, 2, '2', 'Comprende el concepto de textura'),
+(255, 10, 3, '2', 'Suma y resta sin dificultad'),
+(256, 10, 3, '2', 'Identifica párrafos como unidades organizadas del texto'),
+(257, 10, 4, '2', 'Lee corrido cuentos cortos'),
+(258, 10, 4, '2', 'Desarrolla su motricidad'),
+(259, 10, 6, '2', 'Construye juguetes con material reciclable'),
+(260, 10, 6, '2', 'Entiende la importancia de las plantas'),
+(261, 10, 8, '2', 'Conoce las vocales'),
+(262, 10, 8, '2', 'Comprende el concepto de textura'),
+(263, 11, 1, '2', 'Juega futbol'),
+(264, 11, 1, '2', 'Conoce la comida típica Venezolana'),
+(265, 11, 2, '2', 'Suma y resta sin dificultad'),
+(266, 11, 2, '2', 'Sabe dividir entre cero'),
+(267, 11, 3, '2', 'Juega futbol'),
+(268, 11, 3, '2', 'Desarrolla su motricidad'),
+(269, 11, 4, '2', 'Juega futbol'),
+(270, 11, 4, '2', 'Entiende los simbolos patrios'),
+(271, 11, 6, '2', 'Lee corrido cuentos cortos'),
+(272, 11, 6, '2', 'Juega con sus compañeros'),
+(273, 11, 8, '2', 'Suma y resta sin dificultad'),
+(274, 11, 8, '2', 'Es sociable'),
+(275, 10, 1, '3', 'Diferencia sujeto y verbo'),
+(276, 10, 1, '3', 'Conoce las vocales'),
+(277, 10, 2, '3', 'Juega futbol'),
+(278, 10, 2, '3', 'Lee corrido cuentos cortos'),
+(279, 10, 3, '3', 'Suma y resta sin dificultad'),
+(280, 10, 3, '3', 'Conoce las vocales'),
+(281, 10, 4, '3', 'Juega futbol'),
+(282, 10, 4, '3', 'Participa en actividades lúdicas respetando las ideas ajenas'),
+(283, 10, 6, '3', 'Lee corrido cuentos cortos'),
+(284, 10, 6, '3', 'Realiza actividades deportivas'),
+(285, 10, 8, '3', 'Conoce las vocales'),
+(286, 10, 8, '3', 'Entiende la cultura venezolana'),
+(287, 11, 1, '3', 'Diferencia sujeto y verbo'),
+(288, 11, 1, '3', 'Conversa con sus compañeros'),
+(289, 11, 2, '3', 'Lee corrido cuentos cortos'),
+(290, 11, 2, '3', 'Realiza multiplicaciones de dos cifras'),
+(291, 11, 3, '3', 'Conoce las vocales'),
+(292, 11, 3, '3', 'Sabe los bailes típicos de Venezuela'),
+(293, 11, 4, '3', 'Juega futbol'),
+(294, 11, 4, '3', 'Los arboles y la capa de ozono'),
+(295, 11, 6, '3', 'Diferencia sujeto y verbo'),
+(296, 11, 6, '3', 'Entiende la polinización'),
+(297, 11, 8, '3', 'Diferencia sujeto y verbo'),
+(298, 11, 8, '3', 'Realiza divisiones de una cifra'),
+(299, 12, 1, '1', 'Diferencia sujeto y verbo'),
+(300, 12, 1, '1', 'Es perseverante y honesto en la realización de sus trabajos'),
+(301, 12, 1, '1', 'Participa en actividades lúdicas respetando las ideas ajenas'),
+(302, 12, 2, '1', 'Suma y resta sin dificultad'),
+(303, 12, 2, '1', 'Suma y resta sin dificultad'),
+(304, 12, 3, '1', 'Reconoce diferentes texturas de su entorno'),
+(305, 12, 3, '1', 'Participa en actividades relacionadas al huerto escolar'),
+(306, 12, 4, '1', 'Realiza multiplicaciones de dos cifras'),
+(307, 12, 4, '1', 'Reconoce diferentes texturas de su entorno'),
+(308, 12, 6, '1', 'Sabe dividir entre cero'),
+(309, 12, 6, '1', 'Realiza divisiones de una cifra'),
+(310, 12, 8, '1', 'Conoce las vocales'),
+(311, 12, 8, '1', 'Identifica párrafos como unidades organizadas del texto'),
+(312, 13, 1, '1', 'Diferencia sujeto y verbo'),
+(313, 13, 1, '1', 'Comprende el concepto de textura'),
+(314, 13, 2, '1', 'Desarrolla su motricidad'),
+(315, 13, 2, '1', 'Es sociable'),
+(316, 13, 3, '1', 'Realiza actividades deportivas'),
+(317, 13, 3, '1', 'Es sociable'),
+(318, 13, 4, '1', 'Desarrolla su motricidad'),
+(319, 13, 4, '1', 'Suma y resta sin dificultad'),
+(320, 13, 6, '1', 'Lee corrido cuentos cortos'),
+(321, 13, 6, '1', 'Entiende la cultura venezolana'),
+(322, 13, 8, '1', 'Juega futbol'),
+(323, 13, 8, '1', 'Conversa con sus compañeros'),
+(324, 12, 1, '2', 'Juega futbol'),
+(325, 12, 1, '2', 'Diferencia sujeto y verbo'),
+(326, 12, 2, '2', 'Conoce las vocales'),
+(327, 12, 2, '2', 'Sabe los bailes típicos de Venezuela'),
+(328, 12, 3, '2', 'Suma y resta sin dificultad'),
+(329, 12, 3, '2', 'Juega con sus compañeros'),
+(330, 12, 4, '2', 'Lee corrido cuentos cortos'),
+(331, 12, 4, '2', 'Es perseverante y honesto en la realización de sus trabajos'),
+(332, 12, 6, '2', 'Juega futbol'),
+(333, 12, 6, '2', 'Reconoce diferentes texturas de su entorno'),
+(334, 12, 8, '2', 'Lee corrido cuentos cortos'),
+(335, 12, 8, '2', 'Realiza multiplicaciones de dos cifras'),
+(336, 13, 1, '2', 'Entiende los simbolos patrios'),
+(337, 13, 1, '2', 'Entiende los simbolos patrios'),
+(338, 13, 2, '2', 'Realiza divisiones de una cifra'),
+(339, 13, 2, '2', 'Entiente las ciencias naturales'),
+(340, 13, 3, '2', 'Entiende la polinización'),
+(341, 13, 3, '2', 'Participa en actividades lúdicas respetando las ideas ajenas'),
+(342, 13, 4, '2', 'Los arboles y la capa de ozono'),
+(343, 13, 4, '2', 'Construye juguetes con material reciclable'),
+(344, 13, 6, '2', 'Entiende la importancia de las plantas'),
+(345, 13, 6, '2', 'Realiza divisiones de una cifra'),
+(346, 13, 8, '2', 'Realiza divisiones de una cifra'),
+(347, 13, 8, '2', 'Reconoce diferentes texturas de su entorno'),
+(348, 12, 1, '3', 'Conoce las vocales'),
+(349, 12, 1, '3', 'Construye juguetes con material reciclable'),
+(350, 12, 2, '3', 'Suma y resta sin dificultad'),
+(351, 12, 2, '3', 'Participa en actividades relacionadas al huerto escolar'),
+(352, 12, 3, '3', 'Comprende el concepto de textura'),
+(353, 12, 3, '3', 'Participa en actividades relacionadas al huerto escolar'),
+(354, 12, 4, '3', 'Conoce la comida típica Venezolana'),
+(355, 12, 4, '3', 'Conoce la comida típica Venezolana'),
+(356, 12, 6, '3', 'Identifica párrafos como unidades organizadas del texto'),
+(357, 12, 6, '3', 'Reconoce diferentes texturas de su entorno'),
+(358, 12, 8, '3', 'Realiza divisiones de una cifra'),
+(359, 12, 8, '3', 'Comprende el concepto de textura'),
+(360, 13, 1, '3', 'Sabe dividir entre cero'),
+(361, 13, 1, '3', 'Realiza multiplicaciones de dos cifras'),
+(362, 13, 2, '3', 'Lee corrido cuentos cortos'),
+(363, 13, 2, '3', 'Realiza multiplicaciones de dos cifras'),
+(364, 13, 3, '3', 'Es perseverante y honesto en la realización de sus trabajos'),
+(365, 13, 3, '3', 'Desarrolla su motricidad'),
+(366, 13, 4, '3', 'Sabe los bailes típicos de Venezuela'),
+(367, 13, 4, '3', 'Identifica párrafos como unidades organizadas del texto'),
+(368, 13, 6, '3', 'Realiza divisiones de una cifra'),
+(369, 13, 6, '3', 'Suma y resta sin dificultad'),
+(370, 13, 8, '3', 'Entiente las ciencias naturales'),
+(371, 13, 8, '3', 'Reconoce diferentes texturas de su entorno'),
+(372, 14, 1, '1', 'Juega futbol'),
+(373, 14, 1, '1', 'Identifica párrafos como unidades organizadas del texto'),
+(374, 14, 2, '1', 'Conoce las vocales'),
+(375, 14, 2, '1', 'Realiza actividades deportivas'),
+(376, 14, 3, '1', 'Lee corrido cuentos cortos'),
+(377, 14, 3, '1', 'Participa en actividades lúdicas respetando las ideas ajenas'),
+(378, 14, 4, '1', 'Realiza actividades deportivas'),
+(379, 14, 4, '1', 'Juega con sus compañeros'),
+(380, 14, 6, '1', 'Es sociable'),
+(381, 14, 6, '1', 'Es perseverante y honesto en la realización de sus trabajos'),
+(382, 14, 8, '1', 'Lee corrido cuentos cortos'),
+(383, 14, 8, '1', 'Participa en actividades relacionadas al huerto escolar'),
+(384, 15, 1, '1', 'Juega futbol'),
+(385, 15, 1, '1', 'Identifica párrafos como unidades organizadas del texto'),
+(386, 15, 3, '1', 'Diferencia sujeto y verbo'),
+(387, 15, 3, '1', 'Realiza multiplicaciones de dos cifras'),
+(388, 15, 4, '1', 'Conoce las vocales'),
+(389, 15, 4, '1', 'Entiende la cultura venezolana'),
+(390, 15, 6, '1', 'Diferencia sujeto y verbo'),
+(391, 15, 6, '1', 'Comprende el concepto de textura'),
+(392, 14, 1, '2', 'Suma y resta sin dificultad'),
+(393, 14, 1, '2', 'Juega futbol'),
+(394, 14, 2, '2', 'Conoce las vocales'),
+(395, 14, 2, '2', 'Los arboles y la capa de ozono'),
+(396, 14, 3, '2', 'Suma y resta sin dificultad'),
+(397, 14, 3, '2', 'Es sociable'),
+(398, 14, 4, '2', 'Lee corrido cuentos cortos'),
+(399, 14, 4, '2', 'Entiende la importancia de las plantas'),
+(400, 14, 6, '2', 'Juega futbol'),
+(401, 14, 6, '2', 'Desarrolla su motricidad'),
+(402, 14, 8, '2', 'Construye juguetes con material reciclable'),
+(403, 14, 1, '3', 'Suma y resta sin dificultad'),
+(404, 14, 1, '3', 'Participa en actividades relacionadas al huerto escolar'),
+(405, 14, 1, '3', 'Entiente las ciencias naturales'),
+(406, 14, 2, '3', 'Desarrolla su motricidad'),
+(407, 14, 2, '3', 'Suma y resta sin dificultad'),
+(408, 14, 3, '3', 'Entiende la importancia de las plantas'),
+(409, 14, 3, '3', 'Comprende el concepto de textura'),
+(410, 14, 4, '3', 'Juega futbol'),
+(411, 14, 4, '3', 'Realiza divisiones de una cifra'),
+(412, 14, 4, '3', 'Diferencia sujeto y verbo'),
+(413, 14, 6, '3', 'Comprende el concepto de textura'),
+(414, 14, 6, '3', 'Realiza multiplicaciones de dos cifras'),
+(415, 14, 8, '3', 'Entiende la polinización'),
+(416, 14, 8, '3', 'Separa palabras en sílabas'),
+(417, 14, 1, '3', 'Juega futbol'),
+(418, 14, 1, '3', 'Lee corrido cuentos cortos'),
+(419, 14, 1, '3', 'Conoce las vocales'),
+(420, 14, 2, '3', 'Conoce las vocales'),
+(421, 14, 2, '3', 'Separa palabras en sílabas'),
+(422, 14, 3, '3', 'Conoce las vocales'),
+(423, 14, 3, '3', 'Construye juguetes con material reciclable'),
+(424, 14, 4, '3', 'Juega futbol'),
+(425, 14, 4, '3', 'Separa palabras en sílabas'),
+(426, 14, 6, '3', 'Conoce las vocales'),
+(427, 14, 6, '3', 'Entiende la polinización'),
+(428, 14, 8, '3', 'Lee corrido cuentos cortos'),
+(429, 14, 8, '3', 'Reconoce diferentes texturas de su entorno'),
+(430, 15, 1, '3', 'Lee corrido cuentos cortos'),
+(431, 15, 1, '3', 'Suma y resta sin dificultad'),
+(432, 15, 2, '3', 'Lee corrido cuentos cortos'),
+(433, 15, 2, '3', 'Es sociable'),
+(434, 15, 3, '3', 'Juega futbol'),
+(435, 15, 3, '3', 'Suma y resta sin dificultad'),
+(436, 15, 3, '3', 'Diferencia sujeto y verbo'),
+(437, 15, 4, '3', 'Diferencia sujeto y verbo'),
+(438, 15, 4, '3', 'Es sociable'),
+(439, 15, 6, '3', 'Es sociable'),
+(440, 15, 6, '3', 'Diferencia sujeto y verbo'),
+(441, 15, 8, '3', 'Conoce las vocales'),
+(442, 15, 8, '3', 'Sabe los bailes típicos de Venezuela'),
+(443, 16, 2, '1', 'Es sociable'),
+(444, 16, 2, '1', 'Participa en actividades relacionadas al huerto escolar'),
+(445, 16, 2, '1', 'Desarrolla su motricidad'),
+(446, 16, 1, '1', 'Suma y resta sin dificultad'),
+(447, 16, 3, '1', 'Lee corrido cuentos cortos'),
+(448, 16, 3, '1', 'Entiende la cultura venezolana'),
+(449, 16, 4, '1', 'Es sociable'),
+(450, 16, 4, '1', 'Suma y resta sin dificultad'),
+(451, 16, 6, '1', 'Suma y resta sin dificultad'),
+(452, 16, 6, '1', 'Juega futbol'),
+(453, 16, 8, '1', 'Separa palabras en sílabas'),
+(454, 16, 8, '1', 'Participa en actividades lúdicas respetando las ideas ajenas'),
+(455, 16, 1, '2', 'Conoce las vocales'),
+(456, 16, 1, '2', 'Desarrolla su motricidad'),
+(457, 16, 1, '2', 'Diferencia sujeto y verbo'),
+(458, 16, 2, '2', 'Juega futbol'),
+(459, 16, 2, '2', 'Es perseverante y honesto en la realización de sus trabajos'),
+(460, 16, 3, '2', 'Suma y resta sin dificultad'),
+(461, 16, 3, '2', 'Participa en actividades lúdicas respetando las ideas ajenas'),
+(462, 16, 4, '2', 'Lee corrido cuentos cortos'),
+(463, 16, 4, '2', 'Conversa con sus compañeros'),
+(464, 16, 6, '2', 'Suma y resta sin dificultad'),
+(465, 16, 6, '2', 'Es perseverante y honesto en la realización de sus trabajos'),
+(466, 16, 8, '2', 'Lee corrido cuentos cortos'),
+(467, 16, 8, '2', 'Reconoce diferentes texturas de su entorno'),
+(468, 16, 1, '3', 'Conoce las vocales'),
+(469, 16, 1, '3', 'Lee corrido cuentos cortos'),
+(470, 16, 2, '3', 'Diferencia sujeto y verbo'),
+(471, 16, 2, '3', 'Es sociable'),
+(472, 16, 3, '3', 'Entiente las ciencias naturales'),
+(473, 16, 3, '3', 'Entiente las ciencias naturales'),
+(474, 16, 4, '3', 'Entiende la importancia de las plantas'),
+(475, 16, 4, '3', 'Entiende la polinización'),
+(476, 16, 6, '3', 'Juega futbol'),
+(477, 16, 6, '3', 'Juega con sus compañeros'),
+(478, 16, 8, '3', 'Diferencia sujeto y verbo'),
+(479, 16, 8, '3', 'Conoce la comida típica Venezolana'),
+(480, 17, 1, '1', 'Identifica párrafos como unidades organizadas del texto'),
+(481, 17, 1, '1', 'Entiende los simbolos patrios'),
+(482, 17, 2, '1', 'Conoce las vocales'),
+(483, 17, 2, '1', 'Es perseverante y honesto en la realización de sus trabajos'),
+(484, 17, 3, '1', 'Juega futbol'),
+(485, 17, 3, '1', 'Conversa con sus compañeros'),
+(486, 17, 4, '1', 'Diferencia sujeto y verbo'),
+(487, 17, 4, '1', 'Participa en actividades relacionadas al huerto escolar'),
+(488, 17, 6, '1', 'Diferencia sujeto y verbo'),
+(489, 17, 6, '1', 'Realiza divisiones de una cifra'),
+(490, 17, 8, '1', 'Entiende la cultura venezolana'),
+(491, 17, 8, '1', 'Construye juguetes con material reciclable');
 
 -- --------------------------------------------------------
 
@@ -906,275 +1159,6 @@ CREATE TABLE `indicador_nota` (
   `lapso_academico` int(11) NOT NULL,
   `nota` char(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `indicador_nota`
---
-
-INSERT INTO `indicador_nota` (`id`, `idplanificacion`, `idindicador`, `idestudiante`, `lapso_academico`, `nota`) VALUES
-(1, 2, 7, 2, 1, 'AV'),
-(2, 2, 8, 2, 1, 'AV'),
-(3, 2, 9, 2, 1, 'EP'),
-(4, 2, 12, 2, 1, 'EP'),
-(5, 2, 13, 2, 1, 'EP'),
-(6, 2, 10, 2, 1, 'C'),
-(7, 2, 11, 2, 1, 'I'),
-(8, 2, 1, 2, 1, 'AV'),
-(9, 2, 2, 2, 1, 'C'),
-(10, 2, 3, 2, 1, 'AV'),
-(11, 2, 4, 2, 1, 'C'),
-(12, 2, 5, 2, 1, 'EP'),
-(13, 2, 6, 2, 1, 'C'),
-(14, 1, 20, 1, 1, 'AV'),
-(15, 1, 21, 1, 1, 'C'),
-(16, 1, 22, 1, 1, 'EP'),
-(17, 1, 23, 1, 1, 'I'),
-(18, 1, 24, 1, 1, 'AV'),
-(19, 1, 28, 1, 1, 'C'),
-(20, 1, 29, 1, 1, 'EP'),
-(21, 1, 25, 1, 1, 'C'),
-(22, 1, 26, 1, 1, 'I'),
-(23, 1, 27, 1, 1, 'C'),
-(24, 1, 14, 1, 1, 'C'),
-(25, 1, 15, 1, 1, 'AV'),
-(26, 1, 16, 1, 1, 'I'),
-(27, 1, 17, 1, 1, 'AV'),
-(28, 1, 18, 1, 1, 'C'),
-(29, 1, 19, 1, 1, 'I'),
-(30, 1, 36, 1, 2, 'AV'),
-(31, 1, 37, 1, 2, 'C'),
-(32, 1, 38, 1, 2, 'EP'),
-(33, 1, 39, 1, 2, 'EP'),
-(34, 1, 42, 1, 2, 'EP'),
-(35, 1, 43, 1, 2, 'I'),
-(36, 1, 40, 1, 2, 'AV'),
-(37, 1, 41, 1, 2, 'C'),
-(38, 1, 30, 1, 2, 'AV'),
-(39, 1, 31, 1, 2, 'EP'),
-(40, 1, 32, 1, 2, 'AV'),
-(41, 1, 33, 1, 2, 'EP'),
-(42, 1, 34, 1, 2, 'EP'),
-(43, 1, 35, 1, 2, 'C'),
-(44, 2, 50, 2, 2, 'AV'),
-(45, 2, 51, 2, 2, 'C'),
-(46, 2, 52, 2, 2, 'EP'),
-(47, 2, 53, 2, 2, 'AV'),
-(48, 2, 57, 2, 2, 'C'),
-(49, 2, 58, 2, 2, 'I'),
-(50, 2, 54, 2, 2, 'C'),
-(51, 2, 55, 2, 2, 'AV'),
-(52, 2, 56, 2, 2, 'EP'),
-(53, 2, 44, 2, 2, 'AV'),
-(54, 2, 45, 2, 2, 'C'),
-(55, 2, 46, 2, 2, 'I'),
-(56, 2, 47, 2, 2, 'C'),
-(57, 2, 48, 2, 2, 'AV'),
-(58, 2, 49, 2, 2, 'I'),
-(59, 1, 64, 1, 3, 'C'),
-(60, 1, 65, 1, 3, 'AV'),
-(61, 1, 66, 1, 3, 'AV'),
-(62, 1, 67, 1, 3, 'AV'),
-(63, 1, 71, 1, 3, 'I'),
-(64, 1, 72, 1, 3, 'C'),
-(65, 1, 68, 1, 3, 'EP'),
-(66, 1, 69, 1, 3, 'EP'),
-(67, 1, 70, 1, 3, 'C'),
-(68, 1, 59, 1, 3, 'EP'),
-(69, 1, 60, 1, 3, 'C'),
-(70, 1, 61, 1, 3, 'EP'),
-(71, 1, 62, 1, 3, 'AV'),
-(72, 1, 63, 1, 3, 'AV'),
-(73, 2, 79, 2, 3, 'AV'),
-(74, 2, 80, 2, 3, 'AV'),
-(75, 2, 81, 2, 3, 'C'),
-(76, 2, 82, 2, 3, 'I'),
-(77, 2, 85, 2, 3, 'AV'),
-(78, 2, 86, 2, 3, 'AV'),
-(79, 2, 83, 2, 3, 'EP'),
-(80, 2, 84, 2, 3, 'AV'),
-(81, 2, 73, 2, 3, 'EP'),
-(82, 2, 74, 2, 3, 'AV'),
-(83, 2, 75, 2, 3, 'EP'),
-(84, 2, 76, 2, 3, 'C'),
-(85, 2, 77, 2, 3, 'EP'),
-(86, 2, 78, 2, 3, 'AV'),
-(87, 4, 93, 2, 1, 'C'),
-(88, 4, 94, 2, 1, 'AV'),
-(89, 4, 95, 2, 1, 'EP'),
-(90, 4, 96, 2, 1, 'AV'),
-(91, 4, 97, 2, 1, 'C'),
-(92, 4, 98, 2, 1, 'I'),
-(93, 4, 102, 2, 1, 'AV'),
-(94, 4, 103, 2, 1, 'C'),
-(95, 4, 99, 2, 1, 'EP'),
-(96, 4, 100, 2, 1, 'EP'),
-(97, 4, 101, 2, 1, 'EP'),
-(98, 4, 87, 2, 1, 'C'),
-(99, 4, 88, 2, 1, 'I'),
-(100, 4, 89, 2, 1, 'C'),
-(101, 4, 90, 2, 1, 'EP'),
-(102, 4, 91, 2, 1, 'AV'),
-(103, 4, 92, 2, 1, 'I'),
-(104, 3, 110, 1, 1, 'EP'),
-(105, 3, 111, 1, 1, 'C'),
-(106, 3, 112, 1, 1, 'I'),
-(107, 3, 113, 1, 1, 'C'),
-(108, 3, 114, 1, 1, 'AV'),
-(109, 3, 115, 1, 1, 'I'),
-(110, 3, 118, 1, 1, 'AV'),
-(111, 3, 119, 1, 1, 'C'),
-(112, 3, 116, 1, 1, 'I'),
-(113, 3, 117, 1, 1, 'C'),
-(114, 3, 104, 1, 1, 'EP'),
-(115, 3, 105, 1, 1, 'EP'),
-(116, 3, 106, 1, 1, 'C'),
-(117, 3, 107, 1, 1, 'I'),
-(118, 3, 108, 1, 1, 'C'),
-(119, 3, 109, 1, 1, 'EP'),
-(120, 3, 126, 1, 2, 'EP'),
-(121, 3, 127, 1, 2, 'AV'),
-(122, 3, 128, 1, 2, 'I'),
-(123, 3, 129, 1, 2, 'C'),
-(124, 3, 130, 1, 2, 'AV'),
-(125, 3, 131, 1, 2, 'AV'),
-(126, 3, 135, 1, 2, 'EP'),
-(127, 3, 136, 1, 2, 'EP'),
-(128, 3, 132, 1, 2, 'C'),
-(129, 3, 133, 1, 2, 'AV'),
-(130, 3, 134, 1, 2, 'AV'),
-(131, 3, 120, 1, 2, 'EP'),
-(132, 3, 121, 1, 2, 'AV'),
-(133, 3, 122, 1, 2, 'AV'),
-(134, 3, 123, 1, 2, 'EP'),
-(135, 3, 124, 1, 2, 'AV'),
-(136, 3, 125, 1, 2, 'EP'),
-(137, 4, 143, 2, 2, 'AV'),
-(138, 4, 144, 2, 2, 'EP'),
-(139, 4, 145, 2, 2, 'AV'),
-(140, 4, 146, 2, 2, 'EP'),
-(141, 4, 147, 2, 2, 'AV'),
-(142, 4, 148, 2, 2, 'I'),
-(143, 4, 152, 2, 2, 'C'),
-(144, 4, 153, 2, 2, 'I'),
-(145, 4, 149, 2, 2, 'C'),
-(146, 4, 150, 2, 2, 'AV'),
-(147, 4, 151, 2, 2, 'EP'),
-(148, 4, 137, 2, 2, 'C'),
-(149, 4, 138, 2, 2, 'EP'),
-(150, 4, 139, 2, 2, 'AV'),
-(151, 4, 140, 2, 2, 'AV'),
-(152, 4, 141, 2, 2, 'EP'),
-(153, 4, 142, 2, 2, 'EP'),
-(154, 3, 160, 1, 3, 'EP'),
-(155, 3, 161, 1, 3, 'C'),
-(156, 3, 162, 1, 3, 'EP'),
-(157, 3, 163, 1, 3, 'EP'),
-(158, 3, 164, 1, 3, 'AV'),
-(159, 3, 165, 1, 3, 'EP'),
-(160, 3, 168, 1, 3, 'AV'),
-(161, 3, 166, 1, 3, 'EP'),
-(162, 3, 167, 1, 3, 'EP'),
-(163, 3, 154, 1, 3, 'AV'),
-(164, 3, 155, 1, 3, 'AV'),
-(165, 3, 156, 1, 3, 'AV'),
-(166, 3, 157, 1, 3, 'EP'),
-(167, 3, 158, 1, 3, 'AV'),
-(168, 3, 159, 1, 3, 'AV'),
-(169, 4, 173, 2, 3, 'AV'),
-(170, 4, 174, 2, 3, 'AV'),
-(171, 4, 175, 2, 3, 'C'),
-(172, 4, 176, 2, 3, 'EP'),
-(173, 4, 177, 2, 3, 'EP'),
-(174, 4, 180, 2, 3, 'AV'),
-(175, 4, 181, 2, 3, 'AV'),
-(176, 4, 178, 2, 3, 'EP'),
-(177, 4, 179, 2, 3, 'EP'),
-(178, 4, 169, 2, 3, 'C'),
-(179, 4, 170, 2, 3, 'I'),
-(180, 4, 171, 2, 3, 'C'),
-(181, 4, 172, 2, 3, 'C'),
-(182, 5, 188, 1, 1, 'EP'),
-(183, 5, 189, 1, 1, 'AV'),
-(184, 5, 190, 1, 1, 'AV'),
-(185, 5, 191, 1, 1, 'C'),
-(186, 5, 192, 1, 1, 'C'),
-(187, 5, 193, 1, 1, 'I'),
-(188, 5, 196, 1, 1, 'EP'),
-(189, 5, 197, 1, 1, 'EP'),
-(190, 5, 194, 1, 1, 'AV'),
-(191, 5, 195, 1, 1, 'AV'),
-(192, 5, 182, 1, 1, 'EP'),
-(193, 5, 183, 1, 1, 'C'),
-(194, 5, 184, 1, 1, 'AV'),
-(195, 5, 185, 1, 1, 'AV'),
-(196, 5, 186, 1, 1, 'AV'),
-(197, 5, 187, 1, 1, 'AV'),
-(198, 5, 188, 2, 1, 'I'),
-(199, 5, 189, 2, 1, 'EP'),
-(200, 5, 190, 2, 1, 'EP'),
-(201, 5, 191, 2, 1, 'I'),
-(202, 5, 192, 2, 1, 'I'),
-(203, 5, 193, 2, 1, 'I'),
-(204, 5, 196, 2, 1, 'EP'),
-(205, 5, 197, 2, 1, 'I'),
-(206, 5, 194, 2, 1, 'I'),
-(207, 5, 195, 2, 1, 'AV'),
-(208, 5, 182, 2, 1, 'EP'),
-(209, 5, 183, 2, 1, 'EP'),
-(210, 5, 184, 2, 1, 'AV'),
-(211, 5, 185, 2, 1, 'EP'),
-(212, 5, 186, 2, 1, 'I'),
-(213, 5, 187, 2, 1, 'AV'),
-(214, 5, 204, 1, 2, 'C'),
-(215, 5, 205, 1, 2, 'AV'),
-(216, 5, 206, 1, 2, 'EP'),
-(217, 5, 207, 1, 2, 'EP'),
-(218, 5, 210, 1, 2, 'I'),
-(219, 5, 211, 1, 2, 'AV'),
-(220, 5, 208, 1, 2, 'C'),
-(221, 5, 209, 1, 2, 'I'),
-(222, 5, 198, 1, 2, 'AV'),
-(223, 5, 199, 1, 2, 'I'),
-(224, 5, 200, 1, 2, 'C'),
-(225, 5, 201, 1, 2, 'EP'),
-(226, 5, 202, 1, 2, 'EP'),
-(227, 5, 203, 1, 2, 'AV'),
-(228, 5, 204, 2, 2, 'C'),
-(229, 5, 205, 2, 2, 'EP'),
-(230, 5, 206, 2, 2, 'I'),
-(231, 5, 207, 2, 2, 'EP'),
-(232, 5, 210, 2, 2, 'EP'),
-(233, 5, 211, 2, 2, 'EP'),
-(234, 5, 208, 2, 2, 'EP'),
-(235, 5, 209, 2, 2, 'EP'),
-(236, 5, 198, 2, 2, 'I'),
-(237, 5, 199, 2, 2, 'I'),
-(238, 5, 200, 2, 2, 'AV'),
-(239, 5, 201, 2, 2, 'EP'),
-(240, 5, 202, 2, 2, 'EP'),
-(241, 5, 203, 2, 2, 'EP'),
-(242, 5, 214, 1, 3, 'AV'),
-(243, 5, 215, 1, 3, 'AV'),
-(244, 5, 216, 1, 3, 'C'),
-(245, 5, 217, 1, 3, 'AV'),
-(246, 5, 218, 1, 3, 'C'),
-(247, 5, 221, 1, 3, 'C'),
-(248, 5, 222, 1, 3, 'C'),
-(249, 5, 219, 1, 3, 'C'),
-(250, 5, 220, 1, 3, 'C'),
-(251, 5, 212, 1, 3, 'AV'),
-(252, 5, 213, 1, 3, 'C'),
-(253, 5, 214, 2, 3, 'AV'),
-(254, 5, 215, 2, 3, 'EP'),
-(255, 5, 216, 2, 3, 'I'),
-(256, 5, 217, 2, 3, 'I'),
-(257, 5, 218, 2, 3, 'EP'),
-(258, 5, 221, 2, 3, 'I'),
-(259, 5, 222, 2, 3, 'I'),
-(260, 5, 219, 2, 3, 'I'),
-(261, 5, 220, 2, 3, 'I'),
-(262, 5, 212, 2, 3, 'EP'),
-(263, 5, 213, 2, 3, 'EP');
 
 -- --------------------------------------------------------
 
@@ -1194,20 +1178,6 @@ CREATE TABLE `inscripcion` (
   `fecha_inscripcion` date NOT NULL,
   `estatus` char(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `inscripcion`
---
-
-INSERT INTO `inscripcion` (`id`, `idperiodo_escolar`, `idplanificacion`, `idestudiante`, `idrepresentante`, `parentesco`, `plantel_procedencia`, `observaciones`, `fecha_inscripcion`, `estatus`) VALUES
-(1, 1, 1, 1, 1, 'Madre', 'Preescolar', 'Ninguna', '2020-05-19', 'PROMOVIDO'),
-(2, 1, 2, 2, 4, 'Padre', 'Goajira 1', 'Ninguna', '2020-05-19', 'PROMOVIDO'),
-(4, 2, 3, 1, 1, 'Madre', 'Escuela Básica Bolivariana \"Miguel Otero Silva\"', 'Ninguna', '2020-06-02', 'PROMOVIDO'),
-(5, 2, 4, 2, 4, 'Padre', 'Escuela Básica Bolivariana \"Miguel Otero Silva\"', 'Todo excelente', '2020-06-02', 'REPITE'),
-(6, 3, 5, 1, 1, 'Madre', 'Escuela Básica Bolivariana \"Miguel Otero Silva\"', 'Buena estudiante', '2020-06-02', 'PROMOVIDO'),
-(7, 3, 5, 2, 4, 'Padre', 'Escuela Básica Bolivariana \"Miguel Otero Silva\"', 'Repite el año', '2020-06-02', 'REPITE'),
-(8, 4, 11, 1, 1, 'Madre', 'Escuela Básica Bolivariana \"Miguel Otero Silva\"', 'Excelente estudiante', '2020-06-02', 'CURSANDO'),
-(9, 4, 10, 2, 4, 'Padre', 'Escuela Básica Bolivariana \"Miguel Otero Silva\"', 'Necesita más motivación', '2020-06-02', 'CURSANDO');
 
 -- --------------------------------------------------------
 
@@ -1296,7 +1266,22 @@ INSERT INTO `lapso_academico` (`id`, `idperiodo_escolar`, `lapso`, `fecha_inicio
 (6, 2, '3', '2022-04-01', '2022-06-30', 'Finalizado'),
 (7, 3, '1', '2022-08-12', '2022-12-10', 'Finalizado'),
 (8, 3, '2', '2023-01-07', '2023-03-15', 'Finalizado'),
-(9, 3, '3', '2023-03-16', '2023-06-30', 'Finalizado');
+(9, 3, '3', '2023-03-16', '2023-06-30', 'Finalizado'),
+(10, 4, '1', '2023-08-01', '2023-12-15', 'Finalizado'),
+(11, 4, '2', '2024-01-07', '2024-03-15', 'Finalizado'),
+(12, 4, '3', '2024-03-16', '2024-06-30', 'Finalizado'),
+(13, 5, '1', '2024-08-01', '2024-12-10', 'Finalizado'),
+(14, 5, '2', '2025-01-07', '2025-03-01', 'Finalizado'),
+(15, 5, '3', '2025-03-02', '2025-06-30', 'Finalizado'),
+(16, 6, '1', '2025-08-01', '2025-12-10', 'Finalizado'),
+(17, 6, '2', '2026-01-07', '2026-03-01', 'Finalizado'),
+(18, 6, '3', '2026-03-02', '2026-06-30', 'Finalizado'),
+(19, 7, '1', '2026-08-01', '2026-12-10', 'Finalizado'),
+(20, 7, '2', '2027-01-07', '2027-03-10', 'Finalizado'),
+(21, 7, '3', '2027-03-11', '2027-06-30', 'Finalizado'),
+(22, 8, '1', '2027-08-01', '2027-12-12', 'Activo'),
+(23, 8, '2', '2028-01-07', '2028-03-15', 'Planificado'),
+(24, 8, '3', '2028-03-16', '2028-06-30', 'Planificado');
 
 -- --------------------------------------------------------
 
@@ -1309,14 +1294,6 @@ CREATE TABLE `lugar_nacimiento` (
   `idestudiante` int(11) NOT NULL,
   `idparroquia` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `lugar_nacimiento`
---
-
-INSERT INTO `lugar_nacimiento` (`id`, `idestudiante`, `idparroquia`) VALUES
-(6, 1, 726),
-(7, 2, 740);
 
 -- --------------------------------------------------------
 
@@ -3651,7 +3628,11 @@ INSERT INTO `periodo_escolar` (`id`, `periodo`, `fecha_creacion`, `fecha_finaliz
 (1, '2020-2021', '2020-05-19', '2020-05-31', 'Finalizado'),
 (2, '2021-2022', '2020-06-02', '2020-06-02', 'Finalizado'),
 (3, '2022-2023', '2020-06-02', '2020-06-02', 'Finalizado'),
-(4, '2023-2024', '2023-08-01', '2024-06-30', 'Planificado');
+(4, '2023-2024', '2023-08-01', '2020-06-03', 'Finalizado'),
+(5, '2024-2025', '2024-08-01', '2020-06-03', 'Finalizado'),
+(6, '2025-2026', '2025-08-01', '2020-06-04', 'Finalizado'),
+(7, '2026-2027', '2026-08-01', '2020-06-04', 'Finalizado'),
+(8, '2027-2028', '2027-08-01', '2028-06-30', 'Activo');
 
 -- --------------------------------------------------------
 
@@ -3696,8 +3677,8 @@ INSERT INTO `persona` (`id`, `cedula`, `p_nombre`, `s_nombre`, `p_apellido`, `s_
 (63, 'V-20069382', 'Mirna', 'Daniela', 'Fonseca', 'Alvarado', 'F', '1980-06-20', 'mirna@gmail.com', '2020-05-01 00:11:54'),
 (66, 'V-8741422', 'Ramón', '', 'Pérez', '', 'M', '1967-06-23', 'ramon@gmail.com', '2020-05-05 16:27:57'),
 (70, 'V-12457811', 'Juan', '', 'Castillo', '', 'M', NULL, '', '2020-05-19 18:15:40'),
-(71, 'CE-11418451211', 'Elizabeth', 'Daniela', 'Castillo', 'Paredes', 'F', '2014-06-23', '', '2020-05-19 18:15:40'),
-(72, 'CE-11411693822', 'Carlos', 'Jose', 'Perez', 'Mendoza', 'M', '2014-06-23', '', '2020-05-19 18:26:21');
+(73, 'V-20548122', 'Elizabeth', 'Ruth', 'Perdomo', '', 'F', NULL, '', '2020-06-03 17:25:56'),
+(74, 'V-18546544', 'Juan', '', 'Pérez', '', 'M', NULL, '', '2020-06-03 17:25:56');
 
 -- --------------------------------------------------------
 
@@ -3800,8 +3781,15 @@ INSERT INTO `planificacion` (`id`, `idperiodo_escolar`, `idgrado`, `idseccion`, 
 (3, 2, 2, 2, 3, 13, 30, 29, 'Finalizado'),
 (4, 2, 3, 1, 4, 14, 30, 29, 'Finalizado'),
 (5, 3, 3, 1, 3, 13, 30, 28, 'Finalizado'),
-(10, 4, 3, 1, 4, 13, 30, 29, 'Planificado'),
-(11, 4, 4, 1, 3, 14, 30, 29, 'Planificado');
+(10, 4, 3, 1, 4, 13, 30, 29, 'Finalizado'),
+(11, 4, 4, 1, 3, 14, 30, 29, 'Finalizado'),
+(12, 5, 4, 1, 3, 13, 30, 29, 'Finalizado'),
+(13, 5, 5, 1, 4, 14, 30, 29, 'Finalizado'),
+(14, 6, 9, 1, 3, 13, 30, 29, 'Finalizado'),
+(15, 6, 5, 1, 4, 14, 30, 28, 'Finalizado'),
+(16, 7, 5, 1, 3, 13, 30, 29, 'Finalizado'),
+(17, 7, 9, 1, 5, 14, 30, 30, 'Finalizado'),
+(18, 8, 9, 1, 3, 13, 30, 30, 'Activo');
 
 -- --------------------------------------------------------
 
@@ -3835,7 +3823,31 @@ INSERT INTO `proyecto_aprendizaje` (`id`, `idplanificacion`, `lapso_academico`, 
 (12, 4, '3', 'Agua y agua ¿cual es la diferencia?'),
 (13, 5, '1', 'La tierra y su importancia'),
 (14, 5, '2', 'La tierra es más importante de lo que crees'),
-(15, 5, '3', 'No tires basura');
+(15, 5, '3', 'No tires basura'),
+(16, 10, '1', 'la naturaleza'),
+(17, 10, '2', 'Planta tu planta'),
+(18, 10, '3', 'El ambiente y su importancia'),
+(19, 11, '1', 'La vida y las plantas'),
+(20, 11, '2', 'El agua es vida'),
+(21, 11, '3', 'Los arboles son oxigeno'),
+(22, 12, '1', 'Ser amable con las personas'),
+(23, 12, '2', 'No discriminar'),
+(24, 12, '3', 'Entender las diferencias y respatar a las personas'),
+(25, 13, '1', 'No molestar a los compañeros'),
+(26, 13, '2', 'Ser amables y respetuosos'),
+(27, 13, '3', 'No gritar en el salon'),
+(28, 14, '1', 'Las estrellas'),
+(29, 14, '2', 'Se que todas ellas'),
+(30, 14, '3', 'Son flores en el cielo'),
+(31, 15, '1', 'Mientras más'),
+(32, 15, '2', 'Me esfuerzo'),
+(33, 15, '3', 'Más me hundo'),
+(34, 16, '1', 'Las plantas'),
+(35, 16, '2', 'Los árboles'),
+(36, 16, '3', 'Oxigeno y tierra'),
+(37, 17, '1', 'La tierra es marrón'),
+(38, 17, '2', 'Los árboles verdes'),
+(39, 17, '3', 'Y el agua azul');
 
 -- --------------------------------------------------------
 
@@ -3850,29 +3862,6 @@ CREATE TABLE `recomendacion` (
   `lapso_academico` char(1) NOT NULL,
   `recomendacion` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `recomendacion`
---
-
-INSERT INTO `recomendacion` (`id`, `idplanificacion`, `idestudiante`, `lapso_academico`, `recomendacion`) VALUES
-(1, 2, 2, '1', 'Es buen estudiante, necesita más motivación'),
-(2, 1, 1, '1', 'Buen estudiante siga asi'),
-(3, 1, 1, '2', 'Debe practicar más las matemáticas'),
-(4, 2, 2, '2', 'Muy bien sigue así'),
-(5, 1, 1, '3', 'Muy bien'),
-(6, 2, 2, '3', 'Excelente sigue asi'),
-(7, 4, 2, '1', 'Tiene que practicar más'),
-(8, 3, 1, '1', 'Buen estudiante siga asi'),
-(9, 3, 1, '2', 'Muy bien'),
-(10, 4, 2, '2', 'Debe seguir practicando'),
-(11, 3, 1, '3', 'Muy bien sigue asi'),
-(12, 4, 2, '3', 'Excelente estudiante'),
-(13, 5, 1, '1', 'Le falta enfocarse un poco más'),
-(14, 5, 1, '2', 'Muy buena niña'),
-(15, 5, 2, '2', 'Debe mejorar y poner más atención'),
-(16, 5, 1, '3', 'Excelente, supèrando las expectativas'),
-(17, 5, 2, '3', 'No presenta un buen rendimiento.');
 
 -- --------------------------------------------------------
 
@@ -3896,7 +3885,9 @@ INSERT INTO `representante` (`id`, `idpersona`, `instruccion`, `oficio`, `estatu
 (1, 58, '', 'Obrero', 1),
 (2, 70, '', 'Obrero', 1),
 (3, 18, '', 'Docente', 1),
-(4, 19, '', 'Albañil', 1);
+(4, 19, '', 'Albañil', 1),
+(5, 73, '', 'Docente', 1),
+(6, 74, '', 'Herrero', 1);
 
 -- --------------------------------------------------------
 
@@ -3952,7 +3943,9 @@ CREATE TABLE `telefono` (
 INSERT INTO `telefono` (`id`, `idpersona`, `telefono`, `tipo`) VALUES
 (2, 70, '0416-2545122', 'M'),
 (4, 18, '0255-4545111', 'M'),
-(7, 58, '0414-1521444', 'M');
+(20, 58, '0414-1521444', 'M'),
+(33, 73, '0255-5658744', 'M'),
+(34, 74, '0255-5658744', 'M');
 
 -- --------------------------------------------------------
 
@@ -4501,7 +4494,7 @@ ALTER TABLE `aspecto_socioeconomico`
 -- AUTO_INCREMENT de la tabla `boletin_final`
 --
 ALTER TABLE `boletin_final`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT de la tabla `canaima`
@@ -4513,13 +4506,13 @@ ALTER TABLE `canaima`
 -- AUTO_INCREMENT de la tabla `direccion`
 --
 ALTER TABLE `direccion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `direccion_trabajo`
 --
 ALTER TABLE `direccion_trabajo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `diversidad_funcionals`
@@ -4531,7 +4524,7 @@ ALTER TABLE `diversidad_funcionals`
 -- AUTO_INCREMENT de la tabla `documentos_consignados`
 --
 ALTER TABLE `documentos_consignados`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `enfermedads`
@@ -4549,7 +4542,7 @@ ALTER TABLE `estado`
 -- AUTO_INCREMENT de la tabla `estudiante`
 --
 ALTER TABLE `estudiante`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `expresion_literal`
@@ -4567,25 +4560,25 @@ ALTER TABLE `grado`
 -- AUTO_INCREMENT de la tabla `historial_estudiantil`
 --
 ALTER TABLE `historial_estudiantil`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT de la tabla `indicador`
 --
 ALTER TABLE `indicador`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=223;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=492;
 
 --
 -- AUTO_INCREMENT de la tabla `indicador_nota`
 --
 ALTER TABLE `indicador_nota`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=264;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=671;
 
 --
 -- AUTO_INCREMENT de la tabla `inscripcion`
 --
 ALTER TABLE `inscripcion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `institucion`
@@ -4603,13 +4596,13 @@ ALTER TABLE `lapso`
 -- AUTO_INCREMENT de la tabla `lapso_academico`
 --
 ALTER TABLE `lapso_academico`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `lugar_nacimiento`
 --
 ALTER TABLE `lugar_nacimiento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `materia`
@@ -4645,13 +4638,13 @@ ALTER TABLE `parroquia`
 -- AUTO_INCREMENT de la tabla `periodo_escolar`
 --
 ALTER TABLE `periodo_escolar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `persona`
 --
 ALTER TABLE `persona`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT de la tabla `personal`
@@ -4675,25 +4668,25 @@ ALTER TABLE `pic`
 -- AUTO_INCREMENT de la tabla `planificacion`
 --
 ALTER TABLE `planificacion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `proyecto_aprendizaje`
 --
 ALTER TABLE `proyecto_aprendizaje`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT de la tabla `recomendacion`
 --
 ALTER TABLE `recomendacion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT de la tabla `representante`
 --
 ALTER TABLE `representante`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `seccion`
@@ -4711,7 +4704,7 @@ ALTER TABLE `sosten_hogar`
 -- AUTO_INCREMENT de la tabla `telefono`
 --
 ALTER TABLE `telefono`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
