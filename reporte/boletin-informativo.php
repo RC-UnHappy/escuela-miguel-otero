@@ -90,7 +90,7 @@ $pdf->Cell(45,5,utf8_decode(ucfirst($datos_reporte['p_nombre']).' '.ucfirst($dat
 $pdf->Cell(60,5,utf8_decode('Título del Proyecto de Aprendizaje: '),0,0,'L');
 $pdf->Cell(122,5,utf8_decode(ucfirst($datos_reporte['proyecto_aprendizaje'])),'B',1,'L');
 $pdf->Cell(14,5,utf8_decode('Fecha: '),0,0,'L');
-$pdf->Cell(30,5,'','B',1,'L');
+$pdf->Cell(30,5,date('d-m-Y'),'',1,'L');
 $pdf->Ln(5);
 $pdf->SetFont('Arial','B',10);
 $pdf->Cell(50,6,'',0,0,'C');

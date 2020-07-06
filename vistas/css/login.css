@@ -10,7 +10,7 @@ body:before {
 	top: 0;
 	width: 100%;
 	height: 100%;
-	background-image: url(../../public/img/educacion.jpg);
+	background-image: url(../../public/img/escuela.jpg);
 	opacity: .7;
 	background-size: cover;
 	/*background-position: center center;*/

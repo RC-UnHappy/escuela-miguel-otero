@@ -237,4 +237,11 @@ class Estudiante
 		}
 	}
 
+	function getActiveRegistrationByStudent($idestudiante)
+	{
+		$sql = "SELECT ins.*, gra.grado, sec.seccion, perso.cedula AS cedula_docente, perso.p_nombre AS nombre_docente, perso.p_apellido AS apellido_docente FROM inscripcion ins INNER JOIN planificacion pla ON pla.id = ins.idplanificacion INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = pla.idseccion INNER JOIN personal pernal ON pernal.id = pla.iddocente INNER JOIN persona perso ON perso.id = pernal.idpersona WHERE ins.idestudiante = '$idestudiante' AND ins.estatus = 'CURSANDO'";
+
+		return ejecutarConsultaSimpleFila($sql);
+	}
+
 }

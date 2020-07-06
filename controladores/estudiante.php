@@ -281,6 +281,11 @@ switch ($_GET['op']) {
 				'<button class="btn btn-outline-primary " title="Editar" onclick="mostrar('.$reg->idE.')"><i class="fas fa-edit"></i></button>' : '').
 
 				( ( isset($_SESSION['permisos']['estudiante']) && 
+	              	in_array('ver' , $_SESSION['permisos']['estudiante']) ) ?
+
+				' <a target="_blank" href="../reporte/constancia-estudio.php?idpersona='.$reg->idP.'&idestudiante='.$reg->idE.'"> <button class="btn btn-primary" title="Constancia de estudio"><i class="fa fa-file"></i></button></a>' : '').
+
+				( ( isset($_SESSION['permisos']['estudiante']) && 
 	              	in_array('activar-desactivar' , $_SESSION['permisos']['estudiante']) ) ?
 
 				' <button class="btn btn-outline-danger " title="Retirar estudiante" data-toggle="modal" data-target="#retirarModal" onclick="mostrarRetirar('.$reg->idE.', '.$reg->idP.')"><i class="fas fa-sign-out-alt"></i></button>' : '')

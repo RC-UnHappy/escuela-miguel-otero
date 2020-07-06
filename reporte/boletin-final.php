@@ -31,9 +31,13 @@ $datos_reporte = $BoletinFinal->datos_reporte($idplanificacion, $idestudiante);
 // Datos de la institución
 $datos_institucion = $BoletinFinal->datos_institucion();
 
+
+#Establece la zona horaria
+setlocale(LC_TIME, "spanish");
 // Se establece la zona horaria
 date_default_timezone_set('America/Caracas');
 $fecha = date('Y-m-d');
+
 
 
 include_once("cabecera-boletin-final.php");
@@ -121,7 +125,7 @@ $pdf->setX(160);
 $pdf->Cell(25,5,'Docente',0,0,'C');
 $pdf->Ln(10);
 $pdf->setX(50);
-$pdf->Cell(100,5,'Acarigua, _____ de _______ de ______',0,0,'C');
+$pdf->Cell(100,5,'Acarigua,' . date('d'). ' de ' .ucfirst(strftime("%B")). ' de ' . date('Y') ,0,0,'C');
 $pdf->Ln(10);
 $pdf->SetFont('Arial','B',10);
 $pdf->setX(55);

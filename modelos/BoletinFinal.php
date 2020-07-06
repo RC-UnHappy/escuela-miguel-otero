@@ -57,9 +57,10 @@ class BoletinFinal
   public function traerplanificaciones($idperiodo_escolar, $id_docente = null)
   {
     if ($id_docente != null) 
-      $sql = "SELECT pla.id, gra.grado, sec.seccion, p.p_nombre, p.p_apellido FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion INNER JOIN personal per ON pla.iddocente = per.id INNER JOIN persona p ON per.idpersona = p.id WHERE pla.estatus = 'Activo' AND pla.iddocente = '$id_docente' AND (SELECT COUNT(id) FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo_escolar') = (SELECT COUNT(id) FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo_escolar' AND estatus = 'Finalizado')";
+      $sql = "SELECT pla.id, gra.grado, sec.seccion, p.p_nombre, p.p_apellido, p.cedula FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion INNER JOIN personal per ON pla.iddocente = per.id INNER JOIN persona p ON per.idpersona = p.id WHERE pla.estatus = 'Activo' AND pla.iddocente = '$id_docente' AND (SELECT COUNT(id) FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo_escolar') = (SELECT COUNT(id) FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo_escolar' AND estatus = 'Finalizado')";
     else
       $sql = "SELECT pla.id, gra.grado, sec.seccion, p.p_nombre, p.p_apellido FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion INNER JOIN personal per ON pla.iddocente = per.id INNER JOIN persona p ON per.idpersona = p.id WHERE pla.estatus = 'Activo' AND (SELECT COUNT(id) FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo_escolar') = (SELECT COUNT(id) FROM lapso_academico WHERE idperiodo_escolar = '$idperiodo_escolar' AND estatus = 'Finalizado')";
+
     return ejecutarConsulta($sql);
   }
 
@@ -208,6 +209,20 @@ class BoletinFinal
 
     return ejecutarConsultaSimpleFila($sql);
   }
+
+  public function traerdatosdirector()
+  {
+    $sql = "SELECT p_d.cargo, perso.p_nombre, perso.p_apellido, perso.genero, perso.cedula  FROM personal_directivo p_d INNER JOIN personal pernal ON pernal.id = p_d.idpersonal INNER JOIN persona perso ON perso.id = pernal.idpersona WHERE p_d.cargo = 'director' AND p_d.estatus = 1";
+    return ejecutarConsultaSimpleFila($sql);
+  }
+
+  function traerpersonaestudiante($idpersona, $idestudiante)
+  {
+    $sql = "SELECT peres.p_nombre AS p_nombre_estudiante, peres.s_nombre AS s_nombre_estudiante, peres.p_apellido AS p_apellido_estudiante, peres.s_apellido AS s_apellido_estudiante, muni.municipio, esta.estado, peres.f_nac, peres.genero, peres.cedula FROM persona peres INNER JOIN lugar_nacimiento lu_na ON lu_na.idestudiante = '$idestudiante' INNER JOIN parroquia parro ON parro.id = lu_na.idparroquia INNER JOIN municipio muni ON muni.id = parro.idmunicipio INNER JOIN estado esta ON esta.id = muni.idestado WHERE peres.id = '$idpersona'";
+
+    return ejecutarConsultaSimpleFila($sql);
+  }
+
 	
 }
 

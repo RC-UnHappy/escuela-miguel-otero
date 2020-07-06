@@ -12,6 +12,7 @@ $pdf->Ln(25);
 
 $licenciado="Luis Marin";
 $cedula_licenciado = 29629048;
+$calificacion = 'D';
 
 $texto = utf8_decode("Quién suscribe Lcdo. ".$licenciado." portador de la Cédula de Identidad Nº "
 	.$cedula_licenciado.", Director de la Escuela Básica Bolivariana 'Miguel Otero Silva', Código DEA OD00041808, Ubicada al Final calle 'G', V Etapa Urb. 'La Goajira' del Municipio Páez, estado Portuguesa. Hace constar por medio de la Presente que el (la) Estudiante: ___________________________________, portador (a) de la Cédula de Identidad Nº________________, Natural de: _____________________Estado: ______________________ Nacido el __________________, tiene ___ años de edad. Está inscrito(a) y cursa el ____ Grado Sección: ___. De Educación Primaria en este plantel. Año Escolar: ________ ");

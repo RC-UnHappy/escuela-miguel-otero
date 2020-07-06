@@ -51,15 +51,15 @@ $texto_docente = utf8_decode(
 				 "            );
 
 $texto_director= utf8_decode(
-			"\n"."Nombre: ".$nombre_director     ."\n".
-				 "C.I: "        .$cedula_director."\n".
+			"\n"."Nombre: ".$licenciado     ."\n".
+				 "C.I: "        .$cedula_licenciado."\n".
 				 "Firma:"                        ."\n".
 				 "_______________
 				 "            );
 
 $texto_director_eductativa= utf8_decode(
-			"\n"."Nombre: "     .$nombre_director_educativa  ."\n".
-				 "C.I: "        .$cedula_director_educativa  ."\n".
+			"\n"."Nombre: "     .$licenciado  ."\n".
+				 "C.I: "        .$cedula_licenciado  ."\n".
 				 "Firma:"                                    ."\n".
 				 "_______________
 				 "            );

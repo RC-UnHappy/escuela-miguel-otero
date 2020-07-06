@@ -13,13 +13,14 @@ if (strlen(session_id()) < 1)
   <meta name="description" content="E.B.B Miguel Otero Silva - Acarigua, Portuguesa">
   <meta name="author" content="Alexis Cáceres">
   <meta name="keyword" content="Escuela,Básica,Bolivariana,Miguel,Otero,Silva,Acarigua,Portuguesa,Venezuela">
-  <link rel="icon" type="image/jpeg" href="/escuela-miguel-otero/public/img/icono.jpg" />
+  <link rel="icon" type="image/jpeg" href="./../public/img/escudo.png" />
+  <!-- <link rel="icon" type="image/jpeg" href="../public/img/escudo.png" /> -->
 
   <title>Escuela Básica - Miguel Otero Silva</title>
 
 
   <!-- Icons-->
-  <link rel="icon" type="image/ico" href="./img/favicon.ico" sizes="any" />
+  <!-- <link rel="icon" type="image/ico" href="./img/favicon.ico" sizes="any" /> -->
   <link href="/escuela-miguel-otero/public/css/coreui-icons.min.css" rel="stylesheet">
   <link href="/escuela-miguel-otero/public/css/font-awesome.min.css" rel="stylesheet">
 
@@ -56,10 +57,12 @@ if (strlen(session_id()) < 1)
 
     <a class="navbar-brand" href="/escuela-miguel-otero/vistas/escritorio.php">
       <div class="navbar-brand-full">
-        <i class="fas fa-school" style="font-size: 26px;"></i>
+        <!-- <i class="fas fa-school" style="font-size: 26px;"></i> -->
+        <img src="./../public/img/escudo.png" style="height: 40px;">
         <em>Escuela M.O.S</em>
       </div>
-      <i class="navbar-brand-minimized fas fa-school" style="font-size: 26px;"></i>
+      <!-- <i class="navbar-brand-minimized fas fa-school" style="font-size: 26px;"></i> -->
+      <img class="navbar-brand-minimized" src="./../public/img/escudo.png" style="height: 40px;">
     </a>
 
     <button class="navbar-toggler sidebar-minimizer brand-minimizer d-md-down-none" type="button" data-toggle="sidebar-lg-show">
@@ -453,17 +456,17 @@ if (strlen(session_id()) < 1)
           ?>
 
           <li class="divider"></li>
-          <li class="nav-title">Ayuda</li>
-          <li class="nav-item mt-auto">
+          <!-- <li class="nav-title">Ayuda</li> -->
+          <!-- <li class="nav-item mt-auto">
             <a class="nav-link nav-link-success" href="https://coreui.io" target="_top">
               <i class="nav-icon icon-cloud-download"></i>Manual <strong>Usuario</strong></a>
-          </li>
-          <li class="nav-item">
+          </li> -->
+          <!-- <li class="nav-item">
             <a class="nav-link nav-link-danger" href="https://coreui.io/pro/" target="_top">
               <i class="nav-icon icon-layers"></i>Manual
               <strong>Instalación</strong>
             </a>
-          </li>
+          </li> -->
         </ul>
       </nav>
     </div>

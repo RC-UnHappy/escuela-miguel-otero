@@ -290,10 +290,10 @@
           <a>Alexis Cáceres</a>
           <span id="fecha_actual">&copy; </span>
         </div>
-        <div class="ml-auto">
+        <!-- <div class="ml-auto">
           <span>Powered by</span>
           <a href="https://coreui.io">CoreUI</a>
-        </div>
+        </div> -->
       </footer>
       <!-- CoreUI and necessary plugins-->
       <script src="/escuela-miguel-otero/public/js/jquery-3.3.1.min.js"></script>
