@@ -136,14 +136,14 @@ class PeriodoEscolar
     return ejecutarConsulta($sql);
   }
 
-  function getRegistrationsByScheduleId(int $scheduleId)
+  function getRegistrationsByScheduleId($scheduleId)
   {
     $sql = "SELECT * FROM inscripcion WHERE idplanificacion = '$scheduleId'";
 
     return ejecutarConsulta($sql);
   }
 
-  public static function verifyFinalReportCardByStudent(int $studentId, int $scheduleId)
+  public static function verifyFinalReportCardByStudent($studentId, $scheduleId)
   {
 
 	$sql = "SELECT * FROM boletin_final WHERE idestudiante = '$studentId' AND idplanificacion = '$scheduleId'";

@@ -334,7 +334,6 @@ function finalizar(idperiodo) {
 		  reverseButtons: true
 		}).then((result) => {
 
-      
 		  if (result.value) {
 		  	$.post('../controladores/periodo-escolar.php?op=finalizar', {idperiodo: idperiodo}, function (response) {
 

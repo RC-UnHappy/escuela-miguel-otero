@@ -168,6 +168,24 @@ function guardaryeditar(event) {
   var formData = new FormData($([formularioBoletinFinal])[0]); //Se obtienen los datos del formulario
 
   $.ajax({
+    async: false,
+    url: '../controladores/boletin-final.php?op=reporteboletapromocion', //Dirección a donde se envían los datos
+    type: 'POST', //Método por el cual se envían los datos
+    data: formData, //Datos
+    contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
+    processData: false, //Evita que jquery transforme la data en un string
+    success: function (datos) {
+
+      datos = JSON.parse(datos);
+
+      window.open('../reporte/boleta-promocion.php?idpersona='+datos.idpersona+'&idestudiante='+datos.idestudiante+'&grado='+datos.grado+'&literal='+datos.literal+'&teacherId='+datos.teacherId, '_blank');
+
+    }
+
+  });
+
+  $.ajax({
+    async: false,
     url: '../controladores/boletin-final.php?op=guardaryeditar', //Dirección a donde se envían los datos
     type: 'POST', //Método por el cual se envían los datos
     data: formData, //Datos

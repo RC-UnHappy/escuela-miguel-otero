@@ -719,4 +719,27 @@ switch ($_GET['op']) {
 
   break;
 
+  case 'reporteboletapromocion':
+
+    #Se obtiene la nota literal
+    $literal = $BoletinFinal->obtener_literal($idliteral);
+    $literal = !empty($literal) ? $literal['literal'] : '';
+
+    $idpersona = $BoletinFinal->getPersonFromStudent($idestudiantes);
+    $idpersona = !empty($idpersona) ? $idpersona['id'] : '';
+
+    $scheduleData = $BoletinFinal->getSchedule($idplanificacion);
+    $grade = !empty($scheduleData) ? $scheduleData['grado'] : '';
+
+    if ($literal == 'A' || $literal == 'B' || $literal == 'C' || $literal == 'D')
+    {
+      $return->idpersona = $idpersona;
+      $return->idestudiante = $idestudiantes;
+      $return->grado = $grade;
+      $return->literal = $literal;
+      $return->teacherId = $scheduleData['iddocente'];
+      echo json_encode($return);
+    }
+  break;
+
 }
