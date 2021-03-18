@@ -211,7 +211,6 @@ switch ($_GET['op']) {
 		break;
 
 	case 'traersecciones': 
-
 		#idplanificación es un parámetro que puede o no estar vacío
 		$rspta = $Planificacion->traersecciones($idgrado, $idplanificacion, $idperiodo_escolar);
 

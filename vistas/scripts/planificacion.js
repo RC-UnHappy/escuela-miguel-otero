@@ -138,7 +138,6 @@ function traerGrados() {
 
 function traerSecciones(idgrado, idplanificacion, idPeriodoEscolar) {
   $.post('../controladores/planificacion.php?op=traersecciones', { idgrado: idgrado, idplanificacion: idplanificacion, idperiodo_escolar: idPeriodoEscolar }, function (data) {
-
     data = JSON.parse(data);
 		let seccion = '';
 		if (data.length != 0) {

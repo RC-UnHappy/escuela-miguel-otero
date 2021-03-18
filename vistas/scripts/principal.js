@@ -112,8 +112,9 @@ $('.genero').on('change', function () {
 fecha_actual();
 
 function mostrarPerfil(idusuario) {
-  let url = (location.href == 'http://localhost/escuela-miguel-otero/vistas/inscripcion/inscripcion.php') ? '../../controladores/usuario.php?op=traerperfil' : '../controladores/usuario.php?op=traerperfil';
-  
+  var rutas = ['inscripcion', 'representado'];
+  var actual = location.href.split('/')[5];
+  let url = ($.inArray(actual, rutas) !== -1) ? '../../controladores/usuario.php?op=traerperfil' : '../controladores/usuario.php?op=traerperfil';
   $.ajax({
     async: true,
     method: 'POST', 
@@ -146,7 +147,10 @@ if (location.href != 'http://localhost/escuela-miguel-otero/vistas/login.html') 
       // 
       var formData = new FormData($([formularioPerfil])[0]); //Se obtienen los datos del formulario
       
-      let url = (location.href == 'http://localhost/escuela-miguel-otero/vistas/inscripcion/inscripcion.php') ? '../../controladores/usuario.php?op=editarperfil' : '../controladores/usuario.php?op=editarperfil';
+      var rutas = ['inscripcion', 'representado'];
+      var actual = location.href.split('/')[5];
+
+      let url = ($.inArray(actual, rutas) !== -1) ? '../../controladores/usuario.php?op=editarperfil' : '../controladores/usuario.php?op=editarperfil';
       $.ajax({
         url: url, //Dirección a donde se envían los datos
         type: 'POST', //Método por el cual se envían los datos

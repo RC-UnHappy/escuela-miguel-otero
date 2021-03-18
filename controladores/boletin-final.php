@@ -18,6 +18,11 @@ $idboletinfinal = isset($_POST['idboletinfinal']) ? limpiarCadena($_POST['idbole
 
 $return = new stdClass;
 $return->estatus = 1;
+$return->idpersona = '';
+$return->idestudiante = '';
+$return->grado = '';
+$return->literal = '';
+$return->teacherId = '';
 $return->msj = '';
 
 #Se ejecuta un caso dependiendo del valor del parámetro GET
@@ -132,6 +137,7 @@ switch ($_GET['op']) {
               $eliminar_estudiante = $BoletinFinal->eliminar($personId);
               if (!$eliminar_estudiante) throw new Exception('Error al eliminar a la persona estudiante', 1);
 
+
             } // <- cierre del if que verifica que no esté vacío idestudiantes
             else {
 
@@ -157,8 +163,16 @@ switch ($_GET['op']) {
     // Se guardan los datos en la bd  
     commit();
 
+    $idpersona = $BoletinFinal->getPersonFromStudent($idestudiantes);
+    $idpersona = !empty($idpersona) ? $idpersona['id'] : '';
+
     // Se envía el mensaje al front
     $return->msj = 'Boletín final registrado exitosamente';
+    $return->idpersona = $idpersona;
+    $return->idestudiante = $idestudiantes;
+    $return->grado = $grade;
+    $return->literal = $literal;
+    $return->teacherId = $scheduleData['iddocente'];
     echo json_encode($return);
 
 			// #Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
@@ -302,6 +316,11 @@ switch ($_GET['op']) {
       // Se envía el mensaje al front
       $return->estatus = 2;
       $return->msj = 'Boletín final modificado exitosamente';
+      $return->idpersona = $idpersona;
+      $return->idestudiante = $idestudiantes;
+      $return->grado = $grade;
+      $return->literal = $literal;
+      $return->teacherId = $scheduleData['iddocente'];
       echo json_encode($return);
       
 			// #Se verifica que todo saliío bien y se guardan los datos o se eliminan todos

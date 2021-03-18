@@ -91,7 +91,7 @@ class Usuario //extends Persona
 	#Método para vefiricar el acceso al sistema
 	function verificar($usuario, $clave)
 	{
-    $sql = "SELECT u.id, u.usuario, u.rol, u.intentos_fallidos, p.p_nombre, p.p_apellido, p.genero FROM usuario as u INNER JOIN persona as p ON u.idpersona = p.id WHERE u.usuario = '$usuario' AND u.clave = '$clave' AND u.estatus = '1'";
+    $sql = "SELECT u.id, p.id as idpersona, u.usuario, u.rol, u.intentos_fallidos, p.p_nombre, p.p_apellido, p.genero FROM usuario as u INNER JOIN persona as p ON u.idpersona = p.id WHERE u.usuario = '$usuario' AND u.clave = '$clave' AND u.estatus = '1'";
 
 		return ejecutarConsulta($sql);
 	}

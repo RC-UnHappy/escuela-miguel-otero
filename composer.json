@@ -1,0 +1,8 @@
+{
+    "require": {
+        "symfony/routing": "^5.2"
+    },
+    "autoload": {
+        "psr-4": {"Controlador\\": "controladores/"}
+    }
+}

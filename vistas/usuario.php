@@ -7,6 +7,7 @@ if (!isset($_SESSION['idusuario'])) {
   header('location: login.html');
 }
 else {
+  define('IMAGE_PATH', dirname((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]", 2) . '/public/img/');
 require_once 'modules/header.php';
 if (isset($_SESSION['permisos']['usuario']) && in_array('ver' , $_SESSION['permisos']['usuario'])) {
 ?>
@@ -224,8 +225,9 @@ if (isset($_SESSION['permisos']['usuario']) && in_array('ver' , $_SESSION['permi
                               </div>
                               <select id="rol" name="rol" class="form-control selectpicker" required>
                                 <option value="">Seleccione</option>
-                                <option value="Docente">Docente</option>
                                 <option value="Administrador">Administrador</option>
+                                <option value="Docente">Docente</option>
+                                <option value="Representante">Representante</option>
                               </select>
                               <div class="invalid-feedback">
                                   Campo Obligatorio

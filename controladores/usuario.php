@@ -109,6 +109,8 @@ switch ($_GET['op']) {
 
       $permisos_excluidos_para_rol_docente = ['ambiente', 'grado', 'lapso', 'expresion-literal','lapso-academico', 'materia', 'modulo', 'periodo-escolar', 'pic', 'planificacion', 'seccion', 'usuario', 'accion', 'institucion', 'historial-estudiantil', 'estudiante', 'personal', 'representante'];
 
+      $permisos_permitidos_para_rol_representante = ['representado'];
+
       $permisos = '';
       if ($rol == 'Docente') {
         foreach ($modulos as $key => $value) {
@@ -116,7 +118,7 @@ switch ($_GET['op']) {
             $permisos .= '
               <div class="input-group-prepend">
                 <div>
-                  <label>'.ucfirst($key).'</label>
+                  <label class="font-weight-bold">'.ucfirst($key).'</label>
                 </div>
               </div>
               <div class="input-group pl-3  pb-3">';
@@ -231,6 +233,18 @@ switch ($_GET['op']) {
                   }
                 }
               }
+              else if ($value['modulo'] == 'representado') {
+
+                foreach ($acciones as $accioneskey => $accionesvalue) {
+                  if ($accioneskey == 'ver') {
+                    $permisos .= '
+                    <div class="custom-control custom-checkbox pr-2">
+                      <input type="checkbox" class="custom-control-input seleccionar" id="'.$key.$accioneskey.'" name="permisos[]" value="'.$value['id'].'-'.$accionesvalue['id'].'" >
+                      <label class="custom-control-label" for="'.$key.$accioneskey.'">'.ucfirst($accioneskey).'</label>
+                    </div>';                 
+                  }
+                }
+              }
               else {
                 foreach ($acciones as $accioneskey => $accionesvalue) {
                   $permisos .= '
@@ -244,13 +258,49 @@ switch ($_GET['op']) {
           }      
         }
       }
-      // Si no es docente
+      else if ($rol == 'Representante') {
+        foreach ($modulos as $key => $value) {
+          if (in_array($key, $permisos_permitidos_para_rol_representante)) {
+            $permisos .= '
+              <div class="input-group-prepend">
+                <div>
+                  <label class="font-weight-bold">'.ucfirst($key).'</label>
+                </div>
+              </div>
+              <div class="input-group pl-3  pb-3">';
+
+              // Aquí se permite excluir algunas de las acciones, porque algunos módulos no las tienen
+              if ($value['modulo'] == 'representado') {
+
+                foreach ($acciones as $accioneskey => $accionesvalue) {
+                  if ($accioneskey == 'ver') {
+                    $permisos .= '
+                    <div class="custom-control custom-checkbox pr-2">
+                      <input type="checkbox" class="custom-control-input seleccionar" id="'.$key.$accioneskey.'" name="permisos[]" value="'.$value['id'].'-'.$accionesvalue['id'].'" >
+                      <label class="custom-control-label" for="'.$key.$accioneskey.'">'.ucfirst($accioneskey).'</label>
+                    </div>';                 
+                  }
+                }
+              }
+              else {
+                foreach ($acciones as $accioneskey => $accionesvalue) {
+                  $permisos .= '
+                  <div class="custom-control custom-checkbox pr-2">
+                    <input type="checkbox" class="custom-control-input seleccionar" id="'.$key.$accioneskey.'" name="permisos[]" value="'.$value['id'].'-'.$accionesvalue['id'].'" >
+                    <label class="custom-control-label" for="'.$key.$accioneskey.'">'.ucfirst($accioneskey).'</label>
+                  </div>';
+                }
+              }
+              $permisos .='</div>';         
+          }      
+        }
+      }
       else {
         foreach ($modulos as $key => $value) {
           $permisos .= '
             <div class="input-group-prepend">
               <div>
-                <label>'.ucfirst($key).'</label>
+                <label class="font-weight-bold">'.ucfirst($key).'</label>
               </div>
             </div>
             <div class="input-group pl-3  pb-3">';
@@ -392,6 +442,18 @@ switch ($_GET['op']) {
               }
             }
           }
+          else if ($value['modulo'] == 'representado') {
+
+            foreach ($acciones as $accioneskey => $accionesvalue) {
+              if ($accioneskey == 'ver') {
+                $permisos .= '
+                <div class="custom-control custom-checkbox pr-2">
+                  <input type="checkbox" class="custom-control-input seleccionar" id="'.$key.$accioneskey.'" name="permisos[]" value="'.$value['id'].'-'.$accionesvalue['id'].'" >
+                  <label class="custom-control-label" for="'.$key.$accioneskey.'">'.ucfirst($accioneskey).'</label>
+                </div>';                 
+              }
+            }
+          }
           else {
             foreach ($acciones as $accioneskey => $accionesvalue) {
               $permisos .= '
@@ -426,7 +488,7 @@ switch ($_GET['op']) {
           $permisos .= '
           <div class="input-group-prepend">
           <div>
-          <label>'.ucfirst($key).'</label>
+          <label class="font-weight-bold">'.ucfirst($key).'</label>
           </div>
           </div>
           <div class="input-group pl-3  pb-3">';
@@ -814,6 +876,35 @@ switch ($_GET['op']) {
               }
             }
           }
+          else if ($value['modulo'] == 'representado') {
+                
+            foreach ($acciones as $accioneskey => $accionesvalue) {
+              $checked = '';
+              if ($accioneskey == 'ver') {
+              /**
+               * Comprueba que el usuario posea la accion para así mostrar el checkbox seleccionado
+               */
+                if (in_array($accionesvalue['id'], $permisos_usuario_arreglo[$value['id']])) {
+                  
+                  $checked = 'checked';
+                  $permisos .= '
+                  <div class="custom-control custom-checkbox pr-2">
+                  <input type="checkbox" class="custom-control-input seleccionar" id="'.$key.$accioneskey.'" name="permisos[]" value="'.$value['id'].'-'.$accionesvalue['id'].'" '.$checked.'>
+                  <label class="custom-control-label" for="'.$key.$accioneskey.'">'.ucfirst($accioneskey).'</label>
+                  </div>';
+                  $checked = '';
+                }
+                else {
+                  $checked = '';
+                  $permisos .= '
+                  <div class="custom-control custom-checkbox pr-2">
+                  <input type="checkbox" class="custom-control-input seleccionar" id="'.$key.$accioneskey.'" name="permisos[]" value="'.$value['id'].'-'.$accionesvalue['id'].'" '.$checked.'>
+                  <label class="custom-control-label" for="'.$key.$accioneskey.'">'.ucfirst($accioneskey).'</label>
+                  </div>';
+                }
+              }
+            }
+          }
           else {
             foreach ($acciones as $accioneskey => $accionesvalue) {
               $checked = '';
@@ -848,7 +939,7 @@ switch ($_GET['op']) {
     }  
     
     echo $permisos;
-    
+    return;
   break;
 
 	case 'listar':
@@ -956,6 +1047,7 @@ switch ($_GET['op']) {
         
         #Declaramos las variables de sesión
         $_SESSION['idusuario'] = $fetch->id;
+        $_SESSION['idpersona'] = $fetch->idpersona;
         $_SESSION['usuario'] = $fetch->usuario;
         $_SESSION['p_nombre'] = $fetch->p_nombre;
         $_SESSION['p_apellido'] = $fetch->p_apellido;

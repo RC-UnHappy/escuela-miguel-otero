@@ -17,7 +17,7 @@
           </li>
         </ul>
         <!-- Tab panes-->
-        <div class="tab-content">
+        <!-- <div class="tab-content">
           <div class="tab-pane active" id="timeline" role="tabpanel">
             <div class="list-group list-group-accent">
               <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Today</div>
@@ -281,7 +281,7 @@
             </div>
             <small class="text-muted">25GB/256GB</small>
           </div>
-        </div>
+        </div> -->
       </aside>
       </div>
 

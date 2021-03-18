@@ -80,7 +80,7 @@ class Planificacion
 			$sql = "SELECT s.* FROM seccion s WHERE s.estatus = 1 AND s.id NOT IN(SELECT idseccion FROM planificacion WHERE idgrado = '$idgrado' AND id != '$idplanificacion' AND idperiodo_escolar = '$idperiodo_escolar') ORDER BY s.seccion";
 		}
 		else {
-			$sql = "SELECT s.* FROM seccion s WHERE s.estatus = 1 AND s.id NOT IN(SELECT idseccion FROM planificacion WHERE idgrado = '$idgrado' AND idperiodo_escolar = '$idperiodo_escolar') ORDER BY s.seccion";
+			$sql = "SELECT s.* FROM seccion s WHERE s.estatus = 1 AND s.id NOT IN(SELECT idseccion FROM planificacion WHERE idgrado = '$idgrado' AND idperiodo_escolar = '$idperiodo_escolar' AND estatus = 'Activo') ORDER BY s.seccion";
 		}
 
 		return ejecutarConsulta($sql);

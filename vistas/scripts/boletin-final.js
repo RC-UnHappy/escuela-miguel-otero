@@ -174,9 +174,8 @@ function guardaryeditar(event) {
     contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
     processData: false, //Evita que jquery transforme la data en un string
     success: function (datos) {
+
       datos = JSON.parse(datos);
-      // console.log(datos);
-      // return; 
 
       $('#btnGuardar').prop('disabled', false);
 
@@ -236,6 +235,8 @@ function guardaryeditar(event) {
         $('#literal').val('');
         $('#literal').selectpicker('refresh');
         $('#formularioBoletinFinal').removeClass('was-validated');
+
+        window.open('../reporte/boleta-promocion.php?idpersona='+datos.idpersona+'&idestudiante='+datos.idestudiante+'&grado='+datos.grado+'&literal='+datos.literal+'&teacherId='+datos.teacherId, '_blank');
       }
 
       else if (datos.estatus == 2) {
@@ -251,10 +252,12 @@ function guardaryeditar(event) {
           title: datos.msj
         });
 
+        window.open('../reporte/boleta-promocion.php?idpersona='+datos.idpersona+'&idestudiante='+datos.idestudiante+'&grado='+datos.grado+'&literal='+datos.literal+'&teacherId='+datos.teacherId, '_blank');
+
         $('#boletinFinalModal').modal('hide');
         limpiar();
       }
-      else {
+      else if (datos.estatus == 3) {
         const Toast = Swal.mixin({
           toast: true,
           position: 'top-end',
@@ -267,6 +270,8 @@ function guardaryeditar(event) {
           title: datos.msj
         });
       }
+
+
       tabla.ajax.reload();//Recarga la tabla con el listado sin refrescar la página
     }
 

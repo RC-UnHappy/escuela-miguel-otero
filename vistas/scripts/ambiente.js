@@ -168,9 +168,9 @@ function mostrar(idambiente) {
 		data = JSON.parse(data);
 
 		$('#ambiente').val(data.ambiente);
-    $('#capacidad').val(data.capacidad);
-    $('#ubicacion').val(data.ubicacion);
-    $('#ubicacion').selectpicker('refresh');
+    	$('#capacidad').val(data.capacidad);
+    	$('#ubicacion').val(data.ubicacion);
+    	$('#ubicacion').selectpicker('refresh');
 		$('#estatus').val(data.estatus);
 		$('#estatus').selectpicker('refresh');
 		$('#idambiente').val(data.id);
@@ -291,10 +291,10 @@ function limpiar() {
 	$('#ambiente').val('');
 	$('#ambiente').removeClass('is-invalid');
 	$('#capacidad').val('');
-  $('#capacidad').removeClass('is-invalid');
-  $('#ubicacion').val('');
-  $('#ubicacion').removeClass('is-invalid');
-  $('#ubicacion').selectpicker('refresh');
+	$('#capacidad').removeClass('is-invalid');
+	$('#ubicacion').val('');
+	$('#ubicacion').removeClass('is-invalid');
+	$('#ubicacion').selectpicker('refresh');
 	$('#estatus').val('');
 	$('#estatus').removeClass('is-invalid');
 	$('#estatus').selectpicker('refresh');

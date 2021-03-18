@@ -8,18 +8,42 @@ if (!isset($_SESSION['idusuario'])) {
   echo "Debe ingresar al sistema correctamete para visualizar el reporte";
 }
 else{
-if (isset($_SESSION['permisos']['boletin-parcial']) && in_array('ver' , $_SESSION['permisos']['boletin-parcial'])) {
+if (isset($_SESSION['permisos']['boletin-parcial']) && in_array('ver' , $_SESSION['permisos']['boletin-parcial']) || isset($_SESSION['permisos']['representado'])) {
 
 #Se incluye el modelo de BoletinParcial
 require_once '../modelos/BoletinParcial.php';
 
-#Se instancia el objeto de BoletinParcial
+
 $BoletinParcial = new BoletinParcial();
+
+
 
 // Varibles que se van a recibir por get necesarias para generar el reporte
 $idplanificacion = isset($_GET['idplanificacion']) ? limpiarCadena($_GET['idplanificacion']) : '';
 $lapso = isset($_GET['lapso']) ? limpiarCadena($_GET['lapso']) : '';
 $idestudiante = isset($_GET['idestudiante']) ? limpiarCadena($_GET['idestudiante']) : '';
+
+
+// Comprueba que el idestudiante pertenezca al representante
+
+if (isset($_SESSION['permisos']['representado'])) {
+  require_once '../modelos/Estudiante.php';
+  require_once '../modelos/Representante.php';
+	$Representante = new Representante();
+  $Estudiante = new Estudiante();
+
+	$representante = $Representante->representanteporidpersona($_SESSION['idpersona']);
+  $idestudiantes = [];
+  $rspta = $Estudiante->traerinscripcionesporrepresentante($representante['id']);
+  while ($reg = $rspta->fetch_object()) { 
+    array_push($idestudiantes, $reg->idE);
+  }
+  
+  if (!in_array($idestudiante, $idestudiantes)) {
+    exit('No tiene permisos para este estudiante');
+  }
+}
+
 
 $periodo_escolar = $BoletinParcial->consultarperiodo();
 $periodo_escolar = !empty($periodo_escolar) ? $periodo_escolar['periodo'] : '';
@@ -28,7 +52,6 @@ $indicadores_nota = [];
 // Se traen las materias junto con los indicadores y nota del estudiante
 if (!empty($idplanificacion) && !empty($idestudiante) && !empty($lapso)){
   $rspta = $BoletinParcial->listar($idplanificacion, $lapso, $idestudiante);
-  
   if ($rspta->num_rows != 0) {
     // Se agrupan los indicadores por materia
     while ($reg = $rspta->fetch_object()) {
@@ -36,9 +59,16 @@ if (!empty($idplanificacion) && !empty($idestudiante) && !empty($lapso)){
     }  
   }    
 }
+else {
+  exit('Ocurrió un error');
+}
 
 // Datos principales del reporte como nombre del estudiante, profesor, seccion, grado
 $datos_reporte = $BoletinParcial->datos_reporte($idplanificacion, $lapso, $idestudiante);
+
+if (empty($datos_reporte)) {
+  exit('Ocurrió un error');
+}
 
 // Función para transformar números a números romanos
 function a_romano($integer, $upcase = true) {
@@ -90,7 +120,7 @@ $pdf->Cell(45,5,utf8_decode(ucfirst($datos_reporte['p_nombre']).' '.ucfirst($dat
 $pdf->Cell(60,5,utf8_decode('Título del Proyecto de Aprendizaje: '),0,0,'L');
 $pdf->Cell(122,5,utf8_decode(ucfirst($datos_reporte['proyecto_aprendizaje'])),'B',1,'L');
 $pdf->Cell(14,5,utf8_decode('Fecha: '),0,0,'L');
-$pdf->Cell(30,5,'','B',1,'L');
+$pdf->Cell(30,5,date('d-m-Y'),'',1,'L');
 $pdf->Ln(5);
 $pdf->SetFont('Arial','B',10);
 $pdf->Cell(50,6,'',0,0,'C');

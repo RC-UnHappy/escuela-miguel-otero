@@ -7,6 +7,7 @@ if (!isset($_SESSION['idusuario'])) {
   header('location: login.html');
 }
 else {
+  define('IMAGE_PATH', dirname((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]", 2) . '/public/img/');
 require_once 'modules/header.php';
 if (isset($_SESSION['permisos']['grado']) && in_array('ver' , $_SESSION['permisos']['grado'])) {
 ?>

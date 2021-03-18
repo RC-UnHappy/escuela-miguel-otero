@@ -13,13 +13,14 @@ if (strlen(session_id()) < 1)
   <meta name="description" content="E.B.B Miguel Otero Silva - Acarigua, Portuguesa">
   <meta name="author" content="Alexis Cáceres">
   <meta name="keyword" content="Escuela,Básica,Bolivariana,Miguel,Otero,Silva,Acarigua,Portuguesa,Venezuela">
-  <link rel="icon" type="image/jpeg" href="/escuela-miguel-otero/public/img/icono.jpg" />
+  <link rel="icon" type="image/jpeg" href="<?=IMAGE_PATH; ?>escudo.png" />
+  <!-- <link rel="icon" type="image/jpeg" href="../public/img/escudo.png" /> -->
 
   <title>Escuela Básica - Miguel Otero Silva</title>
 
 
   <!-- Icons-->
-  <link rel="icon" type="image/ico" href="./img/favicon.ico" sizes="any" />
+  <!-- <link rel="icon" type="image/ico" href="./img/favicon.ico" sizes="any" /> -->
   <link href="/escuela-miguel-otero/public/css/coreui-icons.min.css" rel="stylesheet">
   <link href="/escuela-miguel-otero/public/css/font-awesome.min.css" rel="stylesheet">
 
@@ -56,10 +57,13 @@ if (strlen(session_id()) < 1)
 
     <a class="navbar-brand" href="/escuela-miguel-otero/vistas/escritorio.php">
       <div class="navbar-brand-full">
-        <i class="fas fa-school" style="font-size: 26px;"></i>
+        <!-- <i class="fas fa-school" style="font-size: 26px;"></i> -->
+        <img src="<?=IMAGE_PATH; ?>escudo.png" style="height: 40px;">
         <em>Escuela M.O.S</em>
       </div>
-      <i class="navbar-brand-minimized fas fa-school" style="font-size: 26px;"></i>
+
+      <!-- <i class="navbar-brand-minimized fas fa-school" style="font-size: 26px;"></i> -->
+      <img class="navbar-brand-minimized" src="<?=IMAGE_PATH; ?>escudo.png" style="height: 40px;">
     </a>
 
     <button class="navbar-toggler sidebar-minimizer brand-minimizer d-md-down-none" type="button" data-toggle="sidebar-lg-show">
@@ -225,6 +229,14 @@ if (strlen(session_id()) < 1)
             :
             '';
 
+          echo  (isset($_SESSION['permisos']['representado']) && in_array('ver' , $_SESSION['permisos']['representado'])) ? 
+            '<li class="nav-item">
+              <a class="nav-link" href="/escuela-miguel-otero/vistas/representado/">
+              <i class="nav-icon fas fa-users"></i> Representado(s)</a>
+            </li>' 
+            :
+            '';
+
             echo  (isset($_SESSION['permisos']['personal']) && in_array('ver' , $_SESSION['permisos']['personal'])) ? 
             '<li class="nav-item">
               <a class="nav-link" href="/escuela-miguel-otero/vistas/personal.php">
@@ -251,6 +263,7 @@ if (strlen(session_id()) < 1)
           }
           ?>
 
+          <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] != 'Representante') :?>
           <li class="nav-item nav-dropdown">
             <a class="nav-link nav-dropdown-toggle" href="#">
               <i class="nav-icon fas fa-money-check"></i> Operaciones
@@ -344,10 +357,13 @@ if (strlen(session_id()) < 1)
 
             </ul>
           </li>
+          <?php endif; ?>
+          
+          <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] != 'Representante') :?>
+            <li class="nav-title">Configuración</li>
+          <?php endif; ?>
 
-          <li class="nav-title">Configuración</li>
-
-
+          <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] != 'Representante') :?>
           <li class="nav-item nav-dropdown">
             <a class="nav-link nav-dropdown-toggle" href="#">
               <i class="nav-icon fas fa-cogs"></i> Configuración
@@ -441,7 +457,8 @@ if (strlen(session_id()) < 1)
                   
             </ul>
           </li>
-
+          <?php endif; ?>
+          
           <?php
           echo  (isset($_SESSION['permisos']['historial-estudiantil']) && in_array('ver' , $_SESSION['permisos']['historial-estudiantil'])) ? 
             '<li class="nav-item">
@@ -453,17 +470,17 @@ if (strlen(session_id()) < 1)
           ?>
 
           <li class="divider"></li>
-          <li class="nav-title">Ayuda</li>
-          <li class="nav-item mt-auto">
+          <!-- <li class="nav-title">Ayuda</li> -->
+          <!-- <li class="nav-item mt-auto">
             <a class="nav-link nav-link-success" href="https://coreui.io" target="_top">
               <i class="nav-icon icon-cloud-download"></i>Manual <strong>Usuario</strong></a>
-          </li>
-          <li class="nav-item">
+          </li> -->
+          <!-- <li class="nav-item">
             <a class="nav-link nav-link-danger" href="https://coreui.io/pro/" target="_top">
               <i class="nav-icon icon-layers"></i>Manual
               <strong>Instalación</strong>
             </a>
-          </li>
+          </li> -->
         </ul>
       </nav>
     </div>
