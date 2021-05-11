@@ -8,6 +8,7 @@ if (!isset($_SESSION['idusuario'])) {
   echo "Debe ingresar al sistema correctamete para visualizar el reporte";
 }
 else{
+
 if (isset($_SESSION['permisos']['estudiante']) && in_array('ver' , $_SESSION['permisos']['estudiante'])) {
 
 #Se incluye el modelo de Estudiante

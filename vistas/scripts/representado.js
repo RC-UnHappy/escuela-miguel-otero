@@ -236,8 +236,6 @@ function mostrar(idestudiante) {
     { idestudiante: idestudiante },
     function (data) {
       data = JSON.parse(data);
-      // console.log(data);
-      // return;
       
       limpiar();
 
@@ -404,9 +402,6 @@ function mostrar(idestudiante) {
       var tabContent = '';
       $.each()
       data.inscripciones.forEach(function(element, index ) {
-        // console.log('hola ' + index);
-        // return;
-        // console.log(element, index);
         var active = (index === 0) ? 'active' : '';
         listTab += 
         '<a class="list-group-item list-group-item-action" id="list-'+index+'-list" data-toggle="tab" href="#list-'+index+'" role="tab" aria-controls="list-'+index+'" aria-selected="true">'+
@@ -418,8 +413,6 @@ function mostrar(idestudiante) {
           '<div class="row">';
 
           element.lapsos.forEach(function(lapso, index) {
-            console.log(element, 'element');
-            console.log(lapso, 'lapso');
             if (lapso.estatus == 'Finalizado') {
               tabContent +=
               '<a target="_blank" href="../../reporte/boletin-informativo.php?idplanificacion='+element.idplanificacion+'&lapso='+lapso.lapso+'&idestudiante='+element.idestudiante+'">'+

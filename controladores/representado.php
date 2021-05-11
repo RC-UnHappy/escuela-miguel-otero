@@ -284,12 +284,13 @@ switch ($_GET['op']) {
 				( ( isset($_SESSION['permisos']['representado']) && 
 	              	in_array('ver' , $_SESSION['permisos']['representado']) ) ?
 
-				' <button class="btn btn-outline-primary" title="Ver" onclick="mostrar('.$reg->idE.')"><i class="fa fa-eye"></i></button>' : '').
+				' <button class="btn btn-outline-primary" title="Ver" onclick="mostrar('.$reg->idE.')"><i class="fa fa-eye"></i></button>' : '')
+				// .
 				
-				( ( isset($_SESSION['permisos']['representado']) && 
-	              	in_array('ver' , $_SESSION['permisos']['representado']) ) ?
+				// ( ( isset($_SESSION['permisos']['representado']) && 
+	            //   	in_array('ver' , $_SESSION['permisos']['representado']) ) ?
 
-				' <a target="_blank" href="../../reporte/constancia-estudio.php?idpersona='.$reg->idP.'&idestudiante='.$reg->idE.'"> <button class="btn btn-primary" title="Constancia de estudio"><i class="fa fa-file"></i></button></a>' : '')
+				// ' <a target="_blank" href="../../reporte/constancia-estudio.php?idpersona='.$reg->idP.'&idestudiante='.$reg->idE.'"> <button class="btn btn-primary" title="Constancia de estudio"><i class="fa fa-file"></i></button></a>' : '')
 
 				 :
 

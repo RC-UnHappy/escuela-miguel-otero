@@ -501,8 +501,8 @@ switch ($_GET['op']) {
           $percentage = ($reg->cupo_disponible * 100) / $reg->cupo;
           $percentage = 100 - $percentage;
           $percentage_color = ($percentage >= 50 && $percentage < 75) ? 'bg-warning' 
-          : ($percentage >= 75) ? 'bg-danger' 
-          : 'bg-success';
+          : ($percentage >= 75 ? 'bg-danger' 
+          : 'bg-success');
           
           $data[] = array(
               '0' => ($reg->estatus) ?
@@ -548,8 +548,8 @@ switch ($_GET['op']) {
             $percentage = ($reg->cupo_disponible * 100) / $reg->cupo;
             $percentage = 100 - $percentage;
             $percentage_color = ($percentage >= 50 && $percentage < 75) ? 'bg-warning' 
-            : ($percentage >= 75) ? 'bg-danger' 
-            : 'bg-success';
+            : ($percentage >= 75 ? 'bg-danger' 
+            : 'bg-success');
             
             $data[] = array(
                 '0' => ($reg->estatus) ?
@@ -614,8 +614,8 @@ switch ($_GET['op']) {
           $percentage = ($reg->cupo_disponible * 100) / $reg->cupo;
           $percentage = 100 - $percentage;
           $percentage_color = ($percentage >= 50 && $percentage < 75) ? 'bg-warning' 
-          : ($percentage >= 75) ? 'bg-danger' 
-          : 'bg-success';
+          : ($percentage >= 75 ? 'bg-danger' 
+          : 'bg-success');
           
           $data[] = array(
               '0' => 
@@ -667,8 +667,8 @@ switch ($_GET['op']) {
             $percentage = ($reg->cupo_disponible * 100) / $reg->cupo;
             $percentage = 100 - $percentage;
             $percentage_color = ($percentage >= 50 && $percentage < 75) ? 'bg-warning' 
-            : ($percentage >= 75) ? 'bg-danger' 
-            : 'bg-success';
+            : ($percentage >= 75 ? 'bg-danger' 
+            : 'bg-success');
             
             $data[] = array(
                 '0' => 
