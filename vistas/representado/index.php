@@ -58,7 +58,7 @@ if (!isset($_SESSION['idusuario'])) {
               <div class="modal-content">
 
                 <div class="nav-tabs-boxed">
-                  <ul class="nav nav-tabs" role="tablist">
+                  <ul class="nav nav-tabs" role="tablist" id="nav-original">
                     <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#personal-info" role="tab" aria-controls="personal-info">Información personal</a></li>
                     <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#reportes" role="tab" aria-controls="reportes" id="tabReportes">Reportes</a></li>
                   </ul>
@@ -524,12 +524,12 @@ if (!isset($_SESSION['idusuario'])) {
                       <div class="row">
                         <div class="col-3">
                           <div class="list-group" id="list-tab" role="tablist">
-                            
+
                           </div>
                         </div>
                         <div class="col-9">
                           <div class="tab-content" id="nav-tabContent">
-                            
+
                           </div>
                         </div>
                       </div>

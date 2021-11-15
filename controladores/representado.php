@@ -1,7 +1,7 @@
-<?php 
+<?php
 
 #Se inicia la sesión
-if (strlen(session_id() < 1)) session_start(); 
+if (strlen(session_id() < 1)) session_start();
 
 #Se incluye el modelo de Estudiante
 require_once '../modelos/Estudiante.php';
@@ -91,13 +91,13 @@ switch ($_GET['op']) {
 
 		#Si la variable esta vacía quiere decir que es un nuevo registro
 		if (empty($idestudiante)) {
-			
+
 			#Variable para comprobar que todo salió bien al final
 			$sw = TRUE;
 
 			#Se registra la persona y se devuelve el id del registro
 			$idpersona = $persona->insertar($cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email) or $sw = FALSE;
-			
+
 			#Se registra la dirección del estudiante
 			$Direccion->insertar($idpersona, $parroquia_residencia, $direccion) or $sw = FALSE;
 
@@ -121,7 +121,7 @@ switch ($_GET['op']) {
 
 			#Se registra si el estudiante posee canaima o no
 			$Canaima->insertar($estudianteId, $canaima, $condicion_canaima) or $sw = FALSE;
-			
+
 			#Se registran los sosten de hogar
 			$SostenHogar->insertar($estudianteId, $sosten) or $sw = FALSE;
 
@@ -129,46 +129,43 @@ switch ($_GET['op']) {
 			if ($sw) {
 				commit();
 				echo 'true';
-			}
-			else {
+			} else {
 				rollback();
 				echo 'false';
 			}
-		}
-		else{
+		} else {
 			#Variable para comprobar que todo salió bien al final
 			$sw = TRUE;
 
-      
+
 			#Se obtiene el id de la persona 
 			$idpersona = $estudiante->idpersona($idestudiante);
 			$idpersona = $idpersona['idpersona'];
 
 			#Se editan los datos de la persona
 			$persona->editar($idpersona, $cedula, $p_nombre, $s_nombre, $p_apellido, $s_apellido, $genero, $f_nac, $email) or $sw = FALSE;
-      
+
 			if ($Direccion->verificar($idpersona)) {
-        #Se edita la dirección del estudiante
+				#Se edita la dirección del estudiante
 				$Direccion->editar($idpersona, $parroquia_residencia, $direccion) or $sw = FALSE;
 			} else {
-        #Se edita la dirección del estudiante
+				#Se edita la dirección del estudiante
 				$Direccion->insertar($idpersona, $parroquia_residencia, $direccion) or $sw = FALSE;
 			}
-      
+
 			// #Se editan los aspectos fisiológicos del estudiante
 			// $AspectoFisiologico->editar($idestudiante, $vacunas, $peso, $talla, $alergia) or $sw = FALSE;
-      
-      
+
+
 			if ($LugarNacimiento->verificar($idestudiante)) {
-        #Se edita el lugar de nacimiento del estudiante
+				#Se edita el lugar de nacimiento del estudiante
 				$LugarNacimiento->editar($idestudiante, $parroquia_nacimiento) or $sw = FALSE;
-			}
-			else{
-        #Se registra el lugar de nacimiento del estudiante
+			} else {
+				#Se registra el lugar de nacimiento del estudiante
 				$LugarNacimiento->insertar($idestudiante, $parroquia_nacimiento) or $sw = FALSE;
 			}
-      
-			
+
+
 			// #Verifica que la variable de diversidad contenga datos y los guarda
 			// if (!empty($diversidad)) {
 			// 	$DiversidadFuncional->eliminar($idestudiante) or $sw = FALSE;
@@ -187,45 +184,41 @@ switch ($_GET['op']) {
 			// 	$Enfermedad->eliminar($idestudiante) or $sw = FALSE;
 			// }
 
-      if ($AspectoSocioeconomico->verificar($idestudiante)) {
-        #Se editan los aspectos socioeconómicos del estudiante
-        $AspectoSocioeconomico->editar($idestudiante, $vivienda, $grupo_familiar, $ingreso_mensual) or $sw = FALSE;      
+			if ($AspectoSocioeconomico->verificar($idestudiante)) {
+				#Se editan los aspectos socioeconómicos del estudiante
+				$AspectoSocioeconomico->editar($idestudiante, $vivienda, $grupo_familiar, $ingreso_mensual) or $sw = FALSE;
+			} else {
+				#Se registran los aspectos socioeconómicos del estudiante
+				$AspectoSocioeconomico->insertar($idestudiante, $vivienda, $grupo_familiar, $ingreso_mensual) or $sw = FALSE;
 			}
-			else{
-        #Se registran los aspectos socioeconómicos del estudiante
-			  $AspectoSocioeconomico->insertar($idestudiante, $vivienda, $grupo_familiar, $ingreso_mensual) or $sw = FALSE;
-			}
-      
+
 			#Verifica que la variable de sosten contenga datos y los guarda
 			if (!empty($sosten)) {
-        $SostenHogar->eliminar($idestudiante) or $sw = FALSE;
+				$SostenHogar->eliminar($idestudiante) or $sw = FALSE;
 				$SostenHogar->insertar($idestudiante, $sosten) or $sw = FALSE;
+			} else {
+				$SostenHogar->eliminar($idestudiante) or $sw = FALSE;
 			}
-			else {
-        $SostenHogar->eliminar($idestudiante) or $sw = FALSE;
-      }
 
-      # Se verifica la canaima
-      if ($Canaima->verificar($idestudiante)) {
-        #Se edita si el estudiante posee canaima o no
-			  $Canaima->editar($idestudiante, $canaima, $condicion_canaima) or $sw = FALSE;     
+			# Se verifica la canaima
+			if ($Canaima->verificar($idestudiante)) {
+				#Se edita si el estudiante posee canaima o no
+				$Canaima->editar($idestudiante, $canaima, $condicion_canaima) or $sw = FALSE;
+			} else {
+				#Se registra si el estudiante posee canaima o no
+				$Canaima->insertar($idestudiante, $canaima, $condicion_canaima) or $sw = FALSE;
 			}
-			else{
-        #Se registra si el estudiante posee canaima o no
-			  $Canaima->insertar($idestudiante, $canaima, $condicion_canaima) or $sw = FALSE;
-			}
-      
-			   
+
+
 			#Se edita el estudiante
 			$rspta = $estudiante->editar($idestudiante, $idmadre, $idpadre, $parto, $orden) or $sw = FALSE;
-      
+
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
 				commit();
 				echo 'update';
-			}
-			else {
+			} else {
 				rollback();
 				echo 'false';
 			}
@@ -251,59 +244,44 @@ switch ($_GET['op']) {
 
 			while ($reg = $rspta->fetch_object()) {
 
-				// var_dump($reg);
-				// die;
-  
-	        list($anoN, $mesN, $diaN) = explode('-', $reg->fechaE);
-	        list($anoA, $mesA, $diaA) = explode('-', date('Y-m-d'));
-        
-			if ($mesN == $mesA) {
-	         	if ($diaN == $diaA) {
-	            	$edad = $anoA - $anoN;
-					$cumple = ' <span class="pull-right badge badge-light"><i class="fa fa-birthday-cake" style="font-size:18px; color: #F06292;"></i></span><span class="sr-only">Cumpleaños</span>';
+				list($anoN, $mesN, $diaN) = explode('-', $reg->fechaE);
+				list($anoA, $mesA, $diaA) = explode('-', date('Y-m-d'));
+
+				if ($mesN == $mesA) {
+					if ($diaN == $diaA) {
+						$edad = $anoA - $anoN;
+						$cumple = ' <span class="pull-right badge badge-light"><i class="fa fa-birthday-cake" style="font-size:18px; color: #F06292;"></i></span><span class="sr-only">Cumpleaños</span>';
+					} elseif ($diaN < $diaA) {
+						$edad = $anoA - $anoN;
+					} else {
+						$edad = ($anoA - $anoN) - 1;
+					}
+				} elseif ($mesN > $mesA) {
+					$edad = ($anoA - $anoN) - 1;
+				} else {
+					$edad = ($anoA - $anoN);
 				}
-				elseif ($diaN < $diaA) {
-	            	$edad = $anoA - $anoN;
-				}
-				else {
-	            	$edad = ($anoA - $anoN) - 1;
-				}
-			}
-			elseif ($mesN > $mesA ) {
-	          $edad = ($anoA - $anoN) - 1;
-	          
-			}
-			else {
-	          $edad = ($anoA - $anoN);  
-	        }
-        
-			$data[] = array('0' => 
 
-				($reg->estatus_estudiante == 'INSCRITO') ? 
+				$data[] = array(
+					'0' => ($reg->estatus_estudiante == 'INSCRITO') ?
 
-				( ( isset($_SESSION['permisos']['representado']) && 
-	              	in_array('ver' , $_SESSION['permisos']['representado']) ) ?
+						((isset($_SESSION['permisos']['representado']) &&
+							in_array('ver', $_SESSION['permisos']['representado'])) ?
 
-				' <button class="btn btn-outline-primary" title="Ver" onclick="mostrar('.$reg->idE.')"><i class="fa fa-eye"></i></button>' : '')
-				// .
-				
-				// ( ( isset($_SESSION['permisos']['representado']) && 
-	            //   	in_array('ver' , $_SESSION['permisos']['representado']) ) ?
+							' <button class="btn btn-outline-primary" title="Ver" onclick="mostrar(' . $reg->idE . ')"><i class="fa fa-eye"></i></button>' : '')
+						.
 
-				// ' <a target="_blank" href="../../reporte/constancia-estudio.php?idpersona='.$reg->idP.'&idestudiante='.$reg->idE.'"> <button class="btn btn-primary" title="Constancia de estudio"><i class="fa fa-file"></i></button></a>' : '')
+						((isset($_SESSION['permisos']['representado']) &&
+							in_array('ver', $_SESSION['permisos']['representado'])) ?
 
-				 :
+							' <a target="_blank" href="../../reporte/constancia-estudio.php?idpersona=' . $reg->idP . '&idestudiante=' . $reg->idE . '"> <button class="btn btn-primary" title="Constancia de estudio"><i class="fa fa-file"></i></button></a>' : '') : '',
 
-				 ( ( isset($_SESSION['permisos']['representado']) && 
-	              	  in_array('ver' , $_SESSION['permisos']['representado']) ) ?
-
-				'<button class="btn btn-outline-primary" title="Ver" onclick="mostrar('.$reg->idE.')"><i class="fa fa-eye"></i></button>' : ''),
-
-				 	'1' => $reg->cedulaE,
-				 	'2' => $reg->nombreE,
-				 	'3' => $reg->apellidoE,
-					'4' => $edad.$cumple = isset($cumple) ? $cumple : '',
-					'5' => $reg->estatus_estudiante);
+					'1' => $reg->cedulaE,
+					'2' => $reg->nombreE,
+					'3' => $reg->apellidoE,
+					'4' => $edad . $cumple = isset($cumple) ? $cumple : '',
+					'5' => $reg->estatus_estudiante
+				);
 			}
 
 			$results = array(
@@ -313,8 +291,7 @@ switch ($_GET['op']) {
 				"data" => $data #datos en un array
 
 			);
-		}
-		else {
+		} else {
 			$results = array(
 				"draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
 				"recordsTotal" => 0, #Se envía el total de registros al datatable
@@ -329,7 +306,7 @@ switch ($_GET['op']) {
 
 	case 'listarpaises':
 		$rspta = $Estudiante->listarpaises();
-		
+
 		while ($pais = $rspta->fetch_object()) {
 			echo '<option value="' . $pais->id . '">' . $pais->pais . '</option>';
 		}
@@ -337,31 +314,31 @@ switch ($_GET['op']) {
 		break;
 
 	case 'listarestados':
-		$idpais = isset($_GET['idpais']) ? $_GET['idpais'] : NULL; 
+		$idpais = isset($_GET['idpais']) ? $_GET['idpais'] : NULL;
 		$rspta = $Estudiante->listarestados($idpais);
 
 		while ($estado = $rspta->fetch_object()) {
-			echo '<option value="'.$estado->id.'">'.$estado->estado.'</option>';
+			echo '<option value="' . $estado->id . '">' . $estado->estado . '</option>';
 		}
 
 		break;
 
-	case 'listarmunicipios':		
-		$idestado = isset($_GET['idestado']) ? $_GET['idestado'] : NULL; 
+	case 'listarmunicipios':
+		$idestado = isset($_GET['idestado']) ? $_GET['idestado'] : NULL;
 		$rspta = $estudiante->listarmunicipios($idestado);
 
 		while ($municipio = $rspta->fetch_object()) {
-			echo '<option value="'.$municipio->id.'">'.$municipio->municipio.'</option>';
+			echo '<option value="' . $municipio->id . '">' . $municipio->municipio . '</option>';
 		}
 
 		break;
 
-	case 'listarparroquias':		
-		$idmunicipio = isset($_GET['idmunicipio']) ? $_GET['idmunicipio'] : NULL; 
+	case 'listarparroquias':
+		$idmunicipio = isset($_GET['idmunicipio']) ? $_GET['idmunicipio'] : NULL;
 		$rspta = $estudiante->listarparroquias($idmunicipio);
 
 		while ($parroquia = $rspta->fetch_object()) {
-			echo '<option value="'.$parroquia->id.'">'.$parroquia->parroquia.'</option>';
+			echo '<option value="' . $parroquia->id . '">' . $parroquia->parroquia . '</option>';
 		}
 
 		break;
@@ -378,25 +355,23 @@ switch ($_GET['op']) {
 
 		$inscripciones = $inscripciones->fetch_all(MYSQLI_ASSOC);
 
-		
+
 		foreach ($inscripciones as $index => $inscripcion) {
 			$lapsos = $LapsoAcademico->listar($inscripcion['idperiodo_escolar']);
-			
-			$inscripciones[$index]['lapsos'] = $lapsos->fetch_all(MYSQLI_ASSOC);		
+
+			$inscripciones[$index]['lapsos'] = $lapsos->fetch_all(MYSQLI_ASSOC);
 		}
-		
+
 		$return->inscripciones = $inscripciones;
-		// var_dump($inscripciones);
-		// die;
+
 		#Se codifica el resultado utilizando Json
 		echo json_encode($return);
 		return;
 		break;
-	case 'comprobarpadres': 
+	case 'comprobarpadres':
 		$cedula = $_POST['comprobarpadres'];
 		$generopadres = $_POST['generopadres'];
 		$rspta = $Estudiante->comprobarpadres($cedula, $generopadres);
 		echo json_encode($rspta->fetch_object());
 		break;
-
 }
