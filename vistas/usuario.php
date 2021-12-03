@@ -227,7 +227,7 @@ if (isset($_SESSION['permisos']['usuario']) && in_array('ver' , $_SESSION['permi
                                 <option value="">Seleccione</option>
                                 <option value="Administrador">Administrador</option>
                                 <option value="Docente">Docente</option>
-                                <option value="Representante">Representante</option>
+                                <!-- <option value="Representante">Representante</option> -->
                               </select>
                               <div class="invalid-feedback">
                                   Campo Obligatorio
