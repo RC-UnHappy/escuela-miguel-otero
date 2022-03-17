@@ -212,6 +212,7 @@ function mostrar() {
 		$('#turno').val(data.turno);
 		$('#horario').val(data.horario);
 		$('#idinstitucion').val(data.id);
+		$("#codigo_qr").val(data.codigo_qr);
 	});
 }
 
@@ -265,6 +266,7 @@ function limpiar() {
 		$('#turno').val('');
 		$('#horario').val('');
 		$('#idinstitucion').val('');
+		$('#codigo_qr').val('');
 }
 
 init();

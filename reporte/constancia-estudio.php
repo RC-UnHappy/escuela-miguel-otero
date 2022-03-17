@@ -75,6 +75,7 @@ if (!isset($_SESSION['idusuario'])) {
 		include_once("cabecera-constancia-estudio.php");
 
 		$pdf = new PDF('P', 'mm', 'A4'/*array(150,85)*/);
+		$pdf->codigo_qr = $datos_institucion['codigo_qr'];
 		$pdf->AliasNbPages();
 		$pdf->AddPage();
 		$pdf->Ln(18);

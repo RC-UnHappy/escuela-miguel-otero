@@ -138,7 +138,7 @@ function mostrarPerfil(idusuario) {
 }
 
 
-if (location.href != 'http://localhost/escuela-miguel-otero/vistas/login.html') {
+if (location.href != 'http://localhost/escuela-romulo-gallegos/vistas/login.html') {
   //Se ejecuta cuando se envia el formulario
   $([formularioPerfil]).on('submit', function (event) {
     

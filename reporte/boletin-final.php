@@ -42,6 +42,7 @@ $fecha = date('Y-m-d');
 
 include_once("cabecera-boletin-final.php");
 $pdf=new PDF('P','mm','A4'/*array(150,85)*/);
+    $pdf->codigo_qr = $datos_institucion['codigo_qr'];
 $pdf->AliasNbPages();
 
 // $pdf->periodo_escolar = $periodo_escolar;

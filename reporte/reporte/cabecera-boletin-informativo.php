@@ -11,7 +11,7 @@ function Header()
 {
     //Logo
     $this->Image('img_reportes/ministerio.png',10,6,25, 25);
-    $this->Image('img_reportes/escudo.png',185,8,15, 15);
+    $this->Image('img_reportes/escudo-romulo.jpg',185,8,15, 15);
     //Arial bold 15
     $this->SetFont('Arial','B',12);
     //Movernos a la derecha

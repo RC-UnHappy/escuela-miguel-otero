@@ -26,7 +26,7 @@ $licenciado="Luis Marin";
 $cedula_licenciado = 29629048;
 
 $texto = utf8_decode("Quién suscribe Lcdo. ".$licenciado.", portador (a) de la Cédula de Identidad Nº "
-	.$cedula_licenciado.", Director (a) de la Escuela Básica Bolivariana 'Miguel Otero Silva', certifica por medio de la presente que el (la) estudiante:___________________________________________, portador(a) de la Cédula de Identidad Nº ___________________, nacido(a) en __________________, fecha  ___________, cursó y aprobó el ______________________Grado  del Nivel de Educación Primaria, donde alcanzó las competencias previstas para el grado, correspondiéndole  la escala  alfabética _____________ durante el Año Escolar  _____________________ y fue promovido al  _____________________ grado, previo cumplimiento de los requisitos exigidos en la normativa legal vigente.
+	.$cedula_licenciado. ", Director (a) de la Escuela Básica Bolivariana 'Rómulo Gallegos', certifica por medio de la presente que el (la) estudiante:___________________________________________, portador(a) de la Cédula de Identidad Nº ___________________, nacido(a) en __________________, fecha  ___________, cursó y aprobó el ______________________Grado  del Nivel de Educación Primaria, donde alcanzó las competencias previstas para el grado, correspondiéndole  la escala  alfabética _____________ durante el Año Escolar  _____________________ y fue promovido al  _____________________ grado, previo cumplimiento de los requisitos exigidos en la normativa legal vigente.
 ");
 
 $duracion = utf8_decode("Certificado que se expide en Acarigua a los ____ días del mes de _____________ del _________. ");

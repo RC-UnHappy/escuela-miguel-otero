@@ -16,17 +16,17 @@ class Institucion
 	}
 
 	#Método para insertar registros
-	function insertar($nombre, $telefono, $correo, $dependencia, $cod_dea, $cod_estadistico, $cod_dependencia, $cod_electoral, $cod_smee, $idestado, $idmunicipio, $idparroquia, $direccion, $fecha_fundada, $fecha_bolivariana, $clase_plantel, $categoria, $condicion_estudio, $tipo_matricula, $turno, $horario)
+	function insertar($nombre, $telefono, $correo, $dependencia, $cod_dea, $cod_estadistico, $cod_dependencia, $cod_electoral, $cod_smee, $idestado, $idmunicipio, $idparroquia, $direccion, $fecha_fundada, $fecha_bolivariana, $clase_plantel, $categoria, $condicion_estudio, $tipo_matricula, $turno, $horario, $codigo_qr)
 	{
-		$sql = "INSERT INTO institucion (id, nombre, telefono, correo, dependencia, cod_dea, cod_estadistico, cod_dependencia, cod_electoral, cod_smee, idestado, idmunicipio, idparroquia, direccion, fecha_fundada, fecha_bolivariana, clase_plantel, categoria, condicion_estudio, tipo_matricula, turno, horario) VALUES(NULL, '$nombre', '$telefono', '$correo', '$dependencia', '$cod_dea', '$cod_estadistico', '$cod_dependencia', '$cod_electoral', '$cod_smee,', '$idestado', '$idmunicipio', '$idparroquia', '$direccion', '$fecha_fundada', '$fecha_bolivariana', '$clase_plantel', '$categoria', '$condicion_estudio', '$tipo_matricula', '$turno', '$horario')";
+		$sql = "INSERT INTO institucion (id, nombre, telefono, correo, dependencia, cod_dea, cod_estadistico, cod_dependencia, cod_electoral, cod_smee, idestado, idmunicipio, idparroquia, direccion, fecha_fundada, fecha_bolivariana, clase_plantel, categoria, condicion_estudio, tipo_matricula, turno, horario, codigo_qr) VALUES(NULL, '$nombre', '$telefono', '$correo', '$dependencia', '$cod_dea', '$cod_estadistico', '$cod_dependencia', '$cod_electoral', '$cod_smee,', '$idestado', '$idmunicipio', '$idparroquia', '$direccion', '$fecha_fundada', '$fecha_bolivariana', '$clase_plantel', '$categoria', '$condicion_estudio', '$tipo_matricula', '$turno', '$horario', '$codigo_qr')";
 
 		return ejecutarConsulta($sql);
 	}
 
 	#Método para editar registros
-	function editar($idinstitucion, $nombre, $telefono, $correo, $dependencia, $cod_dea, $cod_estadistico, $cod_dependencia, $cod_electoral, $cod_smee, $idestado, $idmunicipio, $idparroquia, $direccion, $fecha_fundada, $fecha_bolivariana, $clase_plantel, $categoria, $condicion_estudio, $tipo_matricula, $turno, $horario)
+	function editar($idinstitucion, $nombre, $telefono, $correo, $dependencia, $cod_dea, $cod_estadistico, $cod_dependencia, $cod_electoral, $cod_smee, $idestado, $idmunicipio, $idparroquia, $direccion, $fecha_fundada, $fecha_bolivariana, $clase_plantel, $categoria, $condicion_estudio, $tipo_matricula, $turno, $horario, $codigo_qr)
 	{
-		$sql = "UPDATE institucion SET nombre = '$nombre', telefono = '$telefono', correo = '$correo', dependencia = '$dependencia', cod_dea = '$cod_dea', cod_estadistico = '$cod_estadistico', cod_dependencia = '$cod_dependencia', cod_electoral = '$cod_electoral',cod_smee = '$cod_smee,', idestado = '$idestado', idmunicipio = '$idmunicipio', idparroquia = '$idparroquia', direccion = '$direccion', fecha_fundada = '$fecha_fundada', fecha_bolivariana = '$fecha_bolivariana', clase_plantel = '$clase_plantel', categoria = '$categoria', condicion_estudio = '$condicion_estudio', tipo_matricula = '$tipo_matricula', turno = '$turno', horario = '$horario' WHERE id = '$idinstitucion'";
+		$sql = "UPDATE institucion SET nombre = '$nombre', telefono = '$telefono', correo = '$correo', dependencia = '$dependencia', cod_dea = '$cod_dea', cod_estadistico = '$cod_estadistico', cod_dependencia = '$cod_dependencia', cod_electoral = '$cod_electoral',cod_smee = '$cod_smee,', idestado = '$idestado', idmunicipio = '$idmunicipio', idparroquia = '$idparroquia', direccion = '$direccion', fecha_fundada = '$fecha_fundada', fecha_bolivariana = '$fecha_bolivariana', clase_plantel = '$clase_plantel', categoria = '$categoria', condicion_estudio = '$condicion_estudio', tipo_matricula = '$tipo_matricula', turno = '$turno', horario = '$horario', codigo_qr = '$codigo_qr' WHERE id = '$idinstitucion'";
 
 		return ejecutarConsulta($sql);
 

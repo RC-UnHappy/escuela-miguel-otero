@@ -3,11 +3,14 @@ require('clase_06pdf_1/fpdf.php');
 
 class PDF extends FPDF
 {
+
+	public $codigo_qr = "";
+	
 	//Cabecera de página
 	function Header()
 	{
 	    //Logo
-	    $this->Image('img_reportes/escudo.png',10,8,15);
+	    $this->Image('img_reportes/escudo-romulo.jpg',10,8,15);
 	    $this->Image('img_reportes/escudo-venezuela.png',95,6,20);
 	    $this->Image('img_reportes/ministerio.png',185,6,25);
 	    //Arial bold 15
@@ -29,6 +32,12 @@ class PDF extends FPDF
 	    $this->SetFont('Arial','I',8);
 	    //Número de página
 	    $this->Cell(0,10, utf8_decode('Página ').$this->PageNo().'/{nb}',0,0,'R');
+
+		include '../libs/phpqrcode/phpqrcode.php';
+		QRcode::png(utf8_decode($this->codigo_qr), "codigo_qr.png");
+		$y = $this->SetY(-30);
+		$x = $this->SetX(-30);
+		$this->Image('codigo_qr.png', $y, $x, 30, 30);
 	}
 
 	function TextWithDirection($x, $y, $txt, $direction='R')

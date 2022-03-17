@@ -1,7 +1,7 @@
 <?php
 
 #Se incluye la conexión a la base de datos
-require_once dirname(__DIR__).'/../config/conexion.php';
+require_once dirname(__DIR__) . '/../config/conexion.php';
 
 /**
  * Modelo de inscripción 
@@ -11,7 +11,8 @@ class Inscripcion
 
   #Constructor de la clase
   public function __construct()
-  { }
+  {
+  }
 
   public function inscribir($idperiodo_escolar, $idplanificacion, $idestudiante, $idrepresentante, $parentesco, $plantel_procedencia, $observaciones, $estatus)
   {
@@ -27,10 +28,17 @@ class Inscripcion
     return ejecutarConsulta($sql);
   }
 
+  public function editar_documentos_consignados($idinscripcion, $fotocopia_cedula_madre, $fotocopia_cedula_padre, $fotocopia_cedula_representante, $fotos_representante, $fotocopia_partida_nacimiento, $fotocopia_cedula_estudiante, $fotocopia_constancia_vacunas, $fotos_estudiante, $boleta_promocion, $constancia_buena_conducta, $informe_descriptivo)
+  {
+    $sql = "UPDATE documentos_consignados SET fotocopia_cedula_madre = '$fotocopia_cedula_madre', fotocopia_cedula_padre = '$fotocopia_cedula_padre', fotocopia_cedula_representante = '$fotocopia_cedula_representante', fotos_representante = '$fotos_representante', fotocopia_partida_nacimiento = '$fotocopia_partida_nacimiento', fotocopia_cedula_estudiante = '$fotocopia_cedula_estudiante', fotocopia_constancia_vacunas = '$fotocopia_constancia_vacunas', fotos_estudiante = '$fotos_estudiante', boleta_promocion = '$boleta_promocion', constancia_buena_conducta = '$constancia_buena_conducta', informe_descriptivo = '$informe_descriptivo' WHERE idinscripcion = '$idinscripcion'";
+
+    return ejecutarConsulta($sql);
+  }
+
   #Método para insertar una persona y devolver el id
   function insertar_persona($cedula = NULL, $p_nombre = NULL, $s_nombre = NULL, $p_apellido = NULL, $s_apellido = NULL, $genero = NULL, $f_nac = NULL)
   {
-    if (  $f_nac == NULL)
+    if ($f_nac == NULL)
       $sql = "INSERT INTO persona (cedula, p_nombre, s_nombre, p_apellido, s_apellido, genero, f_creacion) VALUES('$cedula', '$p_nombre', '$s_nombre', '$p_apellido', '$s_apellido', '$genero', NOW())";
     else
       $sql = "INSERT INTO persona (cedula, p_nombre, s_nombre, p_apellido, s_apellido, genero, f_nac, f_creacion) VALUES('$cedula', '$p_nombre', '$s_nombre', '$p_apellido', '$s_apellido', '$genero', '$f_nac' , NOW())";
@@ -153,8 +161,7 @@ class Inscripcion
   {
     if (!empty($idpadre)) {
       $sql = "INSERT INTO estudiante (idpersona, idmadre, idpadre, parto_multiple, orden_nacimiento, estatus) VALUES('$idpersona', '$idmadre', '$idpadre', '$parto_multiple', '$orden_nacimiento', '$estatus')";
-    }
-    else {
+    } else {
       $sql = "INSERT INTO estudiante (idpersona, idmadre, parto_multiple, orden_nacimiento, estatus) VALUES('$idpersona', '$idmadre', '$parto_multiple', '$orden_nacimiento', '$estatus')";
     }
 
@@ -167,8 +174,7 @@ class Inscripcion
 
     if (!empty($idpadre)) {
       $sql = "UPDATE estudiante SET idmadre = '$idmadre', idpadre = '$idpadre', parto_multiple = '$parto_multiple', orden_nacimiento = '$orden_nacimiento', estatus = '$estatus' WHERE idpersona = '$idpersona'";
-    }
-    else {
+    } else {
       $sql = "UPDATE estudiante SET idmadre = '$idmadre', parto_multiple = '$parto_multiple', orden_nacimiento = '$orden_nacimiento', estatus = '$estatus' WHERE idpersona = '$idpersona'";
     }
 
@@ -196,9 +202,9 @@ class Inscripcion
   #Método para editar registros
   function editar($id, $idgrado, $idseccion, $idambiente, $iddocente, $cupo)
   {
-      $sql = "UPDATE planificacion SET idgrado = '$idgrado', idseccion = '$idseccion', idambiente = '$idambiente', iddocente = '$iddocente', cupo = '$cupo' WHERE id = '$id'";
+    $sql = "UPDATE planificacion SET idgrado = '$idgrado', idseccion = '$idseccion', idambiente = '$idambiente', iddocente = '$iddocente', cupo = '$cupo' WHERE id = '$id'";
 
-      return ejecutarConsulta($sql);
+    return ejecutarConsulta($sql);
   }
 
   #Método para listar 
@@ -206,7 +212,7 @@ class Inscripcion
   {
     if ($id_docente != null)
       $sql = "SELECT p.*, pe.periodo, g.grado, s.seccion, a.ambiente, per.idpersona, persona.p_nombre, persona.p_apellido FROM planificacion p INNER JOIN periodo_escolar pe ON p.idperiodo_escolar = pe.id INNER JOIN grado g ON p.idgrado = g.id INNER JOIN seccion s ON s.id = p.idseccion INNER JOIN ambiente a ON a.id = p.idambiente INNER JOIN personal per ON per.id = p.iddocente INNER JOIN persona persona ON persona.id = per.idpersona WHERE p.estatus = 'Activo' AND p.iddocente = '$id_docente' ORDER BY g.grado, s.seccion";
-    else 
+    else
       $sql = "SELECT p.*, pe.periodo, g.grado, s.seccion, a.ambiente, per.idpersona, persona.p_nombre, persona.p_apellido FROM planificacion p INNER JOIN periodo_escolar pe ON p.idperiodo_escolar = pe.id INNER JOIN grado g ON p.idgrado = g.id INNER JOIN seccion s ON s.id = p.idseccion INNER JOIN ambiente a ON a.id = p.idambiente INNER JOIN personal per ON per.id = p.iddocente INNER JOIN persona persona ON persona.id = per.idpersona WHERE p.estatus = 'Activo' ORDER BY g.grado, s.seccion";
 
     return ejecutarConsulta($sql);
@@ -217,7 +223,7 @@ class Inscripcion
   {
     if ($id_docente != null)
       $sql = "SELECT p.*, pe.periodo, g.grado, s.seccion, a.ambiente, per.idpersona, persona.p_nombre, persona.p_apellido FROM planificacion p INNER JOIN periodo_escolar pe ON p.idperiodo_escolar = pe.id INNER JOIN grado g ON p.idgrado = g.id INNER JOIN seccion s ON s.id = p.idseccion INNER JOIN ambiente a ON a.id = p.idambiente INNER JOIN personal per ON per.id = p.iddocente INNER JOIN persona persona ON persona.id = per.idpersona WHERE p.id IN(SELECT id FROM planificacion WHERE estatus = 'Planificado') AND p.iddocente = '$id_docente' ORDER BY g.grado, s.seccion";
-    else 
+    else
       $sql = "SELECT p.*, pe.periodo, g.grado, s.seccion, a.ambiente, per.idpersona, persona.p_nombre, persona.p_apellido FROM planificacion p INNER JOIN periodo_escolar pe ON p.idperiodo_escolar = pe.id INNER JOIN grado g ON p.idgrado = g.id INNER JOIN seccion s ON s.id = p.idseccion INNER JOIN ambiente a ON a.id = p.idambiente INNER JOIN personal per ON per.id = p.iddocente INNER JOIN persona persona ON persona.id = per.idpersona WHERE p.id IN(SELECT id FROM planificacion WHERE estatus = 'Planificado') ORDER BY g.grado, s.seccion";
 
     return ejecutarConsulta($sql);
@@ -226,56 +232,56 @@ class Inscripcion
   #Método para mostrar los estudiantes inscritos en una planificación
   function mostrar($idplanificacion)
   {
-      $sql = "SELECT  est.id, per.cedula, per.p_nombre, per.s_nombre, per.p_apellido, per.s_apellido FROM inscripcion ins INNER JOIN estudiante est ON ins.idestudiante = est.id  INNER JOIN persona per ON est.idpersona = per.id WHERE idplanificacion = '$idplanificacion'";
+    $sql = "SELECT  est.id, per.cedula, per.p_nombre, per.s_nombre, per.p_apellido, per.s_apellido, per.id AS idpersona FROM inscripcion ins INNER JOIN estudiante est ON ins.idestudiante = est.id  INNER JOIN persona per ON est.idpersona = per.id WHERE idplanificacion = '$idplanificacion'";
 
-      return ejecutarConsulta($sql);
+    return ejecutarConsulta($sql);
   }
 
   #Método para eliminar planificación
   function eliminar($idplanificacion)
   {
-      $sql = "DELETE FROM planificacion WHERE id = $idplanificacion";
+    $sql = "DELETE FROM planificacion WHERE id = $idplanificacion";
 
-      return ejecutarConsulta($sql);
+    return ejecutarConsulta($sql);
   }
 
   #Método para traer los estudiantes inscritos
   function comprobarinscripcion($cedula)
   {
-      $sql = "SELECT e.id FROM persona p INNER JOIN estudiante e ON e.idpersona = p.id INNER JOIN inscripcion i ON i.idestudiante = e.id WHERE p.cedula = '$cedula' AND e.estatus = 'INSCRITO';";
-      // $sql = "SELECT est.id as idE, per.cedula as cedulaE, per.p_nombre as nombreE, per.p_apellido as apellidoE FROM estudiante as est INNER JOIN persona as per ON per.id = est.idpersona WHERE est.id NOT IN(SELECT idestudiante FROM inscripcion WHERE idperiodo_escolar = (SELECT id FROM periodo_escolar WHERE estatus = 1))";
+    $sql = "SELECT e.id FROM persona p INNER JOIN estudiante e ON e.idpersona = p.id INNER JOIN inscripcion i ON i.idestudiante = e.id WHERE p.cedula = '$cedula' AND e.estatus = 'INSCRITO';";
+    // $sql = "SELECT est.id as idE, per.cedula as cedulaE, per.p_nombre as nombreE, per.p_apellido as apellidoE FROM estudiante as est INNER JOIN persona as per ON per.id = est.idpersona WHERE est.id NOT IN(SELECT idestudiante FROM inscripcion WHERE idperiodo_escolar = (SELECT id FROM periodo_escolar WHERE estatus = 1))";
 
-      return ejecutarConsultaSimpleFila($sql);
+    return ejecutarConsultaSimpleFila($sql);
   }
 
   #Método para comprobar si existe el estudiante
   function comprobarestudiante($cedula)
   {
-      $sql = "SELECT e.id FROM estudiante e INNER JOIN persona p ON e.idpersona = p.id WHERE p.cedula = '$cedula'";
+    $sql = "SELECT e.id FROM estudiante e INNER JOIN persona p ON e.idpersona = p.id WHERE p.cedula = '$cedula'";
 
     return ejecutarConsultaSimpleFila($sql);
   }
 
   #Método para comprobar si existe el representante
   function comprobarrepresentante($cedula, $genero)
-  {   
-      if ($genero) 
-          $sql = "SELECT r.id, r.idpersona, r.instruccion, r.oficio FROM representante r INNER JOIN persona p ON r.idpersona = p.id WHERE p.cedula = '$cedula' AND p.genero = '$genero' AND r.estatus = 1";
-      else
-          $sql = "SELECT r.id, r.idpersona, r.instruccion, r.oficio FROM representante r INNER JOIN persona p ON r.idpersona = p.id WHERE p.cedula = '$cedula' AND r.estatus = 1";
+  {
+    if ($genero)
+      $sql = "SELECT r.id, r.idpersona, r.instruccion, r.oficio FROM representante r INNER JOIN persona p ON r.idpersona = p.id WHERE p.cedula = '$cedula' AND p.genero = '$genero' AND r.estatus = 1";
+    else
+      $sql = "SELECT r.id, r.idpersona, r.instruccion, r.oficio FROM representante r INNER JOIN persona p ON r.idpersona = p.id WHERE p.cedula = '$cedula' AND r.estatus = 1";
 
-      return ejecutarConsultaSimpleFila($sql);
+    return ejecutarConsultaSimpleFila($sql);
   }
 
   #Método para comprobar si existe la persona
   function comprobarpersona($cedula, $genero)
   {
-      if ($genero) 
-          $sql = "SELECT p.id, p.p_nombre, p.s_nombre, p.p_apellido, p.s_apellido, d.direccion as direccion_residencia, (SELECT telefono FROM telefono WHERE idpersona = p.id AND tipo = 'M') as celular, (SELECT direccion FROM direccion_trabajo WHERE idpersona = p.id) as direccion_trabajo FROM persona p  LEFT JOIN direccion d ON d.idpersona = p.id WHERE p.cedula = '$cedula' AND p.genero = '$genero'";
-      else
-          $sql = "SELECT p.id, p.p_nombre, p.s_nombre, p.p_apellido, p.s_apellido, p.genero, d.direccion as direccion_residencia, (SELECT telefono FROM telefono WHERE idpersona = p.id AND tipo = 'M') as celular, (SELECT direccion FROM direccion_trabajo WHERE idpersona = p.id) as direccion_trabajo FROM persona p  LEFT JOIN direccion d ON d.idpersona = p.id WHERE p.cedula = '$cedula'";
+    if ($genero)
+      $sql = "SELECT p.id, p.p_nombre, p.s_nombre, p.p_apellido, p.s_apellido, d.direccion as direccion_residencia, (SELECT telefono FROM telefono WHERE idpersona = p.id AND tipo = 'M') as celular, (SELECT direccion FROM direccion_trabajo WHERE idpersona = p.id) as direccion_trabajo FROM persona p  LEFT JOIN direccion d ON d.idpersona = p.id WHERE p.cedula = '$cedula' AND p.genero = '$genero'";
+    else
+      $sql = "SELECT p.id, p.p_nombre, p.s_nombre, p.p_apellido, p.s_apellido, p.genero, d.direccion as direccion_residencia, (SELECT telefono FROM telefono WHERE idpersona = p.id AND tipo = 'M') as celular, (SELECT direccion FROM direccion_trabajo WHERE idpersona = p.id) as direccion_trabajo FROM persona p  LEFT JOIN direccion d ON d.idpersona = p.id WHERE p.cedula = '$cedula'";
 
-      return ejecutarConsultaSimpleFila($sql);
+    return ejecutarConsultaSimpleFila($sql);
   }
 
   #Método para listar los paises
@@ -322,15 +328,15 @@ class Inscripcion
   #Método para traer el id del período escolar activo
   function consultarperiodo()
   {
-      $sql = "SELECT id, periodo FROM periodo_escolar WHERE estatus = 'Activo'";
-      return ejecutarConsultaSimpleFila($sql);
+    $sql = "SELECT id, periodo FROM periodo_escolar WHERE estatus = 'Activo'";
+    return ejecutarConsultaSimpleFila($sql);
   }
 
   #Método para mostrar las planificaciones con el formato de la vista de inscripción
   public function traerplanificaciones($id_docente = null)
   {
-    if ($id_docente != null) 
-      $sql = "SELECT pla.id, gra.grado, sec.seccion, pla.cupo_disponible FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion WHERE pla.estatus = 'Activo' AND pla.iddocente = '$id_docente' AND pla.cupo_disponible > 0  ORDER BY gra.grado, sec.seccion"; 
+    if ($id_docente != null)
+      $sql = "SELECT pla.id, gra.grado, sec.seccion, pla.cupo_disponible FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion WHERE pla.estatus = 'Activo' AND pla.iddocente = '$id_docente' AND pla.cupo_disponible > 0  ORDER BY gra.grado, sec.seccion";
     else
       $sql = "SELECT pla.id, gra.grado, sec.seccion, pla.cupo_disponible FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion WHERE pla.estatus = 'Activo' AND pla.cupo_disponible > 0 ORDER BY gra.grado, sec.seccion";
     return ejecutarConsulta($sql);
@@ -339,16 +345,16 @@ class Inscripcion
   #Método para comprobar los cupos disponibles de una planificación
   function verificarcupo($idplanificacion, $tipo)
   {
-      $sql = "SELECT $tipo FROM planificacion WHERE id = '$idplanificacion'";
+    $sql = "SELECT $tipo FROM planificacion WHERE id = '$idplanificacion'";
 
-      return ejecutarConsultaSimpleFila($sql);
+    return ejecutarConsultaSimpleFila($sql);
   }
 
   #Método para restar un cupo a la planificación
   function restarcupo($idplanificacion, $cupo_disponible)
   {
-      $sql = "UPDATE planificacion SET cupo_disponible = $cupo_disponible WHERE id = '$idplanificacion'";
-      return ejecutarConsulta($sql);
+    $sql = "UPDATE planificacion SET cupo_disponible = $cupo_disponible WHERE id = '$idplanificacion'";
+    return ejecutarConsulta($sql);
   }
 
   #Método para traer todos los estudiantes que estén esperando a ser inscritos
@@ -374,42 +380,56 @@ class Inscripcion
   #Método para traer periodo de la inscripción
   function traerperiodoinscripcion($idinscripcionregular)
   {
-      $sql = "SELECT per.periodo FROM inscripcion ins INNER JOIN periodo_escolar per ON ins.idperiodo_escolar = per.id WHERE ins.id = '$idinscripcionregular'";
-      return ejecutarConsultaSimpleFila($sql);
+    $sql = "SELECT per.periodo FROM inscripcion ins INNER JOIN periodo_escolar per ON ins.idperiodo_escolar = per.id WHERE ins.id = '$idinscripcionregular'";
+    return ejecutarConsultaSimpleFila($sql);
   }
 
   #Método para traer el siguiente período escolar según la última inscripción
   function traersiguienteperiodo($siguiente_periodo)
   {
-      $sql = "SELECT * FROM periodo_escolar WHERE periodo = '$siguiente_periodo'";
-      
-      return ejecutarConsultaSimpleFila($sql);
+    $sql = "SELECT * FROM periodo_escolar WHERE periodo = '$siguiente_periodo'";
+
+    return ejecutarConsultaSimpleFila($sql);
   }
 
   #Método para traer la planificación que le corresponda al estudiante en inscripción regular
   function traerplanificacionregular($idsiguienteperiodo, $grado)
   {
-      $sql = "SELECT pla.id, gra.grado, sec.seccion, pla.cupo_disponible, per.p_nombre, per.p_apellido FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion INNER JOIN personal perl ON pla.iddocente = perl.id INNER JOIN persona per ON perl.idpersona = per.id WHERE pla.idperiodo_escolar = '$idsiguienteperiodo' AND pla.idgrado = (SELECT id FROM grado WHERE grado = '$grado') AND pla.cupo_disponible > 0";
-      return ejecutarConsulta($sql);
+    $sql = "SELECT pla.id, gra.grado, sec.seccion, pla.cupo_disponible, per.p_nombre, per.p_apellido FROM planificacion pla INNER JOIN grado gra ON gra.id = pla.idgrado INNER JOIN seccion sec ON sec.id = idseccion INNER JOIN personal perl ON pla.iddocente = perl.id INNER JOIN persona per ON perl.idpersona = per.id WHERE pla.idperiodo_escolar = '$idsiguienteperiodo' AND pla.idgrado = (SELECT id FROM grado WHERE grado = '$grado') AND pla.cupo_disponible > 0";
+    return ejecutarConsulta($sql);
   }
 
   #Método para obtener los datos de la institucion
   function traerdatosinstitucion()
   {
-      $sql = "SELECT * FROM institucion";
-      return ejecutarConsultaSimpleFila($sql);
+    $sql = "SELECT * FROM institucion";
+    return ejecutarConsultaSimpleFila($sql);
   }
 
   public function traerpersonal($idusuario)
   {
     $sql = "SELECT c.id FROM usuario a INNER JOIN persona b ON a.idpersona = b.id INNER JOIN personal c ON c.idpersona = b.id WHERE a.id = '$idusuario'";
-   return ejecutarConsultaSimpleFila($sql);
+    return ejecutarConsultaSimpleFila($sql);
   }
 
   public function traerdatosdirector()
   {
     $sql = "SELECT p_d.cargo, perso.p_nombre, perso.p_apellido, perso.genero, perso.cedula  FROM personal_directivo p_d INNER JOIN personal pernal ON pernal.id = p_d.idpersonal INNER JOIN persona perso ON perso.id = pernal.idpersona WHERE p_d.cargo = 'director' AND p_d.estatus = 1";
-   return ejecutarConsultaSimpleFila($sql);
+    return ejecutarConsultaSimpleFila($sql);
   }
 
+  public function traerdocumentosconsignados($idinscripcion)
+  {
+    $sql = "SELECT *  FROM documentos_consignados WHERE idinscripcion = '$idinscripcion'";
+
+    return ejecutarConsultaSimpleFila($sql);
+  }
+
+  #Método para mostrar los estudiantes inscritos en una planificación para el reporte ins_inicial
+  function estudianteplanificacion($idplanificacion)
+  {
+    $sql = "SELECT  est.id, per.cedula, per.p_nombre, per.s_nombre, per.p_apellido, per.s_apellido, per.genero, per.f_nac, muni.municipio, per_repre.p_nombre AS p_nombre_representante, per_repre.p_apellido AS p_apellido_representante, per_repre.cedula AS cedula_repre, direc.direccion, tele.telefono, ins.estatus FROM inscripcion ins INNER JOIN estudiante est ON ins.idestudiante = est.id  INNER JOIN persona per ON est.idpersona = per.id LEFT JOIN lugar_nacimiento lug_nac ON est.id = lug_nac.idestudiante LEFT JOIN parroquia parro ON parro.id = lug_nac.idparroquia LEFT JOIN municipio muni ON muni.id = parro.idmunicipio INNER JOIN representante repre ON repre.id = ins.idrepresentante LEFT JOIN persona per_repre ON per_repre.id = repre.idpersona left JOIN direccion direc ON direc.idpersona = per_repre.id left join telefono tele ON tele.idpersona = per_repre.id  WHERE idplanificacion = '$idplanificacion' ORDER BY per.p_apellido ASC;";
+
+    return ejecutarConsulta($sql);
+  }
 }

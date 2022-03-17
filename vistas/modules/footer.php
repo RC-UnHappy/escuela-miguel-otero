@@ -23,7 +23,7 @@
               <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Today</div>
               <div class="list-group-item list-group-item-accent-warning list-group-item-divider">
                 <div class="avatar float-right">
-                  <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/7.jpg" alt="admin@bootstrapmaster.com">
+                  <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/7.jpg" alt="admin@bootstrapmaster.com">
                 </div>
                 <div>Meeting with
                   <strong>Lucas</strong>
@@ -35,7 +35,7 @@
               </div>
               <div class="list-group-item list-group-item-accent-info">
                 <div class="avatar float-right">
-                  <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/4.jpg" alt="admin@bootstrapmaster.com">
+                  <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/4.jpg" alt="admin@bootstrapmaster.com">
                 </div>
                 <div>Skype with
                   <strong>Megan</strong>
@@ -56,19 +56,19 @@
                   <i class="icon-home"></i>  creativeLabs HQ</small>
                 <div class="avatars-stack mt-2">
                   <div class="avatar avatar-xs">
-                    <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/2.jpg" alt="admin@bootstrapmaster.com">
+                    <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/2.jpg" alt="admin@bootstrapmaster.com">
                   </div>
                   <div class="avatar avatar-xs">
-                    <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/3.jpg" alt="admin@bootstrapmaster.com">
+                    <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/3.jpg" alt="admin@bootstrapmaster.com">
                   </div>
                   <div class="avatar avatar-xs">
-                    <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/4.jpg" alt="admin@bootstrapmaster.com">
+                    <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/4.jpg" alt="admin@bootstrapmaster.com">
                   </div>
                   <div class="avatar avatar-xs">
-                    <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/5.jpg" alt="admin@bootstrapmaster.com">
+                    <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/5.jpg" alt="admin@bootstrapmaster.com">
                   </div>
                   <div class="avatar avatar-xs">
-                    <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/6.jpg" alt="admin@bootstrapmaster.com">
+                    <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/6.jpg" alt="admin@bootstrapmaster.com">
                   </div>
                 </div>
               </div>
@@ -90,25 +90,25 @@
                   <i class="icon-home"></i>  creativeLabs HQ</small>
                 <div class="avatars-stack mt-2">
                   <div class="avatar avatar-xs">
-                    <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/2.jpg" alt="admin@bootstrapmaster.com">
+                    <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/2.jpg" alt="admin@bootstrapmaster.com">
                   </div>
                   <div class="avatar avatar-xs">
-                    <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/3.jpg" alt="admin@bootstrapmaster.com">
+                    <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/3.jpg" alt="admin@bootstrapmaster.com">
                   </div>
                   <div class="avatar avatar-xs">
-                    <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/4.jpg" alt="admin@bootstrapmaster.com">
+                    <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/4.jpg" alt="admin@bootstrapmaster.com">
                   </div>
                   <div class="avatar avatar-xs">
-                    <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/5.jpg" alt="admin@bootstrapmaster.com">
+                    <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/5.jpg" alt="admin@bootstrapmaster.com">
                   </div>
                   <div class="avatar avatar-xs">
-                    <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/6.jpg" alt="admin@bootstrapmaster.com">
+                    <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/6.jpg" alt="admin@bootstrapmaster.com">
                   </div>
                   <div class="avatar avatar-xs">
-                    <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/7.jpg" alt="admin@bootstrapmaster.com">
+                    <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/7.jpg" alt="admin@bootstrapmaster.com">
                   </div>
                   <div class="avatar avatar-xs">
-                    <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/8.jpg" alt="admin@bootstrapmaster.com">
+                    <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/8.jpg" alt="admin@bootstrapmaster.com">
                   </div>
                 </div>
               </div>
@@ -118,7 +118,7 @@
             <div class="message">
               <div class="py-3 pb-5 mr-3 float-left">
                 <div class="avatar">
-                  <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/7.jpg" alt="admin@bootstrapmaster.com">
+                  <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/7.jpg" alt="admin@bootstrapmaster.com">
                   <span class="avatar-status badge-success"></span>
                 </div>
               </div>
@@ -133,7 +133,7 @@
             <div class="message">
               <div class="py-3 pb-5 mr-3 float-left">
                 <div class="avatar">
-                  <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/7.jpg" alt="admin@bootstrapmaster.com">
+                  <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/7.jpg" alt="admin@bootstrapmaster.com">
                   <span class="avatar-status badge-success"></span>
                 </div>
               </div>
@@ -148,7 +148,7 @@
             <div class="message">
               <div class="py-3 pb-5 mr-3 float-left">
                 <div class="avatar">
-                  <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/7.jpg" alt="admin@bootstrapmaster.com">
+                  <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/7.jpg" alt="admin@bootstrapmaster.com">
                   <span class="avatar-status badge-success"></span>
                 </div>
               </div>
@@ -163,7 +163,7 @@
             <div class="message">
               <div class="py-3 pb-5 mr-3 float-left">
                 <div class="avatar">
-                  <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/7.jpg" alt="admin@bootstrapmaster.com">
+                  <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/7.jpg" alt="admin@bootstrapmaster.com">
                   <span class="avatar-status badge-success"></span>
                 </div>
               </div>
@@ -178,7 +178,7 @@
             <div class="message">
               <div class="py-3 pb-5 mr-3 float-left">
                 <div class="avatar">
-                  <img class="img-avatar" src="/escuela-miguel-otero/public/img/avatars/7.jpg" alt="admin@bootstrapmaster.com">
+                  <img class="img-avatar" src="/escuela-romulo-gallegos/public/img/avatars/7.jpg" alt="admin@bootstrapmaster.com">
                   <span class="avatar-status badge-success"></span>
                 </div>
               </div>
@@ -296,51 +296,51 @@
         </div> -->
       </footer>
       <!-- CoreUI and necessary plugins-->
-      <script src="/escuela-miguel-otero/public/js/jquery-3.3.1.min.js"></script>
-      <script src="/escuela-miguel-otero/public/js/popper.min.js"></script>
-      <script src="/escuela-miguel-otero/public/js/pace.min.js"></script>
-      <script src="/escuela-miguel-otero/public/js/perfect-scrollbar.min.js"></script>
-      <script src="/escuela-miguel-otero/public/js/coreui.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/jquery-3.3.1.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/popper.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/pace.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/perfect-scrollbar.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/coreui.min.js"></script>
 
       <!-- Plugins and scripts required by this view-->
-      <script src="/escuela-miguel-otero/public/js/Chart.min.js"></script>
-      <script src="/escuela-miguel-otero/public/js/custom-tooltips.min.js"></script>
-      <!-- <script src="/escuela-miguel-otero/public/js/main.js"></script> -->
-      <!-- <script src="/escuela-miguel-otero/public/js/widgets.js"></script> -->
+      <script src="/escuela-romulo-gallegos/public/js/Chart.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/custom-tooltips.min.js"></script>
+      <!-- <script src="/escuela-romulo-gallegos/public/js/main.js"></script> -->
+      <!-- <script src="/escuela-romulo-gallegos/public/js/widgets.js"></script> -->
 
       <!-- Fuentes de la aplicación -->
-      <script src="/escuela-miguel-otero/public/js/solid.min.js"></script>
-      <script src="/escuela-miguel-otero/public/js/regular.min.js"></script>
-      <script src="/escuela-miguel-otero/public/js/fontawesome.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/solid.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/regular.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/fontawesome.min.js"></script>
 
       <!-- Bootstrap js -->
-      <script src="/escuela-miguel-otero/public/js/bootstrap.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/bootstrap.min.js"></script>
 
       <!-- Datatable -->
-      <script src="/escuela-miguel-otero/public/js/jquery.dataTables.min.js"></script>
-      <script src="/escuela-miguel-otero/public/js/dataTables.bootstrap4.min.js"></script>
-      <script src="/escuela-miguel-otero/public/js/dataTables.buttons.min.js"></script>
-      <script src="/escuela-miguel-otero/public/js/buttons.bootstrap4.min.js"></script>
-      <script src="/escuela-miguel-otero/public/js/buttons.html5.min.js"></script>
-      <script src="/escuela-miguel-otero/public/js/buttons.colVis.min.js"></script>
-      <script src="/escuela-miguel-otero/public/js/pdfmake.min.js"></script>
-      <script src="/escuela-miguel-otero/public/js/vfs_fonts.js"></script>
-      <script src="/escuela-miguel-otero/public/js/jszip.min.js"></script>
-      <script src="/escuela-miguel-otero/public/js/dataTables.responsive.min.js"></script>
-      <script src="/escuela-miguel-otero/public/js/responsive.bootstrap4.min.js"></script>
-      <script src="/escuela-miguel-otero/public/js/dataTables.scroller.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/jquery.dataTables.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/dataTables.bootstrap4.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/dataTables.buttons.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/buttons.bootstrap4.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/buttons.html5.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/buttons.colVis.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/pdfmake.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/vfs_fonts.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/jszip.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/dataTables.responsive.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/responsive.bootstrap4.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/dataTables.scroller.min.js"></script>
 
       <!-- Alertas con estilo -->
-      <script src="/escuela-miguel-otero/public/js/sweetalert2.all.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/sweetalert2.all.min.js"></script>
 
       <!-- Script principal -->
-      <script src="/escuela-miguel-otero/vistas/scripts/principal.js"></script>
+      <script src="/escuela-romulo-gallegos/vistas/scripts/principal.js"></script>
 
       <!-- Latest compiled and minified JavaScript -->
-      <script src="/escuela-miguel-otero/public/js/bootstrap-select.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/bootstrap-select.min.js"></script>
 
       <!-- JQuery Number -->
-      <script src="/escuela-miguel-otero/public/js/jqueryNumber/jquerynumber.min.js"></script>
+      <script src="/escuela-romulo-gallegos/public/js/jqueryNumber/jquerynumber.min.js"></script>
       </body>
 
       </html>

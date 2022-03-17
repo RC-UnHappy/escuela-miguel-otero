@@ -14,7 +14,7 @@ $licenciado="Luis Marin";
 $cedula_licenciado = 29629048;
 
 $texto = utf8_decode("Quién suscribe Lcdo. ".$licenciado.", portador de la Cédula de Identidad Nº "
-	.$cedula_licenciado.", Director de la Escuela Básica Bolivariana 'Miguel Otero Silva', Código DEA OD00041808, Ubicada al Final calle 'G', V Etapa Urb. 'La Goajira' del Municipio Páez, estado Portuguesa. Hace constar por medio de la presente que el (la) estudiante________________________________________ Titular de la Cédula de Identidad Nº ______________Natural de ___________________Estado __________________________cursó el ___________________Grado de Educación Primaria en esta Institución, Año Escolar________________ y durante su permanencia en el mismo observó una Conducta __________________________. ");
+	.$cedula_licenciado.", Director de la Escuela Básica Bolivariana 'Rómulo Gallegos', Código DEA OD00041808, Ubicada al Final calle 'G', V Etapa Urb. 'La Goajira' del Municipio Páez, estado Portuguesa. Hace constar por medio de la presente que el (la) estudiante________________________________________ Titular de la Cédula de Identidad Nº ______________Natural de ___________________Estado __________________________cursó el ___________________Grado de Educación Primaria en esta Institución, Año Escolar________________ y durante su permanencia en el mismo observó una Conducta __________________________. ");
 
 
 $duracion = utf8_decode("Constancia que se expide a solicitud de parte interesada en Acarigua a los ___ días del Mes de ______ del Año ______. ");

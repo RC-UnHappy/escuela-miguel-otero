@@ -131,50 +131,50 @@ $direccion_trabajo_representante_regular = isset($_POST['direccion_trabajo_repre
 
 #Se ejecuta un caso dependiendo del valor del parámetro GET
 switch ($_GET['op']) {
-  
+
   case 'inscribir':
     #Se deshabilita el guardado automático de la base de datos
     autocommit(FALSE);
     #Variable para comprobar que todo salió bien al final
     $sw = TRUE;
-    
-    
+
+
 
     /**
      * Operaciones relacionadas con el registro, actualización de la madre
      */
     if (empty($idmadre) && empty($idpersonamadre)) {
       $idpersonamadre = $Inscripcion->insertar_persona($cedula_madre, $p_nombre_madre, $s_nombre_madre, $p_apellido_madre, $s_apellido_madre, 'F') or $sw = FALSE;
-      
+
       $Inscripcion->insertar_direccion_residencial($idpersonamadre, 'NULL', $direccion_residencia_madre) or $sw = FALSE;
-      
-      
+
+
       $Inscripcion->insertar_direccion_trabajo($idpersonamadre, 'NUll', $direccion_trabajo_madre) or $sw = FALSE;
-      
+
       #Verifica que las variables de los teléfonos contengan datos y los guarda
       if (!empty($celular_madre))
-      $Inscripcion->insertar_telefono($idpersonamadre, $celular_madre, 'M') or $sw = FALSE;
-      
+        $Inscripcion->insertar_telefono($idpersonamadre, $celular_madre, 'M') or $sw = FALSE;
+
       #Se registra el representante
       $idmadre = $Inscripcion->insertar_representante($idpersonamadre, NULL, $oficio_madre) or $sw = FALSE;
     }
     // Cuando la persona ya estaba registrada pero no como representante
-    else if(!empty($idpersonamadre) && empty($idmadre)) {
+    else if (!empty($idpersonamadre) && empty($idmadre)) {
       #Se editan los datos de la persona
       $Inscripcion->editar_persona($idpersonamadre, $cedula_madre, $p_nombre_madre, $s_nombre_madre, $p_apellido_madre, $s_apellido_madre, 'F') or $sw = FALSE;
-      
+
       if ($Inscripcion->verificar_direccion_residencial($idpersonamadre)) {
         $Inscripcion->editar_direccion_residencial($idpersonamadre,  $direccion_residencia_madre) or $sw = FALSE;
       } else {
         $Inscripcion->insertar_direccion_residencial($idpersonamadre, 'NULL', $direccion_residencia_madre) or $sw = FALSE;
       }
-      
+
       if ($Inscripcion->verificar_direccion_trabajo($idpersonamadre)) {
         $Inscripcion->editar_direccion_trabajo($idpersonamadre, $direccion_trabajo_madre) or $sw = FALSE;
       } else {
         $Inscripcion->insertar_direccion_trabajo($idpersonamadre, 'NULL', $direccion_trabajo_madre) or $sw = FALSE;
       }
-      
+
       #Verifica que las variables de los teléfonos contengan datos y los guarda
       if (!empty($celular_madre)) {
         $Inscripcion->eliminar_telefono($idpersonamadre, 'M') or $sw = FALSE;
@@ -182,30 +182,29 @@ switch ($_GET['op']) {
       } else {
         $Inscripcion->eliminar_telefono($idpersonamadre, 'M') or $sw = FALSE;
       }
-      
+
       #Se registra el representante
       $idmadre = $Inscripcion->insertar_representante($idpersonamadre, NULL, $oficio_madre) or $sw = FALSE;
-    }
-    else {
+    } else {
       #Se obtiene el id de la persona 
       $idpersonamadre = $Inscripcion->idpersona($idmadre);
       $idpersonamadre = $idpersonamadre['idpersona'];
-      
+
       #Se editan los datos de la persona
       $Inscripcion->editar_persona($idpersonamadre, $cedula_madre, $p_nombre_madre, $s_nombre_madre, $p_apellido_madre, $s_apellido_madre, 'F') or $sw = FALSE;
-      
+
       if ($Inscripcion->verificar_direccion_residencial($idpersonamadre)) {
         $Inscripcion->editar_direccion_residencial($idpersonamadre,  $direccion_residencia_madre) or $sw = FALSE;
       } else {
         $Inscripcion->insertar_direccion_residencial($idpersonamadre, 'NULL', $direccion_residencia_madre) or $sw = FALSE;
       }
-      
+
       if ($Inscripcion->verificar_direccion_trabajo($idpersonamadre)) {
         $Inscripcion->editar_direccion_trabajo($idpersonamadre, $direccion_trabajo_madre) or $sw = FALSE;
       } else {
         $Inscripcion->insertar_direccion_trabajo($idpersonamadre, 'NULL', $direccion_trabajo_madre) or $sw = FALSE;
       }
-      
+
       #Verifica que las variables de los teléfonos contengan datos y los guarda
       if (!empty($celular_madre)) {
         $Inscripcion->eliminar_telefono($idpersonamadre, 'M') or $sw = FALSE;
@@ -213,27 +212,26 @@ switch ($_GET['op']) {
       } else {
         $Inscripcion->eliminar_telefono($idpersonamadre, 'M') or $sw = FALSE;
       }
-      
+
       #Se edita el representante
       $rspta = $Inscripcion->editar_representante($idpersonamadre, $oficio_madre) or $sw = FALSE;
-      
     }
-    
+
     /**
      * Operaciones relacionadas con el registro, actualización del padre
      */
     if (empty($idpadre) && empty($idpersonapadre)) {
       if (!empty($cedula_padre)) {
         $idpersonapadre = $Inscripcion->insertar_persona($cedula_padre, $p_nombre_padre, $s_nombre_padre, $p_apellido_padre, $s_apellido_padre, 'M') or $sw = FALSE;
-        
+
         $Inscripcion->insertar_direccion_residencial($idpersonapadre, 'NULL', $direccion_residencia_padre) or $sw = FALSE;
-        
+
         $Inscripcion->insertar_direccion_trabajo($idpersonapadre, 'NUll', $direccion_trabajo_padre) or $sw = FALSE;
-        
+
         #Verifica que las variables de los teléfonos contengan datos y los guarda
         if (!empty($celular_padre))
-        $Inscripcion->insertar_telefono($idpersonapadre, $celular_padre, 'M') or $sw = FALSE;
-        
+          $Inscripcion->insertar_telefono($idpersonapadre, $celular_padre, 'M') or $sw = FALSE;
+
         #Se registra el representante
         $idpadre = $Inscripcion->insertar_representante($idpersonapadre, NULL, $oficio_padre) or $sw = FALSE;
       }
@@ -242,19 +240,19 @@ switch ($_GET['op']) {
     else if (!empty($idpersonapadre) && empty($idpadre)) {
       #Se editan los datos de la persona
       $Inscripcion->editar_persona($idpersonapadre, $cedula_padre, $p_nombre_padre, $s_nombre_padre, $p_apellido_padre, $s_apellido_padre, 'M') or $sw = FALSE;
-      
+
       if ($Inscripcion->verificar_direccion_residencial($idpersonapadre)) {
         $Inscripcion->editar_direccion_residencial($idpersonapadre,  $direccion_residencia_padre) or $sw = FALSE;
       } else {
         $Inscripcion->insertar_direccion_residencial($idpersonapadre, 'NULL', $direccion_residencia_padre) or $sw = FALSE;
       }
-      
+
       if ($Inscripcion->verificar_direccion_trabajo($idpersonapadre)) {
         $Inscripcion->editar_direccion_trabajo($idpersonapadre, $direccion_trabajo_padre) or $sw = FALSE;
       } else {
         $Inscripcion->insertar_direccion_trabajo($idpersonapadre, 'NULL', $direccion_trabajo_padre) or $sw = FALSE;
       }
-      
+
       #Verifica que las variables de los teléfonos contengan datos y los guarda
       if (!empty($celular_padre)) {
         $Inscripcion->eliminar_telefono($idpersonapadre, 'M') or $sw = FALSE;
@@ -262,31 +260,30 @@ switch ($_GET['op']) {
       } else {
         $Inscripcion->eliminar_telefono($idpersonapadre, 'M') or $sw = FALSE;
       }
-      
+
       #Se registra el representante
       $idpadre = $Inscripcion->insertar_representante($idpersonapadre, NULL, $oficio_padre) or $sw = FALSE;
       // Cuando la persona ya estaba registrada y el representante también
-    } 
-    else {
+    } else {
       #Se obtiene el id de la persona 
       $idpersonapadre = $Inscripcion->idpersona($idpadre);
       $idpersonapadre = $idpersonapadre['idpersona'];
-      
+
       #Se editan los datos de la persona
       $Inscripcion->editar_persona($idpersonapadre, $cedula_padre, $p_nombre_padre, $s_nombre_padre, $p_apellido_padre, $s_apellido_padre, 'M') or $sw = FALSE;
-      
+
       if ($Inscripcion->verificar_direccion_residencial($idpersonapadre)) {
         $Inscripcion->editar_direccion_residencial($idpersonapadre,  $direccion_residencia_padre) or $sw = FALSE;
       } else {
         $Inscripcion->insertar_direccion_residencial($idpersonapadre, 'NULL', $direccion_residencia_padre) or $sw = FALSE;
       }
-      
+
       if ($Inscripcion->verificar_direccion_trabajo($idpersonapadre)) {
         $Inscripcion->editar_direccion_trabajo($idpersonapadre, $direccion_trabajo_padre) or $sw = FALSE;
       } else {
         $Inscripcion->insertar_direccion_trabajo($idpersonapadre, 'NULL', $direccion_trabajo_padre) or $sw = FALSE;
       }
-      
+
       #Verifica que las variables de los teléfonos contengan datos y los guarda
       if (!empty($celular_padre)) {
         $Inscripcion->eliminar_telefono($idpersonapadre, 'M') or $sw = FALSE;
@@ -294,29 +291,29 @@ switch ($_GET['op']) {
       } else {
         $Inscripcion->eliminar_telefono($idpersonapadre, 'M') or $sw = FALSE;
       }
-      
+
       #Se edita el representante
       $rspta = $Inscripcion->editar_representante($idpersonapadre, $oficio_padre) or $sw = FALSE;
     }
-    
-    
-   
-    
+
+
+
+
     /**
      * Operaciones relacionadas con el registro, actualización del representante
      */
     if (empty($tiporepresentante)) {
       if (empty($idrepresentante) && empty($idpersonarepresentante)) {
         $idpersonarepresentante = $Inscripcion->insertar_persona($cedula_representante, $p_nombre_representante, $s_nombre_representante, $p_apellido_representante, $s_apellido_representante, $genero_representante) or $sw = FALSE;
-        
+
         $Inscripcion->insertar_direccion_residencial($idpersonarepresentante, 'NULL', $direccion_residencia_representante) or $sw = FALSE;
-        
+
         $Inscripcion->insertar_direccion_trabajo($idpersonarepresentante, 'NUll', $direccion_trabajo_representante) or $sw = FALSE;
-        
+
         #Verifica que las variables de los teléfonos contengan datos y los guarda
         if (!empty($celular_representante))
-        $Inscripcion->insertar_telefono($idpersonarepresentante, $celular_representante, 'M') or $sw = FALSE;
-        
+          $Inscripcion->insertar_telefono($idpersonarepresentante, $celular_representante, 'M') or $sw = FALSE;
+
         #Se registra el representante
         $idrepresentante = $Inscripcion->insertar_representante($idpersonarepresentante, NULL, $oficio_representante) or $sw = FALSE;
       }
@@ -324,19 +321,19 @@ switch ($_GET['op']) {
       else if (!empty($idpersonarepresentante) && empty($idrepresentante)) {
         #Se editan los datos de la persona
         $Inscripcion->editar_persona($idpersonarepresentante, $cedula_representante, $p_nombre_representante, $s_nombre_representante, $p_apellido_representante, $s_apellido_representante) or $sw = FALSE;
-        
+
         if ($Inscripcion->verificar_direccion_residencial($idpersonarepresentante)) {
           $Inscripcion->editar_direccion_residencial($idpersonarepresentante,  $direccion_residencia_representante) or $sw = FALSE;
         } else {
           $Inscripcion->insertar_direccion_residencial($idpersonarepresentante, 'NULL', $direccion_residencia_representante) or $sw = FALSE;
         }
-        
+
         if ($Inscripcion->verificar_direccion_trabajo($idpersonarepresentante)) {
           $Inscripcion->editar_direccion_trabajo($idpersonarepresentante, $direccion_trabajo_representante) or $sw = FALSE;
         } else {
           $Inscripcion->insertar_direccion_trabajo($idpersonarepresentante, 'NULL', $direccion_trabajo_representante) or $sw = FALSE;
         }
-        
+
         #Verifica que las variables de los teléfonos contengan datos y los guarda
         if (!empty($celular_representante)) {
           $Inscripcion->eliminar_telefono($idpersonarepresentante, 'M') or $sw = FALSE;
@@ -344,29 +341,29 @@ switch ($_GET['op']) {
         } else {
           $Inscripcion->eliminar_telefono($idpersonarepresentante, 'M') or $sw = FALSE;
         }
-        
+
         #Se registra el representante
         $idrepresentante = $Inscripcion->insertar_representante($idpersonarepresentante, NULL, $oficio_representante) or $sw = FALSE;
       } else {
         #Se obtiene el id de la persona 
         $idpersonarepresentante = $Inscripcion->idpersona($idrepresentante);
         $idpersonarepresentante = $idpersonarepresentante['idpersona'];
-        
+
         #Se editan los datos de la persona
         $Inscripcion->editar_persona($idpersonarepresentante, $cedula_representante, $p_nombre_representante, $s_nombre_representante, $p_apellido_representante, $s_apellido_representante) or $sw = FALSE;
-        
+
         if ($Inscripcion->verificar_direccion_residencial($idpersonarepresentante)) {
           $Inscripcion->editar_direccion_residencial($idpersonarepresentante,  $direccion_residencia_representante) or $sw = FALSE;
         } else {
           $Inscripcion->insertar_direccion_residencial($idpersonarepresentante, 'NULL', $direccion_residencia_representante) or $sw = FALSE;
         }
-        
+
         if ($Inscripcion->verificar_direccion_trabajo($idpersonarepresentante)) {
           $Inscripcion->editar_direccion_trabajo($idpersonarepresentante, $direccion_trabajo_representante) or $sw = FALSE;
         } else {
           $Inscripcion->insertar_direccion_trabajo($idpersonarepresentante, 'NULL', $direccion_trabajo_representante) or $sw = FALSE;
         }
-        
+
         #Verifica que las variables de los teléfonos contengan datos y los guarda
         if (!empty($celular_representante)) {
           $Inscripcion->eliminar_telefono($idpersonarepresentante, 'M') or $sw = FALSE;
@@ -374,49 +371,47 @@ switch ($_GET['op']) {
         } else {
           $Inscripcion->eliminar_telefono($idpersonarepresentante, 'M') or $sw = FALSE;
         }
-        
+
         #Se edita el representante
         $rspta = $Inscripcion->editar_representante($idpersonarepresentante, $oficio_representante) or $sw = FALSE;
       }
+    } else {
+      if ($tiporepresentante == 'madre')
+        $idrepresentante = $idmadre;
+      else if ($tiporepresentante == 'padre')
+        $idrepresentante = $idpadre;
     }
-    else {
-      if($tiporepresentante == 'madre')
-      $idrepresentante = $idmadre;
-      else if($tiporepresentante == 'padre')
-      $idrepresentante = $idpadre;
-    }
-    
-    
+
+
     /**
      * Operaciones relacionadas con el estudiante
      */
     #Si la variable esta vacía quiere decir que es un nuevo registro
     $idpersonaestudiante = $Inscripcion->comprobarpersona($cedula_estudiante, FALSE);
-    $idpersonaestudiante = !empty($idpersonaestudiante) ? $idpersonaestudiante['id'] : NULL; 
-    
+    $idpersonaestudiante = !empty($idpersonaestudiante) ? $idpersonaestudiante['id'] : NULL;
+
     $idestudiante = $Inscripcion->comprobarestudiante($cedula_estudiante);
     $idestudiante = !empty($idestudiante) ? $idestudiante['id'] : NULL;
-    
-    
+
+
     if (empty($idestudiante) && empty($idpersonaestudiante)) {
-      
-      
+
+
       $idpersonaestudiante = $Inscripcion->insertar_persona($cedula_estudiante, $p_nombre_estudiante, $s_nombre_estudiante, $p_apellido_estudiante, $s_apellido_estudiante, $genero_estudiante, $f_nac_estudiante) or $sw = FALSE;
-      
+
       #Se registra el estudiante
       $idestudiante = $Inscripcion->insertar_estudiante($idpersonaestudiante, $idpersonamadre, $idpersonapadre, $parto, $orden, 'INSCRITO') or $sw = FALSE;
-      
+
       #Se registra el lugar de nacimiento del estudiante
       $Inscripcion->insertar_lugar_nacimiento($idestudiante, $parroquia_nacimiento_estudiante) or $sw = FALSE;
-      
     }
     // Cuando la persona ya estaba registrada pero no como estudiante
     else if (!empty($idpersonaestudiante) && empty($idestudiante)) {
-      
+
       $Inscripcion->editar_persona($idpersonaestudiante, $cedula_estudiante, $p_nombre_estudiante, $s_nombre_estudiante, $p_apellido_estudiante, $s_apellido_estudiante) or $sw = FALSE;
-      
+
       $idestudiante = $Inscripcion->insertar_estudiante($idpersonaestudiante, $idpersonamadre, $idpersonapadre, $parto, $orden, 'INSCRITO') or $sw = FALSE;
-      
+
       if ($Inscripcion->verificar_lugar_nacimiento($idestudiante)) {
         #Se edita el lugar de nacimiento del estudiante
         $Inscripcion->editar_lugar_nacimiento($idestudiante, $parroquia_nacimiento_estudiante) or $sw = FALSE;
@@ -424,14 +419,12 @@ switch ($_GET['op']) {
         #Se registra el lugar de nacimiento del estudiante
         $Inscripcion->insertar_lugar_nacimiento($idestudiante, $parroquia_nacimiento_estudiante) or $sw = FALSE;
       }
-      
-    } 
-    else {
+    } else {
       // Se editan los datos de la persona 
       $Inscripcion->editar_persona_estudiante($idpersonaestudiante, $cedula_estudiante, $p_nombre_estudiante, $s_nombre_estudiante, $p_apellido_estudiante, $s_apellido_estudiante, $genero_estudiante, $f_nac_estudiante) or $sw = FALSE;
-      
+
       $Inscripcion->editar_estudiante($idpersonaestudiante, $idpersonamadre, $idpersonapadre, $parto, $orden, 'INSCRITO') or $sw = FALSE;
-      
+
       if ($Inscripcion->verificar_lugar_nacimiento($idestudiante)) {
         #Se edita el lugar de nacimiento del estudiante
         $Inscripcion->editar_lugar_nacimiento($idestudiante, $parroquia_nacimiento_estudiante) or $sw = FALSE;
@@ -440,11 +433,11 @@ switch ($_GET['op']) {
         $Inscripcion->insertar_lugar_nacimiento($idestudiante, $parroquia_nacimiento_estudiante) or $sw = FALSE;
       }
     }
-    
+
 
     /**
      * Operaciones relacionadas con la inscripción
-     */     
+     */
     #Se trae el id del período escolar en curso
     $idperiodo_escolar = $Inscripcion->consultarperiodo() or $sw = FALSE;
     $idperiodo_escolar = $idperiodo_escolar['id'];
@@ -452,24 +445,24 @@ switch ($_GET['op']) {
     #Se comprueba que haya cupo disponible en la planificación
     $cupo_disponible = $Inscripcion->verificarcupo($idplanificacion, 'cupo_disponible') or $sw = FALSE;
     $cupo_disponible = $cupo_disponible['cupo_disponible'];
-    
-    if($cupo_disponible == 0)
+
+    if ($cupo_disponible == 0)
       $sw = FALSE;
-    
+
     $cupo_disponible = ($cupo_disponible - 1);
 
     #Método para restar un cupo a la planificación
     $Inscripcion->restarcupo($idplanificacion, $cupo_disponible) or $sw = FALSE;
-    
+
     #Se registra la inscripción
     $idinscripcion = $Inscripcion->inscribir($idperiodo_escolar, $idplanificacion, $idestudiante, $idrepresentante, $parentesco_representante, $plantel_procedencia_estudiante, $observaciones, 'CURSANDO') or $sw = FALSE;
-   
-    
+
+
     /**
      * Operaciones relacionadas con los documentos consignados
      */
     $Inscripcion->registrar_documentos_consignados($idinscripcion, $fotocopia_cedula_madre, $fotocopia_cedula_padre, $fotocopia_cedula_representante, $fotos_representante, $fotocopia_partida_nacimiento, $fotocopia_cedula_estudiante, $fotocopia_constancia_vacunas, $fotos_estudiante, $boleta_promocion, $constancia_buena_conducta, $informe_descriptivo) or $sw = FALSE;
- 
+
     #Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
     if ($sw) {
       commit();
@@ -479,10 +472,10 @@ switch ($_GET['op']) {
       echo 'false';
     }
 
-  break;
-        
+    break;
+
   case 'listar':
-    
+
     // Se determina el rol que tiene el usuario
     $rol_usuario = isset($_SESSION) ? $_SESSION['rol'] : '';
     $id_usuario = isset($_SESSION) ? $_SESSION['idusuario'] : '';
@@ -490,172 +483,165 @@ switch ($_GET['op']) {
     $id_docente = $Inscripcion->traerpersonal($id_usuario);
     $id_docente = !empty($id_docente) ? $id_docente['id'] : '';
 
+    // $boton_reporte_insc_inicial = '<a target="_blank" href="../../reporte/ins_inicial.php?idplanificacion=5"> <button class="btn btn-primary" title="Matrícula"><i class="fa fa-list"></i></button></a> ';
+
+    // Si el usuario es docente
     if ($rol_usuario == 'Docente') {
 
       $rspta = $Inscripcion->listarPlanificacionActiva($id_docente);
-  
+
       if ($rspta->num_rows != 0) {
 
         while ($reg = $rspta->fetch_object()) {
-            
+
           $percentage = ($reg->cupo_disponible * 100) / $reg->cupo;
           $percentage = 100 - $percentage;
-          $percentage_color = ($percentage >= 50 && $percentage < 75) ? 'bg-warning' 
-          : ($percentage >= 75 ? 'bg-danger' 
-          : 'bg-success');
-          
+          $percentage_color = ($percentage >= 50 && $percentage < 75) ? 'bg-warning'
+            : ($percentage >= 75 ? 'bg-danger'
+              : 'bg-success');
+
           $data[] = array(
-              '0' => ($reg->estatus) ?
-              
-              '<button class="btn btn-outline-primary " title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#estudiantesSeccionModal"><i class="fas fa-eye"></i></button>' 
-              
-              : 
-              
-              '<button class="btn btn-outline-primary" title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#estudiantesSeccionModal"><i class="fas fa-eye"></i></button>',
-              
-              '1' => $reg->grado . ' º',
-              '2' => '"' . $reg->seccion . '"',
-              '3' => $reg->p_nombre . ' ' . $reg->p_apellido,
-              '4' => '<div class="text-uppercase">
+            '0' => ($reg->estatus) ?
+
+              '<button class="btn btn-outline-primary " title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#estudiantesSeccionModal"><i class="fas fa-eye"></i></button> ' . '<a target="_blank" href="../../reporte/ins_inicial.php?idplanificacion=' . $reg->id . '"> <button class="btn btn-primary" title="Matrícula"><i class="fa fa-list"></i></button></a> '
+
+              :
+
+              '<button class="btn btn-outline-primary" title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#estudiantesSeccionModal"><i class="fas fa-eye"></i></button> ' . '<a target="_blank" href="../../reporte/ins_inicial.php?idplanificacion=' . $reg->id . '"> <button class="btn btn-primary" title="Matrícula"><i class="fa fa-list"></i></button></a> ',
+
+            '1' => $reg->grado . ' º',
+            '2' => '"' . $reg->seccion . '"',
+            '3' => $reg->p_nombre . ' ' . $reg->p_apellido,
+            '4' => '<div class="text-uppercase">
               <small>
               <b>Porcentaje de Ocupación</b>
               </small>
               </div>
               <div class="progress bg-secondary" style="height: 30px;" bg-success>
-              <div class="progress-bar '.$percentage_color.'"                  role="progressbar" style="width: '.$percentage.'%; color:white;"           aria-valuenow="'.$percentage.'" aria-valuemin="0" aria-valuemax="100">'.number_format($percentage, 1).' %
+              <div class="progress-bar ' . $percentage_color . '"                  role="progressbar" style="width: ' . $percentage . '%; color:white;"           aria-valuenow="' . $percentage . '" aria-valuemin="0" aria-valuemax="100">' . number_format($percentage, 1) . ' %
               </div>
               </div>
-              <small >'.($reg->cupo - $reg->cupo_disponible).' / '.$reg->cupo. ' cupos</small>',
-              '5' => $reg->periodo
+              <small >' . ($reg->cupo - $reg->cupo_disponible) . ' / ' . $reg->cupo . ' cupos</small>',
+            '5' => $reg->periodo
           );
         }
-          
+
         $results = array(
-            "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
-            "recordsTotal" => count($data), #Se envía el total de registros al datatable
-            "recordsFiltered" => count($data), #Se envía el total de registros a visualizar
-            "data" => $data #datos en un array
-            
+          "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+          "recordsTotal" => count($data), #Se envía el total de registros al datatable
+          "recordsFiltered" => count($data), #Se envía el total de registros a visualizar
+          "data" => $data #datos en un array
+
         );
       } else {
 
         $rspta = $Inscripcion->listarPlanificacionPlanificada($id_docente);
 
         if ($rspta->num_rows != 0) {
-          
+
           while ($reg = $rspta->fetch_object()) {
-              
+
             $percentage = ($reg->cupo_disponible * 100) / $reg->cupo;
             $percentage = 100 - $percentage;
-            $percentage_color = ($percentage >= 50 && $percentage < 75) ? 'bg-warning' 
-            : ($percentage >= 75 ? 'bg-danger' 
-            : 'bg-success');
-            
+            $percentage_color = ($percentage >= 50 && $percentage < 75) ? 'bg-warning'
+              : ($percentage >= 75 ? 'bg-danger'
+                : 'bg-success');
+
             $data[] = array(
-                '0' => ($reg->estatus) ?
-                
-                '<button class="btn btn-outline-primary " title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#estudiantesSeccionModal"><i class="fas fa-eye"></i></button>' 
-                
-                : 
-                
-                '<button class="btn btn-outline-primary" title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#estudiantesSeccionModal"><i class="fas fa-eye"></i></button>',
-                
-                '1' => $reg->grado . ' º',
-                '2' => '"' . $reg->seccion . '"',
-                '3' => $reg->p_nombre . ' ' . $reg->p_apellido,
-                '4' => '<div class="text-uppercase">
+              '0' => ($reg->estatus) ?
+
+                '<button class="btn btn-outline-primary " title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#estudiantesSeccionModal"><i class="fas fa-eye"></i></button> ' . '<a target="_blank" href="../../reporte/ins_inicial.php?idplanificacion=' . $reg->id . '"> <button class="btn btn-primary" title="Matrícula"><i class="fa fa-list"></i></button></a> '
+
+                :
+
+                '<button class="btn btn-outline-primary" title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#estudiantesSeccionModal"><i class="fas fa-eye"></i></button> ' . '<a target="_blank" href="../../reporte/ins_inicial.php?idplanificacion=' . $reg->id . '"> <button class="btn btn-primary" title="Matrícula"><i class="fa fa-list"></i></button></a> ',
+
+              '1' => $reg->grado . ' º',
+              '2' => '"' . $reg->seccion . '"',
+              '3' => $reg->p_nombre . ' ' . $reg->p_apellido,
+              '4' => '<div class="text-uppercase">
                 <small>
                 <b>Porcentaje de Ocupación</b>
                 </small>
                 </div>
                 <div class="progress bg-secondary" style="height: 30px;" bg-success>
-                <div class="progress-bar '.$percentage_color.'"                  role="progressbar" style="width: '.$percentage.'%; color:white;"           aria-valuenow="'.$percentage.'" aria-valuemin="0" aria-valuemax="100">'.number_format($percentage, 1).' %
+                <div class="progress-bar ' . $percentage_color . '"                  role="progressbar" style="width: ' . $percentage . '%; color:white;"           aria-valuenow="' . $percentage . '" aria-valuemin="0" aria-valuemax="100">' . number_format($percentage, 1) . ' %
                 </div>
                 </div>
-                <small >'.($reg->cupo - $reg->cupo_disponible).' / '.$reg->cupo. ' cupos</small>',
-                '5' => $reg->periodo
+                <small >' . ($reg->cupo - $reg->cupo_disponible) . ' / ' . $reg->cupo . ' cupos</small>',
+              '5' => $reg->periodo
             );
           }
-            
-          $results = array(
-              "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
-              "recordsTotal" => count($data), #Se envía el total de registros al datatable
-              "recordsFiltered" => count($data), #Se envía el total de registros a visualizar
-              "data" => $data #datos en un array
-              
-          );
-          
-        }
-        else {
 
           $results = array(
-              "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
-              "recordsTotal" => 0, #Se envía el total de registros al datatable
-              "recordsFiltered" => 0, #Se envía el total de registros a visualizar
-              "data" => '' #datos en un array
-              
+            "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+            "recordsTotal" => count($data), #Se envía el total de registros al datatable
+            "recordsFiltered" => count($data), #Se envía el total de registros a visualizar
+            "data" => $data #datos en un array
+
           );
+        } else {
 
+          $results = array(
+            "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+            "recordsTotal" => 0, #Se envía el total de registros al datatable
+            "recordsFiltered" => 0, #Se envía el total de registros a visualizar
+            "data" => '' #datos en un array
+
+          );
         }
-
       }
     }
-    
-
-
+    // Si no es docente
     else {
       $rspta = $Inscripcion->listarPlanificacionActiva();
-    
-      
+
+
       if ($rspta->num_rows != 0) {
 
         while ($reg = $rspta->fetch_object()) {
-            
+
           $percentage = ($reg->cupo_disponible * 100) / $reg->cupo;
           $percentage = 100 - $percentage;
-          $percentage_color = ($percentage >= 50 && $percentage < 75) ? 'bg-warning' 
-          : ($percentage >= 75 ? 'bg-danger' 
-          : 'bg-success');
-          
+          $percentage_color = ($percentage >= 50 && $percentage < 75) ? 'bg-warning'
+            : ($percentage >= 75 ? 'bg-danger'
+              : 'bg-success');
+
           $data[] = array(
-              '0' => 
+            '0' => ((isset($_SESSION['permisos']['inscripcion']) &&
+              in_array('ver', $_SESSION['permisos']['inscripcion'])) ?
 
-              ( ( isset($_SESSION['permisos']['inscripcion']) && 
-                  in_array('ver' , $_SESSION['permisos']['inscripcion']) ) ?
-              
-              '<button class="btn btn-outline-primary " title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#estudiantesSeccionModal"><i class="fas fa-eye"></i></button> '.
+              '<button class="btn btn-outline-primary " title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#estudiantesSeccionModal"><i class="fas fa-eye"></i></button> ' . '<a target="_blank" href="../../reporte/ins_inicial.php?idplanificacion=' . $reg->id . '"> <button class="btn btn-primary" title="Matrícula"><i class="fa fa-list"></i></button></a> ' .
 
-              ( ($reg->cupo_disponible > 0) ?  
+              (($reg->cupo_disponible > 0) ?
 
-              '<a target="_blank" href="../../reporte/disponibilidad-cupo.php?grado='.$reg->grado.'"> <button class="btn btn-primary" title="Disponibilidad de cupo"><i class="fa fa-file-medical"></i></button></a> ' : '') : ''),
-              
-              '1' => $reg->grado . ' º',
-              '2' => '"' . $reg->seccion . '"',
-              '3' => $reg->p_nombre . ' ' . $reg->p_apellido,
-              '4' => '<div class="text-uppercase">
+                ' <a target="_blank" href="../../reporte/disponibilidad-cupo.php?grado=' . $reg->grado . '"> <button class="btn btn-primary" title="Disponibilidad de cupo"><i class="fa fa-file-medical"></i></button></a> ' : '') : ''),
+
+            '1' => $reg->grado . ' º',
+            '2' => '"' . $reg->seccion . '"',
+            '3' => $reg->p_nombre . ' ' . $reg->p_apellido,
+            '4' => '<div class="text-uppercase">
               <small>
               <b>Porcentaje de Ocupación</b>
               </small>
               </div>
               <div class="progress bg-secondary" style="height: 30px;" bg-success>
-              <div class="progress-bar '.$percentage_color.'"                  role="progressbar" style="width: '.$percentage.'%; color:white;"           aria-valuenow="'.$percentage.'" aria-valuemin="0" aria-valuemax="100">'.number_format($percentage, 1).' %
+              <div class="progress-bar ' . $percentage_color . '"                  role="progressbar" style="width: ' . $percentage . '%; color:white;"           aria-valuenow="' . $percentage . '" aria-valuemin="0" aria-valuemax="100">' . number_format($percentage, 1) . ' %
               </div>
               </div>
-              <small >'.($reg->cupo - $reg->cupo_disponible).' / '.$reg->cupo. ' cupos</small>',
-              '5' => $reg->periodo
+              <small >' . ($reg->cupo - $reg->cupo_disponible) . ' / ' . $reg->cupo . ' cupos</small>',
+            '5' => $reg->periodo
           );
         }
-          
-        $results = array(
-            "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
-            "recordsTotal" => count($data), #Se envía el total de registros al datatable
-            "recordsFiltered" => count($data), #Se envía el total de registros a visualizar
-            "data" => $data #datos en un array
-            
-        );
 
-      } 
-      else {
+        $results = array(
+          "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+          "recordsTotal" => count($data), #Se envía el total de registros al datatable
+          "recordsFiltered" => count($data), #Se envía el total de registros a visualizar
+          "data" => $data #datos en un array
+
+        );
+      } else {
 
         $rspta = $Inscripcion->listarPlanificacionPlanificada();
 
@@ -663,127 +649,121 @@ switch ($_GET['op']) {
         if ($rspta->num_rows != 0) {
 
           while ($reg = $rspta->fetch_object()) {
-              
+
             $percentage = ($reg->cupo_disponible * 100) / $reg->cupo;
             $percentage = 100 - $percentage;
-            $percentage_color = ($percentage >= 50 && $percentage < 75) ? 'bg-warning' 
-            : ($percentage >= 75 ? 'bg-danger' 
-            : 'bg-success');
-            
+            $percentage_color = ($percentage >= 50 && $percentage < 75) ? 'bg-warning'
+              : ($percentage >= 75 ? 'bg-danger'
+                : 'bg-success');
+
             $data[] = array(
-                '0' => 
+              '0' => ((isset($_SESSION['permisos']['inscripcion']) &&
+                in_array('ver', $_SESSION['permisos']['inscripcion'])) ?
 
-                ( ( isset($_SESSION['permisos']['inscripcion']) && 
-                    in_array('ver' , $_SESSION['permisos']['inscripcion']) ) ?
-                
-                '<button class="btn btn-outline-primary " title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#estudiantesSeccionModal"><i class="fas fa-eye"></i></button> '.
+                '<button class="btn btn-outline-primary " title="Ver sección" onclick="mostrar(' . $reg->id . ')" data-toggle="modal" data-target="#estudiantesSeccionModal"><i class="fas fa-eye"></i></button> ' . '<a target="_blank" href="../../reporte/ins_inicial.php?idplanificacion=' . $reg->id . '"> <button class="btn btn-primary" title="Matrícula"><i class="fa fa-list"></i></button></a> ' .
 
-                ( ($reg->cupo_disponible > 0) ?  
+                (($reg->cupo_disponible > 0) ?
 
-                '<a target="_blank" href="../../reporte/disponibilidad-cupo.php?grado='.$reg->grado.'"> <button class="btn btn-primary" title="Disponibilidad de cupo"><i class="fa fa-file-medical"></i></button></a> ' : '') : ''),
-                
-                '1' => $reg->grado . ' º',
-                '2' => '"' . $reg->seccion . '"',
-                '3' => $reg->p_nombre . ' ' . $reg->p_apellido,
-                '4' => '<div class="text-uppercase">
+                  '<a target="_blank" href="../../reporte/disponibilidad-cupo.php?grado=' . $reg->grado . '"> <button class="btn btn-primary" title="Disponibilidad de cupo"><i class="fa fa-file-medical"></i></button></a> ' : '') : ''),
+
+              '1' => $reg->grado . ' º',
+              '2' => '"' . $reg->seccion . '"',
+              '3' => $reg->p_nombre . ' ' . $reg->p_apellido,
+              '4' => '<div class="text-uppercase">
                 <small>
                 <b>Porcentaje de Ocupación</b>
                 </small>
                 </div>
                 <div class="progress bg-secondary" style="height: 30px;" bg-success>
-                <div class="progress-bar '.$percentage_color.'"                  role="progressbar" style="width: '.$percentage.'%; color:white;"           aria-valuenow="'.$percentage.'" aria-valuemin="0" aria-valuemax="100">'.number_format($percentage, 1).' %
+                <div class="progress-bar ' . $percentage_color . '"                  role="progressbar" style="width: ' . $percentage . '%; color:white;"           aria-valuenow="' . $percentage . '" aria-valuemin="0" aria-valuemax="100">' . number_format($percentage, 1) . ' %
                 </div>
                 </div>
-                <small >'.($reg->cupo - $reg->cupo_disponible).' / '.$reg->cupo. ' cupos</small>',
-                '5' => $reg->periodo
+                <small >' . ($reg->cupo - $reg->cupo_disponible) . ' / ' . $reg->cupo . ' cupos</small>',
+              '5' => $reg->periodo
             );
           }
-        
-          $results = array(
-              "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
-              "recordsTotal" => count($data), #Se envía el total de registros al datatable
-              "recordsFiltered" => count($data), #Se envía el total de registros a visualizar
-              "data" => $data #datos en un array
-              
-          );
 
-        }
-        else {
           $results = array(
-              "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
-              "recordsTotal" => 0, #Se envía el total de registros al datatable
-              "recordsFiltered" => 0, #Se envía el total de registros a visualizar
-              "data" => '' #datos en un array
-              
-          );
+            "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+            "recordsTotal" => count($data), #Se envía el total de registros al datatable
+            "recordsFiltered" => count($data), #Se envía el total de registros a visualizar
+            "data" => $data #datos en un array
 
+          );
+        } else {
+          $results = array(
+            "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+            "recordsTotal" => 0, #Se envía el total de registros al datatable
+            "recordsFiltered" => 0, #Se envía el total de registros a visualizar
+            "data" => '' #datos en un array
+
+          );
         }
       }
-
     }
     echo json_encode($results);
-  break;
-        
+    break;
+
   case 'mostrar':
     $idplanificacion = isset($_GET['idplanificacion']) ? limpiarCadena($_GET['idplanificacion']) : '';
     $rspta = $Inscripcion->mostrar($idplanificacion);
-            
+
     $data = array();
     if ($rspta->num_rows != 0) {
       while ($reg = $rspta->fetch_object()) {
-          $data[] = [
-              '0' => '',
-              '1' => $reg->cedula,
-              '2' => $reg->p_nombre,
-              '3' => $reg->s_nombre,
-              '4' => $reg->p_apellido,
-              '5' => $reg->s_apellido
-          ];
+        $data[] = [
+          '0' => '<button class="btn btn-outline-primary" title="Editar Inscripción" onclick="mostrarDatosInscripcion(' . $reg->id . ')" data-toggle="modal" data-target="#editarInscripcionModal"><i class="fas fa-eye"></i></button> 
+         <a target="_blank" href="../../reporte/c_inscripcion.php?idestudiante=' . $reg->id . '&idpersona=' . $reg->idpersona . '"> <button class="btn btn-primary" title="Constancia Inscripción"><i class="fa fa-file-pdf"></i></button></a>',
+          '1' => $reg->cedula,
+          '2' => $reg->p_nombre,
+          '3' => $reg->s_nombre,
+          '4' => $reg->p_apellido,
+          '5' => $reg->s_apellido
+        ];
       }
-      
+
       $results = array(
-          "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
-          "recordsTotal" => count($data), #Se envía el total de registros al datatable
-          "recordsFiltered" => count($data), #Se envía el total de registros a visualizar
-          "data" => $data #datos en un array
-          
+        "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+        "recordsTotal" => count($data), #Se envía el total de registros al datatable
+        "recordsFiltered" => count($data), #Se envía el total de registros a visualizar
+        "data" => $data #datos en un array
+
       );
-    }
-    else {
+    } else {
       $results = array(
-          "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
-          "recordsTotal" => 0, #Se envía el total de registros al datatable
-          "recordsFiltered" => 0, #Se envía el total de registros a visualizar
-          "data" => '' #datos en un array
-          
+        "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+        "recordsTotal" => 0, #Se envía el total de registros al datatable
+        "recordsFiltered" => 0, #Se envía el total de registros a visualizar
+        "data" => '' #datos en un array
+
       );
     }
 
     #Se codifica el resultado utilizando Json
     echo json_encode($results);
-  break;
-        
+    break;
+
   case 'comprobarinscripcion':
     $cedula = isset($_POST['cedula']) ? $_POST['cedula'] : NULL;
     $rspta = $Inscripcion->comprobarinscripcion($cedula);
-    echo json_encode($rspta);    
-  break;
-        
-  case 'comprobarrepresentante':     
+    echo json_encode($rspta);
+    break;
+
+  case 'comprobarrepresentante':
     $cedula = isset($_POST['cedula']) ? $_POST['cedula'] : NULL;
     $genero = isset($_POST['genero']) ? $_POST['genero'] : NULL;
     $rspta = $Inscripcion->comprobarrepresentante($cedula, $genero);
     echo json_encode($rspta);
-  break;
+    break;
 
   case 'comprobarpersona':
     $cedula = isset($_POST['cedula']) ? $_POST['cedula'] : NULL;
     $genero = isset($_POST['genero']) ? $_POST['genero'] : NULL;
     $rspta = $Inscripcion->comprobarpersona($cedula, $genero);
     echo json_encode($rspta);
-  break;
+    break;
 
-  case 'traerplanificaciones':   
+  case 'traerplanificaciones':
     #Traer la planificaciones disponibles
 
     // Se determina el rol que tiene el usuario
@@ -794,10 +774,10 @@ switch ($_GET['op']) {
     $id_docente = !empty($id_docente) ? $id_docente['id'] : '';
 
     if ($rol_usuario == 'Docente') {
-      $rspta = $Inscripcion->traerplanificaciones($id_docente);    
+      $rspta = $Inscripcion->traerplanificaciones($id_docente);
       $data = array();
       if ($rspta->num_rows != 0) {
-        while ($reg = $rspta->fetch_object()) {    
+        while ($reg = $rspta->fetch_object()) {
           $data[] = [
             'id' => $reg->id,
             'grado' => $reg->grado,
@@ -806,12 +786,11 @@ switch ($_GET['op']) {
           ];
         }
       }
-    }
-    else {
-      $rspta = $Inscripcion->traerplanificaciones();    
+    } else {
+      $rspta = $Inscripcion->traerplanificaciones();
       $data = array();
       if ($rspta->num_rows != 0) {
-        while ($reg = $rspta->fetch_object()) {    
+        while ($reg = $rspta->fetch_object()) {
           $data[] = [
             'id' => $reg->id,
             'grado' => $reg->grado,
@@ -823,7 +802,7 @@ switch ($_GET['op']) {
     }
     #Se codifica el resultado utilizando Json
     echo json_encode($data);
-  break;
+    break;
 
   case 'listarpaises':
     $rspta = $Inscripcion->listarpaises();
@@ -832,7 +811,7 @@ switch ($_GET['op']) {
       // $selected = $pais->pais == 'Venezuela' ? 'selected' : '';
       echo '<option value="' . $pais->id . '">' . $pais->pais . '</option>';
     }
-  break;
+    break;
 
   case 'listarestados':
     $idpais = isset($_GET['idpais']) ? $_GET['idpais'] : NULL;
@@ -841,7 +820,7 @@ switch ($_GET['op']) {
     while ($estado = $rspta->fetch_object()) {
       echo '<option value="' . $estado->id . '">' . $estado->estado . '</option>';
     }
-  break;
+    break;
 
   case 'listarmunicipios':
     $idestado = isset($_GET['idestado']) ? $_GET['idestado'] : NULL;
@@ -850,7 +829,7 @@ switch ($_GET['op']) {
     while ($municipio = $rspta->fetch_object()) {
       echo '<option value="' . $municipio->id . '">' . $municipio->municipio . '</option>';
     }
-  break;
+    break;
 
   case 'listarparroquias':
     $idmunicipio = isset($_GET['idmunicipio']) ? $_GET['idmunicipio'] : NULL;
@@ -859,77 +838,76 @@ switch ($_GET['op']) {
     while ($parroquia = $rspta->fetch_object()) {
       echo '<option value="' . $parroquia->id . '">' . $parroquia->parroquia . '</option>';
     }
-  break;
+    break;
 
   case 'listadoinscripcionregular':
-  
+
     $rspta = $Inscripcion->listadoinscripcionregular();
-    
+
     $data = [];
     if ($rspta->num_rows != 0) {
       while ($reg = $rspta->fetch_object()) {
         if ($reg->estatus != 'CURSANDO') {
           $data[] = array(
-              '0' =>          
-              '<button class="btn btn-outline-primary " title="Inscribir" onclick="mostrarInscripcionRegular(' . $reg->idinscripcion. ', '. $reg->grado .', \''. $reg->seccion .'\', \''.$reg->estatus.'\', '.$reg->idestudiante.')" data-toggle="modal" data-target="#inscripcionRegularModal"><i class="fas fa-sign-in-alt"></i></button>'           
-              ,
-  
-              '1' => $reg->cedula,
-              '2' => ucfirst($reg->p_nombre),
-              '3' => ucfirst($reg->p_apellido),
-              '4' => $reg->grado . ' º "'.$reg->seccion.'" - '.$reg->periodo,
-              '5' => $reg->estatus
+            '0' =>
+            '<button class="btn btn-outline-primary " title="Inscribir" onclick="mostrarInscripcionRegular(' . $reg->idinscripcion . ', ' . $reg->grado . ', \'' . $reg->seccion . '\', \'' . $reg->estatus . '\', ' . $reg->idestudiante . ')" data-toggle="modal" data-target="#inscripcionRegularModal"><i class="fas fa-sign-in-alt"></i></button>',
+
+            '1' => $reg->cedula,
+            '2' => ucfirst($reg->p_nombre),
+            '3' => ucfirst($reg->p_apellido),
+            '4' => $reg->grado . ' º "' . $reg->seccion . '" - ' . $reg->periodo,
+            '5' => $reg->estatus
           );
         }
       }
-        
+
       $results = array(
-          "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
-          "recordsTotal" => count($data), #Se envía el total de registros al datatable
-          "recordsFiltered" => count($data), #Se envía el total de registros a visualizar
-          "data" => $data #datos en un array
-          
+        "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+        "recordsTotal" => count($data), #Se envía el total de registros al datatable
+        "recordsFiltered" => count($data), #Se envía el total de registros a visualizar
+        "data" => $data #datos en un array
+
       );
     } else {
       $results = array(
-          "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
-          "recordsTotal" => 0, #Se envía el total de registros al datatable
-          "recordsFiltered" => 0, #Se envía el total de registros a visualizar
-          "data" => '' #datos en un array
-          
+        "draw" => 0, #Esto tiene que ver con el procesamiento del lado del servidor
+        "recordsTotal" => 0, #Se envía el total de registros al datatable
+        "recordsFiltered" => 0, #Se envía el total de registros a visualizar
+        "data" => '' #datos en un array
+
       );
     }
-  
-    echo json_encode($results);
-  break;
 
-  case 'traerrepresentanteregular': 
- 
+    echo json_encode($results);
+    break;
+
+  case 'traerrepresentanteregular':
+
     $rspta = $Inscripcion->traerrepresentanteregular($idinscripcionregular);
     echo json_encode($rspta);
-  break;
+    break;
 
-  case 'traersiguienteperiodo':    
+  case 'traersiguienteperiodo':
     $periodoinscripcion = $Inscripcion->traerperiodoinscripcion($idinscripcionregular);
     $periodoinscripcion = !empty($periodoinscripcion) ? $periodoinscripcion['periodo'] : '';
 
-    list($primero, $segundo) = explode('-',$periodoinscripcion);
-    
-    $siguiente_periodo = ($primero + 1).'-'.($segundo + 1);
-    
-    $datos_siguiente_periodo = $Inscripcion->traersiguienteperiodo($siguiente_periodo);
-    
-    echo json_encode($datos_siguiente_periodo);
-  break;
+    list($primero, $segundo) = explode('-', $periodoinscripcion);
 
-  case 'traerplanificacionregular':   
+    $siguiente_periodo = ($primero + 1) . '-' . ($segundo + 1);
+
+    $datos_siguiente_periodo = $Inscripcion->traersiguienteperiodo($siguiente_periodo);
+
+    echo json_encode($datos_siguiente_periodo);
+    break;
+
+  case 'traerplanificacionregular':
     $grado = ($estatus_regular == 'PROMOVIDO') ? ($grado_regular + 1) : $grado_regular;
-     
+
     $planificacion = $Inscripcion->traerplanificacionregular($idsiguienteperiodo, $grado);
 
     $data = array();
     if ($planificacion->num_rows != 0) {
-      while ($reg = $planificacion->fetch_object()) {    
+      while ($reg = $planificacion->fetch_object()) {
         $data[] = [
           'id' => $reg->id,
           'grado' => $reg->grado,
@@ -940,30 +918,30 @@ switch ($_GET['op']) {
         ];
       }
     }
-    
+
     echo json_encode($data);
-  break;
+    break;
 
   case 'inscribir_regular':
     #Se deshabilita el guardado automático de la base de datos
     autocommit(FALSE);
     #Variable para comprobar que todo salió bien al final
     $sw = TRUE;
-    
+
     /**
      * Operaciones relacionadas con el registro, actualización del representante
      */
     if (empty($idrepresentante_regular) && empty($idpersonarepresentante_regular)) {
       $idpersonarepresentante_regular = $Inscripcion->insertar_persona($cedula_representante_regular, $p_nombre_representante_regular, $s_nombre_representante_regular, $p_apellido_representante_regular, $s_apellido_representante_regular, $genero_representante_regular) or $sw = FALSE;
-      
+
       $Inscripcion->insertar_direccion_residencial($idpersonarepresentante_regular, 'NULL', $direccion_residencia_representante_regular) or $sw = FALSE;
-      
+
       $Inscripcion->insertar_direccion_trabajo($idpersonarepresentante_regular, 'NUll', $direccion_trabajo_representante_regular) or $sw = FALSE;
-      
+
       #Verifica que las variables de los teléfonos contengan datos y los guarda
       if (!empty($celular_representante_regular))
-      $Inscripcion->insertar_telefono($idpersonarepresentante_regular, $celular_representante_regular, 'M') or $sw = FALSE;
-      
+        $Inscripcion->insertar_telefono($idpersonarepresentante_regular, $celular_representante_regular, 'M') or $sw = FALSE;
+
       #Se registra el representante
       $idrepresentante_regular = $Inscripcion->insertar_representante($idpersonarepresentante_regular, NULL, $oficio_representante_regular) or $sw = FALSE;
     }
@@ -977,13 +955,13 @@ switch ($_GET['op']) {
       } else {
         $Inscripcion->insertar_direccion_residencial($idpersonarepresentante_regular, 'NULL', $direccion_residencia_representante_regular) or $sw = FALSE;
       }
-      
+
       if ($Inscripcion->verificar_direccion_trabajo($idpersonarepresentante_regular)) {
         $Inscripcion->editar_direccion_trabajo($idpersonarepresentante_regular, $direccion_trabajo_representante_regular) or $sw = FALSE;
       } else {
         $Inscripcion->insertar_direccion_trabajo($idpersonarepresentante_regular, 'NULL', $direccion_trabajo_representante_regular) or $sw = FALSE;
       }
-      
+
       #Verifica que las variables de los teléfonos contengan datos y los guarda
       if (!empty($celular_representante_regular)) {
         $Inscripcion->eliminar_telefono($idpersonarepresentante_regular, 'M') or $sw = FALSE;
@@ -991,29 +969,29 @@ switch ($_GET['op']) {
       } else {
         $Inscripcion->eliminar_telefono($idpersonarepresentante_regular, 'M') or $sw = FALSE;
       }
-      
+
       #Se registra el representante
       $idrepresentante_regular = $Inscripcion->insertar_representante($idpersonarepresentante_regular, NULL, $oficio_representante_regular) or $sw = FALSE;
     } else {
       #Se obtiene el id de la persona 
       $idpersonarepresentante_regular = $Inscripcion->idpersona($idrepresentante_regular);
       $idpersonarepresentante_regular = $idpersonarepresentante_regular['idpersona'];
-      
+
       #Se editan los datos de la persona
       $Inscripcion->editar_persona($idpersonarepresentante_regular, $cedula_representante_regular, $p_nombre_representante_regular, $s_nombre_representante_regular, $p_apellido_representante_regular, $s_apellido_representante_regular) or $sw = FALSE;
-      
+
       if ($Inscripcion->verificar_direccion_residencial($idpersonarepresentante_regular)) {
         $Inscripcion->editar_direccion_residencial($idpersonarepresentante_regular,  $direccion_residencia_representante_regular) or $sw = FALSE;
       } else {
         $Inscripcion->insertar_direccion_residencial($idpersonarepresentante_regular, 'NULL', $direccion_residencia_representante_regular) or $sw = FALSE;
       }
-      
+
       if ($Inscripcion->verificar_direccion_trabajo($idpersonarepresentante_regular)) {
         $Inscripcion->editar_direccion_trabajo($idpersonarepresentante_regular, $direccion_trabajo_representante_regular) or $sw = FALSE;
       } else {
         $Inscripcion->insertar_direccion_trabajo($idpersonarepresentante_regular, 'NULL', $direccion_trabajo_representante_regular) or $sw = FALSE;
       }
-      
+
       #Verifica que las variables de los teléfonos contengan datos y los guarda
       if (!empty($celular_representante_regular)) {
         $Inscripcion->eliminar_telefono($idpersonarepresentante_regular, 'M') or $sw = FALSE;
@@ -1021,34 +999,34 @@ switch ($_GET['op']) {
       } else {
         $Inscripcion->eliminar_telefono($idpersonarepresentante_regular, 'M') or $sw = FALSE;
       }
-      
+
       #Se edita el representante
       $rspta = $Inscripcion->editar_representante($idpersonarepresentante_regular, $oficio_representante_regular) or $sw = FALSE;
-    }   
-    
+    }
+
     /**
      * Operaciones relacionadas con la inscripción
-     */     
+     */
 
     #Se comprueba que haya cupo disponible en la planificación
     $cupo_disponible = $Inscripcion->verificarcupo($idplanificacion_regular, 'cupo_disponible') or $sw = FALSE;
     $cupo_disponible = $cupo_disponible['cupo_disponible'];
-    
-    if($cupo_disponible == 0)
+
+    if ($cupo_disponible == 0)
       $sw = FALSE;
-    
+
     $cupo_disponible = ($cupo_disponible - 1);
 
     #Método para restar un cupo a la planificación
     $Inscripcion->restarcupo($idplanificacion_regular, $cupo_disponible) or $sw = FALSE;
-    
+
     $nombre_institucion = $Inscripcion->traerdatosinstitucion();
-    $nombre_institucion = !empty($nombre_institucion) ? $nombre_institucion['nombre'] : 'Escuela Básica Miguel Otero Silva';
+    $nombre_institucion = !empty($nombre_institucion) ? $nombre_institucion['nombre'] : 'Escuela Básica Rómulo Gallegos';
 
 
     #Se registra la inscripción
     $idinscripcion_regular = $Inscripcion->inscribir($idperiodo_escolar_regular, $idplanificacion_regular, $idestudiante_regular, $idrepresentante_regular, $parentesco_representante_regular, $nombre_institucion, $observaciones_regular, 'CURSANDO') or $sw = FALSE;
- 
+
     #Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
     if ($sw) {
       commit();
@@ -1058,7 +1036,42 @@ switch ($_GET['op']) {
       echo 'false';
     }
 
-  break;
-  
+    break;
 
+  case 'mostrardatosinscripcion':
+    $idinscripcion = isset($_POST['idinscripcion']) ? limpiarCadena($_POST['idinscripcion']) : '';
+    $rspta = $Inscripcion->traerdocumentosconsignados($idinscripcion);
+    #Se codifica el resultado utilizando Json
+    echo json_encode($rspta);
+    break;
+
+  case 'editardatosinscripcion':
+
+    $sw = false;
+    $idinscripcion = $_POST['idEditarInscrpicion'];
+    if (empty($idinscripcion)) {
+      echo 'false';
+      exit;
+    }
+    $documentos_consignados = isset($_POST['editar_documentos_consignados']) ? $_POST['editar_documentos_consignados'] : [];
+    $fotocopia_cedula_madre = in_array('editar_fotocopia_cedula_madre', $documentos_consignados) ? 1 : 0;
+    $fotocopia_cedula_padre = in_array('editar_fotocopia_cedula_padre', $documentos_consignados) ? 1 : 0;
+    $fotocopia_cedula_representante = in_array('editar_fotocopia_cedula_representante', $documentos_consignados) ? 1 : 0;
+    $fotos_representante = in_array('editar_fotos_representante', $documentos_consignados) ? 1 : 0;
+    $fotocopia_partida_nacimiento = in_array('editar_fotocopia_partida_nacimiento', $documentos_consignados) ? 1 : 0;
+    $fotocopia_cedula_estudiante = in_array('editar_fotocopia_cedula_estudiante', $documentos_consignados) ? 1 : 0;
+    $fotocopia_constancia_vacunas = in_array('editar_fotocopia_constancia_vacunas', $documentos_consignados) ? 1 : 0;
+    $fotos_estudiante = in_array('editar_fotos_estudiante', $documentos_consignados) ? 1 : 0;
+    $boleta_promocion = in_array('editar_boleta_promocion', $documentos_consignados) ? 1 : 0;
+    $constancia_buena_conducta = in_array('editar_constancia_buena_conducta', $documentos_consignados) ? 1 : 0;
+    $informe_descriptivo = in_array('editar_informe_descriptivo', $documentos_consignados) ? 1 : 0;
+
+    $rspta = $Inscripcion->editar_documentos_consignados($idinscripcion, $fotocopia_cedula_madre, $fotocopia_cedula_padre, $fotocopia_cedula_representante, $fotos_representante, $fotocopia_partida_nacimiento, $fotocopia_cedula_estudiante, $fotocopia_constancia_vacunas, $fotos_estudiante, $boleta_promocion, $constancia_buena_conducta, $informe_descriptivo);
+
+    if ($rspta) {
+      echo 'true';
+    } else {
+      echo 'false';
+    }
+    break;
 }

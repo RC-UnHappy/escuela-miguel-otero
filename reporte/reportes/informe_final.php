@@ -8,7 +8,7 @@ $pdf->Ln(10);
 
 $pdf->SetFont('Arial','B',10);
 $pdf->setX(55);
-$pdf->Cell(100,5,utf8_decode('ESCUELA BOLIVARIANA "MIGUEL OTERO SILVA"'),0,1,'C');
+$pdf->Cell(100,5,utf8_decode('ESCUELA BOLIVARIANA "RÓMULO GALLEGOS"'),0,1,'C');
 $pdf->SetFont('Arial','',8);
 #Cuadro de codigos
 $pdf->setX(55);

@@ -31,6 +31,7 @@ $condicion_estudio = isset($_POST['condicion_estudio']) ? limpiarCadena($_POST['
 $tipo_matricula = isset($_POST['tipo_matricula']) ? limpiarCadena($_POST['tipo_matricula']) : '';
 $turno = isset($_POST['turno']) ? limpiarCadena($_POST['turno']) : '';
 $horario = isset($_POST['horario']) ? limpiarCadena($_POST['horario']) : '';
+$codigo_qr = isset($_POST['codigo_qr']) ? limpiarCadena($_POST['codigo_qr']) : '';
 
 #Se ejecuta un caso dependiendo del valor del parámetro GET
 switch ($_GET['op']) {
@@ -47,7 +48,7 @@ switch ($_GET['op']) {
 		if (empty($idinstitucion)) {
 			
 			#Se registra los datos de la institución
-			$Institucion->insertar($nombre, $telefono, $correo, $dependencia, $cod_dea, $cod_estadistico, $cod_dependencia, $cod_electoral, $cod_smee, $idestado, $idmunicipio, $idparroquia, $direccion, $fecha_fundada, $fecha_bolivariana, $clase_plantel, $categoria, $condicion_estudio, $tipo_matricula, $turno, $horario) or $sw = FALSE;
+			$Institucion->insertar($nombre, $telefono, $correo, $dependencia, $cod_dea, $cod_estadistico, $cod_dependencia, $cod_electoral, $cod_smee, $idestado, $idmunicipio, $idparroquia, $direccion, $fecha_fundada, $fecha_bolivariana, $clase_plantel, $categoria, $condicion_estudio, $tipo_matricula, $turno, $horario, $codigo_qr) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {
@@ -62,7 +63,7 @@ switch ($_GET['op']) {
 		else{
 
 			#Se editan los datos de la institución
-			$Institucion->editar($idinstitucion, $nombre, $telefono, $correo, $dependencia, $cod_dea, $cod_estadistico, $cod_dependencia, $cod_electoral, $cod_smee, $idestado, $idmunicipio, $idparroquia, $direccion, $fecha_fundada, $fecha_bolivariana, $clase_plantel, $categoria, $condicion_estudio, $tipo_matricula, $turno, $horario) or $sw = FALSE;
+			$Institucion->editar($idinstitucion, $nombre, $telefono, $correo, $dependencia, $cod_dea, $cod_estadistico, $cod_dependencia, $cod_electoral, $cod_smee, $idestado, $idmunicipio, $idparroquia, $direccion, $fecha_fundada, $fecha_bolivariana, $clase_plantel, $categoria, $condicion_estudio, $tipo_matricula, $turno, $horario, $codigo_qr) or $sw = FALSE;
 
 			#Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
 			if ($sw) {

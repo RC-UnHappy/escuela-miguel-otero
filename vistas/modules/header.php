@@ -10,41 +10,41 @@ if (strlen(session_id()) < 1)
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-  <meta name="description" content="E.B.B Miguel Otero Silva - Acarigua, Portuguesa">
+  <meta name="description" content="Escuela Rómulo Gallegos">
   <meta name="author" content="Alexis Cáceres">
   <meta name="keyword" content="Escuela,Básica,Bolivariana,Miguel,Otero,Silva,Acarigua,Portuguesa,Venezuela">
-  <link rel="icon" type="image/jpeg" href="<?=IMAGE_PATH; ?>escudo.png" />
-  <!-- <link rel="icon" type="image/jpeg" href="../public/img/escudo.png" /> -->
+  <link rel="icon" type="image/jpeg" href="<?= IMAGE_PATH; ?>escudo-romulo.jpg" />
+  <!-- <link rel="icon" type="image/jpeg" href="../public/img/escudo-romulo.jpg" /> -->
 
-  <title>Escuela Básica - Miguel Otero Silva</title>
+  <title>Escuela Básica - Rómulo Gallegos</title>
 
 
   <!-- Icons-->
   <!-- <link rel="icon" type="image/ico" href="./img/favicon.ico" sizes="any" /> -->
-  <link href="/escuela-miguel-otero/public/css/coreui-icons.min.css" rel="stylesheet">
-  <link href="/escuela-miguel-otero/public/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/escuela-romulo-gallegos/public/css/coreui-icons.min.css" rel="stylesheet">
+  <link href="/escuela-romulo-gallegos/public/css/font-awesome.min.css" rel="stylesheet">
 
   <!-- Main styles for this application-->
-  <link href="/escuela-miguel-otero/public/css/style.css" rel="stylesheet">
-  <link href="/escuela-miguel-otero/public/css/pace.min.css" rel="stylesheet">
+  <link href="/escuela-romulo-gallegos/public/css/style.css" rel="stylesheet">
+  <link href="/escuela-romulo-gallegos/public/css/pace.min.css" rel="stylesheet">
   <!-- <link href="css/style.css" rel="stylesheet"> 
     <link href="vendors/pace-progress/css/pace.min.css" rel="stylesheet"> -->
 
   <!-- Datatable -->
-  <link rel="stylesheet" href="/escuela-miguel-otero/public/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="/escuela-miguel-otero/public/css/buttons.bootstrap4.min.css">
-  <link rel="stylesheet" href="/escuela-miguel-otero/public/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="/escuela-miguel-otero/public/css/scroller.bootstrap4.min.css">
+  <link rel="stylesheet" href="/escuela-romulo-gallegos/public/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="/escuela-romulo-gallegos/public/css/buttons.bootstrap4.min.css">
+  <link rel="stylesheet" href="/escuela-romulo-gallegos/public/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="/escuela-romulo-gallegos/public/css/scroller.bootstrap4.min.css">
 
   <!-- Font awesome principal -->
-  <link href="/escuela-miguel-otero/public/css/fontawesome.min.css" rel="stylesheet">
-  <link href="/escuela-miguel-otero/public/css/regular.min.css" rel="stylesheet">
-  <link href="/escuela-miguel-otero/public/css/solid.min.css" rel="stylesheet">
+  <link href="/escuela-romulo-gallegos/public/css/fontawesome.min.css" rel="stylesheet">
+  <link href="/escuela-romulo-gallegos/public/css/regular.min.css" rel="stylesheet">
+  <link href="/escuela-romulo-gallegos/public/css/solid.min.css" rel="stylesheet">
 
   <!-- Estilos principales -->
-  <link rel="stylesheet" href="/escuela-miguel-otero/vistas/css/estilos.css">
+  <link rel="stylesheet" href="/escuela-romulo-gallegos/vistas/css/estilos.css">
 
-  <link rel="stylesheet" href="/escuela-miguel-otero/public/css/bootstrap-select.min.css">
+  <link rel="stylesheet" href="/escuela-romulo-gallegos/public/css/bootstrap-select.min.css">
 
 </head>
 
@@ -55,15 +55,15 @@ if (strlen(session_id()) < 1)
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <a class="navbar-brand" href="/escuela-miguel-otero/vistas/escritorio.php">
+    <a class="navbar-brand" href="/escuela-romulo-gallegos/vistas/escritorio.php">
       <div class="navbar-brand-full">
         <!-- <i class="fas fa-school" style="font-size: 26px;"></i> -->
-        <img src="<?=IMAGE_PATH; ?>escudo.png" style="height: 40px;">
-        <em>Escuela M.O.S</em>
+        <img src="<?= IMAGE_PATH; ?>escudo-romulo.jpg" style="height: 40px;">
+        <em>Escuela R.G</em>
       </div>
 
       <!-- <i class="navbar-brand-minimized fas fa-school" style="font-size: 26px;"></i> -->
-      <img class="navbar-brand-minimized" src="<?=IMAGE_PATH; ?>escudo.png" style="height: 40px;">
+      <img class="navbar-brand-minimized" src="<?= IMAGE_PATH; ?>escudo-romulo.jpg" style="height: 40px;">
     </a>
 
     <button class="navbar-toggler sidebar-minimizer brand-minimizer d-md-down-none" type="button" data-toggle="sidebar-lg-show">
@@ -72,9 +72,9 @@ if (strlen(session_id()) < 1)
 
     <ul class="nav navbar-nav d-md-down-none">
       <li class="nav-item px-3">
-        <a class="nav-link" href="/escuela-miguel-otero/vistas/escritorio.php">Escritorio</a>
+        <a class="nav-link" href="/escuela-romulo-gallegos/vistas/escritorio.php">Escritorio</a>
       </li>
-      
+
     </ul>
 
     <ul class="nav navbar-nav ml-auto">
@@ -98,14 +98,14 @@ if (strlen(session_id()) < 1)
         <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" id="dropdownMenuLink">
 
           <img class="img-avatar" src="<?php
-            if ($_SESSION['genero'] == 'M') {
-              echo '/escuela-miguel-otero/files/perfil/hombre.jpg';
-            } elseif ($_SESSION['genero'] == 'F') {
-              echo '/escuela-miguel-otero/files/perfil/mujer.jpg';
-            }?>" alt="Imagen">
+                                        if ($_SESSION['genero'] == 'M') {
+                                          echo '/escuela-romulo-gallegos/files/perfil/hombre.jpg';
+                                        } elseif ($_SESSION['genero'] == 'F') {
+                                          echo '/escuela-romulo-gallegos/files/perfil/mujer.jpg';
+                                        } ?>" alt="Imagen">
 
 
-          <span class="hidden-xs"><?php echo ucfirst($_SESSION['usuario'])?></span>
+          <span class="hidden-xs"><?php echo ucfirst($_SESSION['usuario']) ?></span>
 
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
@@ -115,8 +115,8 @@ if (strlen(session_id()) < 1)
           <button class="dropdown-item" data-toggle="modal" data-target="#perfilModal" onclick="mostrarPerfil(<?= $_SESSION['idusuario'] ?>)">
             <i class="fa fa-user"></i> Perfil
           </button>
-          
-          <a class="dropdown-item" href="/escuela-miguel-otero/controladores/usuario.php?op=salir">
+
+          <a class="dropdown-item" href="/escuela-romulo-gallegos/controladores/usuario.php?op=salir">
             <i class="fa fa-lock"></i> Salir</a>
         </div>
       </li>
@@ -135,8 +135,8 @@ if (strlen(session_id()) < 1)
     <div class="modal fade" id="perfilModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog rounded" role="document">
         <div class="modal-content">
-          
-          <form class="needs-validation" novalidate name="formularioPerfil" id="formularioPerfil"> 
+
+          <form class="needs-validation" novalidate name="formularioPerfil" id="formularioPerfil">
 
             <div class="modal-header fondo-degradado rounded">
               <h5 class="modal-title text-white" id="exampleModalLabel">Editar perfil</h5>
@@ -147,19 +147,19 @@ if (strlen(session_id()) < 1)
 
             <div class="modal-body">
 
-              <div class="row"> 
+              <div class="row">
 
                 <div class="form-group col-md-6">
                   <label for="usuarioperfil">Usuario (*)</label>
 
                   <div class="input-group">
 
-                    <input type="text" class="form-control usuarioperfil"  name="usuarioperfil"  id="usuarioperfil" required>
+                    <input type="text" class="form-control usuarioperfil" name="usuarioperfil" id="usuarioperfil" required>
 
                     <input type="hidden" name="idusuarioperfil" id="idusuarioperfil"> <!-- Input oculto que guardará el id del usuario cuando sea necesario -->
-                    
-                    <div class="invalid-feedback" >
-                        Campo Obligatorio
+
+                    <div class="invalid-feedback">
+                      Campo Obligatorio
                     </div>
 
                   </div>
@@ -170,21 +170,21 @@ if (strlen(session_id()) < 1)
 
                   <div class="input-group">
 
-                    <input type="password" class="form-control passwordusuarioperfil"  name="passwordusuarioperfil"  id="passwordusuarioperfil" required>
-                    
-                    <div class="invalid-feedback" >
-                        Campo Obligatorio
+                    <input type="password" class="form-control passwordusuarioperfil" name="passwordusuarioperfil" id="passwordusuarioperfil" required>
+
+                    <div class="invalid-feedback">
+                      Campo Obligatorio
                     </div>
 
                   </div>
                 </div>
 
-              </div> <!-- Fin row -->     
-            
+              </div> <!-- Fin row -->
+
             </div>
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal" >Cancelar</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
               <button type="submit" id="btnGuardarPerfil" class="btn btn-primary">Guardar</button>
             </div>
 
@@ -198,9 +198,9 @@ if (strlen(session_id()) < 1)
         <ul class="nav">
 
           <?php
-          if (isset($_SESSION['permisos']['escritorio']) && in_array('ver' , $_SESSION['permisos']['escritorio'])) {
+          if (isset($_SESSION['permisos']['escritorio']) && in_array('ver', $_SESSION['permisos']['escritorio'])) {
             echo '<li class="nav-item">
-                        <a class="nav-link" href="/escuela-miguel-otero/vistas/escritorio.php">
+                        <a class="nav-link" href="/escuela-romulo-gallegos/vistas/escritorio.php">
                           <i class="nav-icon fas fa-tachometer-alt"></i> Escritorio
                           <!-- <span class="badge badge-primary">NEW</span> -->
                         </a>
@@ -213,49 +213,49 @@ if (strlen(session_id()) < 1)
           <li class="nav-title">Institución</li>
 
           <?php
-          echo  (isset($_SESSION['permisos']['estudiante']) && in_array('ver' , $_SESSION['permisos']['estudiante'])) ? 
+          echo (isset($_SESSION['permisos']['estudiante']) && in_array('ver', $_SESSION['permisos']['estudiante'])) ?
             '<li class="nav-item">
-              <a class="nav-link" href="/escuela-miguel-otero/vistas/estudiante.php">
+              <a class="nav-link" href="/escuela-romulo-gallegos/vistas/estudiante.php">
               <i class="nav-icon fas fa-user-graduate"></i> Estudiante</a>
-            </li>' 
+            </li>'
             :
             '';
 
-          echo  (isset($_SESSION['permisos']['representante']) && in_array('ver' , $_SESSION['permisos']['representante'])) ? 
+          echo (isset($_SESSION['permisos']['representante']) && in_array('ver', $_SESSION['permisos']['representante'])) ?
             '<li class="nav-item">
-              <a class="nav-link" href="/escuela-miguel-otero/vistas/representante.php">
+              <a class="nav-link" href="/escuela-romulo-gallegos/vistas/representante.php">
               <i class="nav-icon fas fa-user-tie"></i> Padres y representantes</a>
-            </li>' 
+            </li>'
             :
             '';
 
-          echo  (isset($_SESSION['permisos']['representado']) && in_array('ver' , $_SESSION['permisos']['representado'])) ? 
+          echo (isset($_SESSION['permisos']['representado']) && in_array('ver', $_SESSION['permisos']['representado'])) ?
             '<li class="nav-item">
-              <a class="nav-link" href="/escuela-miguel-otero/vistas/representado/">
+              <a class="nav-link" href="/escuela-romulo-gallegos/vistas/representado/">
               <i class="nav-icon fas fa-users"></i> Representado(s)</a>
-            </li>' 
+            </li>'
             :
             '';
 
-            echo  (isset($_SESSION['permisos']['personal']) && in_array('ver' , $_SESSION['permisos']['personal'])) ? 
+          echo (isset($_SESSION['permisos']['personal']) && in_array('ver', $_SESSION['permisos']['personal'])) ?
             '<li class="nav-item">
-              <a class="nav-link" href="/escuela-miguel-otero/vistas/personal.php">
+              <a class="nav-link" href="/escuela-romulo-gallegos/vistas/personal.php">
               <i class="nav-icon fas fa-chalkboard-teacher"></i> Personal</a>
-            </li>' 
+            </li>'
             :
             '';
 
           ?>
 
           <?php
-          if (isset($_SESSION['permisos']['usuario']) && in_array('ver' , $_SESSION['permisos']['usuario'])) {
+          if (isset($_SESSION['permisos']['usuario']) && in_array('ver', $_SESSION['permisos']['usuario'])) {
             echo '<li class="nav-item nav-dropdown">
                         <a class="nav-link nav-dropdown-toggle" href="#">
                           <i class="nav-icon fas fa-users-cog"></i> Usuarios
                         </a>
                         <ul class="nav-dropdown-items">
                           <li class="nav-item">
-                            <a class="nav-link" href="/escuela-miguel-otero/vistas/usuario.php">
+                            <a class="nav-link" href="/escuela-romulo-gallegos/vistas/usuario.php">
                               <i class="nav-icon fas fa-user-plus"></i> Gestionar</a>
                           </li>
                         </ul>
@@ -263,208 +263,208 @@ if (strlen(session_id()) < 1)
           }
           ?>
 
-          <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] != 'Representante') :?>
-          <li class="nav-item nav-dropdown">
-            <a class="nav-link nav-dropdown-toggle" href="#">
-              <i class="nav-icon fas fa-money-check"></i> Operaciones
-            </a>
+          <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] != 'Representante') : ?>
+            <li class="nav-item nav-dropdown">
+              <a class="nav-link nav-dropdown-toggle" href="#">
+                <i class="nav-icon fas fa-money-check"></i> Operaciones
+              </a>
 
-            <ul class="nav-dropdown-items">
-              
-              <?php
+              <ul class="nav-dropdown-items">
 
-                echo  (isset($_SESSION['permisos']['aspecto-fisiologico']) && in_array('ver' , $_SESSION['permisos']['aspecto-fisiologico'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/aspecto-fisiologico.php">
+                <?php
+
+                echo (isset($_SESSION['permisos']['aspecto-fisiologico']) && in_array('ver', $_SESSION['permisos']['aspecto-fisiologico'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/aspecto-fisiologico.php">
                     <i class="nav-icon fas fa-child"></i> Aspecto fisiológico
                   </a>
-                </li>' 
-                :
-                '';
+                </li>'
+                  :
+                  '';
 
-                echo  (isset($_SESSION['permisos']['boletin-final']) && in_array('ver' , $_SESSION['permisos']['boletin-final'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/boletin-final.php">
+                echo (isset($_SESSION['permisos']['boletin-final']) && in_array('ver', $_SESSION['permisos']['boletin-final'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/boletin-final.php">
                     <i class="nav-icon fas fa-book-open"></i> Boletín final
                   </a>
-                </li>' 
-                :
-                '';
+                </li>'
+                  :
+                  '';
 
-                echo  (isset($_SESSION['permisos']['boletin-parcial']) && in_array('ver' , $_SESSION['permisos']['boletin-parcial'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/boletin-parcial.php">
+                echo (isset($_SESSION['permisos']['boletin-parcial']) && in_array('ver', $_SESSION['permisos']['boletin-parcial'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/boletin-parcial.php">
                     <i class="nav-icon fas fa-columns"></i> Boletín parcial
                   </a>
-                </li>' 
-                :
-                '';
+                </li>'
+                  :
+                  '';
 
-                echo  (isset($_SESSION['permisos']['gestionar-indicador']) && in_array('ver' , $_SESSION['permisos']['gestionar-indicador'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/gestionar-indicador.php">
+                echo (isset($_SESSION['permisos']['gestionar-indicador']) && in_array('ver', $_SESSION['permisos']['gestionar-indicador'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/gestionar-indicador.php">
                     <i class="nav-icon fas fa-tasks"></i> Gestionar indicador
                   </a>
-                </li>' 
-                :
-                '';
+                </li>'
+                  :
+                  '';
 
-                echo  (isset($_SESSION['permisos']['inscripcion']) && in_array('ver' , $_SESSION['permisos']['inscripcion'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/inscripcion/inscripcion.php">
+                echo (isset($_SESSION['permisos']['inscripcion']) && in_array('ver', $_SESSION['permisos']['inscripcion'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/inscripcion/inscripcion.php">
                     <i class="nav-icon fas fa-address-card"></i> Inscripción
                   </a>
-                </li>' 
-                :
-                '';
+                </li>'
+                  :
+                  '';
 
-                echo  (isset($_SESSION['permisos']['lapso-academico']) && in_array('ver' , $_SESSION['permisos']['lapso-academico'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/lapso-academico.php">
+                echo (isset($_SESSION['permisos']['lapso-academico']) && in_array('ver', $_SESSION['permisos']['lapso-academico'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/lapso-academico.php">
                     <i class="nav-icon fas fa-cut"></i> Lapso académico
                   </a>
-                </li>' 
-                :
-                '';
+                </li>'
+                  :
+                  '';
 
-                echo  (isset($_SESSION['permisos']['periodo-escolar']) && in_array('ver' , $_SESSION['permisos']['periodo-escolar'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/periodo-escolar.php">
+                echo (isset($_SESSION['permisos']['periodo-escolar']) && in_array('ver', $_SESSION['permisos']['periodo-escolar'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/periodo-escolar.php">
                     <i class="nav-icon fas fa-calendar-alt"></i> Período escolar
                   </a>
-                </li>' 
-                :
-                '';
+                </li>'
+                  :
+                  '';
 
-                echo  (isset($_SESSION['permisos']['pic']) && in_array('ver' , $_SESSION['permisos']['pic'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/pic.php">
+                echo (isset($_SESSION['permisos']['pic']) && in_array('ver', $_SESSION['permisos']['pic'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/pic.php">
                     <i class="nav-icon fas fa-tasks"></i> PIC
                   </a>
-                </li>' 
-                :
-                '';
+                </li>'
+                  :
+                  '';
 
-                echo  (isset($_SESSION['permisos']['planificacion']) && in_array('ver' , $_SESSION['permisos']['planificacion'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/planificacion.php">
+                echo (isset($_SESSION['permisos']['planificacion']) && in_array('ver', $_SESSION['permisos']['planificacion'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/planificacion.php">
                     <i class="nav-icon fas fa-tasks"></i> Planificación
                   </a>
-                </li>' 
-                :
-                '';
-              ?>
+                </li>'
+                  :
+                  '';
+                ?>
 
-            </ul>
-          </li>
+              </ul>
+            </li>
           <?php endif; ?>
-          
-          <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] != 'Representante') :?>
+
+          <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] != 'Representante') : ?>
             <li class="nav-title">Configuración</li>
           <?php endif; ?>
 
-          <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] != 'Representante') :?>
-          <li class="nav-item nav-dropdown">
-            <a class="nav-link nav-dropdown-toggle" href="#">
-              <i class="nav-icon fas fa-cogs"></i> Configuración
-            </a>
+          <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] != 'Representante') : ?>
+            <li class="nav-item nav-dropdown">
+              <a class="nav-link nav-dropdown-toggle" href="#">
+                <i class="nav-icon fas fa-cogs"></i> Configuración
+              </a>
 
-            <ul class="nav-dropdown-items">
-              <?php
-                echo  (isset($_SESSION['permisos']['ambiente']) && in_array('ver' , $_SESSION['permisos']['ambiente'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/ambiente.php">
+              <ul class="nav-dropdown-items">
+                <?php
+                echo (isset($_SESSION['permisos']['ambiente']) && in_array('ver', $_SESSION['permisos']['ambiente'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/ambiente.php">
                     <i class="nav-icon fas fa-ruler-vertical"></i> Ambiente
                   </a>
-                </li>' 
-                :
-                '';
-                
-                echo  (isset($_SESSION['permisos']['grado']) && in_array('ver' , $_SESSION['permisos']['grado'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/grado.php">
+                </li>'
+                  :
+                  '';
+
+                echo (isset($_SESSION['permisos']['grado']) && in_array('ver', $_SESSION['permisos']['grado'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/grado.php">
                     <i class="nav-icon fas fa-pencil-ruler"></i> Grado
                   </a>
-                </li>' 
-                :
-                '';
+                </li>'
+                  :
+                  '';
 
-                echo  (isset($_SESSION['permisos']['institucion']) && in_array('ver' , $_SESSION['permisos']['institucion'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/institucion.php">
+                echo (isset($_SESSION['permisos']['institucion']) && in_array('ver', $_SESSION['permisos']['institucion'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/institucion.php">
                     <i class="nav-icon fas fa-school"></i> Institución
                   </a>
-                </li>' 
-                :
-                '';
+                </li>'
+                  :
+                  '';
 
 
-                echo  (isset($_SESSION['permisos']['lapso']) && in_array('ver' , $_SESSION['permisos']['lapso'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/lapso.php">
+                echo (isset($_SESSION['permisos']['lapso']) && in_array('ver', $_SESSION['permisos']['lapso'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/lapso.php">
                     <i class="nav-icon fas fa-cut"></i> Lapso
                   </a>
-                </li>' 
-                :
-                '';
+                </li>'
+                  :
+                  '';
 
-                echo  (isset($_SESSION['permisos']['expresion-literal']) && in_array('ver' , $_SESSION['permisos']['expresion-literal'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/expresion-literal.php">
+                echo (isset($_SESSION['permisos']['expresion-literal']) && in_array('ver', $_SESSION['permisos']['expresion-literal'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/expresion-literal.php">
                     <i class="nav-icon fas fa-ad"></i> Literal
                   </a>
-                </li>' 
-                :
-                '';
+                </li>'
+                  :
+                  '';
 
-                echo  (isset($_SESSION['permisos']['materia']) && in_array('ver' , $_SESSION['permisos']['materia'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/materia.php">
+                echo (isset($_SESSION['permisos']['materia']) && in_array('ver', $_SESSION['permisos']['materia'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/materia.php">
                     <i class="nav-icon fas fa-book"></i> Materia
                   </a>
-                </li>' 
-                :
-                '';
+                </li>'
+                  :
+                  '';
 
-                echo  (isset($_SESSION['permisos']['modulo']) && in_array('ver' , $_SESSION['permisos']['modulo'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/modulo.php">
+                echo (isset($_SESSION['permisos']['modulo']) && in_array('ver', $_SESSION['permisos']['modulo'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/modulo.php">
                     <i class="nav-icon fas fa-check"></i> Módulo
                   </a>
-                </li>' 
-                :
-                '';
+                </li>'
+                  :
+                  '';
 
-                echo  (isset($_SESSION['permisos']['seccion']) && in_array('ver' , $_SESSION['permisos']['seccion'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/seccion.php">
+                echo (isset($_SESSION['permisos']['seccion']) && in_array('ver', $_SESSION['permisos']['seccion'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/seccion.php">
                     <i class="nav-icon fas fa-apple-alt"></i> Sección
                   </a>
-                </li>' 
-                :
-                '';
+                </li>'
+                  :
+                  '';
 
-                echo  (isset($_SESSION['permisos']['accion']) && in_array('ver' , $_SESSION['permisos']['accion'])) ? 
-                '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-miguel-otero/vistas/accion.php">
+                echo (isset($_SESSION['permisos']['accion']) && in_array('ver', $_SESSION['permisos']['accion'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/accion.php">
                     <i class="nav-icon fas fa-check"></i> Acción
                   </a>
-                </li>' 
-                :
-                '';
+                </li>'
+                  :
+                  '';
 
-              ?>
-                  
-            </ul>
-          </li>
+                ?>
+
+              </ul>
+            </li>
           <?php endif; ?>
-          
+
           <?php
-          echo  (isset($_SESSION['permisos']['historial-estudiantil']) && in_array('ver' , $_SESSION['permisos']['historial-estudiantil'])) ? 
+          echo (isset($_SESSION['permisos']['historial-estudiantil']) && in_array('ver', $_SESSION['permisos']['historial-estudiantil'])) ?
             '<li class="nav-item">
-              <a class="nav-link" href="/escuela-miguel-otero/vistas/historial-estudiantil.php">
+              <a class="nav-link" href="/escuela-romulo-gallegos/vistas/historial-estudiantil.php">
               <i class="nav-icon fas fa-book"></i> Historial estudiantil</a>
-            </li>' 
+            </li>'
             :
             '';
           ?>
@@ -484,4 +484,3 @@ if (strlen(session_id()) < 1)
         </ul>
       </nav>
     </div>
-
