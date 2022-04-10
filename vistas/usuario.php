@@ -229,6 +229,7 @@ if (!isset($_SESSION['idusuario'])) {
                             <select id="rol" name="rol" class="form-control selectpicker" required>
                               <option value="">Seleccione</option>
                               <option value="Administrador">Administrador</option>
+                              <option value="Vicerrector">Vicerrector</option>
                               <option value="Docente">Docente</option>
                               <!-- <option value="Representante">Representante</option> -->
                             </select>
