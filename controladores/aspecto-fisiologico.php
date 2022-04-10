@@ -30,6 +30,9 @@ foreach ($_POST as $key => $value) {
 switch ($_GET['op']) {
 
 	case 'guardaryeditar':
+
+    // var_dump($_POST);
+    // die;
   
 		#Se deshabilita el guardado automático de la base de datos
 		autocommit(FALSE);
@@ -45,7 +48,7 @@ switch ($_GET['op']) {
       // $idinscripcion = !empty($idinscripcion) ? $idinscripcion['id'] : '';
 
       #Se registran los aspectos fisiológicos del estudiante
-			$id = $AspectoFisiologico->insertar($idplanificacion, $idestudiante, $peso, $talla, $todas_vacunas, $alergia, $c, $alimentos, $utiles) or $sw = FALSE;
+			$id = $AspectoFisiologico->insertar($idplanificacion, $idestudiante, $peso, $talla, $todas_vacunas, $alergia, $c, $alimentos, $utiles, $alergias, $vacunas) or $sw = FALSE;
 
 			#Se registran las diversidades funcionales del estudiante
 			$DiversidadFuncional->insertar($id, $diversidad) or $sw = FALSE;
@@ -69,7 +72,7 @@ switch ($_GET['op']) {
       $sw = TRUE;
       
       #Se editan los aspectos fisiológicos del estudiante
-      $AspectoFisiologico->editar($idaspectofisiologico, $peso, $talla, $todas_vacunas, $alergia, $c, $alimentos, $utiles) or $sw = FALSE;
+      $AspectoFisiologico->editar($idaspectofisiologico, $peso, $talla, $todas_vacunas, $alergia, $c, $alimentos, $utiles,$alergias, $vacunas) or $sw = FALSE;
       
       #Verifica que la variable de diversidad contenga datos y los guarda
 			if (!empty($diversidad)) {

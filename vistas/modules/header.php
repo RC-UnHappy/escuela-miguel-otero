@@ -212,22 +212,64 @@ if (strlen(session_id()) < 1)
 
           <li class="nav-title">Institución</li>
 
-          <?php
-          echo (isset($_SESSION['permisos']['estudiante']) && in_array('ver', $_SESSION['permisos']['estudiante'])) ?
-            '<li class="nav-item">
+          <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] != 'Representante') : ?>
+            <li class="nav-item nav-dropdown">
+              <a class="nav-link nav-dropdown-toggle" href="#">
+                <i class="nav-icon fas fa-address-card"></i> Inscripción
+              </a>
+
+              <ul class="nav-dropdown-items">
+
+                <?php
+
+                echo (isset($_SESSION['permisos']['estudiante']) && in_array('ver', $_SESSION['permisos']['estudiante'])) ?
+                  '<li class="nav-item">
               <a class="nav-link" href="/escuela-romulo-gallegos/vistas/estudiante.php">
               <i class="nav-icon fas fa-user-graduate"></i> Estudiante</a>
             </li>'
-            :
-            '';
+                  :
+                  '';
 
-          echo (isset($_SESSION['permisos']['representante']) && in_array('ver', $_SESSION['permisos']['representante'])) ?
-            '<li class="nav-item">
+                echo (isset($_SESSION['permisos']['representante']) && in_array('ver', $_SESSION['permisos']['representante'])) ?
+                  '<li class="nav-item">
               <a class="nav-link" href="/escuela-romulo-gallegos/vistas/representante.php">
               <i class="nav-icon fas fa-user-tie"></i> Padres y representantes</a>
             </li>'
-            :
-            '';
+                  :
+                  '';
+
+                echo (isset($_SESSION['permisos']['inscripcion']) && in_array('ver', $_SESSION['permisos']['inscripcion'])) ?
+                  '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/inscripcion/inscripcion.php">
+                    <i class="nav-icon fas fa-address-card"></i> Inscripción
+                  </a>
+                </li>'
+                  :
+                  '';
+
+
+                ?>
+
+              </ul>
+            </li>
+          <?php endif; ?>
+
+          <?php
+          // echo (isset($_SESSION['permisos']['estudiante']) && in_array('ver', $_SESSION['permisos']['estudiante'])) ?
+          //   '<li class="nav-item">
+          //     <a class="nav-link" href="/escuela-romulo-gallegos/vistas/estudiante.php">
+          //     <i class="nav-icon fas fa-user-graduate"></i> Estudiante</a>
+          //   </li>'
+          //   :
+          //   '';
+
+          // echo (isset($_SESSION['permisos']['representante']) && in_array('ver', $_SESSION['permisos']['representante'])) ?
+          //   '<li class="nav-item">
+          //     <a class="nav-link" href="/escuela-romulo-gallegos/vistas/representante.php">
+          //     <i class="nav-icon fas fa-user-tie"></i> Padres y representantes</a>
+          //   </li>'
+          //   :
+          //   '';
 
           echo (isset($_SESSION['permisos']['representado']) && in_array('ver', $_SESSION['permisos']['representado'])) ?
             '<li class="nav-item">
@@ -309,14 +351,14 @@ if (strlen(session_id()) < 1)
                   :
                   '';
 
-                echo (isset($_SESSION['permisos']['inscripcion']) && in_array('ver', $_SESSION['permisos']['inscripcion'])) ?
-                  '<li class="nav-item">
-                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/inscripcion/inscripcion.php">
-                    <i class="nav-icon fas fa-address-card"></i> Inscripción
-                  </a>
-                </li>'
-                  :
-                  '';
+                // echo (isset($_SESSION['permisos']['inscripcion']) && in_array('ver', $_SESSION['permisos']['inscripcion'])) ?
+                //   '<li class="nav-item">
+                //   <a class="nav-link" href="/escuela-romulo-gallegos/vistas/inscripcion/inscripcion.php">
+                //     <i class="nav-icon fas fa-address-card"></i> Inscripción
+                //   </a>
+                // </li>'
+                //   :
+                //   '';
 
                 echo (isset($_SESSION['permisos']['lapso-academico']) && in_array('ver', $_SESSION['permisos']['lapso-academico'])) ?
                   '<li class="nav-item">
@@ -421,6 +463,24 @@ if (strlen(session_id()) < 1)
                   '<li class="nav-item">
                   <a class="nav-link" href="/escuela-romulo-gallegos/vistas/materia.php">
                     <i class="nav-icon fas fa-book"></i> Materia
+                  </a>
+                </li>'
+                  :
+                  '';
+
+                echo (isset($_SESSION['permisos']['enfermedad']) && in_array('ver', $_SESSION['permisos']['enfermedad'])) ?
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/enfermedad.php">
+                    <i class="nav-icon fa fa-medkit"></i> Enfermedad
+                  </a>
+                </li>'
+                  :
+                  '';
+
+                echo (isset($_SESSION['permisos']['diversidad-funcional']) && in_array('ver', $_SESSION['permisos']['diversidad-funcional'])) ?
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/diversidad-funcional.php">
+                    <i class="nav-icon fa fa-deaf"></i> Diversidad Funcional
                   </a>
                 </li>'
                   :

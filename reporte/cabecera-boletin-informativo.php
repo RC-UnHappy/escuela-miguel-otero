@@ -10,20 +10,31 @@ class PDF extends FPDF
 //Cabecera de página
 function Header()
 {
-    //Logo
-    $this->Image('img_reportes/ministerio.png',10,6,25, 25);
-    $this->Image('img_reportes/escudo-romulo.jpg',185,8,15, 15);
-    //Arial bold 15
-    $this->SetFont('Arial','B',12);
-    //Movernos a la derecha
-    $this->Cell(80);
+        //Logo
+        // $this->Image('img_reportes/ministerio.png',10,6,25, 25);
+        // $this->Image('img_reportes/escudo-romulo.jpg',185,8,15, 15);
+        // //Arial bold 15
+        // $this->SetFont('Arial','B',12);
+        // //Movernos a la derecha
+        // $this->Cell(80);
+
+        //Logo
+        $this->Image('img_reportes/cintillo.jpg', 10, 8, 150);
+        $this->SetFont('Arial', 'B', 10);
+        $this->SetX(135);
+        $this->cell(50, 10,  utf8_decode('E.B "RÓMULO GALLEGOS"'));
+        $this->Image('img_reportes/escudo-romulo.jpg', 185, 8, 15);
+        //Salto de línea
+        $this->Ln(10);
     //Título
-    $this->Cell(30,10,utf8_decode(strtoupper($this->nombre_institucion)),0,0,'C');
-    //Salto de línea
+    // $this->Cell(30,10,utf8_decode(strtoupper($this->nombre_institucion)),0,0,'C');
+    // //Salto de línea
     $this->Ln(5);
     $this->Cell(155,10,utf8_decode('Año Escolar '.$this->periodo_escolar),0,0,'R');
     //Salto de línea
     $this->Ln(5);
+
+    
 }
 
 //Pie de página

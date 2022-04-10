@@ -100,213 +100,6 @@ if (!isset($_SESSION['idusuario'])) {
 
                                             <div class="row">
 
-                                                <!-- estudiante -->
-                                                <div class="col-sm-12">
-                                                    <div class="card border-right-0 border-bottom-0 border-left-0  border-top-0 shadow mb-3 bg-white rounded">
-                                                        <div class="card-header bg-white  shadow border-bottom-0 fondo-degradado">
-                                                            <h5 class="m-0 p-0  font-italic font-weight-bold text-white"><i class="fas fa-user-graduate"></i> Datos del estudiante
-                                                                <small class="text-dark">(Requerido)</small>
-                                                            </h5>
-                                                        </div>
-
-                                                        <div class="card-body">
-
-                                                            <div class="row" id="comienzoFormulario">
-
-                                                                <div class="form-group col-md-3">
-                                                                    <label for="documento_estudiante">Documento del estudiante (*)</label>
-                                                                    <div class="input-group ">
-                                                                        <select name="documento_estudiante" id="documento_estudiante" class="form-control selectpicker" required="true">
-                                                                            <option value="">Seleccione</option>
-                                                                            <option value="venezolano">Venezolano</option>
-                                                                            <option value="extranjero">Extranjero</option>
-                                                                            <option value="cedula_estudiantil">Cédula Estudiantil</option>
-                                                                        </select>
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-3">
-                                                                    <label for="cedula_estudiante">Cédula del estudiante (*)</label>
-                                                                    <div class="input-group">
-
-                                                                        <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula_estudiante" id="cedula_estudiante" maxlength="8" minlength="7" required>
-
-                                                                        <div class="invalid-feedback" id="mensajeCedula">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-3">
-                                                                    <label for="p_nombre_estudiante">Primer Nombre (*)</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control solo_letras" name="p_nombre_estudiante" id="p_nombre_estudiante" required>
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-3">
-                                                                    <label for="s_nombre_estudiante">Segundo Nombre</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control solo_letras" name="s_nombre_estudiante" id="s_nombre_estudiante">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-3">
-                                                                    <label for="p_apellido_estudiante">Primer Apellido (*)</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control solo_letras" name="p_apellido_estudiante" id="p_apellido_estudiante" required>
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-3">
-                                                                    <label for="s_apellido_estudiante">Segundo Apellido</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control solo_letras" name="s_apellido_estudiante" id="s_apellido_estudiante">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="f_nac_estudiante">Fecha Nacimiento (*)</label>
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-prepend">
-                                                                            <div class="input-group-text">
-                                                                                <i class="fas fa-calendar-alt"></i>
-                                                                            </div>
-                                                                        </div>
-                                                                        <input type="date" name="f_nac_estudiante" id="f_nac_estudiante" class="form-control" required>
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="genero_estudiante">Género (*)</label>
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-prepend">
-                                                                            <div class="input-group-text" id="icono_genero">
-                                                                                <i class="fas fa-venus-mars"></i>
-                                                                            </div>
-                                                                        </div>
-                                                                        <select name="genero_estudiante" class="form-control selectpicker genero" id="genero_estudiante" required>
-                                                                            <option value="">Seleccione</option>
-                                                                            <option value="M">Masculino</option>
-                                                                            <option value="F">Femenino</option>
-                                                                        </select>
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-
-
-                                                                <div class="form-group col-md-3">
-                                                                    <label for="">¿Es parto multiple? (*)</label>
-                                                                    <div class="input-group">
-
-                                                                        <div class="custom-control custom-radio custom-control-inline">
-                                                                            <input type="radio" id="partoSi" name="parto" class="custom-control-input" required value="si">
-                                                                            <label class="custom-control-label" for="partoSi">Si</label>
-                                                                            <div class="invalid-feedback">
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="custom-control custom-radio custom-control-inline">
-                                                                            <input type="radio" id="partoNo" name="parto" class="custom-control-input" required value="no">
-                                                                            <label class="custom-control-label" for="partoNo">No</label>
-                                                                            <div class="invalid-feedback">
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-3">
-                                                                    <label for="orden">Orden de nacimiento</label>
-                                                                    <div class="input-group">
-
-                                                                        <input type="text" class="form-control solo_numeros" placeholder="Ej: 2" name="orden" id="orden" maxlength="1" disabled>
-
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-3">
-                                                                    <label for="pais_nacimiento_estudiante">País nacimiento (*)</label>
-                                                                    <div class="input-group">
-                                                                        <select id="pais_nacimiento_estudiante" name="pais_nacimiento_estudiante" class="form-control selectpicker" data-live-search="true" required>
-                                                                            <option value="">Seleccione</option>
-
-                                                                        </select>
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-3">
-                                                                    <label for="estado_nacimiento_estudiante">Estado nacimiento (*)</label>
-                                                                    <div class="input-group">
-                                                                        <select id="estado_nacimiento_estudiante" name="estado_nacimiento_estudiante" class="form-control selectpicker" data-live-search="true" required disabled>
-                                                                            <option value="">Seleccione</option>
-
-                                                                        </select>
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-3">
-                                                                    <label for="municipio_nacimiento_estudiante">Municipio nacimiento (*)</label>
-                                                                    <div class="input-group">
-                                                                        <select id="municipio_nacimiento_estudiante" name="municipio_nacimiento_estudiante" class="form-control selectpicker" data-live-search="true" required disabled>
-                                                                            <option value="">Seleccione</option>
-
-                                                                        </select>
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-3">
-                                                                    <label for="parroquia_nacimiento_estudiante">Parroquia nacimiento (*)</label>
-                                                                    <div class="input-group">
-                                                                        <select id="parroquia_nacimiento_estudiante" name="parroquia_nacimiento_estudiante" class="form-control selectpicker" data-live-search="true" required disabled>
-                                                                            <option value="">Seleccione</option>
-
-                                                                        </select>
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-12">
-                                                                    <label for="plantel_procedencia_estudiante">Plantel de procedencia</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control" name="plantel_procedencia_estudiante" id="plantel_procedencia_estudiante">
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
                                                 <!-- madre -->
                                                 <div class="col-sm-6">
                                                     <div class="card border-right-0 border-bottom-0 border-left-0  border-top-0 shadow mb-1 bg-white rounded">
@@ -564,6 +357,215 @@ if (!isset($_SESSION['idusuario'])) {
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <!-- estudiante -->
+                                                <div class="col-sm-12">
+                                                    <div class="card border-right-0 border-bottom-0 border-left-0  border-top-0 shadow mb-3 bg-white rounded">
+                                                        <div class="card-header bg-white  shadow border-bottom-0 fondo-degradado">
+                                                            <h5 class="m-0 p-0  font-italic font-weight-bold text-white"><i class="fas fa-user-graduate"></i> Datos del estudiante
+                                                                <small class="text-dark">(Requerido)</small>
+                                                            </h5>
+                                                        </div>
+
+                                                        <div class="card-body">
+
+                                                            <div class="row" id="comienzoFormulario">
+
+                                                                <div class="form-group col-md-3">
+                                                                    <label for="documento_estudiante">Documento del estudiante (*)</label>
+                                                                    <div class="input-group ">
+                                                                        <select name="documento_estudiante" id="documento_estudiante" class="form-control selectpicker" required="true">
+                                                                            <option value="">Seleccione</option>
+                                                                            <option value="venezolano">Venezolano</option>
+                                                                            <option value="extranjero">Extranjero</option>
+                                                                            <option value="cedula_estudiantil">Cédula Estudiantil</option>
+                                                                        </select>
+                                                                        <div class="invalid-feedback">
+                                                                            Campo Obligatorio
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group col-md-3">
+                                                                    <label for="cedula_estudiante">Cédula del estudiante (*)</label>
+                                                                    <div class="input-group">
+
+                                                                        <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula_estudiante" id="cedula_estudiante" maxlength="8" minlength="7" required>
+
+                                                                        <div class="invalid-feedback" id="mensajeCedula">
+                                                                            Campo Obligatorio
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group col-md-3">
+                                                                    <label for="p_nombre_estudiante">Primer Nombre (*)</label>
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control solo_letras" name="p_nombre_estudiante" id="p_nombre_estudiante" required>
+                                                                        <div class="invalid-feedback">
+                                                                            Campo Obligatorio
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group col-md-3">
+                                                                    <label for="s_nombre_estudiante">Segundo Nombre</label>
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control solo_letras" name="s_nombre_estudiante" id="s_nombre_estudiante">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group col-md-3">
+                                                                    <label for="p_apellido_estudiante">Primer Apellido (*)</label>
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control solo_letras" name="p_apellido_estudiante" id="p_apellido_estudiante" required>
+                                                                        <div class="invalid-feedback">
+                                                                            Campo Obligatorio
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group col-md-3">
+                                                                    <label for="s_apellido_estudiante">Segundo Apellido</label>
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control solo_letras" name="s_apellido_estudiante" id="s_apellido_estudiante">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="f_nac_estudiante">Fecha Nacimiento (*)</label>
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <div class="input-group-text">
+                                                                                <i class="fas fa-calendar-alt"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <input type="date" name="f_nac_estudiante" id="f_nac_estudiante" class="form-control" required>
+                                                                        <div class="invalid-feedback">
+                                                                            Campo Obligatorio
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="genero_estudiante">Género (*)</label>
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <div class="input-group-text" id="icono_genero">
+                                                                                <i class="fas fa-venus-mars"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <select name="genero_estudiante" class="form-control selectpicker genero" id="genero_estudiante" required>
+                                                                            <option value="">Seleccione</option>
+                                                                            <option value="M">Masculino</option>
+                                                                            <option value="F">Femenino</option>
+                                                                        </select>
+                                                                        <div class="invalid-feedback">
+                                                                            Campo Obligatorio
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                                <div class="form-group col-md-3">
+                                                                    <label for="">¿Es parto multiple? (*)</label>
+                                                                    <div class="input-group">
+
+                                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" id="partoSi" name="parto" class="custom-control-input" required value="si">
+                                                                            <label class="custom-control-label" for="partoSi">Si</label>
+                                                                            <div class="invalid-feedback">
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" id="partoNo" name="parto" class="custom-control-input" required value="no">
+                                                                            <label class="custom-control-label" for="partoNo">No</label>
+                                                                            <div class="invalid-feedback">
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group col-md-3">
+                                                                    <label for="orden">Orden de nacimiento</label>
+                                                                    <div class="input-group">
+
+                                                                        <input type="text" class="form-control solo_numeros" placeholder="Ej: 2" name="orden" id="orden" maxlength="1" disabled>
+
+                                                                        <div class="invalid-feedback">
+                                                                            Campo Obligatorio
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group col-md-3">
+                                                                    <label for="pais_nacimiento_estudiante">País nacimiento (*)</label>
+                                                                    <div class="input-group">
+                                                                        <select id="pais_nacimiento_estudiante" name="pais_nacimiento_estudiante" class="form-control selectpicker" data-live-search="true" required>
+                                                                            <option value="">Seleccione</option>
+
+                                                                        </select>
+                                                                        <div class="invalid-feedback">
+                                                                            Campo Obligatorio
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group col-md-3">
+                                                                    <label for="estado_nacimiento_estudiante">Estado nacimiento (*)</label>
+                                                                    <div class="input-group">
+                                                                        <select id="estado_nacimiento_estudiante" name="estado_nacimiento_estudiante" class="form-control selectpicker" data-live-search="true" required disabled>
+                                                                            <option value="">Seleccione</option>
+
+                                                                        </select>
+                                                                        <div class="invalid-feedback">
+                                                                            Campo Obligatorio
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group col-md-3">
+                                                                    <label for="municipio_nacimiento_estudiante">Municipio nacimiento (*)</label>
+                                                                    <div class="input-group">
+                                                                        <select id="municipio_nacimiento_estudiante" name="municipio_nacimiento_estudiante" class="form-control selectpicker" data-live-search="true" required disabled>
+                                                                            <option value="">Seleccione</option>
+
+                                                                        </select>
+                                                                        <div class="invalid-feedback">
+                                                                            Campo Obligatorio
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group col-md-3">
+                                                                    <label for="parroquia_nacimiento_estudiante">Parroquia nacimiento (*)</label>
+                                                                    <div class="input-group">
+                                                                        <select id="parroquia_nacimiento_estudiante" name="parroquia_nacimiento_estudiante" class="form-control selectpicker" data-live-search="true" required disabled>
+                                                                            <option value="">Seleccione</option>
+
+                                                                        </select>
+                                                                        <div class="invalid-feedback">
+                                                                            Campo Obligatorio
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group col-md-12">
+                                                                    <label for="plantel_procedencia_estudiante">Plantel de procedencia</label>
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control" name="plantel_procedencia_estudiante" id="plantel_procedencia_estudiante">
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
 
                                                 <!-- representante -->
                                                 <div class="col-sm-6">

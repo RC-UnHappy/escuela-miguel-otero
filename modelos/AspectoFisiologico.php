@@ -16,9 +16,9 @@ class AspectoFisiologico
 	}
 
 	#Método para insertar registros
-	function insertar($idplanificacion, $idestudiante ,$peso, $talla, $todas_vacunas, $alergia, $c, $alimentos, $utiles)
+	function insertar($idplanificacion, $idestudiante ,$peso, $talla, $todas_vacunas, $alergia, $c, $alimentos, $utiles, $alergias, $vacunas)
 	{
-    $sql = "INSERT INTO aspecto_fisiologicos (id, idplanificacion, idestudiante ,peso, talla, todas_vacunas,alergia, c, alimentos, utiles) VALUES(NULL, '$idplanificacion', '$idestudiante', '$peso', '$talla', '$todas_vacunas', '$alergia', '$c', '$alimentos', '$utiles')";
+    $sql = "INSERT INTO aspecto_fisiologicos (id, idplanificacion, idestudiante ,peso, talla, todas_vacunas,alergia, c, alimentos, utiles, alergias, vacunas) VALUES(NULL, '$idplanificacion', '$idestudiante', '$peso', '$talla', '$todas_vacunas', '$alergia', '$c', '$alimentos', '$utiles', '$alergias', '$vacunas')";
 
     return ejecutarConsulta_retornarID($sql);
 
@@ -33,9 +33,9 @@ class AspectoFisiologico
   }
 
 	#Método para editar registros
-	function editar($idaspectofisiologico, $peso, $talla, $todas_vacunas, $alergia, $c, $alimentos, $utiles)
+	function editar($idaspectofisiologico, $peso, $talla, $todas_vacunas, $alergia, $c, $alimentos, $utiles, $vacunas, $alergias)
 	{
-		$sql = "UPDATE aspecto_fisiologicos SET peso = '$peso', talla = '$talla', todas_vacunas = '$todas_vacunas', alergia = '$alergia', c = '$c', alimentos = '$alimentos', utiles = '$utiles' WHERE id = '$idaspectofisiologico'";
+		$sql = "UPDATE aspecto_fisiologicos SET peso = '$peso', talla = '$talla', todas_vacunas = '$todas_vacunas', alergia = '$alergia', c = '$c', alimentos = '$alimentos', utiles = '$utiles', vacunas = '$vacunas', alergias = '$alergias' WHERE id = '$idaspectofisiologico'";
 
 		return ejecutarConsulta($sql);
 
