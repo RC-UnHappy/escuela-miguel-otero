@@ -287,7 +287,7 @@
 
       <footer class="app-footer">
         <div>
-          <a>Alexis Cáceres</a>
+          <a>Escuela Rómulo Gallegos</a>
           <span id="fecha_actual">&copy; </span>
         </div>
         <!-- <div class="ml-auto">
