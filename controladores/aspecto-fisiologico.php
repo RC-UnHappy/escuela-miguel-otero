@@ -48,7 +48,7 @@ switch ($_GET['op']) {
       // $idinscripcion = !empty($idinscripcion) ? $idinscripcion['id'] : '';
 
       #Se registran los aspectos fisiológicos del estudiante
-			$id = $AspectoFisiologico->insertar($idplanificacion, $idestudiante, $peso, $talla, $todas_vacunas, $alergia, $c, $alimentos, $utiles, $alergias, $vacunas) or $sw = FALSE;
+			$id = $AspectoFisiologico->insertar($idplanificacion, $idestudiante, $peso, $talla, $todas_vacunas, $alergia, $c, $alimentos, $utiles, $alergias, $vacunas, $alimentostxt, $utilestxt) or $sw = FALSE;
 
 			#Se registran las diversidades funcionales del estudiante
 			$DiversidadFuncional->insertar($id, $diversidad) or $sw = FALSE;
@@ -72,7 +72,7 @@ switch ($_GET['op']) {
       $sw = TRUE;
       
       #Se editan los aspectos fisiológicos del estudiante
-      $AspectoFisiologico->editar($idaspectofisiologico, $peso, $talla, $todas_vacunas, $alergia, $c, $alimentos, $utiles,$alergias, $vacunas) or $sw = FALSE;
+      $AspectoFisiologico->editar($idaspectofisiologico, $peso, $talla, $todas_vacunas, $alergia, $c, $alimentos, $utiles,$alergias, $vacunas, $alimentostxt, $utilestxt) or $sw = FALSE;
       
       #Verifica que la variable de diversidad contenga datos y los guarda
 			if (!empty($diversidad)) {

@@ -12,7 +12,8 @@ if (!isset($_SESSION['idusuario'])) {
     if (isset($_SESSION['permisos']['inscripcion']) && in_array('ver', $_SESSION['permisos']['inscripcion'])) {
 
 ?>
-
+        <link href="../../public/css/MultiStep.min.css" rel="stylesheet">
+        <link href="../../public/css/MultiStep-theme.min.css" rel="stylesheet">
         <!-- Contenido -->
         <main class="main">
             <div class="animated fadeIn">
@@ -87,6 +88,8 @@ if (!isset($_SESSION['idusuario'])) {
                                 <div class="modal-content">
 
                                     <form class="needs-validation" novalidate name="formularioInscripcion" id="formularioregistros">
+
+
                                         <!-- Formulario de inscripción -->
 
                                         <div class="modal-header fondo-degradado rounded">
@@ -100,263 +103,286 @@ if (!isset($_SESSION['idusuario'])) {
 
                                             <div class="row">
 
-                                                <!-- madre -->
-                                                <div class="col-sm-6">
-                                                    <div class="card border-right-0 border-bottom-0 border-left-0  border-top-0 shadow mb-1 bg-white rounded">
-                                                        <div class="card-header bg-white  shadow border-bottom-0 fondo-degradado">
-                                                            <h5 class="m-0 p-0  font-italic font-weight-bold text-white"><i class="fas fa-female"></i> Datos de la madre
-                                                                <small class="text-dark">(Requerido)</small>
-                                                            </h5>
-                                                        </div>
+                                                <div class="col-md-12">
+                                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                                        <li class="nav-item" role="presentation">
+                                                            <a class="nav-link active" id="madre-tab" data-toggle="tab" href="#madre" role="tab" aria-controls="madre" aria-selected="true">Madre</a>
+                                                        </li>
+                                                        <li class="nav-item" role="presentation">
+                                                            <a class="nav-link" id="padre-tab" data-toggle="tab" href="#padre" role="tab" aria-controls="padre" aria-selected="false">Padre</a>
+                                                        </li>
 
-                                                        <div class="card-body">
-
-                                                            <div class="row">
-
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="documento_madre">Tipo de documento (*)</label>
-                                                                    <div class="input-group ">
-                                                                        <select name="documento_madre" id="documento_madre" class="form-control selectpicker" required="true">
-                                                                            <option value="">Seleccione</option>
-                                                                            <option value="venezolano">Venezolano</option>
-                                                                            <option value="extranjero">Extranjero</option>
-                                                                            <option value="pasaporte">Pasaporte</option>
-                                                                        </select>
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
+                                                    </ul>
+                                                    <div class="tab-content" id="myTabContent">
+                                                        <div class="tab-pane fade show active" id="madre" role="tabpanel" aria-labelledby="madre-tab">
+                                                            <div class="col-sm-12">
+                                                                <div class="card border-right-0 border-bottom-0 border-left-0  border-top-0 shadow mb-1 bg-white rounded">
+                                                                    <div class="card-header bg-white  shadow border-bottom-0 fondo-degradado">
+                                                                        <h5 class="m-0 p-0  font-italic font-weight-bold text-white"><i class="fas fa-female"></i> Datos de la madre
+                                                                            <small class="text-dark">(Requerido)</small>
+                                                                        </h5>
                                                                     </div>
-                                                                </div>
 
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="cedula_madre">Cédula (*)</label>
-                                                                    <div class="input-group">
+                                                                    <div class="card-body">
 
-                                                                        <input type="hidden" name="idmadre" id="idmadre"> <!-- Input oculto que guardará el id de la madre cuando sea necesario -->
+                                                                        <div class="row">
 
-                                                                        <input type="hidden" name="idpersonamadre" id="idpersonamadre"> <!-- Input oculto que guardará el id de la persona cuando sea necesario -->
-
-                                                                        <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula_madre" id="cedula_madre" maxlength="8" minlength="7" required>
-
-                                                                        <div class="invalid-feedback" id="mensajeCedula">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="p_nombre_madre">Primer Nombre (*)</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control solo_letras" name="p_nombre_madre" id="p_nombre_madre" required>
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="s_nombre_madre">Segundo Nombre</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control solo_letras" name="s_nombre_madre" id="s_nombre_madre">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="p_apellido_madre">Primer Apellido (*)</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control solo_letras" name="p_apellido_madre" id="p_apellido_madre" required>
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="s_apellido_madre">Segundo Apellido</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control solo_letras" name="s_apellido_madre" id="s_apellido_madre">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="oficio_madre">Profesión (*)</label>
-                                                                    <div class="input-group">
-
-                                                                        <input type="text" name="oficio_madre" id="oficio_madre" class="form-control" required>
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="celular_madre">Teléfono Celular</label>
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-prepend">
-                                                                            <div class="input-group-text">
-                                                                                <i class="fas fa-mobile-alt"></i>
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="documento_madre">Tipo de documento (*)</label>
+                                                                                <div class="input-group ">
+                                                                                    <select name="documento_madre" id="documento_madre" class="form-control selectpicker" required="true">
+                                                                                        <option value="">Seleccione</option>
+                                                                                        <option value="venezolano">Venezolano</option>
+                                                                                        <option value="extranjero">Extranjero</option>
+                                                                                        <option value="pasaporte">Pasaporte</option>
+                                                                                    </select>
+                                                                                    <div class="invalid-feedback">
+                                                                                        Campo Obligatorio
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <input type="text" name="celular_madre" id="celular_madre" class="form-control solo_numeros guion_telefonico" maxlength="12">
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
+
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="cedula_madre">Cédula (*)</label>
+                                                                                <div class="input-group">
+
+                                                                                    <input type="hidden" name="idmadre" id="idmadre"> <!-- Input oculto que guardará el id de la madre cuando sea necesario -->
+
+                                                                                    <input type="hidden" name="idpersonamadre" id="idpersonamadre"> <!-- Input oculto que guardará el id de la persona cuando sea necesario -->
+
+                                                                                    <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula_madre" id="cedula_madre" maxlength="8" minlength="7" required>
+
+                                                                                    <div class="invalid-feedback" id="mensajeCedula">
+                                                                                        Campo Obligatorio
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="p_nombre_madre">Primer Nombre (*)</label>
+                                                                                <div class="input-group">
+                                                                                    <input type="text" class="form-control solo_letras" name="p_nombre_madre" id="p_nombre_madre" required>
+                                                                                    <div class="invalid-feedback">
+                                                                                        Campo Obligatorio
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="s_nombre_madre">Segundo Nombre</label>
+                                                                                <div class="input-group">
+                                                                                    <input type="text" class="form-control solo_letras" name="s_nombre_madre" id="s_nombre_madre">
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="p_apellido_madre">Primer Apellido (*)</label>
+                                                                                <div class="input-group">
+                                                                                    <input type="text" class="form-control solo_letras" name="p_apellido_madre" id="p_apellido_madre" required>
+                                                                                    <div class="invalid-feedback">
+                                                                                        Campo Obligatorio
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="s_apellido_madre">Segundo Apellido</label>
+                                                                                <div class="input-group">
+                                                                                    <input type="text" class="form-control solo_letras" name="s_apellido_madre" id="s_apellido_madre">
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="oficio_madre">Profesión (*)</label>
+                                                                                <div class="input-group">
+
+                                                                                    <input type="text" name="oficio_madre" id="oficio_madre" class="form-control" required>
+                                                                                    <div class="invalid-feedback">
+                                                                                        Campo Obligatorio
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="celular_madre">Teléfono Celular</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-prepend">
+                                                                                        <div class="input-group-text">
+                                                                                            <i class="fas fa-mobile-alt"></i>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <input type="text" name="celular_madre" id="celular_madre" class="form-control solo_numeros guion_telefonico" maxlength="12">
+                                                                                    <div class="invalid-feedback">
+                                                                                        Campo Obligatorio
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-12">
+                                                                                <label for="direccion_residencia_madre">Dirección de habitación (*)</label>
+                                                                                <div class="input-group">
+                                                                                    <input type="text" name="direccion_residencia_madre" id="direccion_residencia_madre" class="form-control" required>
+                                                                                    <div class="invalid-feedback">
+                                                                                        Campo Obligatorio
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-12">
+                                                                                <label for="direccion_trabajo_madre">Dirección de trabajo (*)</label>
+                                                                                <div class="input-group">
+                                                                                    <input type="text" name="direccion_trabajo_madre" id="direccion_trabajo_madre" class="form-control" required>
+                                                                                    <div class="invalid-feedback">
+                                                                                        Campo Obligatorio
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
-                                                                <div class="form-group col-md-12">
-                                                                    <label for="direccion_residencia_madre">Dirección de habitación (*)</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" name="direccion_residencia_madre" id="direccion_residencia_madre" class="form-control" required>
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-12">
-                                                                    <label for="direccion_trabajo_madre">Dirección de trabajo (*)</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" name="direccion_trabajo_madre" id="direccion_trabajo_madre" class="form-control" required>
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
                                                             </div>
                                                         </div>
+                                                        <div class="tab-pane fade" id="padre" role="tabpanel" aria-labelledby="padre-tab">
+                                                            <div class="col-sm-12">
+                                                                <div class="card border-right-0 border-bottom-0 border-left-0  border-top-0 shadow mb-3 bg-white rounded">
+                                                                    <div class="card-header bg-white  shadow border-bottom-0 fondo-degradado">
+                                                                        <h5 class="m-0 p-0  font-italic font-weight-bold text-white"><i class="fas fa-male"></i> Datos del padre
+                                                                            <small class="text-dark">(Requerido)</small>
+                                                                        </h5>
+                                                                    </div>
+
+                                                                    <div class="card-body">
+
+                                                                        <div class="row">
+
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="documento_padre">Tipo de documento (*)</label>
+                                                                                <div class="input-group ">
+                                                                                    <select name="documento_padre" id="documento_padre" class="form-control selectpicker"="true">
+                                                                                        <option value="">Seleccione</option>
+                                                                                        <option value="venezolano">Venezolano</option>
+                                                                                        <option value="extranjero">Extranjero</option>
+                                                                                        <option value="pasaporte">Pasaporte</option>
+                                                                                    </select>
+                                                                                    <div class="invalid-feedback">
+                                                                                        Campo Obligatorio
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="cedula_padre">Cédula (*)</label>
+                                                                                <div class="input-group">
+
+                                                                                    <input type="hidden" name="idpadre" id="idpadre"> <!-- Input oculto que guardará el id del padre cuando sea necesario -->
+
+                                                                                    <input type="hidden" name="idpersonapadre" id="idpersonapadre"> <!-- Input oculto que guardará el id de la persona cuando sea necesario -->
+
+                                                                                    <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula_padre" id="cedula_padre" maxlength="8" minlength="7">
+
+                                                                                    <div class="invalid-feedback" id="mensajeCedula">
+                                                                                        Campo Obligatorio
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="p_nombre_padre">Primer Nombre (*)</label>
+                                                                                <div class="input-group">
+                                                                                    <input type="text" class="form-control solo_letras" name="p_nombre_padre" id="p_nombre_padre">
+                                                                                    <div class="invalid-feedback">
+                                                                                        Campo Obligatorio
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="s_nombre_padre">Segundo Nombre</label>
+                                                                                <div class="input-group">
+                                                                                    <input type="text" class="form-control solo_letras" name="s_nombre_padre" id="s_nombre_padre">
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="p_apellido_padre">Primer Apellido (*)</label>
+                                                                                <div class="input-group">
+                                                                                    <input type="text" class="form-control solo_letras" name="p_apellido_padre" id="p_apellido_padre">
+                                                                                    <div class="invalid-feedback">
+                                                                                        Campo Obligatorio
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="s_apellido_padre">Segundo Apellido</label>
+                                                                                <div class="input-group">
+                                                                                    <input type="text" class="form-control solo_letras" name="s_apellido_padre" id="s_apellido_padre">
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="oficio_padre">Profesión (*)</label>
+                                                                                <div class="input-group">
+
+                                                                                    <input type="text" name="oficio_padre" id="oficio_padre" class="form-control">
+                                                                                    <div class="invalid-feedback">
+                                                                                        Campo Obligatorio
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="celular_padre">Teléfono Celular</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-prepend">
+                                                                                        <div class="input-group-text">
+                                                                                            <i class="fas fa-mobile-alt"></i>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <input type="text" name="celular_padre" id="celular_padre" class="form-control solo_numeros guion_telefonico" maxlength="12">
+                                                                                    <div class="invalid-feedback">
+                                                                                        Campo Obligatorio
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-12">
+                                                                                <label for="direccion_residencia_padre">Dirección de habitación (*)</label>
+                                                                                <div class="input-group">
+                                                                                    <input type="text" name="direccion_residencia_padre" id="direccion_residencia_padre" class="form-control">
+                                                                                    <div class="invalid-feedback">
+                                                                                        Campo Obligatorio
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-12">
+                                                                                <label for="direccion_trabajo_padre">Dirección de trabajo (*)</label>
+                                                                                <div class="input-group">
+                                                                                    <input type="text" name="direccion_trabajo_padre" id="direccion_trabajo_padre" class="form-control">
+                                                                                    <div class="invalid-feedback">
+                                                                                        Campo Obligatorio
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
                                                     </div>
+
                                                 </div>
+
+
+                                                <!-- madre -->
+
 
                                                 <!-- padre -->
-                                                <div class="col-sm-6">
-                                                    <div class="card border-right-0 border-bottom-0 border-left-0  border-top-0 shadow mb-3 bg-white rounded">
-                                                        <div class="card-header bg-white  shadow border-bottom-0 fondo-degradado">
-                                                            <h5 class="m-0 p-0  font-italic font-weight-bold text-white"><i class="fas fa-male"></i> Datos del padre
-                                                                <small class="text-dark">(Requerido)</small>
-                                                            </h5>
-                                                        </div>
 
-                                                        <div class="card-body">
-
-                                                            <div class="row">
-
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="documento_padre">Tipo de documento (*)</label>
-                                                                    <div class="input-group ">
-                                                                        <select name="documento_padre" id="documento_padre" class="form-control selectpicker"="true">
-                                                                            <option value="">Seleccione</option>
-                                                                            <option value="venezolano">Venezolano</option>
-                                                                            <option value="extranjero">Extranjero</option>
-                                                                            <option value="pasaporte">Pasaporte</option>
-                                                                        </select>
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="cedula_padre">Cédula (*)</label>
-                                                                    <div class="input-group">
-
-                                                                        <input type="hidden" name="idpadre" id="idpadre"> <!-- Input oculto que guardará el id del padre cuando sea necesario -->
-
-                                                                        <input type="hidden" name="idpersonapadre" id="idpersonapadre"> <!-- Input oculto que guardará el id de la persona cuando sea necesario -->
-
-                                                                        <input type="text" class="form-control solo_numeros" placeholder="Ej: 12345678" name="cedula_padre" id="cedula_padre" maxlength="8" minlength="7">
-
-                                                                        <div class="invalid-feedback" id="mensajeCedula">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="p_nombre_padre">Primer Nombre (*)</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control solo_letras" name="p_nombre_padre" id="p_nombre_padre">
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="s_nombre_padre">Segundo Nombre</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control solo_letras" name="s_nombre_padre" id="s_nombre_padre">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="p_apellido_padre">Primer Apellido (*)</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control solo_letras" name="p_apellido_padre" id="p_apellido_padre">
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="s_apellido_padre">Segundo Apellido</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control solo_letras" name="s_apellido_padre" id="s_apellido_padre">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="oficio_padre">Profesión (*)</label>
-                                                                    <div class="input-group">
-
-                                                                        <input type="text" name="oficio_padre" id="oficio_padre" class="form-control">
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="celular_padre">Teléfono Celular</label>
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-prepend">
-                                                                            <div class="input-group-text">
-                                                                                <i class="fas fa-mobile-alt"></i>
-                                                                            </div>
-                                                                        </div>
-                                                                        <input type="text" name="celular_padre" id="celular_padre" class="form-control solo_numeros guion_telefonico" maxlength="12">
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-12">
-                                                                    <label for="direccion_residencia_padre">Dirección de habitación (*)</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" name="direccion_residencia_padre" id="direccion_residencia_padre" class="form-control">
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-12">
-                                                                    <label for="direccion_trabajo_padre">Dirección de trabajo (*)</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" name="direccion_trabajo_padre" id="direccion_trabajo_padre" class="form-control">
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
 
                                                 <!-- estudiante -->
                                                 <div class="col-sm-12">
@@ -1371,6 +1397,7 @@ if (!isset($_SESSION['idusuario'])) {
     require_once '../modules/footer.php';
     ?>
 
+    <script src="../../public/js/MultiStep.min.js"></script>
     <script src="../scripts/inscripcion/inscripcion.js"></script>
 
 <?php

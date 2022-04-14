@@ -5,6 +5,8 @@
 
   $("#vacunas").hide();
   $("#alergias").hide();
+  $("#alimentostxt").hide();
+  $("#utilestxt").hide();
 
   $.post(
     "../controladores/diversidad-funcional.php?op=traer-diversidades",
@@ -28,12 +30,27 @@
     }
   });
 
-
   $('input[name="alergia"]').on("click", function (e) {
     if (e.target.value == "1") {
       $("#alergias").show();
     } else {
       $("#alergias").hide();
+    }
+  });
+
+  $('input[name="utiles"]').on("click", function (e) {
+    if (e.target.value == "1") {
+      $("#utilestxt").show();
+    } else {
+      $("#utilestxt").hide();
+    }
+  });
+
+  $('input[name="alimentos"]').on("click", function (e) {
+    if (e.target.value == "1") {
+      $("#alimentostxt").show();
+    } else {
+      $("#alimentostxt").hide();
     }
   });
 
@@ -242,7 +259,7 @@ function guardaryeditar(event) {
     contentType: false, //Este parámetro es para mandar datos al servidor por el encabezado
     processData: false, //Evita que jquery transforme la data en un string
     success: function (datos) {
-      console.log(datos, 'los datos');
+      console.log(datos, "los datos");
       // return;
       $("#btnGuardar").prop("disabled", false);
       if (datos == "true") {
@@ -409,19 +426,35 @@ function mostrar(idaspectofisiologico) {
       $("#talla").val(data.talla);
       $("#vacunas").val(data.vacunas);
       $("#alergias").val(data.alergias);
+      $("#utilestxt").val(data.utilestxt);
+      $("#alimentostxt").val(data.alimentostxt);
 
       if (data.todas_vacunas == 1) {
         $("#vacunasSi").attr("checked", true);
-        $('#vacunas').show();
+        $("#vacunas").show();
       } else {
         $("#vacunasNo").attr("checked", true);
       }
-      
+
       if (data.alergia == 1) {
         $("#alergicoSi").attr("checked", true);
-        $('#alergias').show();
+        $("#alergias").show();
       } else {
         $("#alergicoNo").attr("checked", true);
+      }
+
+      if (data.utiles == 1) {
+        $("#utilesSi").attr("checked", true);
+        $("#utilestxt").show();
+      } else {
+        $("#utilesNo").attr("checked", true);
+      }
+
+      if (data.alimentos == 1) {
+        $("#alimentosSi").attr("checked", true);
+        $("#alimentostxt").show();
+      } else {
+        $("#alimentosNo").attr("checked", true);
       }
 
       //Muestra las diversidades_funcionales funcionales
@@ -507,6 +540,8 @@ function limpiar(idplanificacion = "") {
   $("#idaspectofisiologico").val("");
   $("#formularioAspectoFisiologico").removeClass("was-validated");
 
-  $('#vacunas').hide();
-  $('#alergias').hide();
+  $("#vacunas").hide();
+  $("#alergias").hide();
+  $("#alimentostxt").hide();
+  $("#utilestxt").hide();
 }

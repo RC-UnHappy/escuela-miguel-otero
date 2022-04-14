@@ -286,6 +286,7 @@ if (!isset($_SESSION['idusuario'])) {
 
 
                           </div>
+                          <textarea class="form-control" name="alimentostxt" id="alimentostxt" rows="5" placeholder="Ingrese los alimentos"></textarea>
                         </div>
 
                         <div class="form-group col-md-6">
@@ -310,6 +311,7 @@ if (!isset($_SESSION['idusuario'])) {
 
 
                           </div>
+                          <textarea class="form-control" name="utilestxt" id="utilestxt" rows="5" placeholder="Ingrese los útiles"></textarea>
                         </div>
 
                         <div class="form-group col-md-12">
