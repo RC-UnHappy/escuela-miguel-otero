@@ -34,6 +34,7 @@ if (isset($_SESSION['permisos']['representado'])) {
 
 	$representante = $Representante->representanteporidpersona($_SESSION['idpersona']);
   $idestudiantes = [];
+
   $rspta = $Estudiante->traerinscripcionesporrepresentante($representante['id']);
   while ($reg = $rspta->fetch_object()) { 
     array_push($idestudiantes, $reg->idE);

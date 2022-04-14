@@ -236,8 +236,8 @@ if (!isset($_SESSION['idusuario'])) {
 	$totalhembrasvaronesrepitientes = 0;
 
 	foreach ($cantidad as $valor) {
-		$totalvarones = $totalvarones + isset($valor['M']) ? $valor['M'] : 0;
-		$totalhembras = $totalhembras + isset($valor['F']) ? $valor['F'] : 0;
+		$totalvarones = $totalvarones + (isset($valor['M']) ? $valor['M'] : 0);
+		$totalhembras = $totalhembras + (isset($valor['F']) ? $valor['F'] : 0);
 	}
 
 	foreach ($cantidadrepitientes as $valor) {
