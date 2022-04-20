@@ -24,8 +24,11 @@ $director = $EstudianteReporte->traerdatosdirector();
 // Varibles que se van a recibir por get necesarias para generar el reporte
 $datos_estudiante = $EstudianteReporte->traerpersonaestudiante($_GET['idpersona'], $_GET['idestudianteretiro']);
 
+// var_dump($datos_estudiante);
+// die;
 $periodo_escolar = $EstudianteReporte->consultarperiodo();
 $periodo_escolar = !empty($periodo_escolar) ? $periodo_escolar['periodo'] : '';
+
 
 list($anoN, $mesN, $diaN) = explode('-', $datos_estudiante['f_nac']);
 list($anoA, $mesA, $diaA) = explode('-', date('Y-m-d'));
