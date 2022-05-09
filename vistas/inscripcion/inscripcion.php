@@ -11,6 +11,21 @@ if (!isset($_SESSION['idusuario'])) {
 
     if (isset($_SESSION['permisos']['inscripcion']) && in_array('ver', $_SESSION['permisos']['inscripcion'])) {
 
+        // importamos configuración conexión
+        require_once dirname(__DIR__) . '/../config/conexion.php';
+        $sql = "SELECT * FROM profesion";
+        $profesiones = ejecutarConsulta($sql);
+        $profesiones = $profesiones->fetch_all(MYSQLI_ASSOC);
+
+        $sql = "SELECT * FROM parentesco";
+        $parentescos = ejecutarConsulta($sql);
+        $parentescos = $parentescos->fetch_all(MYSQLI_ASSOC);
+
+        $sql = "SELECT * FROM planteles";
+        $planteles = ejecutarConsulta($sql);
+        $planteles = $planteles->fetch_all(MYSQLI_ASSOC);
+
+
 ?>
         <link href="../../public/css/MultiStep.min.css" rel="stylesheet">
         <link href="../../public/css/MultiStep-theme.min.css" rel="stylesheet">
@@ -196,7 +211,14 @@ if (!isset($_SESSION['idusuario'])) {
                                                                                 <label for="oficio_madre">Profesión (*)</label>
                                                                                 <div class="input-group">
 
-                                                                                    <input type="text" name="oficio_madre" id="oficio_madre" class="form-control" required>
+                                                                                    <!-- <input type="text" name="oficio_madre" id="oficio_madre" class="form-control" required> -->
+
+                                                                                    <select name="oficio_madre" id="oficio_madre" class="form-control" required="true">
+                                                                                        <option value="">Seleccione</option>
+                                                                                        <?php foreach ($profesiones as $key => $value) : ?>
+                                                                                            <option value="<?php echo $value['profesion']; ?>"><?php echo $value['profesion']; ?></option>
+                                                                                        <?php endforeach; ?>
+                                                                                    </select>
                                                                                     <div class="invalid-feedback">
                                                                                         Campo Obligatorio
                                                                                     </div>
@@ -325,7 +347,14 @@ if (!isset($_SESSION['idusuario'])) {
                                                                                 <label for="oficio_padre">Profesión (*)</label>
                                                                                 <div class="input-group">
 
-                                                                                    <input type="text" name="oficio_padre" id="oficio_padre" class="form-control">
+
+
+                                                                                    <select name="oficio_padre" id="oficio_padre" class="form-control " required="true">
+                                                                                        <option value="">Seleccione</option>
+                                                                                        <?php foreach ($profesiones as $key => $value) : ?>
+                                                                                            <option value="<?php echo $value['profesion']; ?>"><?php echo $value['profesion']; ?></option>
+                                                                                        <?php endforeach; ?>
+                                                                                    </select>
                                                                                     <div class="invalid-feedback">
                                                                                         Campo Obligatorio
                                                                                     </div>
@@ -582,7 +611,14 @@ if (!isset($_SESSION['idusuario'])) {
                                                                 <div class="form-group col-md-12">
                                                                     <label for="plantel_procedencia_estudiante">Plantel de procedencia</label>
                                                                     <div class="input-group">
-                                                                        <input type="text" class="form-control" name="plantel_procedencia_estudiante" id="plantel_procedencia_estudiante">
+
+                                                                        <select name="plantel_procedencia_estudiante" id="plantel_procedencia_estudiante" class="form-control " required="true">
+                                                                            <option value="">Seleccione</option>
+                                                                            <?php foreach ($planteles as $key => $value) : ?>
+                                                                                <option value="<?php echo $value['plantel']; ?>"><?php echo $value['plantel']; ?></option>
+                                                                            <?php endforeach; ?>
+                                                                        </select>
+                                                                        <!-- <input type="text" class="form-control" name="plantel_procedencia_estudiante" id="plantel_procedencia_estudiante"> -->
                                                                     </div>
                                                                 </div>
 
@@ -677,7 +713,14 @@ if (!isset($_SESSION['idusuario'])) {
                                                                     <label for="oficio_representante">Profesión (*)</label>
                                                                     <div class="input-group">
 
-                                                                        <input type="text" name="oficio_representante" id="oficio_representante" class="form-control" required>
+                                                                        <!-- <input type="text" name="oficio_representante" id="oficio_representante" class="form-control" required> -->
+
+                                                                        <select name="oficio_representante" id="oficio_representante" class="form-control " required="true">
+                                                                            <option value="">Seleccione</option>
+                                                                            <?php foreach ($profesiones as $key => $value) : ?>
+                                                                                <option value="<?php echo $value['profesion']; ?>"><?php echo $value['profesion']; ?></option>
+                                                                            <?php endforeach; ?>
+                                                                        </select>
                                                                         <div class="invalid-feedback">
                                                                             Campo Obligatorio
                                                                         </div>
@@ -721,7 +764,15 @@ if (!isset($_SESSION['idusuario'])) {
                                                                 <div class="form-group col-md-6">
                                                                     <label for="parentesco_representante">Parentesco (*)</label>
                                                                     <div class="input-group">
-                                                                        <input type="text" name="parentesco_representante" id="parentesco_representante" class="form-control solo_letras text-uppercase" required>
+                                                                        <!-- <input type="text" name="parentesco_representante" id="parentesco_representante" class="form-control solo_letras text-uppercase" required> -->
+
+                                                                        <select name="parentesco_representante" id="parentesco_representante" class="form-control " required="true">
+                                                                            <option value="">Seleccione</option>
+                                                                            <?php foreach ($parentescos as $key => $value) : ?>
+                                                                                <option value="<?php echo $value['parentesco']; ?>"><?php echo $value['parentesco']; ?></option>
+                                                                            <?php endforeach; ?>
+                                                                        </select>
+
                                                                         <div class="invalid-feedback">
                                                                             Campo Obligatorio
                                                                         </div>
@@ -1065,7 +1116,14 @@ if (!isset($_SESSION['idusuario'])) {
                                                                     <label for="oficio_representante_regular">Profesión (*)</label>
                                                                     <div class="input-group">
 
-                                                                        <input type="text" name="oficio_representante_regular" id="oficio_representante_regular" class="form-control" required>
+                                                                        <!-- <input type="text" name="oficio_representante_regular" id="oficio_representante_regular" class="form-control" required> -->
+
+                                                                        <select name="oficio_representante_regular" id="oficio_representante_regular" class="form-control " required="true">
+                                                                            <option value="">Seleccione</option>
+                                                                            <?php foreach ($profesiones as $key => $value) : ?>
+                                                                                <option value="<?php echo $value['profesion']; ?>"><?php echo $value['profesion']; ?></option>
+                                                                            <?php endforeach; ?>
+                                                                        </select>
                                                                         <div class="invalid-feedback">
                                                                             Campo Obligatorio
                                                                         </div>
@@ -1109,7 +1167,14 @@ if (!isset($_SESSION['idusuario'])) {
                                                                 <div class="form-group col-md-6">
                                                                     <label for="parentesco_representante_regular">Parentesco (*)</label>
                                                                     <div class="input-group">
-                                                                        <input type="text" name="parentesco_representante_regular" id="parentesco_representante_regular" class="form-control solo_letras text-uppercase" required>
+                                                                        <!-- <input type="text" name="parentesco_representante_regular" id="parentesco_representante_regular" class="form-control solo_letras text-uppercase" required> -->
+
+                                                                        <select name="parentesco_representante_regular" id="parentesco_representante_regular" class="form-control " required="true">
+                                                                            <option value="">Seleccione</option>
+                                                                            <?php foreach ($parentescos as $key => $value) : ?>
+                                                                                <option value="<?php echo $value['parentesco']; ?>"><?php echo $value['parentesco']; ?></option>
+                                                                            <?php endforeach; ?>
+                                                                        </select>
                                                                         <div class="invalid-feedback">
                                                                             Campo Obligatorio
                                                                         </div>

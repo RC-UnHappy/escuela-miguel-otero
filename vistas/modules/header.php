@@ -485,6 +485,30 @@ if (strlen(session_id()) < 1)
                 </li>'
                   :
                   '';
+                echo (isset($_SESSION['permisos']['profesion']) && in_array('ver', $_SESSION['permisos']['profesion'])) ?
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/profesion.php">
+                    <i class="nav-icon fa fa-suitcase"></i> Profesión
+                  </a>
+                </li>'
+                  :
+                  '';
+                echo (isset($_SESSION['permisos']['parentesco']) && in_array('ver', $_SESSION['permisos']['parentesco'])) ?
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/parentesco.php">
+                    <i class="nav-icon fa fa-users"></i> Parentesco
+                  </a>
+                </li>'
+                  :
+                  '';
+                echo (isset($_SESSION['permisos']['planteles']) && in_array('ver', $_SESSION['permisos']['planteles'])) ?
+                '<li class="nav-item">
+                  <a class="nav-link" href="/escuela-romulo-gallegos/vistas/planteles.php">
+                    <i class="nav-icon fa fa-school"></i> Planteles
+                  </a>
+                </li>'
+                  :
+                  '';
 
                 echo (isset($_SESSION['permisos']['modulo']) && in_array('ver', $_SESSION['permisos']['modulo'])) ?
                   '<li class="nav-item">
