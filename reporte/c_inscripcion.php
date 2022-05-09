@@ -64,7 +64,8 @@ if (!isset($_SESSION['idusuario'])) {
 
 	include_once("cabecera_c_inscripcion.php");
 	$pdf = new PDF('P', 'mm', 'A4'/*array(150,85)*/);
-	$pdf->codigo_qr = $datos_institucion['codigo_qr'];
+	// $pdf->codigo_qr = $datos_institucion['codigo_qr'];
+	$pdf->codigo_qr = $datos_institucion['codigo_qr'] . 'Estudiante: ' . ucwords($datos_estudiante['p_nombre_estudiante'] . ' ' . $datos_estudiante['p_apellido_estudiante']);
 	$pdf->AliasNbPages();
 	$pdf->AddPage();
 	$pdf->Ln(10);

@@ -102,7 +102,8 @@ $fecha = date('Y-m-d');
 // Se incluye el modelo para el reporte
 include_once("cabecera-boletin-informativo.php");
 $pdf=new PDF('P','mm','A4'/*array(150,85)*/);
-    $pdf->codigo_qr = $datos_institucion['codigo_qr'];
+    // $pdf->codigo_qr = $datos_institucion['codigo_qr'];
+    $pdf->codigo_qr = $datos_institucion['codigo_qr'] . 'Estudiante: ' . ucwords($datos_reporte['p_nombre_estudiante'] . ' ' . $datos_reporte['p_apellido_estudiante']);
 $pdf->AliasNbPages();
 $pdf->periodo_escolar = $periodo_escolar;
 $pdf->nombre_institucion = $datos_institucion['nombre'];

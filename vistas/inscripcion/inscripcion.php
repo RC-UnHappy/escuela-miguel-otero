@@ -454,6 +454,39 @@ if (!isset($_SESSION['idusuario'])) {
                                                                 </div>
 
                                                                 <div class="form-group col-md-3">
+                                                                    <label for="">¿Es parto multiple? (*)</label>
+                                                                    <div class="input-group">
+
+                                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" id="partoSi" name="parto" class="custom-control-input" required value="si">
+                                                                            <label class="custom-control-label" for="partoSi">Si</label>
+                                                                            <div class="invalid-feedback">
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" id="partoNo" name="parto" class="custom-control-input" required value="no">
+                                                                            <label class="custom-control-label" for="partoNo">No</label>
+                                                                            <div class="invalid-feedback">
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group col-md-3">
+                                                                    <label for="orden">Orden de nacimiento</label>
+                                                                    <div class="input-group">
+
+                                                                        <input type="text" class="form-control solo_numeros" placeholder="Ej: 2" name="orden" id="orden" maxlength="1" disabled>
+
+                                                                        <div class="invalid-feedback">
+                                                                            Campo Obligatorio
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group col-md-3">
                                                                     <label for="p_nombre_estudiante">Primer Nombre (*)</label>
                                                                     <div class="input-group">
                                                                         <input type="text" class="form-control solo_letras" name="p_nombre_estudiante" id="p_nombre_estudiante" required>
@@ -523,38 +556,7 @@ if (!isset($_SESSION['idusuario'])) {
 
 
 
-                                                                <div class="form-group col-md-3">
-                                                                    <label for="">¿Es parto multiple? (*)</label>
-                                                                    <div class="input-group">
 
-                                                                        <div class="custom-control custom-radio custom-control-inline">
-                                                                            <input type="radio" id="partoSi" name="parto" class="custom-control-input" required value="si">
-                                                                            <label class="custom-control-label" for="partoSi">Si</label>
-                                                                            <div class="invalid-feedback">
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="custom-control custom-radio custom-control-inline">
-                                                                            <input type="radio" id="partoNo" name="parto" class="custom-control-input" required value="no">
-                                                                            <label class="custom-control-label" for="partoNo">No</label>
-                                                                            <div class="invalid-feedback">
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group col-md-3">
-                                                                    <label for="orden">Orden de nacimiento</label>
-                                                                    <div class="input-group">
-
-                                                                        <input type="text" class="form-control solo_numeros" placeholder="Ej: 2" name="orden" id="orden" maxlength="1" disabled>
-
-                                                                        <div class="invalid-feedback">
-                                                                            Campo Obligatorio
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
 
                                                                 <div class="form-group col-md-3">
                                                                     <label for="pais_nacimiento_estudiante">País nacimiento (*)</label>
