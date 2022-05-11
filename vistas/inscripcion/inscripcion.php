@@ -349,7 +349,7 @@ if (!isset($_SESSION['idusuario'])) {
 
 
 
-                                                                                    <select name="oficio_padre" id="oficio_padre" class="form-control " required="true">
+                                                                                    <select name="oficio_padre" id="oficio_padre" class="form-control " >
                                                                                         <option value="">Seleccione</option>
                                                                                         <?php foreach ($profesiones as $key => $value) : ?>
                                                                                             <option value="<?php echo $value['profesion']; ?>"><?php echo $value['profesion']; ?></option>
