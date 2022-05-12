@@ -210,7 +210,7 @@ if (!isset($_SESSION['idusuario'])) {
 
 
                                                                             <div class="form-group col-md-6">
-                                                                                <label for="oficio_madre">Profesión (*)</label>
+                                                                                <label for="oficio_madre">Profesión u oficio (*)</label>
 
                                                                                 <div class="oficio_madre_container">
                                                                                     <select name="oficio_madre" id="oficio_madre" class="form-control" required="true">
@@ -346,7 +346,7 @@ if (!isset($_SESSION['idusuario'])) {
                                                                             </div>
 
                                                                             <div class="form-group col-md-6">
-                                                                                <label for="oficio_padre">Profesión (*)</label>
+                                                                                <label for="oficio_padre">Profesión u oficio(*)</label>
 
 
 
@@ -621,16 +621,19 @@ if (!isset($_SESSION['idusuario'])) {
 
                                                                 <div class="form-group col-md-12">
                                                                     <label for="plantel_procedencia_estudiante">Plantel de procedencia</label>
-                                                                    <div class="input-group">
 
+                                                                    <div class="plantel_procedencia_estudiante_container">
                                                                         <select name="plantel_procedencia_estudiante" id="plantel_procedencia_estudiante" class="form-control " required="true">
                                                                             <option value="">Seleccione</option>
                                                                             <?php foreach ($planteles as $key => $value) : ?>
                                                                                 <option value="<?php echo $value['plantel']; ?>"><?php echo $value['plantel']; ?></option>
                                                                             <?php endforeach; ?>
                                                                         </select>
-                                                                        <!-- <input type="text" class="form-control" name="plantel_procedencia_estudiante" id="plantel_procedencia_estudiante"> -->
+
                                                                     </div>
+
+                                                                    <button class="btn btn-outline-primary" type="button" id="changeButtonPlantel">Nuevo</button>
+                                                                    <!-- <input type="text" class="form-control" name="plantel_procedencia_estudiante" id="plantel_procedencia_estudiante"> -->
                                                                 </div>
 
                                                             </div>
@@ -721,7 +724,7 @@ if (!isset($_SESSION['idusuario'])) {
                                                                 </div>
 
                                                                 <div class="form-group col-md-6">
-                                                                    <label for="oficio_representante">Profesión (*)</label>
+                                                                    <label for="oficio_representante">Profesión u oficio(*)</label>
 
                                                                     <div class="oficio_representante_container">
                                                                         <select name="oficio_representante" id="oficio_representante" class="form-control " required="true">
@@ -791,10 +794,7 @@ if (!isset($_SESSION['idusuario'])) {
                                                                         Campo Obligatorio
                                                                     </div>
 
-                                                                    <button 
-                                                                    type="button"
-                                                                    class="btn btn-outline-primary"
-                                                                    id="changeButtonParentescoRepresentante">Nuevo</button>
+                                                                    <button type="button" class="btn btn-outline-primary" id="changeButtonParentescoRepresentante">Nuevo</button>
                                                                 </div>
 
                                                                 <div class="form-group col-md-12">
@@ -1131,12 +1131,12 @@ if (!isset($_SESSION['idusuario'])) {
                                                                 </div>
 
                                                                 <div class="form-group col-md-6">
-                                                                    <label for="oficio_representante_regular">Profesión (*)</label>
+                                                                    <label for="oficio_representante_regular">Profesión u oficio (*)</label>
                                                                     <div class="input-group">
 
                                                                         <!-- <input type="text" name="oficio_representante_regular" id="oficio_representante_regular" class="form-control" required> -->
 
-                                                                        
+
 
                                                                         <select name="oficio_representante_regular" id="oficio_representante_regular" class="form-control " required="true">
                                                                             <option value="">Seleccione</option>
@@ -1490,6 +1490,7 @@ if (!isset($_SESSION['idusuario'])) {
         var oficio_padre_input = '<input type="text" name="oficio_padre" id="oficio_padre" class="form-control" required>';
         var oficio_representante_input = '<input type="text" name="oficio_representante" id="oficio_representante" class="form-control" required>';
         var parentesco_representante_input = '<input type="text" name="parentesco_representante" id="parentesco_representante" class="form-control" required>';
+        var plantel_procedencia_estudiante = '<input type="text" name="plantel_procedencia_estudiante" id="plantel_procedencia_estudiante" class="form-control" required>';
         $('#changeButtonOficioMadre').click(function() {
             $('.oficio_madre_container').html(oficio_madre_input);
         });
@@ -1501,6 +1502,9 @@ if (!isset($_SESSION['idusuario'])) {
         });
         $('#changeButtonParentescoRepresentante').click(function() {
             $('.parentesco_representante_container').html(parentesco_representante_input);
+        });
+        $('#changeButtonPlantel').click(function() {
+            $('.plantel_procedencia_estudiante_container').html(plantel_procedencia_estudiante);
         });
     </script>
 
