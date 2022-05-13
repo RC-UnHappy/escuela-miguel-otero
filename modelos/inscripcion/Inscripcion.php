@@ -432,4 +432,45 @@ class Inscripcion
 
     return ejecutarConsulta($sql);
   }
+
+  #Método para insertar registros
+  function insertar_crud_profesion($profesion, $estatus)
+  {
+    $sql = "INSERT INTO profesion (profesion, estatus) VALUES('$profesion', '$estatus')";
+
+    return ejecutarConsulta($sql);
+  }
+
+  function buscar_profesion($profesion)
+  {
+    $sql = "SELECT * FROM profesion WHERE profesion = '$profesion'";
+    return ejecutarConsulta($sql);
+  }
+
+  #Método para insertar registros
+  function insertar_crud_plantel($plantel, $estatus)
+  {
+    $sql = "INSERT INTO planteles (plantel, estatus) VALUES('$plantel', '$estatus')";
+
+    return ejecutarConsulta($sql);
+  }
+
+  function buscar_plantel($plantel)
+  {
+    $sql = "SELECT * FROM planteles WHERE plantel = '$plantel'";
+    return ejecutarConsulta($sql);
+  }
+
+  function insertar_crud_parentesco($parentesco, $estatus)
+  {
+    $sql = "INSERT INTO parentesco (parentesco, estatus) VALUES('$parentesco', '$estatus')";
+
+    return ejecutarConsulta($sql);
+  }
+
+  function buscar_parentesco($parentesco)
+  {
+    $sql = "SELECT * FROM parentesco WHERE parentesco = '$parentesco'";
+    return ejecutarConsulta($sql);
+  }
 }

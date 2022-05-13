@@ -8,6 +8,7 @@ require_once '../../modelos/inscripcion/Inscripcion.php';
 #Se instancia el objeto de inscripción Incial
 $Inscripcion = new Inscripcion;
 
+
 /**
  * Variables de estudiante
  */
@@ -129,6 +130,10 @@ $parentesco_representante_regular = isset($_POST['parentesco_representante_regul
 $direccion_residencia_representante_regular = isset($_POST['direccion_residencia_representante_regular']) ? limpiarCadena($_POST['direccion_residencia_representante_regular']) : '';
 $direccion_trabajo_representante_regular = isset($_POST['direccion_trabajo_representante_regular']) ? limpiarCadena($_POST['direccion_trabajo_representante_regular']) : '';
 
+function comprobarOficio()
+{
+}
+
 #Se ejecuta un caso dependiendo del valor del parámetro GET
 switch ($_GET['op']) {
 
@@ -157,6 +162,12 @@ switch ($_GET['op']) {
 
       #Se registra el representante
       $idmadre = $Inscripcion->insertar_representante($idpersonamadre, NULL, $oficio_madre) or $sw = FALSE;
+
+      $numero_filas = $Inscripcion->buscar_profesion($oficio_madre);
+
+      if ($numero_filas->num_rows == 0) {
+        $Inscripcion->insertar_crud_profesion($oficio_madre, '1');
+      }
     }
     // Cuando la persona ya estaba registrada pero no como representante
     else if (!empty($idpersonamadre) && empty($idmadre)) {
@@ -185,6 +196,14 @@ switch ($_GET['op']) {
 
       #Se registra el representante
       $idmadre = $Inscripcion->insertar_representante($idpersonamadre, NULL, $oficio_madre) or $sw = FALSE;
+
+      $numero_filas = $Inscripcion->buscar_profesion($oficio_madre);
+
+      if ($numero_filas->num_rows == 0) {
+        $Inscripcion->insertar_crud_profesion($oficio_madre,
+          '1'
+        );
+      }
     } else {
       #Se obtiene el id de la persona 
       $idpersonamadre = $Inscripcion->idpersona($idmadre);
@@ -215,6 +234,12 @@ switch ($_GET['op']) {
 
       #Se edita el representante
       $rspta = $Inscripcion->editar_representante($idpersonamadre, $oficio_madre) or $sw = FALSE;
+
+      $numero_filas = $Inscripcion->buscar_profesion($oficio_madre);
+
+      if ($numero_filas->num_rows == 0) {
+        $Inscripcion->insertar_crud_profesion($oficio_madre, '1');
+      }
     }
 
     /**
@@ -234,6 +259,12 @@ switch ($_GET['op']) {
 
         #Se registra el representante
         $idpadre = $Inscripcion->insertar_representante($idpersonapadre, NULL, $oficio_padre) or $sw = FALSE;
+
+        $numero_filas = $Inscripcion->buscar_profesion($oficio_padre);
+
+        if ($numero_filas->num_rows == 0) {
+          $Inscripcion->insertar_crud_profesion($oficio_padre, '1');
+        }
       }
     }
     // Cuando la persona ya estaba registrada pero no como representante
@@ -263,6 +294,12 @@ switch ($_GET['op']) {
 
       #Se registra el representante
       $idpadre = $Inscripcion->insertar_representante($idpersonapadre, NULL, $oficio_padre) or $sw = FALSE;
+
+      $numero_filas = $Inscripcion->buscar_profesion($oficio_padre);
+
+      if ($numero_filas->num_rows == 0) {
+        $Inscripcion->insertar_crud_profesion($oficio_padre, '1');
+      }
       // Cuando la persona ya estaba registrada y el representante también
     } else {
       #Se obtiene el id de la persona 
@@ -294,6 +331,12 @@ switch ($_GET['op']) {
 
       #Se edita el representante
       $rspta = $Inscripcion->editar_representante($idpersonapadre, $oficio_padre) or $sw = FALSE;
+
+      $numero_filas = $Inscripcion->buscar_profesion($oficio_padre);
+
+      if ($numero_filas->num_rows == 0) {
+        $Inscripcion->insertar_crud_profesion($oficio_padre, '1');
+      }
     }
 
 
@@ -316,6 +359,12 @@ switch ($_GET['op']) {
 
         #Se registra el representante
         $idrepresentante = $Inscripcion->insertar_representante($idpersonarepresentante, NULL, $oficio_representante) or $sw = FALSE;
+
+        $numero_filas = $Inscripcion->buscar_profesion($oficio_representante);
+
+        if ($numero_filas->num_rows == 0) {
+          $Inscripcion->insertar_crud_profesion($oficio_representante, '1');
+        }
       }
       // Cuando la persona ya estaba registrada pero no como representante
       else if (!empty($idpersonarepresentante) && empty($idrepresentante)) {
@@ -344,6 +393,12 @@ switch ($_GET['op']) {
 
         #Se registra el representante
         $idrepresentante = $Inscripcion->insertar_representante($idpersonarepresentante, NULL, $oficio_representante) or $sw = FALSE;
+
+        $numero_filas = $Inscripcion->buscar_profesion($oficio_representante);
+
+        if ($numero_filas->num_rows == 0) {
+          $Inscripcion->insertar_crud_profesion($oficio_representante, '1');
+        }
       } else {
         #Se obtiene el id de la persona 
         $idpersonarepresentante = $Inscripcion->idpersona($idrepresentante);
@@ -374,6 +429,12 @@ switch ($_GET['op']) {
 
         #Se edita el representante
         $rspta = $Inscripcion->editar_representante($idpersonarepresentante, $oficio_representante) or $sw = FALSE;
+
+        $numero_filas = $Inscripcion->buscar_profesion($oficio_representante);
+
+        if ($numero_filas->num_rows == 0) {
+          $Inscripcion->insertar_crud_profesion($oficio_representante, '1');
+        }
       }
     } else {
       if ($tiporepresentante == 'madre')
@@ -458,6 +519,17 @@ switch ($_GET['op']) {
     $idinscripcion = $Inscripcion->inscribir($idperiodo_escolar, $idplanificacion, $idestudiante, $idrepresentante, $parentesco_representante, $plantel_procedencia_estudiante, $observaciones, 'CURSANDO') or $sw = FALSE;
 
 
+    $numero_filas = $Inscripcion->buscar_parentesco($parentesco_representante);
+
+    if ($numero_filas->num_rows == 0) {
+      $Inscripcion->insertar_crud_parentesco($parentesco_representante, '1');
+    }
+
+    $numero_filas = $Inscripcion->buscar_plantel($plantel_procedencia_estudiante);
+
+    if ($numero_filas->num_rows == 0) {
+      $Inscripcion->insertar_crud_plantel($plantel_procedencia_estudiante, '1');
+    }
     /**
      * Operaciones relacionadas con los documentos consignados
      */
@@ -1026,6 +1098,12 @@ switch ($_GET['op']) {
 
     #Se registra la inscripción
     $idinscripcion_regular = $Inscripcion->inscribir($idperiodo_escolar_regular, $idplanificacion_regular, $idestudiante_regular, $idrepresentante_regular, $parentesco_representante_regular, $nombre_institucion, $observaciones_regular, 'CURSANDO') or $sw = FALSE;
+
+    $numero_filas = $Inscripcion->buscar_parentesco($parentesco_representante_regular);
+
+    if ($numero_filas->num_rows == 0) {
+      $Inscripcion->insertar_crud_parentesco($parentesco_representante_regular, '1');
+    }
 
     #Se verifica que todo saliío bien y se guardan los datos o se eliminan todos
     if ($sw) {

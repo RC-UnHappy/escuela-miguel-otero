@@ -883,6 +883,9 @@ function listar() {
       url: "../../controladores/inscripcion/inscripcion.php?op=listar",
       type: "GET",
       dataType: "json",
+      error: function (e) {
+        console.log(e, "el error");
+      },
     },
     order: [[0, "desc"]],
   });

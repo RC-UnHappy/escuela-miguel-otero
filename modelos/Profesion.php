@@ -80,4 +80,9 @@ class Profesion
 
         return ejecutarConsulta($sql);
     }
+
+    function buscar($profesion) {
+        $sql = "SELECT * FROM profesion WHERE profesion = '$profesion'";
+        return ejecutarConsulta($sql); 
+    }
 }

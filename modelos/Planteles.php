@@ -80,4 +80,10 @@ class Planteles
 
         return ejecutarConsulta($sql);
     }
+
+    function buscar($plantel)
+    {
+        $sql = "SELECT * FROM planteles WHERE plantel = '$plantel'";
+        return ejecutarConsulta($sql);
+    }
 }

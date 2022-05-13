@@ -80,4 +80,10 @@ class Parentesco
 
         return ejecutarConsulta($sql);
     }
+
+    function buscar($parentesco)
+    {
+        $sql = "SELECT * FROM parentesco WHERE parentesco = '$parentesco'";
+        return ejecutarConsulta($sql);
+    }
 }

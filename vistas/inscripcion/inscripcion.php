@@ -352,7 +352,7 @@ if (!isset($_SESSION['idusuario'])) {
 
                                                                                 <div class="oficio_padre_container">
 
-                                                                                    <select name="oficio_padre" id="oficio_padre" class="form-control " required="true">
+                                                                                    <select name="oficio_padre" id="oficio_padre" class="form-control " >
                                                                                         <option value="">Seleccione</option>
                                                                                         <?php foreach ($profesiones as $key => $value) : ?>
                                                                                             <option value="<?php echo $value['profesion']; ?>"><?php echo $value['profesion']; ?></option>
@@ -1487,7 +1487,7 @@ if (!isset($_SESSION['idusuario'])) {
 
     <script>
         var oficio_madre_input = '<input type="text" name="oficio_madre" id="oficio_madre" class="form-control" required>';
-        var oficio_padre_input = '<input type="text" name="oficio_padre" id="oficio_padre" class="form-control" required>';
+        var oficio_padre_input = '<input type="text" name="oficio_padre" id="oficio_padre" class="form-control">';
         var oficio_representante_input = '<input type="text" name="oficio_representante" id="oficio_representante" class="form-control" required>';
         var parentesco_representante_input = '<input type="text" name="parentesco_representante" id="parentesco_representante" class="form-control" required>';
         var plantel_procedencia_estudiante = '<input type="text" name="plantel_procedencia_estudiante" id="plantel_procedencia_estudiante" class="form-control" required>';
